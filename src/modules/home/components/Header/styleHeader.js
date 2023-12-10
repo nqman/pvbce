@@ -20,37 +20,38 @@ export const Signin = styled.button`
 
 export const SpanHeader = styled.span`
   margin-left: 5px;
+  font-size: 15px;
 `;
-export const Navbar = styled.button`
-  color: #00477b;
-  display: block;
-  margin: 0 5px;
-  margin-bottom: -10px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  border-radius: 5px;
+// export const Navbar = styled.button`
+//   color: #00477b;
+//   display: block;
+//   margin: 0 5px;
+//   margin-bottom: -10px;
+//   font-size: 12px;
+//   font-weight: 600;
+//   border: none;
+//   background-color: transparent;
+//   cursor: pointer;
+//   border-radius: 5px;
 
-  ::after {
-    content: "";
-    border-bottom: 3px solid #00477b;
-    width: 0;
-    display: block;
-  }
+//   ::after {
+//     content: "";
+//     border-bottom: 3px solid #00477b;
+//     width: 0;
+//     display: block;
+//   }
 
-  &:hover {
-    ::after {
-      content: "";
-      width: 100%;
-      transition: all 0.25s;
-    }
-  }
-  /* &:hover {
-    background-color: #007cd7;
-    color: white;
-    transition: all 0.25s;
-    border-radius: 5px;
-  } */
-`;
+//   &:hover {
+//     ::after {
+//       content: "";
+//       width: 100%;
+//       transition: all 0.25s;
+//     }
+//   }
+//   /* &:hover {
+//     background-color: #007cd7;
+//     color: white;
+//     transition: all 0.25s;
+//     border-radius: 5px;
+//   } */
+// `;
