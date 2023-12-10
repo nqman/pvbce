@@ -24,9 +24,9 @@ export const SpanHeader = styled.span`
 export const Navbar = styled.button`
   color: #00477b;
   display: block;
-  margin: 0 15px;
+  margin: 0 5px;
   margin-bottom: -10px;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   border: none;
   background-color: transparent;

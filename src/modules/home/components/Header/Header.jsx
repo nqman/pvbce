@@ -24,7 +24,7 @@ export default function Header(props) {
   return (
     <>
       <AppBar color="default">
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
           <Toolbar disableGutters>
             <Typography
               variant="h6"
@@ -45,6 +45,11 @@ export default function Header(props) {
               <img
                 src="https://www.phanvu.vn/Data/Sites/1/media/logo-web4.png"
                 alt="logo"
+                style={{
+                  height: "50px",
+                  width: "100%",
+                  zIndex: "10",
+                }}
               />
             </Typography>
 
