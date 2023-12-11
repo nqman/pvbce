@@ -1,18 +1,20 @@
 import React from "react";
-import General_InFormation from "../components/General_Information/General_InFormation";
-import HistoryEquipment from "../components/HistoryEquipment/HistoryEquipment";
-import TechnicalSheet from "../components/TechnicalSheet/TechnicalSheet";
-import Maintenance from "../components/Maintenance/Maintenance";
+import GeneralInFormation from "../components/EquipmentItem/GeneralInformation/GeneralInFormation";
+import HistoryEquipment from "../components/EquipmentItem/HistoryEquipment/HistoryEquipment";
+import TechnicalSheet from "../components/EquipmentItem/TechnicalSheet/TechnicalSheet";
+import Maintenance from "../components/EquipmentItem/Maintenance/Maintenance";
 import { Container } from "@mui/material";
+import EquipmentList from "../components/EquipmentList/EquipmentList";
 
 export default function Catalogue() {
   return (
     <>
       <Container maxWidth="lg">
-        <General_InFormation />
+        {/* <GeneralInFormation />
         <TechnicalSheet />
         <HistoryEquipment />
-        <Maintenance />
+        <Maintenance /> */}
+        <EquipmentList />
       </Container>
     </>
   );
