@@ -15,14 +15,7 @@ import { AccountCircle } from "@mui/icons-material";
 import { Signin } from "./styleHeader";
 import { Link, useNavigate } from "react-router-dom";
 
-const pages = [
-  "GIỚI THIỆU",
-  "LĨNH VỰC KINH DOANH",
-  "GIẢI THƯỞNG",
-  "ĐỐI TÁC",
-  "LIÊN HỆ",
-  "CATALOGUE",
-];
+const pages = ["GIỚI THIỆU", "HỒ SƠ CÔNG NGHỆ", "BÁO CÁO", "CATALOGUE"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -49,13 +42,13 @@ function ResponsiveAppBar() {
       position="static"
       style={{ backgroundColor: "white", color: "#007cd7" }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -64,7 +57,7 @@ function ResponsiveAppBar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
-              marginLeft: "5%",
+              marginRight: "100px",
             }}
           >
             <img
@@ -75,6 +68,7 @@ function ResponsiveAppBar() {
                 width: "270px",
                 zIndex: "10",
               }}
+              onClick={() => navigate("./")}
             />
           </Typography>
 
@@ -120,7 +114,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="#"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
