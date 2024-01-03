@@ -15,7 +15,7 @@ import { AccountCircle } from "@mui/icons-material";
 import { Signin } from "./styleHeader";
 import { Link, useNavigate } from "react-router-dom";
 
-const pages = ["GIỚI THIỆU", "HỒ SƠ CÔNG NGHỆ", "BÁO CÁO", "CATALOGUE"];
+const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

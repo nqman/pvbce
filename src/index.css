@@ -9,13 +9,12 @@ code {
 
 * {
   font-family: 'Nunito Sans', sans-serif;
-
+  font-size: 16px;
 }
 
 .css-oh3d9v-MuiButtonBase-root-MuiButton-root {
   font-family: 'Nunito Sans', sans-serif !important;
-  font-size: "15px";
+  font-size: "16px";
   font-weight: bold;
   line-height: 23px;
-
 }
