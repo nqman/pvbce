@@ -1,0 +1,12 @@
+.cell_head {
+    font-size: 11px;
+    padding: 5px 0;
+    width: fit-content;
+    background-color: #D48318;
+}
+
+.cell_body {
+    text-align: center;
+    padding: 5px 0;
+    width: fit-content;
+}
