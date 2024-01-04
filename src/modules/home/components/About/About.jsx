@@ -19,21 +19,25 @@ export default function About() {
           <Typography className={styles.h5} variant="h5" fon>
             VỀ CHÚNG TÔI
           </Typography>
-          <Typography variant="body1" marginBottom="5px">
-            Công ty{" "}
-            <span style={{ fontWeight: "bold" }}>Phan Vũ Bình Dương (PVB)</span>
-            là một trong các công ty thành viên trực thuộc Tập đoàn Phan Vũ
-            (Phan Vũ Group), tên đầy đủ là Công ty TNHH MTV Sản xuất Xây dựng
-            Phan Vũ.
-          </Typography>
-          <Typography variant="body1">
-            <span style={{ fontWeight: "bold" }}>Phan Vũ Bình Dương</span> là
-            đơn vị đảm nhiệm công tác thi công hầu hết các hạng mục thuộc dự án
-            nền móng bằng công nghệ mới và dự án lắp ghép, hạ tầng - giao thông…
-            củaTập đoàn Phan Vũ. Ngoài ra, Phan Vũ Bình Dương còn cho thuê các
-            loại thiết bị, máy móc chuyên dụng phục vụ công tác xây dựng khác
-            nhau.
-          </Typography>
+          <div className={`container ${styles.about_text}`}>
+            <p className="mt-3">
+              Công ty{" "}
+              <span style={{ fontWeight: "bold" }}>
+                Phan Vũ Bình Dương (PVB)
+              </span>{" "}
+              là một trong các công ty thành viên trực thuộc Tập đoàn Phan Vũ
+              (Phan Vũ Group), tên đầy đủ là Công ty TNHH MTV Sản xuất Xây dựng
+              Phan Vũ.
+            </p>
+            <p>
+              <span style={{ fontWeight: "bold" }}>Phan Vũ Bình Dương</span> là
+              đơn vị đảm nhiệm công tác thi công hầu hết các hạng mục thuộc dự
+              án nền móng bằng công nghệ mới và dự án lắp ghép, hạ tầng - giao
+              thông… của Tập đoàn Phan Vũ. Ngoài ra, Phan Vũ Bình Dương còn cho
+              thuê các loại thiết bị, máy móc chuyên dụng phục vụ công tác xây
+              dựng khác nhau.
+            </p>
+          </div>
         </Grid>
         <Grid
           container

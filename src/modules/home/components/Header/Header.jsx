@@ -52,7 +52,7 @@ function ResponsiveAppBar() {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "Nunito Sans",
+
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
@@ -119,7 +119,7 @@ function ResponsiveAppBar() {
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: "Nunito Sans",
+
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
@@ -142,7 +142,7 @@ function ResponsiveAppBar() {
                   fontSize: "18px",
                   display: "block",
                   margin: "0 5px -10px 5px",
-                  fontFamily: "Nunito Sans",
+
                   fontWeight: "600",
                 }}
               >
