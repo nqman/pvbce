@@ -14,7 +14,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import styles from "./EquipCapacity.module.css";
+// import styles from "./EquipCapacity.module.css";
 const row_cons1 = [
   createData(1, "Xe khoan DH608-120M", "Bộ", 6),
   createData(2, "Dàn ép cọc tự hành ZYJ 600", "Bộ", 2),
@@ -72,7 +72,7 @@ const steps = [
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#D48318",
+    backgroundColor: "#094906",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -131,30 +131,30 @@ export default function EquipCapacity() {
             <TableHead>
               <TableRow>
                 <StyledTableCell
-                  className={styles.cell_head}
+                  // className={styles.cell_head}
                   align="center"
-                  sx={{ minWidth: 50 }}
+                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
                 >
-                  TT
+                  STT
                 </StyledTableCell>
                 <StyledTableCell
-                  className={styles.cell_head}
+                  // className={styles.cell_head}
                   align="center"
-                  sx={{ minWidth: 350 }}
+                  sx={{ minWidth: 350, padding: "5px 0", fontSize: "11px" }}
                 >
                   MÔ TẢ THIẾT BỊ
                 </StyledTableCell>
                 <StyledTableCell
-                  className={styles.cell_head}
+                  // className={styles.cell_head}
                   align="center"
-                  sx={{ minWidth: 50 }}
+                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
                 >
                   ĐVT
                 </StyledTableCell>
                 <StyledTableCell
-                  className={styles.cell_head}
+                  // className={styles.cell_head}
                   align="center"
-                  sx={{ minWidth: 50 }}
+                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
                 >
                   SỐ LƯỢNG
                 </StyledTableCell>
@@ -164,26 +164,46 @@ export default function EquipCapacity() {
               {steps[activeStep].data.map((row) => (
                 <StyledTableRow key={row.no}>
                   <StyledTableCell
-                    style={{ fontSize: "12px", fontWeight: "400" }}
-                    className={styles.cell_body}
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "400",
+                      textAlign: "center",
+                      padding: "5px 0",
+                    }}
+                    // className={styles.cell_body}
                   >
                     {row.no}
                   </StyledTableCell>
                   <StyledTableCell
-                    style={{ fontSize: "12px", fontWeight: "400" }}
-                    className={styles.cell_body}
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "400",
+                      textAlign: "center",
+                      padding: "5px 0",
+                    }}
+                    // className={styles.cell_body}
                   >
                     {row.desc}
                   </StyledTableCell>
                   <StyledTableCell
-                    style={{ fontSize: "12px", fontWeight: "400" }}
-                    className={styles.cell_body}
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "400",
+                      textAlign: "center",
+                      padding: "5px 0",
+                    }}
+                    // className={styles.cell_body}
                   >
                     {row.unit}
                   </StyledTableCell>
                   <StyledTableCell
-                    style={{ fontSize: "12px", fontWeight: "400" }}
-                    className={styles.cell_body}
+                    style={{
+                      fontSize: "12px",
+                      fontWeight: "400",
+                      textAlign: "center",
+                      padding: "5px 0",
+                    }}
+                    // className={styles.cell_body}
                   >
                     {row.qty}
                   </StyledTableCell>
