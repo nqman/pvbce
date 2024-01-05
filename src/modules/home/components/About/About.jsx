@@ -41,7 +41,7 @@ export default function About() {
           </div>
           <ReactPlayer
             config={{ file: { attributes: { controlsList: "nodownload" } } }}
-            url="video/video_pvb.mp4"
+            // url="video/video_pvb.mp4"
             width="640"
             height="360"
             controls={true}
