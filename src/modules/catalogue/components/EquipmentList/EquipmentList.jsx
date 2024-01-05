@@ -152,6 +152,7 @@ export default function EquipmentList() {
   };
   return (
     <div style={{ position: "relative" }}>
+      {/* SEARCH */}
       <div className="d-flex justify-content-center m-3">
         <div className="input-group  w-50 ">
           <input
@@ -163,12 +164,13 @@ export default function EquipmentList() {
           />
         </div>
       </div>
+      {/* BTN THÊM THIẾT BỊ */}
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button onClick={() => handleAdd()} variant="outlined">
+        <button onClick={() => handleAdd()} className="btn btn-primary">
           Thêm thiết bị
-        </Button>
+        </button>
       </div>
-
+      {/* EQUIPMENT LIST */}
       <div style={{ height: 400, width: "1100px", margin: "auto" }}>
         <Paper sx={{ width: "100%", overflow: "hidden", display: `${table}` }}>
           <TableContainer sx={{ maxHeight: 440 }}>
@@ -224,7 +226,8 @@ export default function EquipmentList() {
           />
         </Paper>
       </div>
-      {/* <div style={{ width: "100%" }}> */}
+
+      {/* TABPANEL THÊM THIẾT BỊ */}
       <div
         style={{
           display: `${tabPanel}`,
@@ -236,11 +239,14 @@ export default function EquipmentList() {
           backgroundColor: "whitesmoke",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          <button className="btn btn-danger" onClick={() => handleClose()}>
-            Close
-          </button>
-        </div>
+        <button
+          style={{ position: "absolute", right: "0", top: "0" }}
+          className="btn btn-danger"
+          onClick={() => handleClose()}
+        >
+          Đóng
+        </button>
+
         <Box>
           <TabContext value={value}>
             <Box display="flex" justifyContent="center" alignItems="center">
@@ -251,11 +257,125 @@ export default function EquipmentList() {
                 <Tab label="QR" value="4" />
               </TabList>
             </Box>
-            <TabPanel value="1" style={{ paddingTop: 0 }}></TabPanel>
+            <TabPanel value="1">
+              <div className="form-group d-flex mb-2">
+                <label
+                  style={{
+                    border: "none",
+                    backgroundColor: "transparent",
+                    width: "170px",
+                    marginRight: "20px",
+                  }}
+                  className="form-control"
+                  htmlFor="name"
+                >
+                  Tên thiết bị
+                </label>
+                <input
+                  id="name"
+                  className=" form-control w-75"
+                  type="text"
+                  placeholder="Nhập tên thiết bị..."
+                />
+              </div>
+
+              <div className="form-group d-flex mb-2">
+                <label
+                  style={{
+                    border: "none",
+                    backgroundColor: "transparent",
+                    width: "170px",
+                    marginRight: "20px",
+                  }}
+                  className="form-control"
+                  htmlFor="name"
+                >
+                  Mã thiết bị
+                </label>
+                <input
+                  id="code"
+                  className=" form-control w-75"
+                  type="text"
+                  placeholder="Nhập mã thiết bị..."
+                />
+              </div>
+
+              <div className="form-group d-flex mb-2">
+                <select
+                  style={{
+                    border: "none",
+                    backgroundColor: "transparent",
+                    width: "170px",
+                    marginRight: "20px",
+                  }}
+                  className="form-select"
+                >
+                  <option value="isUse">
+                    <label className="form-control">Thi công dự án</label>
+                  </option>
+                  <option value="IsInStock">
+                    <label className="form-control">Nằm ở kho bãi</label>
+                  </option>
+                </select>
+
+                <input
+                  id="construction"
+                  className=" form-control w-75"
+                  type="text"
+                  placeholder="Nhập vị trí..."
+                />
+              </div>
+              {/* <div className="form-group d-flex mb-2">
+                <label
+                  style={{
+                    border: "none",
+                    backgroundColor: "transparent",
+                    width: "170px",
+                    marginRight: "20px",
+                  }}
+                  className="form-control"
+                  htmlFor="name"
+                >
+                  Nằm ở kho bãi
+                </label>
+                <input
+                  id="location"
+                  className=" form-control w-75"
+                  type="text"
+                  placeholder="Nhập tên thiết bị..."
+                />
+              </div> */}
+              <div className="form-group d-flex mb-2">
+                <label
+                  style={{
+                    border: "none",
+                    backgroundColor: "transparent",
+                    width: "170px",
+                    marginRight: "20px",
+                  }}
+                  className="form-control"
+                  htmlFor="name"
+                >
+                  Ghi chú
+                </label>
+                <textarea
+                  id="note"
+                  className=" form-control w-75"
+                  type="text"
+                  placeholder=""
+                />
+              </div>
+            </TabPanel>
             <TabPanel value="2"></TabPanel>
-            <TabPanel value="3" style={{ paddingTop: 0 }}></TabPanel>
+            <TabPanel value="3"></TabPanel>
             <TabPanel value="4"></TabPanel>
           </TabContext>
+          <button
+            style={{ position: "absolute", right: "0", bottom: "0" }}
+            className="btn btn-success"
+          >
+            Lưu
+          </button>
         </Box>
       </div>
     </div>
