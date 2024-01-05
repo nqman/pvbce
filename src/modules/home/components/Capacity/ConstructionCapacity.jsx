@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
 import styled from "@mui/system/styled";
-import Carousel from "react-material-ui-carousel";
+import Slider from "react-slick";
 const Item = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   // border: "1px solid",
@@ -11,10 +11,18 @@ const Item = styled("div")(({ theme }) => ({
   textAlign: "center",
 }));
 export default function ConstructionCapacity() {
+  const settings = {
+    dots: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+  };
   return (
-    <Carousel navButtonsAlwaysVisible={true} indicators={false}>
+    <Slider {...settings}>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container paddingLeft={"100px"}>
+        <Grid container paddingLeft={"200px"}>
           <Grid lg={4}>
             <Item
               sx={{
@@ -41,7 +49,7 @@ export default function ConstructionCapacity() {
               />
             </Item>
           </Grid>
-          <Grid lg={4}>
+          <Grid lg={4} marginTop={3}>
             <Item
               sx={{
                 textAlign: "left",
@@ -60,7 +68,7 @@ export default function ConstructionCapacity() {
               </div>
             </Item>
           </Grid>
-          <Grid lg={8}>
+          <Grid lg={8} marginTop={3}>
             <Item>
               <img
                 style={{ maxHeight: "200px" }}
@@ -72,7 +80,7 @@ export default function ConstructionCapacity() {
         </Grid>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container paddingLeft={"100px"}>
+        <Grid container paddingLeft={"200px"}>
           <Grid lg={4}>
             <Item
               sx={{
@@ -100,7 +108,7 @@ export default function ConstructionCapacity() {
               />
             </Item>
           </Grid>
-          <Grid lg={4}>
+          <Grid lg={4} marginTop={3}>
             <Item
               sx={{
                 textAlign: "left",
@@ -119,7 +127,7 @@ export default function ConstructionCapacity() {
               </div>
             </Item>
           </Grid>
-          <Grid lg={8}>
+          <Grid lg={8} marginTop={3}>
             <Item>
               <img
                 style={{ maxHeight: "200px" }}
@@ -130,6 +138,6 @@ export default function ConstructionCapacity() {
           </Grid>
         </Grid>
       </Box>
-    </Carousel>
+    </Slider>
   );
 }

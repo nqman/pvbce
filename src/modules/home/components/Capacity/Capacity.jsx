@@ -3,6 +3,8 @@ import { Box, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import EquipCapacity from "./EquipCapacity";
 import ConstructionCapacity from "./ConstructionCapacity";
+import EquipRentals from "./EquipRentals";
+import WorkshopCapacity from "./WorkshopCapacity";
 
 export default function Capacity() {
   const [value, setValue] = useState("1");
@@ -11,7 +13,7 @@ export default function Capacity() {
   };
 
   return (
-    <div className="container mt-2">
+    <div className="container" style={{ marginTop: "80px" }}>
       <h1 className="text-center">NĂNG LỰC</h1>
       <Box>
         <TabContext value={value}>
@@ -29,8 +31,12 @@ export default function Capacity() {
           <TabPanel value="2">
             <ConstructionCapacity />
           </TabPanel>
-          <TabPanel value="3">333333333</TabPanel>
-          <TabPanel value="4">444444444444444</TabPanel>
+          <TabPanel value="3" style={{ paddingTop: 0 }}>
+            <EquipRentals />
+          </TabPanel>
+          <TabPanel value="4">
+            <WorkshopCapacity />
+          </TabPanel>
         </TabContext>
       </Box>
     </div>

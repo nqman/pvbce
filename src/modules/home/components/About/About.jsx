@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import React from "react";
 import styles from "./About.module.css";
+import ReactPlayer from "react-player";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -13,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 export default function About() {
   return (
-    <Box mt={2}>
+    <Box mt={4}>
       <Grid container="lg" maxWidth={"lg"} margin={"auto"}>
         <Grid lg={6} sm={12} className={styles.about_left}>
           <Typography className={styles.h5} variant="h5" fon>
@@ -38,6 +39,16 @@ export default function About() {
               dựng khác nhau.
             </p>
           </div>
+          <ReactPlayer
+            config={{ file: { attributes: { controlsList: "nodownload" } } }}
+            url="video/video_pvb.mp4"
+            width="640"
+            height="360"
+            controls={true}
+            // muted="true"
+            playing="true"
+            // light="./image/thietbithicong1.png"
+          />
         </Grid>
         <Grid
           container

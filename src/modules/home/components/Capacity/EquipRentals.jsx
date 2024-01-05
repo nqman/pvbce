@@ -14,59 +14,83 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import cn from "classnames";
 // import styles from "./EquipCapacity.module.css";
 const row_cons1 = [
-  createData(1, "Xe khoan DH608-120M", "Bộ", 6),
-  createData(2, "Dàn ép cọc tự hành ZYJ 600", "Bộ", 2),
-  createData(3, "Dàn ép cọc tự hành ZYJ 860", "Bộ", 1),
-  createData(4, "Dàn ép cơ 600 tấn", "Bộ", 1),
-  createData(5, "Xe cẩu SUMITOMO, 80 tấn -51m", "Bộ", 1),
-  createData(6, "Xe đóng cọc SUMITOMO, 50 tấn (búa Diesel KB60)", "Bộ", 1),
-  createData(7, "Xe bánh xích SUMITOMO SP110", "Bộ", 1),
-  createData(8, "Máy khoan cọc CDM bánh xích KOBELCO DJM 2070", "Bộ", 1),
-  createData(9, "Xe khoan DH508-105M", "Bộ", 2),
-  createData(10, "Xe cẩu SUMITOMO, 50 tấn-33,55m", "Bộ", 1),
+  createData("", "Xe cẩu bánh xích / Crawler crane", ""),
+  createData(1, "Kobelco-CKE2500", 1),
+  createData(2, "Hitachi-CX900", 1),
+  createData(3, "Nissha DH650-5", 1),
+  createData(4, "Sumitomo LS118RH5", 1),
+  createData(5, "Sumitomo SC800-2", 1),
+  createData(6, "Sumitomo SC1000-2", 2),
+  createData(7, "Sumitomo SC1500", 1),
+  createData(8, "Sumitomo SC1500-2", 1),
+  createData("", "Xe khoan / Excavator", ""),
+  createData(9, "Komatsu PC228", 2),
+  createData(10, "Komatsu PC300,", 1),
+  createData("", "Xe khoan / Drilling truck", ""),
+  createData(11, "Nippon Sharyo DH508 - 105M", 3),
+  createData(12, "Nippon Sharyo DH608-120M", 6),
+  createData(13, "Nippon Sharyo DH658", 1),
+  createData(14, "Kobelco DJM2070", 1),
+  createData(15, "Sumitomo SP110", 1),
+  createData("", "Búa rung điện / Electrical vibratory hammer", ""),
+  createData(16, "EP180 Hammer", 1),
+  createData("", "Máy bơm vữa / Mortar pump machinery", ""),
+  createData(17, "Máy bơm vữa SG30", 22),
+  createData("", "Máy nén khí / Compressor", ""),
+  createData(18, "Airman PDSK AM900", 3),
+  createData(19, "Airman PDSJ AM1000-01", 1),
+  createData(20, "XHP900BWCAT", 3),
+  createData("", "Máy phát điện / Generator", ""),
+  createData(21, "AIRMAN SDG500", 1),
+  createData(22, "CAT400", 2),
+  createData(23, "DEN90", 1),
+  createData(24, "DEN150", 2),
+  createData(25, "DEN220", 3),
+  createData(26, "DEN250", 1),
+  createData(27, "DEN400", 2),
+  createData(28, "DEN500", 1),
+  createData(29, "NES220", 1),
+  createData(30, "NES300", 1),
+  createData(31, "NES350", 1),
+  createData(32, "NES400", 3),
+  createData(33, "NES500", 4),
+  createData(34, "NES610", 1),
+  createData("", "Thiết bị khác / Other equipment", ""),
+  createData(35, "Máy xói áp lực JS330-01", 1),
+  createData(36, "Trạm trộn tự động", 12),
+  createData("", "Dàn Robot ép cọc / Pile pressing robot", ""),
+  createData(37, "Robot ép cọc ZYJ-860-01", 1),
+  createData("", "Búa / Air Hammer ", ""),
+  createData(38, "SWH320", 1),
+  createData(39, "SWH410", 1),
+  createData(40, "SWH640", 1),
+  createData(41, "TD550", 1),
+  createData("", "Đầu khoan / Drilling head", ""),
+  createData(42, "Đầu khoan D60HP", 4),
+  createData(43, "Đầu khoan D80KP", 1),
+  createData(44, "Đầu khoan D100KP", 4),
+  createData(45, "Đầu khoan D120HP", 5),
+  createData(46, "Đầu khoan D150SP", 1),
+  createData(47, "Đầu khoan D240HP", 1),
+  createData(48, "Đầu khoan hạ SW150PW", 2),
+  createData(49, "Đầu khoan hạ SW200PW", 3),
+  createData(50, "Đầu khoan SKC60VA", 1),
+  createData(51, "Đầu khoan SKC120VA", 3),
+  createData(52, "	Đầu khoan SKC150VM", 1),
+  createData(53, "Đầu khoan SKC240VA", 1),
+  createData(54, "	Đầu khoan thượng SW100PW", 2),
+  createData(55, "Đầu khoan thượng SW120PW", 2),
+  createData(56, "Đầu khoan thượng SW150PW", 5),
 ];
-const row_cons2 = [
-  createData(11, "Xe cẩu SUMITOMO, 80 tấn", "Bộ", 1),
-  createData(12, "Xe cẩu HITACHI, 90 tấn", "Bộ", 1),
 
-  createData(13, "Xe cẩu Nippon sharyo DH650, 65 tấn", "Bộ", 1),
-  createData(14, "Xe cẩu SUMITOMO SC1000, 100 tấn", "Bộ", 2),
-  createData(15, "Máy đào bánh xích KOMATSU", "Bộ", 2),
-  createData(16, "Máy phát điện Ness 500", "Bộ", 3),
-  createData(17, "Máy phát điện Den 400", "Bộ", 1),
-  createData(18, "Máy phát điện Den 400", "Bộ", 1),
-  createData(19, "Máy phát điện Ness 300", "Bộ", 2),
-  createData(20, "Máy phát điện Ness 300", "Bộ", 1),
-  createData(21, "Máy phát điện Ness 250", "Bộ", 2),
-];
-const row_survey = [
-  createData(1, "Máy toàn đạc LEICA TC 407", "Cái", 1),
-  createData(2, "Máy toàn đạc TOPCON GTS 100N", "Cái", 1),
-  createData(3, "Máy toàn đạc PENTAX", "Cái", 1),
-  createData(4, "Máy kinh vĩ ET - 1005", "Cái", 1),
-  createData(5, "Máy kinh vĩ 3T5KII", "Cái", 2),
-  createData(6, "Máy kinh vĩ SLON", "Cái", 1),
-  createData(7, "Máy kinh vĩ ET - 1005", "Cái", 1),
-  createData(8, "Máy kinh vĩ 3T5KII", "Cái", 2),
-  createData(9, "Máy kinh vĩ SLON", "Cái", 1),
-];
 const steps = [
   {
     label: "THIẾT BỊ THI CÔNG",
     imagePath: "./image/thietbithicong1.png",
     data: row_cons1,
-  },
-  {
-    label: "THIẾT BỊ THI CÔNG",
-    imagePath: "./image/thietbithicong2.png",
-    data: row_cons2,
-  },
-  {
-    label: "THIẾT BỊ TRẮC ĐẠC",
-    imagePath: "./image/thietbitracdac.png",
-    data: row_survey,
   },
 ];
 
@@ -90,11 +114,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(no, desc, unit, qty) {
-  return { no, desc, unit, qty };
+function createData(no, desc, qty) {
+  return { no, desc, qty };
 }
 
-export default function EquipCapacity() {
+export default function EquipRentals() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = steps.length;
@@ -123,7 +147,7 @@ export default function EquipCapacity() {
         <Typography variant="h6">{steps[activeStep].label}</Typography>
       </Paper>
       <Box display={"flex"}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ maxHeight: 450 }}>
           <Table
             sx={{ minWidth: 500, height: "100%" }}
             aria-label="customized table"
@@ -133,28 +157,34 @@ export default function EquipCapacity() {
                 <StyledTableCell
                   // className={styles.cell_head}
                   align="center"
-                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
+                  sx={{
+                    minWidth: 50,
+                    padding: "5px 0",
+                    fontSize: "11px",
+                  }}
                 >
                   STT
                 </StyledTableCell>
                 <StyledTableCell
                   // className={styles.cell_head}
                   align="center"
-                  sx={{ minWidth: 350, padding: "5px 0", fontSize: "11px" }}
+                  sx={{
+                    minWidth: 350,
+                    padding: "5px 0",
+                    fontSize: "11px",
+                  }}
                 >
                   MÔ TẢ THIẾT BỊ
                 </StyledTableCell>
+
                 <StyledTableCell
                   // className={styles.cell_head}
                   align="center"
-                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
-                >
-                  ĐVT
-                </StyledTableCell>
-                <StyledTableCell
-                  // className={styles.cell_head}
-                  align="center"
-                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
+                  sx={{
+                    minWidth: 50,
+                    padding: "5px 0",
+                    fontSize: "11px",
+                  }}
                 >
                   SỐ LƯỢNG
                 </StyledTableCell>
@@ -180,22 +210,14 @@ export default function EquipCapacity() {
                       fontWeight: "400",
                       textAlign: "left",
                       padding: "5px 0",
+                      fontWeight: row.no === "" ? "bold" : "400",
                     }}
+
                     // className={styles.cell_body}
                   >
                     {row.desc}
                   </StyledTableCell>
-                  <StyledTableCell
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: "400",
-                      textAlign: "center",
-                      padding: "5px 0",
-                    }}
-                    // className={styles.cell_body}
-                  >
-                    {row.unit}
-                  </StyledTableCell>
+
                   <StyledTableCell
                     style={{
                       fontSize: "12px",
@@ -212,46 +234,28 @@ export default function EquipCapacity() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{ width: "100%" }} display={"flex"} justifyContent={"center"}>
-          <img
-            src={steps[activeStep].imagePath}
-            alt=""
-            style={{ height: "450px" }}
-          />
+        <Box sx={{ width: "100%", paddingLeft: "80px" }}>
+          <div>
+            <h6>PVB chuyên cho thuê một số thiết bị như:</h6>
+            <ul>
+              <li>Xe cẩu</li>
+              <li>Xe cơ sở</li>
+              <li>Máy phát điện</li>
+              <li>Búa rung</li>
+              <li>
+                Các loại thiết bị khoan, bơm, trạm phun vữa (Tole, máy đào…)
+              </li>
+            </ul>
+          </div>
+          <div className="ps-5">
+            <img
+              src="./image/thietbithicong1.png"
+              alt=""
+              style={{ width: "380px" }}
+            />
+          </div>
         </Box>
       </Box>
-
-      <MobileStepper
-        variant="text"
-        steps={maxSteps}
-        position="static"
-        style={{ maxWidth: "50%", margin: "auto" }}
-        activeStep={activeStep}
-        nextButton={
-          <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
-            {/* Next */}
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </Button>
-        }
-        backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === "rtl" ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
-            {/* Back */}
-          </Button>
-        }
-      />
     </Box>
   );
 }
