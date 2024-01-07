@@ -6,14 +6,15 @@ import { object, string } from "yup";
 import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Button, Tab } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const validationSchema = object({
-  name: string().required("Tài khoản không được để trống"),
-  divideCode: string().required("Tài khoản không được để trống"),
-  constructionProject: string().required("Tài khoản không được để trống"),
-  location: string().required("Tài khoản không được để trống"),
+  name: string().required("Tên thiết bị không được để trống"),
+  divideCode: string().required("Mã thiết bị không được để trống"),
+  // constructionProject: string().required("Tài khoản không được để trống"),
+  // location: string().required("Tài khoản không được để trống"),
+  // note: string().required("Tài khoản không được để trống"),
 });
 
 export default function CreateEquipment() {
@@ -72,7 +73,7 @@ export default function CreateEquipment() {
   };
   return (
     <div className="container">
-      <h1 className="text-center">Thêm thiết bị</h1>
+      <h1 className="text-center pt-3">Thêm thiết bị</h1>
 
       <form noValidate onSubmit={handleSubmit(handleSave)}>
         <Box>
@@ -109,7 +110,11 @@ export default function CreateEquipment() {
                     placeholder="Nhập tên thiết bị..."
                     {...register("name")}
                   />
-                  {errors.name && <span>{errors.name.message}</span>}
+                  {errors.name && (
+                    <span className="ms-2 text-danger">
+                      {errors.name.message}
+                    </span>
+                  )}
                 </div>
                 {/* divideCode */}
                 <div className="form-group d-flex mb-2">
@@ -133,7 +138,9 @@ export default function CreateEquipment() {
                     {...register("divideCode")}
                   />
                   {errors.divideCode && (
-                    <span>{errors.divideCode.message}</span>
+                    <span className="ms-2 text-danger">
+                      {errors.divideCode.message}
+                    </span>
                   )}
                 </div>
                 {/* constructionProject  */}
@@ -217,7 +224,7 @@ export default function CreateEquipment() {
                     backgroundColor: "transparent",
                   }}
                   className="form-control"
-                  htmlFor="uploadImage"
+                  // htmlFor="uploadImage"
                 >
                   Tải lên hình ảnh :
                 </label>
@@ -251,9 +258,17 @@ export default function CreateEquipment() {
                     </div>
                   ))}
                 </div>
+                <Button className="ms-2" variant="outlined" size="small">
+                  <label
+                    htmlFor="uploadImage"
+                    style={{ fontSize: "13px", textTransform: "capitalize" }}
+                  >
+                    <CloudUploadIcon sx={{ marginRight: "5px" }} /> File upload
+                  </label>
+                </Button>
 
                 <input
-                  className="ps-5"
+                  className="ps-5 d-none"
                   id="uploadImage"
                   type="file"
                   name="myImages"
@@ -261,22 +276,23 @@ export default function CreateEquipment() {
                   multiple // Cho phép chọn nhiều tệp
                 />
               </div>
-              <div className="text-end">
-                <button type="button" className="btn btn-warning">
-                  Next
-                </button>
-              </div>
             </TabPanel>
             {/* Thông số kỹ thuật */}
             <TabPanel value="2"></TabPanel>
             {/* Bảo dưỡng sữa chửa */}
-            <TabPanel value="3"></TabPanel>
+            <TabPanel value="3">
+              <Button
+                variant="contained"
+                color="success"
+                type="submit"
+                disabled={isLoading}
+              >
+                Lưu
+              </Button>
+            </TabPanel>
             <TabPanel value="4"></TabPanel>
           </TabContext>
         </Box>
-        <Button type="submit" disabled={isLoading}>
-          Lưu
-        </Button>
       </form>
     </div>
   );
