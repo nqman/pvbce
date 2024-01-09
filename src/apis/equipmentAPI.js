@@ -4,8 +4,7 @@ import baseAPI from "./baseAPI";
 export async function getListEquipmentsAPI() {
   try {
     const resp = await baseAPI.get("products");
-    const data = await resp.json();
-    console.log(data);
+    const data = resp.data;
     return data;
   } catch (error) {
     console.error(error);
@@ -14,11 +13,23 @@ export async function getListEquipmentsAPI() {
 }
 
 //Thêm thiết bị
+// export async function addEquipmentAPI(informations) {
+//   try {
+//     const resp = await baseAPI.post("products/save", informations);
+//     console.log(resp);
+//     return resp.data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 export async function addEquipmentAPI(informations) {
   try {
-    const resp = await baseAPI.post("/save", informations);
+    const resp = await baseAPI.post("/products/save", informations);
     return resp;
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      throw error.response;
+    }
+    throw error.message;
   }
 }

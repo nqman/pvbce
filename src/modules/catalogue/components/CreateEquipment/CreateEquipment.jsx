@@ -3,11 +3,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { object, string } from "yup";
-import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Button, Tab } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+
+import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 
 const validationSchema = object({
   name: string().required("Tên thiết bị không được để trống"),
@@ -45,32 +46,33 @@ export default function CreateEquipment() {
     try {
       setIsLoading(true);
       setError(null);
+      console.log(values);
       await addEquipmentAPI(values);
+      // navigate("/finish");
+      alert("Thêm thiết bị" + values.name + "thành công");
     } catch (error) {
       setError(error);
     } finally {
       setIsLoading(false);
     }
   };
-  //Select image
+  //Chọn ảnh
   const [selectedImages, setSelectedImages] = useState([]);
-
   const handleImageChange = (event) => {
     const files = event.target.files;
     const newImages = [...selectedImages];
-
     for (let i = 0; i < files.length; i++) {
       newImages.push(files[i]);
     }
-
     setSelectedImages(newImages);
   };
-
+  //Xóa ảnh
   const handleRemoveImage = (index) => {
     const newImages = [...selectedImages];
     newImages.splice(index, 1);
     setSelectedImages(newImages);
   };
+
   return (
     <div className="container">
       <h1 className="text-center pt-3">Thêm thiết bị</h1>
