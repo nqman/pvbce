@@ -4,9 +4,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { object, string } from "yup";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Button, Tab } from "@mui/material";
+import { Box, Button, Tab, TextField } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { styled } from "@mui/material/styles";
 
 import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 
@@ -72,6 +73,32 @@ export default function CreateEquipment() {
     newImages.splice(index, 1);
     setSelectedImages(newImages);
   };
+
+  //Thông số kỹ thuật
+  const [divs, setDivs] = useState([{ id: 1 }]);
+
+  const createDiv = () => {
+    const newDiv = { id: Date.now() };
+
+    setDivs([...divs, newDiv]);
+  };
+
+  const deleteDiv = (id) => {
+    const updatedDivs = divs.filter((div) => div.id !== id);
+
+    setDivs(updatedDivs);
+  };
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   return (
     <div className="container">
@@ -263,9 +290,9 @@ export default function CreateEquipment() {
                 <Button className="ms-2" variant="outlined" size="small">
                   <label
                     htmlFor="uploadImage"
-                    style={{ fontSize: "13px", textTransform: "capitalize" }}
+                    style={{ fontSize: "13px", textTransform: "initial" }}
                   >
-                    <CloudUploadIcon sx={{ marginRight: "5px" }} /> File upload
+                    <CloudUploadIcon sx={{ marginRight: "5px" }} /> Upload File
                   </label>
                 </Button>
 
@@ -280,7 +307,54 @@ export default function CreateEquipment() {
               </div>
             </TabPanel>
             {/* Thông số kỹ thuật */}
-            <TabPanel value="2"></TabPanel>
+            <TabPanel
+              style={{ marginLeft: "80px" }}
+              // className="ps-5"
+              value="2"
+            >
+              <div>
+                {divs.map((div) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "15px",
+                      height: "30px",
+                    }}
+                    key={div.id}
+                  >
+                    <TextField
+                      label="Thông tin"
+                      id="outlined-size-small"
+                      defaultValue=""
+                      size="small"
+                      sx={{ marginRight: "20px" }}
+                    />
+                    <TextField
+                      label="Nội dung"
+                      id="outlined-size-small"
+                      defaultValue=""
+                      size="small"
+                      sx={{ marginRight: "20px" }}
+                    />
+                    <input type="file" id="myFile" name="filename" />
+
+                    <Button
+                      sx={{ padding: "0" }}
+                      variant=""
+                      color="error"
+                      onClick={() => deleteDiv(div.id)}
+                    >
+                      Xoá
+                    </Button>
+                  </div>
+                ))}
+
+                <Button variant="contained" onClick={createDiv}>
+                  Thêm
+                </Button>
+              </div>
+            </TabPanel>
             {/* Bảo dưỡng sữa chửa */}
             <TabPanel value="3">
               <Button
