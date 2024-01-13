@@ -3,8 +3,6 @@ import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import data from "../../EquipmentList/equipmentData.json";
-import { useParams } from "react-router-dom";
 
 const GeneralInfor = () => {
   const carouselSettings = {
@@ -16,20 +14,12 @@ const GeneralInfor = () => {
     // autoplay: true,
     // autoplaySpeed: 3000,
   };
-  const params = useParams();
 
-  const nameEquipment = data.find((item) => {
-    return item.code === params;
-  });
-
-  console.log(nameEquipment);
   return (
     <Grid container maxWidth={"lg"} margin={"auto"} spacing={5}>
       <Typography variant="h5" gutterBottom></Typography>
       <Grid item xs={12} lg={6}>
-        <Typography variant="h5" gutterBottom>
-          {data.code}
-        </Typography>
+        <Typography variant="h5" gutterBottom></Typography>
         <Slider {...carouselSettings}>
           <div>
             <img src="https://placekitten.com/600/400" alt="Product 1" />

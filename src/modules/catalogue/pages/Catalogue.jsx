@@ -1,10 +1,9 @@
 import React from "react";
-import HistoryEquipment from "../components/EquipmentItem/HistoryEquipment/HistoryEquipment";
-import TechnicalSheet from "../components/EquipmentItem/TechnicalSheet/TechnicalSheet";
-import Maintenance from "../components/EquipmentItem/Maintenance/Maintenance";
+import HistoryEquipment from "../components/EquipDetails/HistoryEquipment/HistoryEquipment";
+import TechnicalSheet from "../components/EquipDetails/TechnicalSheet/TechnicalSheet";
+import Maintenance from "../components/EquipDetails/Maintenance/Maintenance";
 import { Container } from "@mui/material";
-import EquipmentList from "../components/EquipmentList/EquipmentList";
-import data from "../components/EquipmentList/equipmentData.json";
+import EquipManagement from "../components/EquipManagement/EquipManagement";
 
 export default function Catalogue() {
   return (
@@ -14,7 +13,7 @@ export default function Catalogue() {
         <TechnicalSheet />
         <HistoryEquipment />
         <Maintenance /> */}
-        <EquipmentList list={data} />
+        <EquipManagement />
       </Container>
     </>
   );

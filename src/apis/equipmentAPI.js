@@ -1,7 +1,7 @@
 import baseAPI from "./baseAPI";
 
 //Lấy danh sách các thiết bị
-export async function getListEquipmentsAPI() {
+export async function listEquipmentsAPI() {
   try {
     const resp = await baseAPI.get("products");
     const data = resp.data;
