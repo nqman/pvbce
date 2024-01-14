@@ -4,17 +4,21 @@ import { useNavigate } from "react-router-dom";
 import EquipList from "./EquipList";
 import CreateEquipment from "../CreateEquipment/CreateEquipment";
 import toast, { Toaster } from "react-hot-toast";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 // API
 
 import axios from "axios";
+import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
+
 export default function EquipManagement() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleAdd = () => {
-    // navigate("/create");
+    navigate("/catalogue/create");
   };
-  //
+
   const [equips, setEquips] = useState([]);
   const [selectedEquip, setSelectedEquip] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,40 +45,41 @@ export default function EquipManagement() {
   // Thêm thiết bị
   const handleAddEquip = async (equip) => {
     try {
-      const response = await axios.post(listEquipmentsAPI, equip);
+      const response = await addEquipmentAPI(equip);
       setEquips([...equips, response.data]);
-      toast.success("Equip added successfully");
+      toast.success("Thêm thiết bị thành công");
     } catch (error) {
-      toast.error("Error creating Equip");
+      console.log(error);
+      toast.error("Thêm thiết bị thất bị");
     }
   };
   // Xóa thiết bị
-  const handleDeteleEquip = async (id) => {
+  const handleDeteleEquip = async (divideCode) => {
     try {
-      const response = await axios.delete(`${listEquipmentsAPI}/${id}`);
-      toast.success("Equip Deleted Successfully");
+      const response = await axios.delete(`${listEquipmentsAPI}/${divideCode}`);
+      toast.success("Xóa thiết bị thành công");
       fetchEquips();
     } catch (error) {
-      toast.error("Something Went Wrong");
+      toast.error("Xóa thiết bị thất bại");
     }
   };
 
-  const handleSelectEquip = async (id) => {
+  const handleSelectEquip = async (divideCode) => {
     try {
-      const { data } = await axios.get(`${listEquipmentsAPI}/${id}`);
+      const { data } = await axios.get(`${listEquipmentsAPI}/${divideCode}`);
       setSelectedEquip(data);
     } catch (error) {
       toast.error("Something went wrong");
     }
   };
   // Cập nhật thiết bị
-  const handleUpdateEquip = async (id, equip) => {
+  const handleUpdateEquip = async (divideCode, equip) => {
     try {
-      await axios.put(`${listEquipmentsAPI}/${id}`, equip);
+      await axios.put(`${listEquipmentsAPI}/${divideCode}`, equip);
       fetchEquips();
-      toast.success("Equip updated successfully");
+      toast.success("Cập nhật thiết bị thành công");
     } catch (error) {
-      toast.error("Error updating Equip");
+      toast.error("Cập nhật thiết bị thất bại");
     }
   };
   // Tìm kiếm
@@ -88,12 +93,18 @@ export default function EquipManagement() {
     }, 300);
   };
 
+  //Modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    alert("1243");
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
+
   return (
     <div style={{ position: "relative" }}>
       <Toaster position="top-right" />
-
       {/* Tìm kiếm thiết bị */}
-
       <div className="d-flex justify-content-center m-3">
         <div className="input-group  w-50 ">
           <input
@@ -108,22 +119,61 @@ export default function EquipManagement() {
         </div>
       </div>
       {/* BTN THÊM THIẾT BỊ */}
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "10px",
+        }}
+      >
         <button onClick={() => handleAdd()} className="btn btn-primary">
           Thêm thiết bị
         </button>
+        {/* <Button variant="primary" onClick={handleShow}>
+          Thêm thiết bị
+        </Button> */}
       </div>
+
       {/* Danh sách thiết bị*/}
       <EquipList
         rows={equips}
         onDelete={handleDeteleEquip}
         onEdit={handleSelectEquip}
       />
-      <CreateEquipment
-        equip={selectedEquip}
-        onAddEquip={handleAddEquip}
-        onUpdateEquip={handleUpdateEquip}
-      />
+      <div style={{ display: "none" }}>
+        <CreateEquipment
+          equip={selectedEquip}
+          onAddEquip={handleAddEquip}
+          onUpdateEquip={handleUpdateEquip}
+        />
+      </div>
+
+      {/* <>
+        <Modal size="lg" show={show} onHide={handleClose}>
+          <Modal.Header style={{ padding: "5px 20px" }} closeButton>
+            <Modal.Title>Thêm thiết bị</Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ padding: "0" }}>
+            <CreateEquipment
+              equip={selectedEquip}
+              onAddEquip={handleAddEquip}
+              onUpdateEquip={handleUpdateEquip}
+            />
+          </Modal.Body>
+          <Modal.Footer style={{ padding: "5px 20px" }}>
+            <Button variant="secondary" onClick={handleClose}>
+              Đóng
+            </Button>
+            <Button
+              style={{ paddingLeft: "30px", paddingRight: "30px" }}
+              variant="primary"
+              onClick={handleClose}
+            >
+              Lưu
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </> */}
     </div>
   );
 }

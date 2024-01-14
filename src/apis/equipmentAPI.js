@@ -13,18 +13,9 @@ export async function listEquipmentsAPI() {
 }
 
 //Thêm thiết bị
-// export async function addEquipmentAPI(informations) {
-//   try {
-//     const resp = await baseAPI.post("products/save", informations);
-//     console.log(resp);
-//     return resp.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-export async function addEquipmentAPI(informations) {
+export async function addEquipmentAPI(equipments) {
   try {
-    const resp = await baseAPI.post("/products/save", informations);
+    const resp = await baseAPI.post("/products/save", equipments);
     return resp;
   } catch (error) {
     if (error.response) {
@@ -33,3 +24,25 @@ export async function addEquipmentAPI(informations) {
     throw error.message;
   }
 }
+
+export const updateEquipmentAPI = async (equipments) => {
+  try {
+    const resp = await baseAPI.post("/products/save", equipments);
+    return resp;
+  } catch (error) {
+    throw error.response;
+  }
+};
+
+// export async function deleteEquipmentAPI(equipments) {
+//   try {
+//     const resp = await baseAPI.delete("products", {
+//       params: {
+//         TaiKhoan: equipments,
+//       },
+//     });
+//     return resp.data;
+//   } catch (error) {
+//     throw error.response.data;
+//   }
+// }
