@@ -3,6 +3,10 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Button, Tab, TextField } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import toast, { Toaster } from "react-hot-toast";
+
+// API
+import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 
 const emptyValue = {
   name: "",
@@ -13,13 +17,14 @@ const emptyValue = {
   productImages: "",
   productDetails: "",
 };
-export default function CreateEquipment({ equip, onUpdateEquip, onAddEquip }) {
+export default function CreateEquipment() {
   const [value, setValue] = useState(emptyValue);
+
   const [item, setItem] = useState("1");
   const handleChange = (evt, newValue) => {
     setItem(newValue);
   };
-
+  const [equips, setEquips] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -31,7 +36,12 @@ export default function CreateEquipment({ equip, onUpdateEquip, onAddEquip }) {
     for (let i = 0; i < files.length; i++) {
       newImages.push(files[i]);
     }
+    const imageNames = newImages.map((imageName) => {
+      return imageName.name;
+    });
+    // console.log(imageNames);
     setSelectedImages(newImages);
+    setValue({ ...value, productImages: imageNames });
   };
   //Xóa ảnh
   const handleRemoveImage = (index) => {
@@ -88,31 +98,39 @@ export default function CreateEquipment({ equip, onUpdateEquip, onAddEquip }) {
   };
 
   // Thêm thiết bị
-  useEffect(() => {
-    if (!equip) return;
-
-    setValue(equip);
-  }, [equip]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(value);
+    try {
+      const response = await addEquipmentAPI(value);
+      // setEquips([...value, response.data]);
+      console.log(response);
+      toast.success("Thêm thiết bị thành công");
+    } catch (error) {
+      console.log(error);
+      toast.error("Thêm thiết bị thất bị");
+    }
+  };
 
   const handleChangeInput = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    // debugger;
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   // debugger;
+  //   e.preventDefault();
 
-    if (value.id) {
-      // Cập nhật
-      const { id, ...equip } = value;
-      onUpdateEquip(id, equip);
-    } else {
-      // Thêm mới
-      onAddEquip(value);
-    }
+  //   if (value.id) {
+  //     // Cập nhật
+  //     const { id, ...equip } = value;
+  //     onUpdateEquip(id, equip);
+  //   } else {
+  //     // Thêm mới
+  //     onAddEquip(value);
+  //   }
 
-    setValue(emptyValue);
-  };
+  //   setValue(emptyValue);
+  // };
 
   return (
     <div
@@ -121,9 +139,11 @@ export default function CreateEquipment({ equip, onUpdateEquip, onAddEquip }) {
         marginTop: "30px",
         boxShadow: " rgba(0, 0, 0, 0.16) 0px 1px 4px",
         borderRadius: "10px",
-        height: "90vh",
+        height: "90%",
       }}
     >
+      <Toaster position="top-right" />
+
       <h1 className="text-center pt-3">Thêm thiết bị</h1>
 
       <form noValidate onSubmit={handleSubmit}>
@@ -318,6 +338,7 @@ export default function CreateEquipment({ equip, onUpdateEquip, onAddEquip }) {
                   className="ps-5 d-none"
                   id="uploadImage"
                   type="file"
+                  accept="image/*"
                   name="myImages"
                   onChange={handleImageChange}
                   multiple // Cho phép chọn nhiều tệp
@@ -325,7 +346,7 @@ export default function CreateEquipment({ equip, onUpdateEquip, onAddEquip }) {
               </div>
             </TabPanel>
             {/* Thông số kỹ thuật */}
-            {/* <TabPanel
+            <TabPanel
               style={{ marginLeft: "80px" }}
               // className="ps-5"
               value="2"
@@ -391,19 +412,36 @@ export default function CreateEquipment({ equip, onUpdateEquip, onAddEquip }) {
                   Thêm
                 </Button>
               </div>
-            </TabPanel> */}
+            </TabPanel>
             {/* Bảo dưỡng sửa chữa */}
             <TabPanel value="3">
-              <Button
-                variant="contained"
-                color="success"
-                disabled={isLoading}
-                type="submit"
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "50px",
+                  right: "130px",
+                }}
               >
-                Lưu
-              </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  disabled={isLoading}
+                  type="submit"
+                >
+                  Lưu
+                </Button>
+              </div>
             </TabPanel>
-            <TabPanel value="4"></TabPanel>
+            <TabPanel value="4">
+              <div style={{ textAlign: "center", paddingTop: "50px" }}>
+                <img
+                  style={{ width: "200px", height: "200px" }}
+                  src="https://images.unsplash.com/photo-1503427073713-8e991db6befe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHNsYXNofGVufDB8fDB8fHww"
+                  alt=""
+                />
+                <h3 style={{ marginTop: "20px" }}>DH507-NIKON</h3>
+              </div>
+            </TabPanel>
           </TabContext>
         </Box>
       </form>

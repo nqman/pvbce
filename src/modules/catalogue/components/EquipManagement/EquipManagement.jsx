@@ -43,16 +43,16 @@ export default function EquipManagement() {
     } catch (error) {}
   };
   // Thêm thiết bị
-  const handleAddEquip = async (equip) => {
-    try {
-      const response = await addEquipmentAPI(equip);
-      setEquips([...equips, response.data]);
-      toast.success("Thêm thiết bị thành công");
-    } catch (error) {
-      console.log(error);
-      toast.error("Thêm thiết bị thất bị");
-    }
-  };
+  // const handleAddEquip = async (equip) => {
+  //   try {
+  //     const response = await addEquipmentAPI(equip);
+  //     setEquips([...equips, response.data]);
+  //     toast.success("Thêm thiết bị thành công");
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Thêm thiết bị thất bị");
+  //   }
+  // };
   // Xóa thiết bị
   const handleDeteleEquip = async (divideCode) => {
     try {
@@ -96,7 +96,7 @@ export default function EquipManagement() {
   //Modal
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    alert("1243");
+    // alert("1243");
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -140,16 +140,9 @@ export default function EquipManagement() {
         onDelete={handleDeteleEquip}
         onEdit={handleSelectEquip}
       />
-      <div style={{ display: "none" }}>
-        <CreateEquipment
-          equip={selectedEquip}
-          onAddEquip={handleAddEquip}
-          onUpdateEquip={handleUpdateEquip}
-        />
-      </div>
 
       {/* <>
-        <Modal size="lg" show={show} onHide={handleClose}>
+        <Modal size="xl" show={show} onHide={handleClose}>
           <Modal.Header style={{ padding: "5px 20px" }} closeButton>
             <Modal.Title>Thêm thiết bị</Modal.Title>
           </Modal.Header>

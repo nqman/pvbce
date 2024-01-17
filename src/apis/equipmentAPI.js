@@ -18,6 +18,7 @@ export async function addEquipmentAPI(equipments) {
     const resp = await baseAPI.post("/products/save", equipments);
     return resp;
   } catch (error) {
+    console.log(error);
     if (error.response) {
       throw error.response;
     }

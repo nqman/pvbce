@@ -21,7 +21,7 @@ export default function EquipList({ rows, onEdit, onDelete }) {
     { id: "constructionProject", name: "THI CÔNG DỰ ÁN" },
     { id: "location", name: "NẰM Ở KHO BÃI" },
     { id: "note", name: "GHI CHÚ" },
-    // { id: "edit", name: "SỬA" },
+    { id: "edit", name: "TÙY CHỌN" },
     // { id: "delete", name: "XÓA" },
   ];
 
@@ -81,39 +81,41 @@ export default function EquipList({ rows, onEdit, onDelete }) {
                         <TableCell>{row.constructionProject}</TableCell>
                         <TableCell>{row.location}</TableCell>
                         <TableCell>{row.note}</TableCell>
-                        <div style={{ display: "flex" }}>
-                          <button
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              width: "25px",
-                              height: "25px",
-                              color: "black",
-                            }}
-                            className="btn btn-outline-warning me-2"
-                            onClick={() => onEdit(row.divideCode)}
-                          >
-                            <EditIcon
-                              sx={{ fontSize: "15px", margin: "auto" }}
-                            />
-                          </button>
-                          <button
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              width: "25px",
-                              height: "25px",
-                            }}
-                            className="btn btn-outline-danger"
-                            onClick={() => {
-                              onDelete(row.divideCode);
-                            }}
-                          >
-                            <ClearIcon />
-                          </button>
-                        </div>
+                        <TableCell>
+                          <div style={{ display: "flex" }}>
+                            <button
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: "25px",
+                                height: "25px",
+                                color: "black",
+                              }}
+                              className="btn btn-outline-warning me-2"
+                              onClick={() => onEdit(row.divideCode)}
+                            >
+                              <EditIcon
+                                sx={{ fontSize: "15px", margin: "auto" }}
+                              />
+                            </button>
+                            <button
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: "25px",
+                                height: "25px",
+                              }}
+                              className="btn btn-outline-danger"
+                              onClick={() => {
+                                onDelete(row.divideCode);
+                              }}
+                            >
+                              <ClearIcon />
+                            </button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
