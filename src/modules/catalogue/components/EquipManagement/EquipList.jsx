@@ -93,7 +93,7 @@ export default function EquipList({ rows, onEdit, onDelete }) {
                                 color: "black",
                               }}
                               className="btn btn-outline-warning me-2"
-                              onClick={() => onEdit(row.divideCode)}
+                              onClick={() => onEdit(row.id)}
                             >
                               <EditIcon
                                 sx={{ fontSize: "15px", margin: "auto" }}
@@ -109,7 +109,7 @@ export default function EquipList({ rows, onEdit, onDelete }) {
                               }}
                               className="btn btn-outline-danger"
                               onClick={() => {
-                                onDelete(row.divideCode);
+                                onDelete(row.id);
                               }}
                             >
                               <ClearIcon />

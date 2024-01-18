@@ -10,8 +10,12 @@ import Modal from "react-bootstrap/Modal";
 // API
 
 import axios from "axios";
-import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
-const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
+import {
+  listEquipmentsAPI,
+  addEquipmentAPI,
+  deleteEquipmentAPI,
+} from "../../../../apis/equipmentAPI";
+// const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
 
 export default function EquipManagement() {
   const navigate = useNavigate();
@@ -32,31 +36,31 @@ export default function EquipManagement() {
 
   // const listEquipmentPromise = getListEquipmentsAPI();
 
+  // const fetchEquips = async () => {
+  //   try {
+  //     const { data } = await axios.get(listEquipmentsAPI, {
+  //       params: {
+  //         name: searchTerm || undefined,
+  //       },
+  //     });
+  //     setEquips(data);
+  //   } catch (error) {}
+  // };
   const fetchEquips = async () => {
     try {
-      const { data } = await axios.get(listEquipmentsAPI, {
-        params: {
-          name: searchTerm || undefined,
-        },
-      });
+      const data = await listEquipmentsAPI();
+      toast.success("Lấy danh sách thiết bị thành công");
       setEquips(data);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching equipments:", error);
+      toast.error("Lấy danh sách thiết bị thất bại");
+    }
   };
-  // Thêm thiết bị
-  // const handleAddEquip = async (equip) => {
-  //   try {
-  //     const response = await addEquipmentAPI(equip);
-  //     setEquips([...equips, response.data]);
-  //     toast.success("Thêm thiết bị thành công");
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Thêm thiết bị thất bị");
-  //   }
-  // };
+
   // Xóa thiết bị
-  const handleDeteleEquip = async (divideCode) => {
+  const handleDeteleEquip = async (id) => {
     try {
-      const response = await axios.delete(`${listEquipmentsAPI}/${divideCode}`);
+      await deleteEquipmentAPI(id);
       toast.success("Xóa thiết bị thành công");
       fetchEquips();
     } catch (error) {
@@ -64,24 +68,24 @@ export default function EquipManagement() {
     }
   };
 
-  const handleSelectEquip = async (divideCode) => {
+  const handleSelectEquip = async (id) => {
     try {
-      const { data } = await axios.get(`${listEquipmentsAPI}/${divideCode}`);
+      const { data } = await axios.get(`${listEquipmentsAPI}/${id}`);
       setSelectedEquip(data);
     } catch (error) {
       toast.error("Something went wrong");
     }
   };
   // Cập nhật thiết bị
-  const handleUpdateEquip = async (divideCode, equip) => {
-    try {
-      await axios.put(`${listEquipmentsAPI}/${divideCode}`, equip);
-      fetchEquips();
-      toast.success("Cập nhật thiết bị thành công");
-    } catch (error) {
-      toast.error("Cập nhật thiết bị thất bại");
-    }
-  };
+  // const handleUpdateEquip = async (divideCode, equip) => {
+  //   try {
+  //     await axios.put(`${listEquipmentsAPI}/${divideCode}`, equip);
+  //     fetchEquips();
+  //     toast.success("Cập nhật thiết bị thành công");
+  //   } catch (error) {
+  //     toast.error("Cập nhật thiết bị thất bại");
+  //   }
+  // };
   // Tìm kiếm
   const handleSearch = (evt) => {
     setSearchTerm(evt.target.value);
@@ -94,12 +98,11 @@ export default function EquipManagement() {
   };
 
   //Modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    // alert("1243");
-    setShow(false);
-  };
-  const handleShow = () => setShow(true);
+  // const [show, setShow] = useState(false);
+  // const handleClose = () => {
+  //   setShow(false);
+  // };
+  // const handleShow = () => setShow(true);
 
   return (
     <div style={{ position: "relative" }}>

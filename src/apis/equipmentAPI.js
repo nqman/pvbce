@@ -28,22 +28,18 @@ export async function addEquipmentAPI(equipments) {
 
 export const updateEquipmentAPI = async (equipments) => {
   try {
-    const resp = await baseAPI.post("/products/save", equipments);
+    const resp = await baseAPI.put("/products/save", equipments);
     return resp;
   } catch (error) {
     throw error.response;
   }
 };
 
-// export async function deleteEquipmentAPI(equipments) {
-//   try {
-//     const resp = await baseAPI.delete("products", {
-//       params: {
-//         TaiKhoan: equipments,
-//       },
-//     });
-//     return resp.data;
-//   } catch (error) {
-//     throw error.response.data;
-//   }
-// }
+export async function deleteEquipmentAPI(id) {
+  try {
+    const resp = await baseAPI.get(`products/${id}`);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}

@@ -40,13 +40,13 @@ export default function About() {
             </p>
           </div>
           <ReactPlayer
-            config={{ file: { attributes: { controlsList: "nodownload" } } }}
+            // config={{ file: { attributes: { controlsList: "nodownload" } } }}
             url="https://youtu.be/nLKIUTwDLEY?si=rfsg4fid3X63XKZ4"
             width="550px"
             height="310px"
-            controls={true}
+            // controls={true}
             // muted="true"
-            playing="true"
+            playing={true}
             light="./image/thietbithicong1.png"
           />
         </Grid>
