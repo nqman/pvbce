@@ -24,7 +24,7 @@ export default function CreateEquipment() {
   const [value, setValue] = useState(emptyValue);
 
   const [item, setItem] = useState("1");
-  const handleChange = (evt, newValue) => {
+  const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
   };
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +52,6 @@ export default function CreateEquipment() {
   };
 
   //Thông số kỹ thuật
-
   const [productDetails, setProductDetails] = useState([
     { id: 1, detailName: "", detailValue: "", file: null },
   ]);
@@ -67,7 +66,7 @@ export default function CreateEquipment() {
     };
     setProductDetails([...productDetails, newProductDetail]);
 
-    console.log(productDetails);
+    // console.log(productDetails);
   };
 
   const deleteDiv = (id) => {
@@ -76,7 +75,6 @@ export default function CreateEquipment() {
     );
 
     setProductDetails(updatedProductDetails);
-    console.log(updatedProductDetails);
   };
 
   const handleInputChange = (id, key, value) => {
@@ -85,6 +83,8 @@ export default function CreateEquipment() {
         ? { ...productDetail, [key]: value }
         : productDetail
     );
+    // console.log(updatedProductDetails);
+    setValue({ ...value, productDetails: updatedProductDetails });
     setProductDetails(updatedProductDetails);
   };
 
@@ -92,6 +92,8 @@ export default function CreateEquipment() {
     const updatedProductDetails = productDetails.map((productDetail) =>
       productDetail.id === id ? { ...productDetail, file } : productDetail
     );
+    setValue({ ...value, productDetails: updatedProductDetails });
+
     setProductDetails(updatedProductDetails);
   };
 
@@ -133,7 +135,7 @@ export default function CreateEquipment() {
           <Box>
             <TabContext value={item}>
               <Box display="flex" justifyContent="center" alignItems="center">
-                <TabList onChange={handleChange}>
+                <TabList onChange={handleChangeItem}>
                   <Tab label="THÔNG SỐ CHUNG" value="1" />
                   <Tab label="THÔNG SỐ KỸ THUẬT" value="2" />
                   <Tab label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA" value="3" />
@@ -265,6 +267,7 @@ export default function CreateEquipment() {
                     />
                   </div>
                 </div>
+                {/* upload ảnh */}
                 <div className=" ps-5">
                   <label
                     style={{
@@ -272,7 +275,6 @@ export default function CreateEquipment() {
                       backgroundColor: "transparent",
                     }}
                     className="form-control"
-                    // htmlFor="uploadImage"
                   >
                     Tải lên hình ảnh :
                   </label>
