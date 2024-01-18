@@ -10,16 +10,16 @@ import toast, { Toaster } from "react-hot-toast";
 import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 import { useNavigate } from "react-router-dom";
 
-const emptyValue = {
-  name: "",
-  divideCode: "",
-  constructionProject: "",
-  location: "",
-  note: "",
-  productImages: "",
-  productDetails: "",
-};
 export default function CreateEquipment() {
+  const emptyValue = {
+    name: "",
+    divideCode: "",
+    constructionProject: "",
+    location: "",
+    note: "",
+    productImages: "",
+    productDetails: "",
+  };
   const navigate = useNavigate();
   const [value, setValue] = useState(emptyValue);
 
@@ -55,6 +55,7 @@ export default function CreateEquipment() {
   const [productDetails, setProductDetails] = useState([
     { id: 1, detailName: "", detailValue: "", file: null },
   ]);
+  // console.log(productDetails);
   // setValue({ ...value, productDetails: productDetails });
 
   const [errorDetail, setErrorDetail] = useState("");

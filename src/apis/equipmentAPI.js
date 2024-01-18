@@ -16,11 +16,20 @@ export async function listEquipmentsAPI() {
 export async function addEquipmentAPI(equipments) {
   // console.log(requestData);
   try {
-    const requestData = JSON.stringify(equipments);
-    const resp = await baseAPI.post("/products/save", requestData, {
+    // const requestData = JSON.stringify(equipments);
+    const formData = new FormData();
+    Object.keys(equipments).map((key) => {
+      if (key === "productImages") {
+        // TODO: add file to form data
+      } else if (key === "productDetails") {
+      } else {
+        formData.append(key, equipments[key]);
+      }
+    });
+    const resp = await baseAPI.post("/products/save", formData, {
       headers: {
-        "Content-Type": "application/json",
-        // "Content-Type": "application/x-www-form-urlencoded",
+        // "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
     return resp;
