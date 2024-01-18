@@ -37,7 +37,7 @@ export const updateEquipmentAPI = async (equipments) => {
 
 export async function deleteEquipmentAPI(id) {
   try {
-    const resp = await baseAPI.get(`products/${id}`);
+    const resp = await baseAPI.get(`products/delete/${id}`);
     return resp.data;
   } catch (error) {
     throw error.response.data;
