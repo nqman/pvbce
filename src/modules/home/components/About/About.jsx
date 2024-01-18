@@ -41,13 +41,13 @@ export default function About() {
           </div>
           <ReactPlayer
             config={{ file: { attributes: { controlsList: "nodownload" } } }}
-            // url="video/video_pvb.mp4"
-            width="640"
-            height="360"
+            url="https://youtu.be/nLKIUTwDLEY?si=rfsg4fid3X63XKZ4"
+            width="550px"
+            height="310px"
             controls={true}
             // muted="true"
             playing="true"
-            // light="./image/thietbithicong1.png"
+            light="./image/thietbithicong1.png"
           />
         </Grid>
         <Grid
