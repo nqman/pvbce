@@ -19,8 +19,8 @@ export async function addEquipmentAPI(equipments) {
     const requestData = JSON.stringify(equipments);
     const resp = await baseAPI.post("/products/save", requestData, {
       headers: {
-        "Content-Type": "application/json",
-        // "Content-Type": "application/x-www-form-urlencoded",
+        // "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
     return resp;

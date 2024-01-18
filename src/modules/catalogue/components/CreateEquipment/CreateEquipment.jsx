@@ -55,6 +55,8 @@ export default function CreateEquipment() {
   const [productDetails, setProductDetails] = useState([
     { id: 1, detailName: "", detailValue: "", file: null },
   ]);
+  // setValue({ ...value, productDetails: productDetails });
+
   const [errorDetail, setErrorDetail] = useState("");
 
   const createDiv = () => {
@@ -65,15 +67,12 @@ export default function CreateEquipment() {
       file: null,
     };
     setProductDetails([...productDetails, newProductDetail]);
-
-    // console.log(productDetails);
   };
 
   const deleteDiv = (id) => {
     const updatedProductDetails = productDetails.filter(
       (productDetail) => productDetail.id !== id
     );
-
     setProductDetails(updatedProductDetails);
   };
 
@@ -84,7 +83,6 @@ export default function CreateEquipment() {
         : productDetail
     );
     // console.log(updatedProductDetails);
-    setValue({ ...value, productDetails: updatedProductDetails });
     setProductDetails(updatedProductDetails);
   };
 
@@ -92,7 +90,6 @@ export default function CreateEquipment() {
     const updatedProductDetails = productDetails.map((productDetail) =>
       productDetail.id === id ? { ...productDetail, file } : productDetail
     );
-    setValue({ ...value, productDetails: updatedProductDetails });
 
     setProductDetails(updatedProductDetails);
   };
