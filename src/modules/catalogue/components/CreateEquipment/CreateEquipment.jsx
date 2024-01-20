@@ -54,7 +54,7 @@ export default function CreateEquipment() {
 
   //Thông số kỹ thuật
   const [productDetails, setProductDetails] = useState([
-    { id: 1, detailName: "", detailValue: "", file: null },
+    { id: Date.now(), detailName: "", detailValue: "", file: null },
   ]);
   const [errorDetail, setErrorDetail] = useState("");
 
