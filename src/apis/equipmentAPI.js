@@ -14,7 +14,6 @@ export async function listEquipmentsAPI() {
 
 //Thêm thiết bị
 export async function addEquipmentAPI(equipments) {
-  // console.log(requestData);
   try {
     // const requestData = JSON.stringify(equipments);
     const formData = new FormData();
@@ -22,6 +21,20 @@ export async function addEquipmentAPI(equipments) {
       if (key === "productImages") {
         // TODO: add file to form data
       } else if (key === "productDetails") {
+        if (Array.isArray(equipments[key])) {
+          // Modify the structure of each productDetails object to include a file property
+          const productDetailsArray = equipments[key].map((detail) => ({
+            id: detail.id,
+            detailName: detail.detailName,
+            detailValue: detail.detailValue,
+            file: detail.file || null, // Include the file property
+          }));
+
+          formData.append(
+            "productDetails",
+            JSON.stringify(productDetailsArray)
+          );
+        }
       } else {
         formData.append(key, equipments[key]);
       }

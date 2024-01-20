@@ -26,6 +26,7 @@ export default function CreateEquipment() {
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
+    setValue({ ...value, productDetails: productDetails });
   };
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -55,9 +56,6 @@ export default function CreateEquipment() {
   const [productDetails, setProductDetails] = useState([
     { id: 1, detailName: "", detailValue: "", file: null },
   ]);
-  // console.log(productDetails);
-  // setValue({ ...value, productDetails: productDetails });
-
   const [errorDetail, setErrorDetail] = useState("");
 
   const createDiv = () => {
@@ -83,7 +81,6 @@ export default function CreateEquipment() {
         ? { ...productDetail, [key]: value }
         : productDetail
     );
-    // console.log(updatedProductDetails);
     setProductDetails(updatedProductDetails);
   };
 
@@ -414,6 +411,7 @@ export default function CreateEquipment() {
                   </Button>
                 </div>
               </TabPanel>
+              {/* Mã QR */}
               <TabPanel value="4">
                 <div style={{ textAlign: "center", paddingTop: "50px" }}>
                   <img
