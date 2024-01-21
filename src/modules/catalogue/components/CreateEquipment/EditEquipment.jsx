@@ -7,13 +7,26 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import toast, { Toaster } from "react-hot-toast";
 
 // API
-import {
-  addEquipmentAPI,
-  editEquipmentAPI,
-} from "../../../../apis/equipmentAPI";
-import { useNavigate } from "react-router-dom";
 
-export default function CreateEquipment() {
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  editEquipmentAPI,
+  selectEquipmentAPI,
+} from "../../../../apis/equipmentAPI";
+
+export default function EditEquipment() {
+  const params = useParams();
+  console.log(params);
+
+  const [selectedEquip, setSelectedEquip] = useState(null);
+  const getEquip = async (params) => {
+    try {
+      const data = await selectEquipmentAPI(params);
+      setValue(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const emptyValue = {
     name: "",
     divideCode: "",
@@ -100,28 +113,19 @@ export default function CreateEquipment() {
     e.preventDefault();
     console.log(value);
     try {
-      const response = await addEquipmentAPI(value);
+      const response = await editEquipmentAPI(value);
       console.log(response);
-      toast.success("Thêm thiết bị thành công");
+      toast.success("Cập nhật thiết bị thành công");
     } catch (error) {
       console.log(error);
-      toast.error("Thêm thiết bị thất bại");
+      toast.error("Cập nhật thiết bị thất bại");
     }
   };
 
   const handleChangeInput = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
-  // Cập nhật thiết bị
-  // const handleUpdateEquip = async (id) => {
-  //   try {
-  //     await editEquipmentAPI(id);
-  //     // fetchEquips();
-  //     toast.success("Cập nhật thiết bị thành công");
-  //   } catch (error) {
-  //     toast.error("Cập nhật thiết bị thất bại");
-  //   }
-  // };
+
   return (
     <div className="container">
       <Link
@@ -137,7 +141,7 @@ export default function CreateEquipment() {
       </Link>
       <div>
         <Toaster position="top-right" />
-        <h1 className="text-center pt-3">Thêm thiết bị</h1>
+        <h1 className="text-center pt-3">Cập nhật thiết bị</h1>
         <form noValidate onSubmit={handleSubmit}>
           <Box>
             <TabContext value={item}>

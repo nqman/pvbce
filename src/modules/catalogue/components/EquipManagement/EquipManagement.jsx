@@ -14,6 +14,7 @@ import {
   listEquipmentsAPI,
   addEquipmentAPI,
   deleteEquipmentAPI,
+  selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 // const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
 
@@ -70,22 +71,14 @@ export default function EquipManagement() {
 
   const handleSelectEquip = async (id) => {
     try {
-      const { data } = await axios.get(`${listEquipmentsAPI}/${id}`);
+      const data = await selectEquipmentAPI(id);
       setSelectedEquip(data);
+      navigate(`/catalogue/edit/${id}`);
     } catch (error) {
       toast.error("Something went wrong");
     }
   };
-  // Cập nhật thiết bị
-  // const handleUpdateEquip = async (divideCode, equip) => {
-  //   try {
-  //     await axios.put(`${listEquipmentsAPI}/${divideCode}`, equip);
-  //     fetchEquips();
-  //     toast.success("Cập nhật thiết bị thành công");
-  //   } catch (error) {
-  //     toast.error("Cập nhật thiết bị thất bại");
-  //   }
-  // };
+
   // Tìm kiếm
   const handleSearch = (evt) => {
     setSearchTerm(evt.target.value);
@@ -142,6 +135,7 @@ export default function EquipManagement() {
         rows={equips}
         onDelete={handleDeteleEquip}
         onEdit={handleSelectEquip}
+        // selectedEquip={selectedEquip}
       />
 
       {/* <>

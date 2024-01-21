@@ -4,6 +4,7 @@ import MainLayout from "./modules/home/components/MainLayout";
 import Catalogue from "./modules/catalogue/pages/Catalogue";
 import CreateEquipment from "./modules/catalogue/components/CreateEquipment/CreateEquipment";
 import EquipDetails from "./modules/catalogue/components/EquipDetails/EquipDetails";
+import EditEquipment from "./modules/catalogue/components/CreateEquipment/EditEquipment";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/catalogue/:code" element={<EquipDetails />} />
         </Route>
         <Route path="/catalogue/create" element={<CreateEquipment />} />
+        <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
       </Routes>
     </BrowserRouter>
   );

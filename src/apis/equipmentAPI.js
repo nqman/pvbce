@@ -21,23 +21,27 @@ export async function addEquipmentAPI(equipments) {
     Object.keys(equipments).map((key) => {
       if (key === "productImages") {
         // TODO: add file to form data
-        // equipments[key].forEach((image, index) => {
-        //   formData.append(`productImages[${index}]`, image); // Assuming image is a File object
-        // });
-      } else if (key === "productDetails") {
         // if (Array.isArray(equipments[key])) {
-        //   // Modify the structure of each productDetails object to include a file property
-        //   const productDetailsArray = equipments[key].map((detail) => ({
-        //     id: detail.id,
-        //     detailName: detail.detailName,
-        //     detailValue: detail.detailValue,
-        //     file: detail.file || null, // Include the file property
-        //   }));
-        //   formData.append(
-        //     "productDetails",
-        //     JSON.stringify(productDetailsArray)
-        //   );
+        //   equipments[key].forEach((detail, index) => {
+        //     // Append other properties of the object to FormData
+        //     formData.append("productImages", detail);
+
+        //   });
         // }
+        if (Array.isArray(equipments[key])) {
+          equipments[key].forEach((detail) => {
+            // Append other properties of the object to FormData
+            // formData.append("productImages", detail);
+
+            // Handle the file if it exists
+            if (detail.file instanceof File) {
+              // Append the file directly to FormData
+              formData.append("productImages", detail);
+              formData.append("productImageName", detail.name);
+            }
+          });
+        }
+      } else if (key === "productDetails") {
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail, index) => {
             // Append other properties of the object to FormData
@@ -48,9 +52,9 @@ export async function addEquipmentAPI(equipments) {
             // Handle the file if it exists
             if (detail.file instanceof File) {
               // Append the file directly to FormData
-              formData.append("imageIDs", 0);
-              formData.append("imageNames", detail.file.name);
-              formData.append("extraImage", detail.file);
+              formData.append("fileIDs", 0);
+              formData.append("fileNames", detail.file.name);
+              formData.append("detailFiles", detail.file);
             }
           });
         }
@@ -58,13 +62,19 @@ export async function addEquipmentAPI(equipments) {
         formData.append(key, equipments[key]);
       }
     });
-    const resp = await baseAPI.post("/products/save", formData, {
-      headers: {
-        // "Content-Type": "application/json",
-        // "Content-Type": "application/x-www-form-urlencoded",
-        "Content-Type": "multipart/form-data",
-      },
-    });
+
+    formData.forEach((a, k) => console.log("data", k, a));
+    const resp = await axios.post(
+      "http://103.82.38.121:8080/products/save",
+      formData,
+      {
+        headers: {
+          // "Content-Type": "application/json",
+          // "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return resp;
   } catch (error) {
     console.log(error);
@@ -74,10 +84,21 @@ export async function addEquipmentAPI(equipments) {
     throw error.message;
   }
 }
-
-export const updateEquipmentAPI = async (equipments) => {
+export async function selectEquipmentAPI(id) {
   try {
-    const resp = await baseAPI.put("/products/save", equipments);
+    const resp = await baseAPI.get(`products/${id}`);
+    const data = resp.data;
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export const editEquipmentAPI = async (id) => {
+  try {
+    const resp = await baseAPI.put(`products/${id}`);
     return resp;
   } catch (error) {
     throw error.response;
