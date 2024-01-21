@@ -21,26 +21,20 @@ export async function addEquipmentAPI(equipments) {
     Object.keys(equipments).map((key) => {
       if (key === "productImages") {
         // TODO: add file to form data
-        // if (Array.isArray(equipments[key])) {
-        //   equipments[key].forEach((detail, index) => {
-        //     // Append other properties of the object to FormData
-        //     formData.append("productImages", detail);
-
-        //   });
-        // }
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail) => {
-            // Append other properties of the object to FormData
-            // formData.append("productImages", detail);
-
-            // Handle the file if it exists
-            if (detail.file instanceof File) {
-              // Append the file directly to FormData
-              formData.append("productImages", detail);
-              formData.append("productImageName", detail.name);
-            }
+            formData.append("productImages", detail);
+            formData.append("productImageName", detail.name);
           });
         }
+        // if (Array.isArray(equipments[key])) {
+        //   equipments[key].forEach((detail) => {
+        //     if (detail instanceof File) {
+        //       formData.append("productImages", detail);
+        //       formData.append("productImageName", detail.name);
+        //     }
+        //   });
+        // }
       } else if (key === "productDetails") {
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail, index) => {
