@@ -23,13 +23,13 @@ export async function addEquipmentAPI(equipments) {
         // TODO: add file to form data
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail) => {
-            formData.append("productImages", detail);
-            formData.append("productImageName", detail.name);
+            formData.append("imagesOfProduct", detail);
+            // formData.append("productImageName", detail.name);
           });
         }
         // if (Array.isArray(equipments[key])) {
         //   equipments[key].forEach((detail) => {
-        //     if (detail instanceof File) {
+        //     if (detail.file instanceof File) {
         //       formData.append("productImages", detail);
         //       formData.append("productImageName", detail.name);
         //     }
@@ -42,7 +42,6 @@ export async function addEquipmentAPI(equipments) {
             formData.append("detailIDs", 0);
             formData.append("detailNames", detail.detailName);
             formData.append("detailValues", detail.detailValue);
-
             // Handle the file if it exists
             if (detail.file instanceof File) {
               // Append the file directly to FormData
