@@ -97,6 +97,15 @@ export const editEquipmentAPI = async (id) => {
     throw error.response;
   }
 };
+// export const qrAPI = async (id) => {
+//   try {
+//     const resp = await baseAPI.put(`products/${id}`);
+//     const data = resp.nameOfQR;
+//     return data;
+//   } catch (error) {
+//     throw error.response;
+//   }
+// };
 
 export async function deleteEquipmentAPI(id) {
   try {

@@ -14,30 +14,62 @@ import {
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 
-export default function EditEquipment() {
-  const params = useParams();
-  console.log(params);
+const emptyValue = {
+  name: "",
+  divideCode: "",
+  constructionProject: "",
+  location: "",
+  note: "",
+  productImages: "",
+  productDetails: "",
+};
 
-  const [selectedEquip, setSelectedEquip] = useState(null);
-  const getEquip = async (params) => {
-    try {
-      const data = await selectEquipmentAPI(params);
-      setValue(data);
-    } catch (error) {
-      console.log(error);
-    }
+export default function EditEquipment() {
+  const data = {
+    id: 2,
+    name: "mantest",
+    divideCode: "mantest",
+    constructionProject: "mantest",
+    location: "mantest",
+    note: "mantest",
+    productImages: [
+      {
+        id: 3,
+        pathImage:
+          "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983072/vd6kvsweandbea2sqzr5.png",
+        imageOfProduct: null,
+      },
+    ],
+    productDetails: [
+      {
+        id: 5,
+        name: "mantest",
+        value: "download.png",
+        pathFile:
+          "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983071/wnwteqp5pquabyinfjem.png",
+        detailFile: null,
+      },
+    ],
+    createdTime: 1705983069995,
+    updatedTime: 1705983074244,
+    pathOfQR:
+      "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983073/zzc5ghf62levqgynnork.png",
+    imageOfQR: null,
   };
-  const emptyValue = {
-    name: "",
-    divideCode: "",
-    constructionProject: "",
-    location: "",
-    note: "",
-    productImages: "",
-    productDetails: "",
-  };
+  const [value, setValue] = useState(data);
+
+  // const getEquip = async (id) => {
+  //   try {
+  //     const data = await selectEquipmentAPI(id);
+  //     setValue(data);
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // getEquip();
+
   const navigate = useNavigate();
-  const [value, setValue] = useState(emptyValue);
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
@@ -48,7 +80,7 @@ export default function EditEquipment() {
   const [error, setError] = useState(null);
 
   //Chọn ảnh
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState(data.productImages);
   const handleImageChange = (event) => {
     const files = event.target.files;
     const newImages = [...selectedImages];
@@ -69,9 +101,7 @@ export default function EditEquipment() {
   };
 
   //Thông số kỹ thuật
-  const [productDetails, setProductDetails] = useState([
-    { id: Date.now(), detailName: "", detailValue: "", file: null },
-  ]);
+  const [productDetails, setProductDetails] = useState(data.productDetails);
   const [errorDetail, setErrorDetail] = useState("");
 
   const createDiv = () => {
@@ -296,10 +326,17 @@ export default function EditEquipment() {
                         style={{ overflow: "hidden" }}
                         className="me-2"
                       >
+                        {/* {data.productImages.map((image) => {
+                          <img
+                            // alt={`Image ${index + 1}`}
+                            height={"100px"}
+                            src={image.pathImage}
+                          />;
+                        })} */}
                         <img
                           alt={`Image ${index + 1}`}
                           height={"100px"}
-                          src={URL.createObjectURL(image)}
+                          src={image.pathImage}
                         />
                         <div className="text-center mt-1 ">
                           <Button
