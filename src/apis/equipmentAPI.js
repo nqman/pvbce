@@ -23,31 +23,36 @@ export async function addEquipmentAPI(equipments) {
         // TODO: add file to form data
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail) => {
+            if (detail.id > 0) {
+              formData.append("imageID", detail.id);
+            } else {
+              formData.append("imageID", 0);
+            }
             formData.append("imagesOfProduct", detail);
-            // formData.append("productImageName", detail.name);
           });
         }
-        // if (Array.isArray(equipments[key])) {
-        //   equipments[key].forEach((detail) => {
-        //     if (detail.file instanceof File) {
-        //       formData.append("productImages", detail);
-        //       formData.append("productImageName", detail.name);
-        //     }
-        //   });
-        // }
       } else if (key === "productDetails") {
         if (Array.isArray(equipments[key])) {
-          equipments[key].forEach((detail, index) => {
-            // Append other properties of the object to FormData
-            formData.append("detailIDs", 0);
-            formData.append("detailNames", detail.detailName);
-            formData.append("detailValues", detail.detailValue);
-            // Handle the file if it exists
+          equipments[key].forEach((detail) => {
             if (detail.file instanceof File) {
-              // Append the file directly to FormData
-              formData.append("fileIDs", 0);
-              formData.append("fileNames", detail.file.name);
-              formData.append("detailFiles", detail.file);
+              //update
+              if (detail.id > 0) {
+                formData.append("fileID", detail.id);
+              }
+              //new
+              else {
+                formData.append("fileID", 0);
+              }
+              formData.append("fileHeader", detail.file.name);
+              formData.append("detailFile", detail.file);
+            } else {
+              if (detail.id > 0) {
+                formData.append("detailID", detail.id);
+              } else {
+                formData.append("detailID", 0);
+              }
+              formData.append("detailName", detail.detailName);
+              formData.append("detailValue", detail.detailValue);
             }
           });
         }
@@ -80,9 +85,7 @@ export async function addEquipmentAPI(equipments) {
 export async function selectEquipmentAPI(id) {
   try {
     const resp = await baseAPI.get(`products/${id}`);
-    const data = resp.data;
-    // console.log(data);
-    return data;
+    return resp.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -97,15 +100,6 @@ export const editEquipmentAPI = async (id) => {
     throw error.response;
   }
 };
-// export const qrAPI = async (id) => {
-//   try {
-//     const resp = await baseAPI.put(`products/${id}`);
-//     const data = resp.nameOfQR;
-//     return data;
-//   } catch (error) {
-//     throw error.response;
-//   }
-// };
 
 export async function deleteEquipmentAPI(id) {
   try {

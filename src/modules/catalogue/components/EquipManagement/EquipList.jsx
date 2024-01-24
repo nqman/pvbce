@@ -61,18 +61,11 @@ export default function EquipList({ rows, onEdit, onDelete }) {
                   .map((row, index) => {
                     return (
                       <TableRow sx={{ height: "75px" }} key={index}>
-                        {/* {columns &&
-                          columns.map((column) => {
-                            let value = row[column.id];
-                            return <TableCell>{value}</TableCell>;
-                          })} */}
-                        {/* <TableCell>{row.id}</TableCell> */}
                         <TableCell>{row.id}</TableCell>
                         <TableCell>
                           <img
                             style={{ width: "50px", height: "50px" }}
-                            // src={row.qr}
-                            src="https://images.unsplash.com/photo-1503427073713-8e991db6befe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHNsYXNofGVufDB8fDB8fHww"
+                            src={row.pathOfQR}
                             alt={row.name}
                           />
                         </TableCell>

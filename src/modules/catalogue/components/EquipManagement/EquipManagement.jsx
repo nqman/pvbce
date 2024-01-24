@@ -75,7 +75,7 @@ export default function EquipManagement() {
       setSelectedEquip(data);
       navigate(`/catalogue/edit/${id}`);
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error("Đã có lỗi xảy ra");
     }
   };
 
@@ -89,13 +89,6 @@ export default function EquipManagement() {
       setDebounceSearchTerm(evt.target.value);
     }, 300);
   };
-
-  //Modal
-  // const [show, setShow] = useState(false);
-  // const handleClose = () => {
-  //   setShow(false);
-  // };
-  // const handleShow = () => setShow(true);
 
   return (
     <div style={{ position: "relative" }}>
@@ -137,33 +130,6 @@ export default function EquipManagement() {
         onEdit={handleSelectEquip}
         // selectedEquip={selectedEquip}
       />
-
-      {/* <>
-        <Modal size="xl" show={show} onHide={handleClose}>
-          <Modal.Header style={{ padding: "5px 20px" }} closeButton>
-            <Modal.Title>Thêm thiết bị</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ padding: "0" }}>
-            <CreateEquipment
-              equip={selectedEquip}
-              onAddEquip={handleAddEquip}
-              onUpdateEquip={handleUpdateEquip}
-            />
-          </Modal.Body>
-          <Modal.Footer style={{ padding: "5px 20px" }}>
-            <Button variant="secondary" onClick={handleClose}>
-              Đóng
-            </Button>
-            <Button
-              style={{ paddingLeft: "30px", paddingRight: "30px" }}
-              variant="primary"
-              onClick={handleClose}
-            >
-              Lưu
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </> */}
     </div>
   );
 }

@@ -35,16 +35,17 @@ export default function CreateEquipment() {
   const [error, setError] = useState(null);
 
   //Chọn ảnh
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([
+    { id: -Date.now(), pathImage: "" },
+  ]);
   const handleImageChange = (event) => {
     const files = event.target.files;
     const newImages = [...selectedImages];
     for (let i = 0; i < files.length; i++) {
-      newImages.push(files[i]);
+      newImages.id.push(i);
+      newImages.pathImage.push(files[i]);
     }
-    // const imageNames = newImages.map((imageName) => {
-    //   return imageName.name;
-    // });
+
     setSelectedImages(newImages);
     setValue({ ...value, productImages: newImages });
   };
@@ -57,13 +58,13 @@ export default function CreateEquipment() {
 
   //Thông số kỹ thuật
   const [productDetails, setProductDetails] = useState([
-    { id: Date.now(), detailName: "", detailValue: "", file: null },
+    { id: -Date.now(), detailName: "", detailValue: "", file: null },
   ]);
   const [errorDetail, setErrorDetail] = useState("");
 
   const createDiv = () => {
     const newProductDetail = {
-      id: Date.now(),
+      id: -Date.now(),
       detailName: "",
       detailValue: "",
       file: null,
@@ -146,7 +147,7 @@ export default function CreateEquipment() {
                   <Tab label="THÔNG SỐ CHUNG" value="1" />
                   <Tab label="THÔNG SỐ KỸ THUẬT" value="2" />
                   <Tab label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA" value="3" />
-                  <Tab label="QR" value="4" />
+                  {/* <Tab label="QR" value="4" /> */}
                 </TabList>
               </Box>
               {/* Thông số chung */}
@@ -293,24 +294,28 @@ export default function CreateEquipment() {
                         className="me-2"
                       >
                         <img
-                          alt={`Image ${index + 1}`}
+                          alt={image.pathImage}
                           height={"100px"}
-                          src={URL.createObjectURL(image)}
+                          src={image.pathImage || ""}
                         />
                         <div className="text-center mt-1 ">
-                          <Button
-                            sx={{
-                              padding: "0px",
-                              fontSize: "12px",
-                              marginBottom: "10px",
-                            }}
-                            variant=""
-                            size="small"
-                            color="error"
-                            onClick={() => handleRemoveImage(index)}
-                          >
-                            <HighlightOffIcon />
-                          </Button>
+                          {image.pathImage ? (
+                            <Button
+                              sx={{
+                                padding: "0px",
+                                fontSize: "12px",
+                                marginBottom: "10px",
+                              }}
+                              variant=""
+                              size="small"
+                              color="error"
+                              onClick={() => handleRemoveImage(index)}
+                            >
+                              <HighlightOffIcon />
+                            </Button>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     ))}
@@ -424,7 +429,7 @@ export default function CreateEquipment() {
                 </div>
               </TabPanel>
               {/* Mã QR */}
-              <TabPanel value="4">
+              {/* <TabPanel value="4">
                 <div style={{ textAlign: "center", paddingTop: "50px" }}>
                   <img
                     style={{ width: "200px", height: "200px" }}
@@ -433,7 +438,7 @@ export default function CreateEquipment() {
                   />
                   <h3 style={{ marginTop: "20px" }}>DH507-NIKON</h3>
                 </div>
-              </TabPanel>
+              </TabPanel> */}
             </TabContext>
           </Box>
         </form>
