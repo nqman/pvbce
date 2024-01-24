@@ -26,14 +26,10 @@ export default function EquipManagement() {
 
   const [equips, setEquips] = useState([]);
   const [selectedEquip, setSelectedEquip] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debounceSearchTerm, setDebounceSearchTerm] = useState(searchTerm);
-
-  const timer = useRef();
 
   useEffect(() => {
     fetchEquips();
-  }, [debounceSearchTerm]);
+  }, []);
 
   const fetchEquips = async () => {
     try {
@@ -67,22 +63,11 @@ export default function EquipManagement() {
     }
   };
 
-  // Tìm kiếm
-  // const handleSearch = (evt) => {
-  //   setSearchTerm(evt.target.value);
-
-  //   clearTimeout(timer.current);
-
-  //   timer.current = setTimeout(() => {
-  //     setDebounceSearchTerm(evt.target.value);
-  //   }, 300);
-  // };
-
   return (
     <div style={{ position: "relative" }}>
       <Toaster position="top-right" />
       {/* Tìm kiếm thiết bị */}
-      <div className="d-flex justify-content-center m-3">
+      {/* <div className="d-flex justify-content-center m-3">
         <div className="input-group  w-50 ">
           <input
             type="text"
@@ -94,21 +79,19 @@ export default function EquipManagement() {
             // onChange={handleSearch}
           />
         </div>
-      </div>
+      </div> */}
       {/* BTN THÊM THIẾT BỊ */}
       <div
         style={{
           display: "flex",
           justifyContent: "flex-end",
           marginBottom: "10px",
+          marginTop: "20px",
         }}
       >
         <button onClick={() => handleAdd()} className="btn btn-primary">
           Thêm thiết bị
         </button>
-        {/* <Button variant="primary" onClick={handleShow}>
-          Thêm thiết bị
-        </Button> */}
       </div>
 
       {/* Danh sách thiết bị*/}

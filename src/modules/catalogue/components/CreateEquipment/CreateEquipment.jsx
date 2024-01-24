@@ -41,10 +41,7 @@ export default function CreateEquipment() {
   const handleImageChange = (event) => {
     const files = event.target.files;
     const newImages = [...selectedImages];
-    for (let i = 0; i < files.length; i++) {
-      newImages.id?.push(i);
-      newImages.pathImage?.push(files[i]);
-    }
+    for (let i = 0; i < files.length; i++) {}
 
     setSelectedImages(newImages);
     setValue({ ...value, productImages: newImages });
