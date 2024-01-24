@@ -90,6 +90,7 @@ export default function EditEquipment() {
       const data = await selectEquipmentAPI(idEquip);
       setValue(data);
       // console.log(data.productImages);
+      setProductDetails(data.productDetails); // set them gia tri cho productDetail
       setSelectedImages(data.productImages);
       return data;
     } catch (error) {
@@ -137,8 +138,10 @@ export default function EditEquipment() {
   };
 
   //Thông số kỹ thuật
-  const [productDetails, setProductDetails] = useState(value.productDetails);
+  const [productDetails, setProductDetails] = useState([]); // default la mang rong chu khong phai object
   const [errorDetail, setErrorDetail] = useState("");
+
+
 
   const createDiv = () => {
     const newProductDetail = {
@@ -166,7 +169,20 @@ export default function EditEquipment() {
     );
     setProductDetails(updatedProductDetails);
   };
-  const fileExists = value.productDetails.map((file) => file.pathFile);
+
+// check file, neu product va product detail khac null thi moi lay value con khong thi cho default = null
+const fileExists = (value && Array.isArray(value.productDetails)) ? value.productDetails.map((file) => file.pathFile) : null;
+if (Array.isArray(fileExists)) {
+  if (fileExists.length > 0) {
+    console.log('Các đường dẫn file tồn tại:', fileExists);
+  } else {
+    console.log('Không có đường dẫn file tồn tại.');
+  }
+} else {
+  console.log('Giá trị productDetails không hợp lệ hoặc không tồn tại.');
+}
+
+
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) => {
       if (fileExists) {
@@ -200,7 +216,7 @@ export default function EditEquipment() {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
 
-  return (
+  return value ? ( // check value != null truoc khi render
     <div className="container">
       <Link
         sx={{ marginTop: "20px", fontSize: "16px" }}
@@ -373,7 +389,7 @@ export default function EditEquipment() {
                         <img
                           alt={`Image ${index + 1}`}
                           height={"100px"}
-                          src={image.pathImage}
+                          src={image.pathImage || ''}
                         />
                         <div className="text-center mt-1 ">
                           <Button
@@ -429,14 +445,14 @@ export default function EditEquipment() {
                         marginBottom: "15px",
                         height: "30px",
                       }}
-                      key={productDetail.id}
+                      key={productDetail.id || ''}
                     >
                       {/* <label className="me-2">Thông số:</label> */}
                       <TextField
                         // label="Thông số"
                         placeholder="Thông số"
                         id="outlined-size-small"
-                        value={productDetail.detailName}
+                        value={productDetail.name}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
@@ -451,7 +467,7 @@ export default function EditEquipment() {
                       <TextField
                         placeholder="Nội dung"
                         id="outlined-size-small"
-                        value={productDetail.detailValue}
+                        value={productDetail.value}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
@@ -466,7 +482,6 @@ export default function EditEquipment() {
                         type="file"
                         id={`fileInput${productDetail.id}`}
                         name="filename"
-                        value={productDetail.pathFile}
                         onChange={(e) =>
                           handleFileChange(productDetail.id, e.target.files[0])
                         }
@@ -521,5 +536,5 @@ export default function EditEquipment() {
         </form>
       </div>
     </div>
-  );
+  ) : null;
 }
