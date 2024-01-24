@@ -35,18 +35,6 @@ export default function EquipManagement() {
     fetchEquips();
   }, [debounceSearchTerm]);
 
-  // const listEquipmentPromise = getListEquipmentsAPI();
-
-  // const fetchEquips = async () => {
-  //   try {
-  //     const { data } = await axios.get(listEquipmentsAPI, {
-  //       params: {
-  //         name: searchTerm || undefined,
-  //       },
-  //     });
-  //     setEquips(data);
-  //   } catch (error) {}
-  // };
   const fetchEquips = async () => {
     try {
       const data = await listEquipmentsAPI();
@@ -80,15 +68,15 @@ export default function EquipManagement() {
   };
 
   // Tìm kiếm
-  const handleSearch = (evt) => {
-    setSearchTerm(evt.target.value);
+  // const handleSearch = (evt) => {
+  //   setSearchTerm(evt.target.value);
 
-    clearTimeout(timer.current);
+  //   clearTimeout(timer.current);
 
-    timer.current = setTimeout(() => {
-      setDebounceSearchTerm(evt.target.value);
-    }, 300);
-  };
+  //   timer.current = setTimeout(() => {
+  //     setDebounceSearchTerm(evt.target.value);
+  //   }, 300);
+  // };
 
   return (
     <div style={{ position: "relative" }}>
@@ -103,7 +91,7 @@ export default function EquipManagement() {
             aria-label="Tìm kiếm thiết bị..."
             aria-describedby="basic-addon2"
             value={searchTerm}
-            onChange={handleSearch}
+            // onChange={handleSearch}
           />
         </div>
       </div>
@@ -128,6 +116,7 @@ export default function EquipManagement() {
         rows={equips}
         onDelete={handleDeteleEquip}
         onEdit={handleSelectEquip}
+        // onRead={() => handleRead()}
         // selectedEquip={selectedEquip}
       />
     </div>

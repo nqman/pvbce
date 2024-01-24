@@ -11,8 +11,11 @@ import React, { useEffect, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useNavigate } from "react-router-dom";
 
-export default function EquipList({ rows, onEdit, onDelete }) {
+export default function EquipList({ rows, onEdit, onDelete, onRead }) {
+  const navigate = useNavigate();
   const columns = [
     { id: "id", name: "STT" },
     { id: "qr", name: "QR" },
@@ -22,7 +25,6 @@ export default function EquipList({ rows, onEdit, onDelete }) {
     { id: "location", name: "NẰM Ở KHO BÃI" },
     { id: "note", name: "GHI CHÚ" },
     { id: "edit", name: "TÙY CHỌN" },
-    // { id: "delete", name: "XÓA" },
   ];
 
   const handlechangepage = (event, newpage) => {
@@ -36,6 +38,11 @@ export default function EquipList({ rows, onEdit, onDelete }) {
   // const [rows, rowchange] = useState([]);
   const [page, pagechange] = useState(0);
   const [rowperpage, rowperpagechange] = useState(5);
+
+  //Xem chi tiết thiết bị
+  const handleRead = (id) => {
+    navigate(`/catalogue/${id}`);
+  };
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -76,6 +83,25 @@ export default function EquipList({ rows, onEdit, onDelete }) {
                         <TableCell>{row.note}</TableCell>
                         <TableCell>
                           <div style={{ display: "flex" }}>
+                            <button
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: "25px",
+                                height: "25px",
+                              }}
+                              className="btn btn-outline-success me-2"
+                              onClick={() => handleRead(row.id)}
+                            >
+                              <VisibilityIcon
+                                sx={{
+                                  fontSize: "17px",
+                                  margin: "auto",
+                                  // paddingBottom: "5px",
+                                }}
+                              />
+                            </button>
                             <button
                               style={{
                                 display: "flex",

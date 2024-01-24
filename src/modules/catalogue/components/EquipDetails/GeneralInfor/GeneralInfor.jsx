@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useParams } from "react-router-dom";
+import { selectEquipmentAPI } from "../../../../../apis/equipmentAPI";
 
 const GeneralInfor = () => {
   const carouselSettings = {
@@ -14,41 +16,62 @@ const GeneralInfor = () => {
     // autoplay: true,
     // autoplaySpeed: 3000,
   };
+  const [product, setProduct] = useState();
 
+  const params = useParams();
+  const idEquip = params.code;
+  console.log(idEquip);
+  const getEquip = async (idEquip) => {
+    try {
+      const data = await selectEquipmentAPI(idEquip);
+      setProduct(data);
+      console.log(data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching equipments:", error);
+    }
+  };
+  useEffect(() => {
+    getEquip(idEquip);
+  }, [idEquip]);
+  // console.log(product);
+  if (!product) {
+    return;
+  }
   return (
-    <Grid container maxWidth={"lg"} margin={"auto"} spacing={5}>
-      <Typography variant="h5" gutterBottom></Typography>
-      <Grid item xs={12} lg={6}>
+    <div>
+      <Grid container maxWidth={"lg"} margin={"auto"} spacing={5}>
         <Typography variant="h5" gutterBottom></Typography>
-        <Slider {...carouselSettings}>
-          <div>
-            <img src="https://placekitten.com/600/400" alt="Product 1" />
-          </div>
-          <div>
-            <img src="https://placekitten.com/600/401" alt="Product 2" />
-          </div>
-          <div>
-            <img src="https://placekitten.com/600/402" alt="Product 3" />
-          </div>
-        </Slider>
+        <Grid item xs={12} lg={6}>
+          <Typography variant="h5" gutterBottom></Typography>
+          <Slider {...carouselSettings}>
+            {product?.productImages.map((image) => {
+              <div>
+                <img src={image.pathImage} alt={image.pathImage} />
+              </div>;
+            })}
+          </Slider>
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <Typography variant="h5" gutterBottom>
+            Thông tin chung:
+          </Typography>
+          <List>
+            <ul>
+              {<li className="mb-2">Tên thiết bị: {product.name}</li>}
+              {<li className="mb-2">Mã thiết bị: {product.divideCode}</li>}
+              {
+                <li className="mb-2">
+                  Thi công dự án: {product.constructionProject}
+                </li>
+              }
+              {<li className="mb-2">Nằm ở kho bãi: {product.location}</li>}
+              {<li className="mb-2">Ghi chú: {product.note}</li>}
+            </ul>
+          </List>
+        </Grid>
       </Grid>
-      <Grid item xs={12} lg={6}>
-        <Typography variant="h5" gutterBottom>
-          Thông tin chung:
-        </Typography>
-        <List>
-          <ul>
-            <li>Dàn trượt – leader: 33m</li>
-            <li>Cáp tời chính: &phi;18 - &phi;20mm/330</li>
-            <li>Cáp tời phụ: &phi;18 - &phi;20mm/330</li>
-            <li>Cáp tời điều khiển (cáp 1): &phi;18mm/120m</li>
-            <li>Cáp cương leader: &phi;16mm/180m</li>
-            <li>Dây cương: &phi;37.5 x 10 đoạn (3+6+3+3+3m)</li>
-            <li>Nhiên liệu: Diesel</li>
-          </ul>
-        </List>
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 

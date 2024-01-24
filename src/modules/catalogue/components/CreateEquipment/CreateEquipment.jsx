@@ -42,8 +42,8 @@ export default function CreateEquipment() {
     const files = event.target.files;
     const newImages = [...selectedImages];
     for (let i = 0; i < files.length; i++) {
-      newImages.id.push(i);
-      newImages.pathImage.push(files[i]);
+      newImages.id?.push(i);
+      newImages.pathImage?.push(files[i]);
     }
 
     setSelectedImages(newImages);
@@ -113,16 +113,7 @@ export default function CreateEquipment() {
   const handleChangeInput = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
-  // Cập nhật thiết bị
-  // const handleUpdateEquip = async (id) => {
-  //   try {
-  //     await editEquipmentAPI(id);
-  //     // fetchEquips();
-  //     toast.success("Cập nhật thiết bị thành công");
-  //   } catch (error) {
-  //     toast.error("Cập nhật thiết bị thất bại");
-  //   }
-  // };
+
   return (
     <div className="container">
       <Link
@@ -342,11 +333,7 @@ export default function CreateEquipment() {
                 </div>
               </TabPanel>
               {/* Thông số kỹ thuật */}
-              <TabPanel
-                style={{ marginLeft: "80px" }}
-                // className="ps-5"
-                value="2"
-              >
+              <TabPanel style={{ marginLeft: "80px" }} value="2">
                 <div>
                   {productDetails.map((productDetail) => (
                     <div
@@ -428,17 +415,6 @@ export default function CreateEquipment() {
                   </Button>
                 </div>
               </TabPanel>
-              {/* Mã QR */}
-              {/* <TabPanel value="4">
-                <div style={{ textAlign: "center", paddingTop: "50px" }}>
-                  <img
-                    style={{ width: "200px", height: "200px" }}
-                    src="https://images.unsplash.com/photo-1503427073713-8e991db6befe?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHNsYXNofGVufDB8fDB8fHww"
-                    alt=""
-                  />
-                  <h3 style={{ marginTop: "20px" }}>DH507-NIKON</h3>
-                </div>
-              </TabPanel> */}
             </TabContext>
           </Box>
         </form>

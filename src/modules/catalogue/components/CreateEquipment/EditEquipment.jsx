@@ -141,8 +141,6 @@ export default function EditEquipment() {
   const [productDetails, setProductDetails] = useState([]); // default la mang rong chu khong phai object
   const [errorDetail, setErrorDetail] = useState("");
 
-
-
   const createDiv = () => {
     const newProductDetail = {
       id: -Date.now(),
@@ -170,18 +168,20 @@ export default function EditEquipment() {
     setProductDetails(updatedProductDetails);
   };
 
-// check file, neu product va product detail khac null thi moi lay value con khong thi cho default = null
-const fileExists = (value && Array.isArray(value.productDetails)) ? value.productDetails.map((file) => file.pathFile) : null;
-if (Array.isArray(fileExists)) {
-  if (fileExists.length > 0) {
-    console.log('Các đường dẫn file tồn tại:', fileExists);
+  // check file, neu product va product detail khac null thi moi lay value con khong thi cho default = null
+  const fileExists =
+    value && Array.isArray(value.productDetails)
+      ? value.productDetails.map((file) => file.pathFile)
+      : null;
+  if (Array.isArray(fileExists)) {
+    if (fileExists.length > 0) {
+      console.log("Các đường dẫn file tồn tại:", fileExists);
+    } else {
+      console.log("Không có đường dẫn file tồn tại.");
+    }
   } else {
-    console.log('Không có đường dẫn file tồn tại.');
+    console.log("Giá trị productDetails không hợp lệ hoặc không tồn tại.");
   }
-} else {
-  console.log('Giá trị productDetails không hợp lệ hoặc không tồn tại.');
-}
-
 
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) => {
@@ -194,7 +194,6 @@ if (Array.isArray(fileExists)) {
       }
     });
 
-    // Cập nhật trạng thái với mảng sản phẩm đã được cập nhật.
     setProductDetails(updatedProductDetails);
   };
 
@@ -389,7 +388,7 @@ if (Array.isArray(fileExists)) {
                         <img
                           alt={`Image ${index + 1}`}
                           height={"100px"}
-                          src={image.pathImage || ''}
+                          src={image.pathImage || ""}
                         />
                         <div className="text-center mt-1 ">
                           <Button
@@ -445,7 +444,7 @@ if (Array.isArray(fileExists)) {
                         marginBottom: "15px",
                         height: "30px",
                       }}
-                      key={productDetail.id || ''}
+                      key={productDetail.id || ""}
                     >
                       {/* <label className="me-2">Thông số:</label> */}
                       <TextField
