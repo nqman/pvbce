@@ -39,16 +39,18 @@ export default function About() {
               dựng khác nhau.
             </p>
           </div>
-          <ReactPlayer
-            // config={{ file: { attributes: { controlsList: "nodownload" } } }}
-            url="https://youtu.be/nLKIUTwDLEY?si=rfsg4fid3X63XKZ4"
-            width="550px"
-            height="310px"
-            // controls={true}
-            // muted="true"
-            playing={true}
-            light="./image/thietbithicong1.png"
-          />
+          <div className="ps-3">
+            <ReactPlayer
+              // config={{ file: { attributes: { controlsList: "nodownload" } } }}
+              url="https://youtu.be/nLKIUTwDLEY?si=rfsg4fid3X63XKZ4"
+              width="550px"
+              height="310px"
+              // controls={true}
+              // muted="true"
+              playing={true}
+              light="./image/thietbithicong1.png"
+            />
+          </div>
         </Grid>
         <Grid
           container

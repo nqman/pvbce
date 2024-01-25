@@ -26,6 +26,7 @@ export default function EquipManagement() {
 
   const [equips, setEquips] = useState([]);
   const [selectedEquip, setSelectedEquip] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     fetchEquips();

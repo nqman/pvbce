@@ -42,7 +42,8 @@ export async function addEquipmentAPI(equipments) {
             if (detail.id > 0) {
               if (detail.pathFile !== null) {
                 formData.append("fileIDUpdate", detail.id);
-                formData.append("fileHeader", detail.name);
+                formData.append("fileHeaderUpdate", detail.name);
+                formData.append("fileNameUpdate", detail.file.name);
                 formData.append("pathFile", detail.pathFile);
               } else {
                 formData.append("detailID", detail.id);
@@ -56,6 +57,7 @@ export async function addEquipmentAPI(equipments) {
                 console.log(detail.file);
                 formData.append("fileIDNew", 0);
                 formData.append("fileHeader", detail.name);
+                // formData.append("fileNameNew", detail.file.name);
                 formData.append("detailFile", detail.file);
               } else {
                 formData.append("detailID", 0);

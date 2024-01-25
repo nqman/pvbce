@@ -7,17 +7,18 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import { useNavigate } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
-import { Signin } from "./styleHeader";
-import { Link, useNavigate } from "react-router-dom";
 
 const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-function ResponsiveAppBar() {
+// const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Account", "Logout"];
+
+function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -38,6 +39,9 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   const handleChangeNavBar = (page) => {
     switch (page) {
+      case "GIỚI THIỆU":
+        navigate("/");
+        break;
       case "CATALOGUE":
         navigate("/catalogue");
         break;
@@ -118,43 +122,65 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem
+                  key={page}
+                  onClick={
+                    handleCloseNavMenu && (() => handleChangeNavBar(page))
+                  }
+                  sx={{
+                    my: 1,
+                    color: "#00477b",
+                    fontSize: "18px",
+                    display: "block",
+                    margin: "0 5px -10px 5px",
+                    fontWeight: "600",
+                  }}
+                >
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#"
+            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-
+              fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
-          ></Typography>
+          >
+            <img
+              src="https://www.phanvu.vn/Data/Sites/1/media/logo-web4.png"
+              alt="logo"
+              style={{
+                height: "54px",
+                width: "270px",
+                zIndex: "10",
+              }}
+              onClick={() => navigate("./")}
+            />
+          </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                // onClick={handleCloseNavMenu}
-                onClick={() => handleChangeNavBar(page)}
+                onClick={handleCloseNavMenu && (() => handleChangeNavBar(page))}
+                // sx={{ my: 2, color: "white", display: "block" }}
                 sx={{
                   my: 1,
                   color: "#00477b",
                   fontSize: "18px",
                   display: "block",
                   margin: "0 5px -10px 5px",
-
                   fontWeight: "600",
                 }}
               >
@@ -164,16 +190,37 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Signin borderRight="1px solid #9e9e9e">
-              <Tooltip title="Đăng nhập">
+            <Tooltip title="Đăng nhập">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <AccountCircle fontSize="large" />
-              </Tooltip>
-              {/* <SpanHeader>Đăng nhập</SpanHeader> */}
-            </Signin>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Header;
