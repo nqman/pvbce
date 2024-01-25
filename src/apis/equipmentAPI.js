@@ -20,63 +20,28 @@ export async function addEquipmentAPI(equipments) {
     const formData = new FormData();
     Object.keys(equipments).map((key) => {
       if (key === "productImages") {
-        // if (Array.isArray(equipments[key])) {
-        //   equipments[key].forEach((image) => {
-        //     //EDIT
-        //     if (image.id > 0) {
-        //       formData.append("imageID", image.id);
-        //     }
-        //     //NEW
-        //     else {
-        //       formData.append("imageID", 0);
-        //     }
-        //     formData.append("pathImage", image.pathImage);
-        //     formData.append("imageFile", image.imageFile);
-        //   });
-        // }
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((image) => {
+            //EDIT
             if (image.id > 0) {
-              formData.append("imageID", image.id);
+              formData.append("imageIDUpdate", image.id);
               formData.append("pathImage", image.pathImage);
-            } else {
-              formData.append("imageID", 0);
+            }
+            //NEW
+            else {
+              formData.append("imageIDNew", 0);
               formData.append("imageFile", image.imageFile);
             }
           });
         }
       } else if (key === "productDetails") {
-        // if (Array.isArray(equipments[key])) {
-        //   equipments[key].forEach((detail) => {
-        //     if (detail.file instanceof File) {
-        //       //update
-        //       if (detail.id > 0) {
-        //         formData.append("fileID", detail.id);
-        //       }
-        //       //new
-        //       else {
-        //         formData.append("fileID", 0);
-        //       }
-        //       formData.append("fileHeader", detail.detailName);
-        //       formData.append("detailFile", detail.file);
-        //     } else {
-        //       if (detail.id > 0) {
-        //         formData.append("detailID", detail.id);
-        //       } else {
-        //         formData.append("detailID", 0);
-        //       }
-        //       formData.append("detailName", detail.detailName);
-        //       formData.append("detailValue", detail.detailValue);
-        //     }
-        //   });
-        // }
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail) => {
             //EDIT
             // console.log(detail);
             if (detail.id > 0) {
               if (detail.pathFile !== null) {
-                formData.append("fileID", detail.id);
+                formData.append("fileIDUpdate", detail.id);
                 formData.append("fileHeader", detail.name);
                 formData.append("pathFile", detail.pathFile);
               } else {
@@ -89,7 +54,7 @@ export async function addEquipmentAPI(equipments) {
             else {
               if (detail.file instanceof File) {
                 console.log(detail.file);
-                formData.append("fileID", 0);
+                formData.append("fileIDNew", 0);
                 formData.append("fileHeader", detail.name);
                 formData.append("detailFile", detail.file);
               } else {

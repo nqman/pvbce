@@ -172,23 +172,12 @@ export default function EditEquipment() {
 
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) => {
-      // if (oldFiles) {
-      //   return { ...productDetail, file: oldFiles };
-      // } else {
-      //   console.log(productDetail);
-
-      //   return productDetail.id === id
-      //     ? { ...productDetail, file: file }
-      //     : productDetail;
-      // }
       if (productDetail.id === id) {
         return { ...productDetail, file: file };
       }
       return productDetail;
     });
-    if (oldFiles) console.log(updatedProductDetails);
 
-    // setProductDetails(...productDetails, updatedProductDetails);
     setProductDetails(updatedProductDetails);
   };
 

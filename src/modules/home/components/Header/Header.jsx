@@ -36,6 +36,22 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
   const navigate = useNavigate();
+  const handleChangeNavBar = (page) => {
+    switch (page) {
+      case "CATALOGUE":
+        navigate("/catalogue");
+        break;
+      case "BÁO CÁO":
+        navigate("/report");
+        break;
+      case "THƯ VIỆN":
+        navigate("/library");
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <AppBar
@@ -131,11 +147,7 @@ function ResponsiveAppBar() {
               <Button
                 key={page}
                 // onClick={handleCloseNavMenu}
-                onClick={
-                  page === "CATALOGUE"
-                    ? () => navigate("./catalogue")
-                    : () => navigate("./")
-                }
+                onClick={() => handleChangeNavBar(page)}
                 sx={{
                   my: 1,
                   color: "#00477b",
