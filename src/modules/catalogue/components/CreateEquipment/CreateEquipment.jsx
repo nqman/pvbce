@@ -30,21 +30,38 @@ export default function CreateEquipment() {
   const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
     setValue({ ...value, productDetails: productDetails });
+    console.log(productDetails);
+    console.log(value);
   };
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   //Chọn ảnh
   const [selectedImages, setSelectedImages] = useState([
-    { id: -Date.now(), pathImage: "" },
+    // {
+    //   id: 22,
+    //   pathImage:
+    //     "https://res.cloudinary.com/dxvbucvch/image/upload/v1706025837/fz2thkrortcp581x1dan.png",
+    //   imageOfProduct: null,
+    // },
+    // {
+    //   id: 21,
+    //   pathImage:
+    //     "https://res.cloudinary.com/dxvbucvch/image/upload/v1706025840/uwcaxe2cgcpnd41e1xsy.png",
+    //   imageOfProduct: null,
+    // },
   ]);
   const handleImageChange = (event) => {
     const files = event.target.files;
+    console.log(files);
     const newImages = [...selectedImages];
-    for (let i = 0; i < files.length; i++) {}
-
+    console.log(newImages);
+    for (let i = 0; i < files.length; i++) {
+      newImages.push({ id: -Date.now(), imageFile: files[i] });
+    }
     setSelectedImages(newImages);
     setValue({ ...value, productImages: newImages });
+    console.log(newImages);
   };
   //Xóa ảnh
   const handleRemoveImage = (index) => {
@@ -282,12 +299,12 @@ export default function CreateEquipment() {
                         className="me-2"
                       >
                         <img
-                          alt={image.pathImage}
+                          alt={image.imageFile}
                           height={"100px"}
-                          src={image.pathImage || ""}
+                          src={URL.createObjectURL(image.imageFile) || ""}
                         />
                         <div className="text-center mt-1 ">
-                          {image.pathImage ? (
+                          {image.imageFile ? (
                             <Button
                               sx={{
                                 padding: "0px",
@@ -345,7 +362,7 @@ export default function CreateEquipment() {
                       <TextField
                         label="Thông số"
                         id="outlined-size-small"
-                        value={productDetail.detailName}
+                        value={productDetail.detailName || productDetail.file}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>

@@ -20,39 +20,80 @@ export async function addEquipmentAPI(equipments) {
     const formData = new FormData();
     Object.keys(equipments).map((key) => {
       if (key === "productImages") {
-        // TODO: add file to form data
+        // if (Array.isArray(equipments[key])) {
+        //   equipments[key].forEach((image) => {
+        //     //EDIT
+        //     if (image.id > 0) {
+        //       formData.append("imageID", image.id);
+        //     }
+        //     //NEW
+        //     else {
+        //       formData.append("imageID", 0);
+        //     }
+        //     formData.append("pathImage", image.pathImage);
+        //     formData.append("imageFile", image.imageFile);
+        //   });
+        // }
         if (Array.isArray(equipments[key])) {
-          equipments[key].forEach((detail) => {
-            if (detail.id > 0) {
-              formData.append("imageID", detail.id);
+          equipments[key].forEach((image) => {
+            if (image.id > 0) {
+              formData.append("imageID", image.id);
+              formData.append("pathImage", image.pathImage);
             } else {
               formData.append("imageID", 0);
+              formData.append("pathImage", image.imageFile);
             }
-            formData.append("imagesOfProduct", detail);
           });
         }
       } else if (key === "productDetails") {
+        // if (Array.isArray(equipments[key])) {
+        //   equipments[key].forEach((detail) => {
+        //     if (detail.file instanceof File) {
+        //       //update
+        //       if (detail.id > 0) {
+        //         formData.append("fileID", detail.id);
+        //       }
+        //       //new
+        //       else {
+        //         formData.append("fileID", 0);
+        //       }
+        //       formData.append("fileHeader", detail.detailName);
+        //       formData.append("detailFile", detail.file);
+        //     } else {
+        //       if (detail.id > 0) {
+        //         formData.append("detailID", detail.id);
+        //       } else {
+        //         formData.append("detailID", 0);
+        //       }
+        //       formData.append("detailName", detail.detailName);
+        //       formData.append("detailValue", detail.detailValue);
+        //     }
+        //   });
+        // }
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail) => {
-            if (detail.file instanceof File) {
-              //update
-              if (detail.id > 0) {
-                formData.append("fileID", detail.id);
+            //EDIT
+            if (detail.id >= 0) {
+              formData.append("detailID", detail.id);
+              if (detail.pathFile != null) {
+                formData.append("fileHeader", detail.detailName);
+                formData.append("pathFile", detail.pathFile);
+              } else {
+                formData.append("detailName", detail.detailName);
+                formData.append("detailValue", detail.detailValue);
               }
-              //new
-              else {
+            }
+            //NEW
+            else {
+              if (detail.file instanceof File) {
                 formData.append("fileID", 0);
-              }
-              formData.append("fileHeader", detail.file.name);
-              formData.append("detailFile", detail.file);
-            } else {
-              if (detail.id > 0) {
-                formData.append("detailID", detail.id);
+                formData.append("fileHeader", detail.detailName);
+                formData.append("detailFile", detail.file);
               } else {
                 formData.append("detailID", 0);
+                formData.append("detailName", detail.detailName);
+                formData.append("detailValue", detail.detailValue);
               }
-              formData.append("detailName", detail.detailName);
-              formData.append("detailValue", detail.detailValue);
             }
           });
         }

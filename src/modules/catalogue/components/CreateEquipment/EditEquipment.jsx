@@ -10,7 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  editEquipmentAPI,
+  addEquipmentAPI,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 
@@ -116,19 +116,16 @@ export default function EditEquipment() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // if (value.productImages !== []) {
-  // }
-
   const handleImageChange = (event) => {
     const files = event.target.files;
+    console.log(files);
     const newImages = [...selectedImages];
     for (let i = 0; i < files.length; i++) {
-      newImages.id.push(i);
-      newImages.pathImage.push(files[i]);
+      newImages.push({ id: -Date.now(), imageFile: files[i] });
     }
-
     setSelectedImages(newImages);
     setValue({ ...value, productImages: newImages });
+    console.log(newImages);
   };
   //Xóa ảnh
   const handleRemoveImage = (index) => {
@@ -202,7 +199,7 @@ export default function EditEquipment() {
     e.preventDefault();
     console.log(value);
     try {
-      const response = await editEquipmentAPI(value);
+      const response = await addEquipmentAPI(value);
       console.log(response);
       toast.success("Cập nhật thiết bị thành công");
     } catch (error) {
@@ -388,7 +385,10 @@ export default function EditEquipment() {
                         <img
                           alt={`Image ${index + 1}`}
                           height={"100px"}
-                          src={image.pathImage || ""}
+                          src={
+                            image.pathImage ||
+                            URL.createObjectURL(image.imageFile)
+                          }
                         />
                         <div className="text-center mt-1 ">
                           <Button
