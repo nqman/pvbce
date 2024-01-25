@@ -72,15 +72,15 @@ export default function CreateEquipment() {
 
   //Thông số kỹ thuật
   const [productDetails, setProductDetails] = useState([
-    { id: -Date.now(), detailName: "", detailValue: "", file: null },
+    { id: -Date.now(), name: "", value: "", file: null },
   ]);
   const [errorDetail, setErrorDetail] = useState("");
 
   const createDiv = () => {
     const newProductDetail = {
       id: -Date.now(),
-      detailName: "",
-      detailValue: "",
+      name: "",
+      value: "",
       file: null,
     };
     setProductDetails([...productDetails, newProductDetail]);
@@ -118,6 +118,7 @@ export default function CreateEquipment() {
       const response = await addEquipmentAPI(value);
       console.log(response);
       toast.success("Thêm thiết bị thành công");
+      navigate("/catalogue");
     } catch (error) {
       console.log(error);
       toast.error("Thêm thiết bị thất bại");
@@ -360,29 +361,31 @@ export default function CreateEquipment() {
                       key={productDetail.id}
                     >
                       <TextField
-                        label="Thông số"
+                        // label="Thông số"
+                        placeholder="Thông số"
                         id="outlined-size-small"
-                        value={productDetail.detailName || productDetail.file}
+                        value={productDetail.name}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
                           handleInputChange(
                             productDetail.id,
-                            "detailName",
+                            "name",
                             e.target.value
                           )
                         }
                       />
                       <TextField
-                        label="Nội dung"
+                        // label="Nội dung"
+                        placeholder="Nội dung"
                         id="outlined-size-small"
-                        value={productDetail.detailValue}
+                        value={productDetail.value || productDetail.file?.name}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
                           handleInputChange(
                             productDetail.id,
-                            "detailValue",
+                            "value",
                             e.target.value
                           )
                         }

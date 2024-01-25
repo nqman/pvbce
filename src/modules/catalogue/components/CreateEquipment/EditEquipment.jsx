@@ -49,24 +49,24 @@ export default function EditEquipment() {
   //   productDetails: [
   //     {
   //       id: 1,
-  //       detailName: "mantest",
-  //       detailValue: "download.png",
+  //       name: "mantest",
+  //       value: "download.png",
   //       detailFile:
   //         "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983071/wnwteqp5pquabyinfjem.png",
   //       fileName: "tên file322432",
   //     },
   //     {
   //       id: 3,
-  //       detailName: "mantest1231323",
-  //       detailValue: "hehehe.png",
+  //       name: "mantest1231323",
+  //       value: "hehehe.png",
   //       detailFile:
   //         "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983071/wnwteqp5pquabyinfjem.png",
   //       fileName: "tên file",
   //     },
   //     {
   //       id: 5,
-  //       detailName: "mantest1231323",
-  //       detailValue: "hihiha.png",
+  //       name: "mantest1231323",
+  //       value: "hihiha.png",
   //       detailFile:
   //         "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983071/wnwteqp5pquabyinfjem.png",
   //       fileName: "tên file",
@@ -89,9 +89,12 @@ export default function EditEquipment() {
     try {
       const data = await selectEquipmentAPI(idEquip);
       setValue(data);
-      // console.log(data.productImages);
+      console.log(data);
+      console.log(data.productImages);
       setProductDetails(data.productDetails); // set them gia tri cho productDetail
       setSelectedImages(data.productImages);
+      // console.log(selectedImages);
+
       return data;
     } catch (error) {
       console.error("Error fetching equipments:", error);
@@ -104,7 +107,6 @@ export default function EditEquipment() {
   }, [idEquip]); // Add idEquip as a dependency if needed
 
   // Now you can log selectedImages here, and it should reflect the updated state
-  console.log(selectedImages);
 
   const navigate = useNavigate();
 
@@ -141,8 +143,8 @@ export default function EditEquipment() {
   const createDiv = () => {
     const newProductDetail = {
       id: -Date.now(),
-      detailName: "",
-      detailValue: "",
+      name: "",
+      value: "",
       file: null,
       fileName: "",
     };
@@ -170,16 +172,6 @@ export default function EditEquipment() {
     value && Array.isArray(value.productDetails)
       ? value.productDetails.map((file) => file.pathFile)
       : null;
-  if (Array.isArray(fileExists)) {
-    if (fileExists.length > 0) {
-      console.log("Các đường dẫn file tồn tại:", fileExists);
-    } else {
-      console.log("Không có đường dẫn file tồn tại.");
-    }
-  } else {
-    console.log("Giá trị productDetails không hợp lệ hoặc không tồn tại.");
-  }
-
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) => {
       if (fileExists) {
@@ -195,6 +187,7 @@ export default function EditEquipment() {
   };
 
   // cập nhật thiết bị
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(value);
@@ -202,6 +195,7 @@ export default function EditEquipment() {
       const response = await addEquipmentAPI(value);
       console.log(response);
       toast.success("Cập nhật thiết bị thành công");
+      navigate("/catalogue");
     } catch (error) {
       console.log(error);
       toast.error("Cập nhật thiết bị thất bại");
@@ -457,7 +451,7 @@ export default function EditEquipment() {
                         onChange={(e) =>
                           handleInputChange(
                             productDetail.id,
-                            "detailName",
+                            "name",
                             e.target.value
                           )
                         }
@@ -472,7 +466,7 @@ export default function EditEquipment() {
                         onChange={(e) =>
                           handleInputChange(
                             productDetail.id,
-                            "detailValue",
+                            "value",
                             e.target.value
                           )
                         }
