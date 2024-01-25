@@ -89,11 +89,10 @@ export default function EditEquipment() {
     try {
       const data = await selectEquipmentAPI(idEquip);
       setValue(data);
-      console.log(data);
-      console.log(data.productImages);
+      // console.log(data);
+      // console.log(data.productImages);
       setProductDetails(data.productDetails); // set them gia tri cho productDetail
       setSelectedImages(data.productImages);
-      // console.log(selectedImages);
 
       return data;
     } catch (error) {
@@ -105,8 +104,6 @@ export default function EditEquipment() {
     // Call the asynchronous function inside the useEffect
     getEquip(idEquip);
   }, [idEquip]); // Add idEquip as a dependency if needed
-
-  // Now you can log selectedImages here, and it should reflect the updated state
 
   const navigate = useNavigate();
 
@@ -168,21 +165,30 @@ export default function EditEquipment() {
   };
 
   // check file, neu product va product detail khac null thi moi lay value con khong thi cho default = null
-  const fileExists =
+  const oldFiles =
     value && Array.isArray(value.productDetails)
-      ? value.productDetails.map((file) => file.pathFile)
+      ? value.productDetails.filter((file) => file.pathFile !== null)
       : null;
+
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) => {
-      if (fileExists) {
-        return { ...productDetail, file: fileExists };
-      } else {
-        return productDetail.id === id
-          ? { ...productDetail, file }
-          : productDetail;
-      }
-    });
+      // if (oldFiles) {
+      //   return { ...productDetail, file: oldFiles };
+      // } else {
+      //   console.log(productDetail);
 
+      //   return productDetail.id === id
+      //     ? { ...productDetail, file: file }
+      //     : productDetail;
+      // }
+      if (productDetail.id === id) {
+        return { ...productDetail, file: file };
+      }
+      return productDetail;
+    });
+    if (oldFiles) console.log(updatedProductDetails);
+
+    // setProductDetails(...productDetails, updatedProductDetails);
     setProductDetails(updatedProductDetails);
   };
 
@@ -440,9 +446,7 @@ export default function EditEquipment() {
                       }}
                       key={productDetail.id || ""}
                     >
-                      {/* <label className="me-2">Thông số:</label> */}
                       <TextField
-                        // label="Thông số"
                         placeholder="Thông số"
                         id="outlined-size-small"
                         value={productDetail.name}
@@ -456,11 +460,10 @@ export default function EditEquipment() {
                           )
                         }
                       />
-                      {/* <label className="me-2">Nội dung:</label> */}
                       <TextField
                         placeholder="Nội dung"
                         id="outlined-size-small"
-                        value={productDetail.value}
+                        value={productDetail.value || productDetail.file?.name}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>

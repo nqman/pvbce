@@ -13,9 +13,9 @@ export default function Home() {
       {/* <Header /> */}
       <About />
       <Capacity />
-      <Experience />
+      {/* <Experience />
       <License />
-      <Footer />
+      <Footer /> */}
     </>
   );
 }

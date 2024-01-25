@@ -37,20 +37,7 @@ export default function CreateEquipment() {
   const [error, setError] = useState(null);
 
   //Chọn ảnh
-  const [selectedImages, setSelectedImages] = useState([
-    // {
-    //   id: 22,
-    //   pathImage:
-    //     "https://res.cloudinary.com/dxvbucvch/image/upload/v1706025837/fz2thkrortcp581x1dan.png",
-    //   imageOfProduct: null,
-    // },
-    // {
-    //   id: 21,
-    //   pathImage:
-    //     "https://res.cloudinary.com/dxvbucvch/image/upload/v1706025840/uwcaxe2cgcpnd41e1xsy.png",
-    //   imageOfProduct: null,
-    // },
-  ]);
+  const [selectedImages, setSelectedImages] = useState([]);
   const handleImageChange = (event) => {
     const files = event.target.files;
     console.log(files);
