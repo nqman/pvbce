@@ -40,11 +40,24 @@ export async function addEquipmentAPI(equipments) {
             //EDIT
             // console.log(detail);
             if (detail.id > 0) {
-              if (detail.pathFile !== null) {
-                formData.append("fileIDUpdate", detail.id);
-                formData.append("fileHeaderUpdate", detail.name);
-                formData.append("fileNameUpdate", detail.file.name);
-                formData.append("pathFile", detail.pathFile);
+              if (
+                detail.pathFile !== null ||
+                (typeof detail.file !== "undefined" &&
+                  detail.file instanceof File)
+              ) {
+                if (
+                  typeof detail.file !== "undefined" &&
+                  detail.file instanceof File
+                ) {
+                  formData.append("fileUpdate", detail.file);
+                  formData.append("fileIDUpdatePart", detail.id);
+                  formData.append("fileHeaderUpdatePart", detail.name);
+                } else {
+                  formData.append("pathFile", detail.pathFile);
+                  formData.append("fileIDUpdatePath", detail.id);
+                  formData.append("fileHeaderUpdatePath", detail.name);
+                  formData.append("fileNameUpdatePath", detail.value);
+                }
               } else {
                 formData.append("detailID", detail.id);
                 formData.append("detailName", detail.name);
@@ -56,7 +69,7 @@ export async function addEquipmentAPI(equipments) {
               if (detail.file instanceof File) {
                 console.log(detail.file);
                 formData.append("fileIDNew", 0);
-                formData.append("fileHeader", detail.name);
+                formData.append("fileHeaderNew", detail.name);
                 // formData.append("fileNameNew", detail.file.name);
                 formData.append("detailFile", detail.file);
               } else {

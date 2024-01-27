@@ -100,13 +100,12 @@ export default function LibraryManagement() {
                 />
                 {type === "file" ? (
                   <Button
-                    sx={{ marginLeft: "20px" }}
+                    sx={{ marginLeft: "10px" }}
                     component="label"
-                    variant="contained"
-                    startIcon={<CloudUploadIcon />}
+                    // variant="contained"
+                    // startIcon={<CloudUploadIcon />}
                   >
-                    Upload file
-                    <VisuallyHiddenInput type="file" />
+                    <input className="form-control" type="file" id="formFile" />
                   </Button>
                 ) : (
                   <TextField
