@@ -10,7 +10,7 @@ import {
   styled,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ListLibrary from "../components/ListLibrary/ListDocuments";
+import ListLibrary from "../components/ListDocuments/ListDocuments";
 import { useNavigate } from "react-router-dom";
 import ButtonBT from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -21,7 +21,7 @@ import {
 } from "../../../apis/documentAPI";
 import toast from "react-hot-toast";
 
-export default function LibraryManagement() {
+export default function DocumentManagement() {
   //MODAL
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -139,13 +139,17 @@ export default function LibraryManagement() {
                   id="outlined-size-small"
                   value={document.name}
                   name="name"
-                  sx={{ marginLeft: "20px" }}
+                  sx={{ margin: "20px", width: "250px" }}
                   onChange={handleInputChange}
                 />
                 {type === "file" ? (
-                  <Button sx={{ marginLeft: "10px" }} component="label">
+                  <Button component="label">
                     <input
-                      style={{ padding: "16.5px", lineHeight: "23px" }}
+                      style={{
+                        width: "300px",
+                        padding: "16.5px",
+                        lineHeight: "23px",
+                      }}
                       className="form-control"
                       type="file"
                       id="formFile"
@@ -162,7 +166,7 @@ export default function LibraryManagement() {
                     value={document.link}
                     name="link"
                     sx={{
-                      marginLeft: "20px",
+                      width: "300px",
                     }}
                     onChange={handleInputChange}
                   />

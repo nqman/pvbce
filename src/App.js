@@ -6,7 +6,7 @@ import CreateEquipment from "./modules/catalogue/components/CreateEquipment/Crea
 import EquipDetails from "./modules/catalogue/components/EquipDetails/EquipDetails";
 import EditEquipment from "./modules/catalogue/components/CreateEquipment/EditEquipment";
 import Report from "./modules/report/pages/Report";
-import LibraryManagement from "./modules/library/pages/LibraryManagement";
+import DocumentManagement from "./modules/library/pages/DocumentManagement";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           <Route path="/catalogue" element={<Catalogue />}></Route>
           <Route path="/catalogue/:code" element={<EquipDetails />} />
           <Route path="/report" element={<Report />}></Route>
-          <Route path="/library" element={<LibraryManagement />}></Route>
+          <Route path="/library" element={<DocumentManagement />}></Route>
         </Route>
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
