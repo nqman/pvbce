@@ -118,14 +118,14 @@ export async function selectEquipmentAPI(id) {
   }
 }
 
-export const editEquipmentAPI = async (id) => {
-  try {
-    const resp = await baseAPI.put(`products/${id}`);
-    return resp;
-  } catch (error) {
-    throw error.response;
-  }
-};
+// export const editEquipmentAPI = async (id) => {
+//   try {
+//     const resp = await baseAPI.put(`products/${id}`);
+//     return resp;
+//   } catch (error) {
+//     throw error.response;
+//   }
+// };
 
 export async function deleteEquipmentAPI(id) {
   try {

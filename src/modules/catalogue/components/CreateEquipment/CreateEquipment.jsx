@@ -140,7 +140,6 @@ export default function CreateEquipment() {
                   <Tab label="THÔNG SỐ CHUNG" value="1" />
                   <Tab label="THÔNG SỐ KỸ THUẬT" value="2" />
                   <Tab label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA" value="3" />
-                  {/* <Tab label="QR" value="4" /> */}
                 </TabList>
               </Box>
               {/* Thông số chung */}

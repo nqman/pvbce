@@ -9,54 +9,100 @@ import {
   TextField,
   styled,
 } from "@mui/material";
-import React, { useState } from "react";
-import ListLibrary from "../components/ListLibrary/ListLibrary";
+import React, { useEffect, useState } from "react";
+import ListLibrary from "../components/ListLibrary/ListDocuments";
 import { useNavigate } from "react-router-dom";
 import ButtonBT from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import {
+  addDocumentAPI,
+  deleteDocumentAPI,
+  listDocumentsAPI,
+} from "../../../apis/documentAPI";
+import toast from "react-hot-toast";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 export default function LibraryManagement() {
   //MODAL
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
 
   // SELECT
   const [type, setType] = useState("");
 
-  const handleChange = (event) => {
+  const handleChangeType = (event) => {
     setType(event.target.value);
+    setDocument(emptyValue);
   };
+
+  // FORM
+  const emptyValue = {
+    name: "",
+    link: "",
+    file: null,
+  };
+  const [listDocs, setListDocs] = useState([
+    { name: "người lái đò", link: "google.com", file: null },
+    {
+      name: "TCVN 7888:2014 - Cọc bê tông ly tâm ứng suất trước",
+      link: "",
+      file: "FILE.pdf",
+    },
+    { name: "người lái thuyền", link: "youtybe.com", file: null },
+  ]);
+
+  // useEffect(() => fetchDocuments(), []);
+
+  // const fetchDocuments = async () => {
+  //   try {
+  //     const data = await listDocumentsAPI;
+  //     setListDocs(data);
+  //   } catch (error) {}
+  // };
+
+  const [document, setDocument] = useState(emptyValue);
+  const handleInputChange = (e) => {
+    setDocument({ ...document, [e.target.name]: e.target.value });
+  };
+  const handleFileChange = (e) => {
+    setDocument({ ...document, file: e.target.files[0] });
+  };
+  const handleSubmit = async () => {
+    console.log(document);
+    try {
+      await addDocumentAPI(document);
+      toast.success("Thêm tài liệu thành công");
+    } catch (error) {
+      toast.error("Thêm tài liệu thất bại");
+    }
+    setShow(false);
+  };
+
+  //xóa tài liệu
+  // const handleDelete = async (id) => {
+  //   try {
+  //     await deleteDocumentAPI(id);
+  //     toast.success("Xóa tài liệu thành công");
+  //   } catch (error) {
+  //     toast.error("Xóa tài liệu thất bại");
+  //   }
+  // };
+
   return (
     <>
       <Container maxWidth="lg" className="mt-4">
-        <div className="d-flex justify-content-between">
-          <h4
-            className=" d-inline text-white p-1 ps-3 pe-3 text-center"
-            style={{ backgroundColor: "#BF1B2C", color: "#BF1B2C" }}
-          >
-            TÀI LIỆU
-          </h4>
-          <div>
-            <button className="btn btn-primary" onClick={handleShow}>
-              Thêm tài liệu
-            </button>
-          </div>
+        <div className="d-flex justify-content-end">
+          <button className="btn btn-primary " onClick={handleShow}>
+            Thêm tài liệu
+          </button>
         </div>
 
-        <ListLibrary />
+        <ListLibrary
+          // onDelete={handleDelete}
+          listDocs={listDocs}
+        />
 
         {/* MODAL */}
         <>
@@ -64,8 +110,11 @@ export default function LibraryManagement() {
             <Modal.Header closeButton>
               <Modal.Title>Thêm tài liệu</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              <div className="d-flex align-items-center">
+            <Modal.Body style={{ padding: "10px" }}>
+              <div
+                className="d-flex align-items-center"
+                style={{ height: "56px" }}
+              >
                 <Box sx={{ minWidth: 120 }}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
@@ -76,7 +125,7 @@ export default function LibraryManagement() {
                       id="demo-simple-select"
                       value={type}
                       label="Định dạng"
-                      onChange={handleChange}
+                      onChange={handleChangeType}
                       sx={{ width: "130px" }}
                     >
                       <MenuItem value={"file"}>File</MenuItem>
@@ -88,41 +137,37 @@ export default function LibraryManagement() {
                 <TextField
                   label="Tên tài liệu"
                   id="outlined-size-small"
-                  // value={productDetail.value || productDetail.file?.name}
+                  value={document.name}
+                  name="name"
                   sx={{ marginLeft: "20px" }}
-                  // onChange={(e) =>
-                  //   handleInputChange(
-                  //     productDetail.id,
-                  //     "value",
-                  //     e.target.value
-                  //   )
-                  // }
+                  onChange={handleInputChange}
                 />
                 {type === "file" ? (
-                  <Button
-                    sx={{ marginLeft: "10px" }}
-                    component="label"
-                    // variant="contained"
-                    // startIcon={<CloudUploadIcon />}
-                  >
-                    <input className="form-control" type="file" id="formFile" />
+                  <Button sx={{ marginLeft: "10px" }} component="label">
+                    <input
+                      style={{ padding: "16.5px", lineHeight: "23px" }}
+                      className="form-control"
+                      type="file"
+                      id="formFile"
+                      onChange={handleFileChange}
+                    />
                   </Button>
                 ) : (
+                  ""
+                )}
+                {type === "link" ? (
                   <TextField
                     label="Đường dẫn tài liệu"
                     id="outlined-size-small"
-                    // value={productDetail.value || productDetail.file?.name}
+                    value={document.link}
+                    name="link"
                     sx={{
                       marginLeft: "20px",
                     }}
-                    // onChange={(e) =>
-                    //   handleInputChange(
-                    //     productDetail.id,
-                    //     "value",
-                    //     e.target.value
-                    //   )
-                    // }
+                    onChange={handleInputChange}
                   />
+                ) : (
+                  ""
                 )}
               </div>
             </Modal.Body>
@@ -139,7 +184,7 @@ export default function LibraryManagement() {
                 variant="contained"
                 type="submit"
                 color="success"
-                onClick={handleClose}
+                onClick={handleSubmit}
               >
                 Lưu
               </Button>
