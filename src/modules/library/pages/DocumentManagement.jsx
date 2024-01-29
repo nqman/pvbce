@@ -44,7 +44,7 @@ export default function DocumentManagement() {
     file: null,
   };
   const [listDocs, setListDocs] = useState([
-    { name: "người lái đò", link: "google.com", file: null },
+    { name: "người lái đò", link: "https://google.com", file: null },
     {
       name: "TCVN 7888:2014 - Cọc bê tông ly tâm ứng suất trước",
       link: "",

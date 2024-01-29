@@ -13,6 +13,17 @@ export async function listDocumentsAPI() {
 }
 export async function addDocumentAPI(document) {
   try {
+    const formData = new FormData();
+    if (document.file instanceof File) {
+      // console.log(document.file);
+      formData.append("libraryFileId", 0);
+      formData.append("fileName", document.name);
+      formData.append("libraryFile", document.file);
+    } else {
+      formData.append("detailID", 0);
+      formData.append("detailName", document.name);
+      formData.append("detailValue", document.link);
+    }
     const resp = await baseAPI.post("documents/save", document);
     return resp;
   } catch (error) {
