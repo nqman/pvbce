@@ -7,12 +7,9 @@ import {
   MenuItem,
   Select,
   TextField,
-  styled,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ListLibrary from "../components/ListDocuments/ListDocuments";
-import { useNavigate } from "react-router-dom";
-import ButtonBT from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import {
   addDocumentAPI,
@@ -43,24 +40,30 @@ export default function DocumentManagement() {
     link: "",
     file: null,
   };
-  const [listDocs, setListDocs] = useState([
-    { name: "người lái đò", link: "https://google.com", file: null },
-    {
-      name: "TCVN 7888:2014 - Cọc bê tông ly tâm ứng suất trước",
-      link: "",
-      file: "FILE.pdf",
-    },
-    { name: "người lái thuyền", link: "youtybe.com", file: null },
-  ]);
+  const [listDocs, setListDocs] = useState(
+    []
+    // { name: "người lái đò", link: "https://google.com", file: null },
+    // {
+    //   name: "TCVN 7888:2014 - Cọc bê tông ly tâm ứng suất trước",
+    //   link: "",
+    //   file: "FILE.pdf",
+    // },
+    // { name: "người lái thuyền", link: "youtybe.com", file: null },
+  );
 
-  // useEffect(() => fetchDocuments(), []);
+  useEffect(() => fetchDocuments(), []);
 
-  // const fetchDocuments = async () => {
-  //   try {
-  //     const data = await listDocumentsAPI;
-  //     setListDocs(data);
-  //   } catch (error) {}
-  // };
+  const fetchDocuments = async () => {
+    try {
+      const data = await listDocumentsAPI();
+      toast.success("Lấy danh sách thư viện thành công");
+      // console.log(data)
+      setListDocs(data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Lấy danh sách thư viện thất bại");
+    }
+  };
 
   const [document, setDocument] = useState(emptyValue);
   const handleInputChange = (e) => {
@@ -80,15 +83,15 @@ export default function DocumentManagement() {
     setShow(false);
   };
 
-  //xóa tài liệu
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await deleteDocumentAPI(id);
-  //     toast.success("Xóa tài liệu thành công");
-  //   } catch (error) {
-  //     toast.error("Xóa tài liệu thất bại");
-  //   }
-  // };
+  // xóa tài liệu
+  const handleDelete = async (id) => {
+    try {
+      await deleteDocumentAPI(id);
+      toast.success("Xóa tài liệu thành công");
+    } catch (error) {
+      toast.error("Xóa tài liệu thất bại");
+    }
+  };
 
   return (
     <>
@@ -99,10 +102,7 @@ export default function DocumentManagement() {
           </button>
         </div>
 
-        <ListLibrary
-          // onDelete={handleDelete}
-          listDocs={listDocs}
-        />
+        <ListLibrary onDelete={handleDelete} listDocs={listDocs} />
 
         {/* MODAL */}
         <>

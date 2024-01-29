@@ -17,13 +17,13 @@ export default function ListDocuments({ onDelete, listDocs }) {
           </tr>
         </thead>
         <tbody>
-          {listDocs.map((doc) => (
+          {listDocs?.map((doc) => (
             <tr>
-              <td>{doc.name}</td>
-              {doc.link ? (
+              <td>{doc?.name}</td>
+              {doc?.linkDoc ? (
                 <>
                   <td>
-                    <a href={doc.link} target="_blank">
+                    <a href={doc?.linkDoc} target="_blank">
                       <VisibilityIcon />
                     </a>
                     <button
@@ -42,7 +42,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
               ) : (
                 <>
                   <td>
-                    <a href={doc.file} target="_blank">
+                    <a href={doc?.pathDoc} target="_blank">
                       <VisibilityIcon />
                     </a>
 
