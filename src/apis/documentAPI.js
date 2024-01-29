@@ -27,16 +27,15 @@ export async function addDocumentAPI(document) {
       formData.append("documentLink", document.link);
     }
 
-    // const resp = await baseAPI.post("document/save", formData, {
-    const resp = await axios.post(
-      "http://103.82.38.121:8080/document/save",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const resp = await baseAPI.post("documents/save", formData, {
+      // const resp = await axios.post(
+      //   "http://103.82.38.121:8080/document/save",
+      //   formData,
+      //   {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return resp;
   } catch (error) {
     console.error(error);
@@ -47,7 +46,7 @@ export async function addDocumentAPI(document) {
 // xóa tài liệu
 export async function deleteDocumentAPI(id) {
   try {
-    const resp = await baseAPI.get(`document/delete/${id}`);
+    const resp = await baseAPI.get(`documents/delete/${id}`);
     return resp.data;
   } catch (error) {
     throw error.response.data;
