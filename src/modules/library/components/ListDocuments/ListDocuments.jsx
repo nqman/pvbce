@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClearIcon from "@mui/icons-material/Clear";
+import { fetchPdf } from "../../../../apis/documentAPI";
 
 export default function ListDocuments({ onDelete, listDocs }) {
+  // READ
+  const [fileUrl, setFileUrl] = useState("");
+  const getPdf = async (id) => {
+    console.log(id);
+    try {
+      const url = await fetchPdf(id);
+      setFileUrl(url);
+      if (url) {
+        window.open(fileUrl, "_blank");
+      }
+      // console.log(url);
+    } catch (error) {}
+  };
+
   return (
     <div className="mt-3">
       <table className="table">
@@ -23,9 +38,12 @@ export default function ListDocuments({ onDelete, listDocs }) {
               {doc?.linkDoc ? (
                 <>
                   <td>
-                    <a href={doc?.linkDoc} target="_blank">
+                    {/* <a href={doc?.linkDoc} target="_blank">
                       <VisibilityIcon />
-                    </a>
+                    </a> */}
+                    <button onClick={() => getPdf(doc.id)}>
+                      <VisibilityIcon />
+                    </button>
                     <button
                       style={{
                         border: "1px solid",
@@ -34,6 +52,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                         color: "red",
                       }}
                       className="btn"
+                      onClick={() => onDelete(doc.id)}
                     >
                       <ClearIcon />
                     </button>
@@ -42,9 +61,12 @@ export default function ListDocuments({ onDelete, listDocs }) {
               ) : (
                 <>
                   <td>
-                    <a href={doc?.pathDoc} target="_blank">
+                    {/* <a href={doc?.pathDoc} target="_blank">
                       <VisibilityIcon />
-                    </a>
+                    </a> */}
+                    <button onClick={() => getPdf(doc.id)}>
+                      <VisibilityIcon />
+                    </button>
 
                     <button
                       style={{
@@ -54,6 +76,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                         color: "red",
                       }}
                       className="btn"
+                      onClick={() => onDelete(doc.id)}
                     >
                       <ClearIcon />
                     </button>

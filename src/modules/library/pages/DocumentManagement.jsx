@@ -93,8 +93,6 @@ export default function DocumentManagement() {
     }
   };
 
-  // READ
-
   return (
     <>
       <Container maxWidth="lg" className="mt-4">

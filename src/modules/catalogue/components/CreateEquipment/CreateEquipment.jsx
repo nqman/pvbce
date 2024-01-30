@@ -22,6 +22,7 @@ export default function CreateEquipment() {
     note: "",
     productImages: "",
     productDetails: "",
+    diaries: "",
   };
   const navigate = useNavigate();
   const [value, setValue] = useState(emptyValue);
@@ -29,13 +30,17 @@ export default function CreateEquipment() {
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
-    setValue({ ...value, productDetails: productDetails });
+    setValue({ ...value, productDetails: productDetails, diaries: diaries });
     console.log(productDetails);
     console.log(value);
   };
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState(null);
 
+  // Thông số chung
+  const handleChangeInput = (e) => {
+    setValue({ ...value, [e.target.name]: e.target.value });
+  };
   //Chọn ảnh
   const [selectedImages, setSelectedImages] = useState([]);
   const handleImageChange = (event) => {
@@ -48,7 +53,7 @@ export default function CreateEquipment() {
     }
     setSelectedImages(newImages);
     setValue({ ...value, productImages: newImages });
-    console.log(newImages);
+    // console.log(newImages);
   };
   //Xóa ảnh
   const handleRemoveImage = (index) => {
@@ -97,6 +102,41 @@ export default function CreateEquipment() {
     setProductDetails(updatedProductDetails);
   };
 
+  //Nhật kí bảo dưỡng- sửa chữa
+  const [diaries, setDiaries] = useState([
+    { id: -Date.now(), diaryName: "", diaryFile: null },
+  ]);
+  const [errorDiary, setErrorDiary] = useState("");
+
+  const createDivDiary = () => {
+    const newDiary = {
+      id: -Date.now(),
+      diaryName: "",
+      diaryFile: null,
+    };
+    setDiaries([...diaries, newDiary]);
+  };
+
+  const deleteDivDiary = (id) => {
+    const updatedDiaries = diaries.filter((diary) => diary.id !== id);
+    setDiaries(updatedDiaries);
+  };
+
+  const handleInputChangeDiary = (id, key, value) => {
+    const updatedDiaries = diaries.map((diary) =>
+      diary.id === id ? { ...diary, [key]: value } : diary
+    );
+    setDiaries(updatedDiaries);
+  };
+
+  const handleFileChangeDiary = (id, diaryFile) => {
+    const updatedDiaries = diaries.map((diary) =>
+      diary.id === id ? { ...diary, diaryFile } : diary
+    );
+
+    setDiaries(updatedDiaries);
+  };
+
   // Thêm thiết bị
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,10 +150,6 @@ export default function CreateEquipment() {
       console.log(error);
       toast.error("Thêm thiết bị thất bại");
     }
-  };
-
-  const handleChangeInput = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
   };
 
   return (
@@ -400,7 +436,55 @@ export default function CreateEquipment() {
                 </div>
               </TabPanel>
               {/* Bảo dưỡng sửa chữa */}
-              <TabPanel value="3">
+              <TabPanel style={{ marginLeft: "280px" }} value="3">
+                <div>
+                  {diaries.map((diary) => (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "15px",
+                        height: "30px",
+                      }}
+                      key={diary.id}
+                    >
+                      <TextField
+                        placeholder="Thông số"
+                        id="outlined-size-small"
+                        value={diary.diaryName}
+                        size="small"
+                        sx={{ marginRight: "20px" }}
+                        onChange={(e) =>
+                          handleInputChangeDiary(
+                            diary.id,
+                            "diaryName",
+                            e.target.value
+                          )
+                        }
+                      />
+
+                      <input
+                        type="file"
+                        id={`fileInput${diary.id}`}
+                        name="diaryFile"
+                        onChange={(e) =>
+                          handleFileChangeDiary(diary.id, e.target.files[0])
+                        }
+                      />
+
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteDivDiary(diary.id)}
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                  <p className="text-danger">{errorDiary}</p>
+                  <Button variant="contained" onClick={createDivDiary}>
+                    Thêm
+                  </Button>
+                </div>
                 <div
                   style={{
                     position: "absolute",
@@ -411,7 +495,7 @@ export default function CreateEquipment() {
                   <Button
                     variant="contained"
                     color="success"
-                    disabled={isLoading}
+                    // disabled={isLoading}
                     type="submit"
                   >
                     Lưu

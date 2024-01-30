@@ -38,7 +38,6 @@ export async function addEquipmentAPI(equipments) {
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((detail) => {
             //EDIT
-            // console.log(detail);
             if (detail.id > 0) {
               if (
                 detail.pathFile !== null ||
