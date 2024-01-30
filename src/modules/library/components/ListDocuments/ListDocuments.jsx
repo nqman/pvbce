@@ -10,10 +10,11 @@ export default function ListDocuments({ onDelete, listDocs }) {
     console.log(id);
     try {
       const url = await fetchPdf(id);
+      console.log(url);
       setFileUrl(url);
-      if (url) {
-        window.open(fileUrl, "_blank");
-      }
+      // if (url) {
+      window.open(fileUrl, "_blank");
+      // }
       // console.log(url);
     } catch (error) {}
   };
@@ -87,6 +88,14 @@ export default function ListDocuments({ onDelete, listDocs }) {
           ))}
         </tbody>
       </table>
+      {/* {fileUrl && (
+        <embed
+          src={fileUrl}
+          type="application/pdf"
+          width="100%"
+          height="600px"
+        />
+      )} */}
     </div>
   );
 }
