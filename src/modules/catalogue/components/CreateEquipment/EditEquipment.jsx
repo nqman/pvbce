@@ -93,6 +93,7 @@ export default function EditEquipment() {
       // console.log(data.productImages);
       setProductDetails(data.productDetails); // set them gia tri cho productDetail
       setSelectedImages(data.productImages);
+      setSelectedImages(data.productDiaries);
 
       return data;
     } catch (error) {
@@ -181,8 +182,44 @@ export default function EditEquipment() {
     setProductDetails(updatedProductDetails);
   };
 
-  // cập nhật thiết bị
+  //nhật ký bảo dưỡng
+  const [productDiaries, setDiaries] = useState([]);
+  const [errorDiary, setErrorDiary] = useState("");
 
+  const createDivDiary = () => {
+    const newDiary = {
+      diaryId: -Date.now(),
+      diaryName: "",
+      diaryFile: null,
+    };
+    setDiaries([...productDiaries, newDiary]);
+  };
+
+  const deleteDivDiary = (diaryId) => {
+    const updateDiaries = productDiaries.filter(
+      (diary) => diary.diaryId !== diaryId
+    );
+    setDiaries(updateDiaries);
+  };
+
+  const handleInputChangeDiary = (diaryId, key, value) => {
+    const updateDiaries = productDiaries.map((diary) =>
+      diary.diaryId === diaryId ? { ...diary, [key]: value } : diary
+    );
+    setDiaries(updateDiaries);
+  };
+
+  const handleFileChangeDiary = (diaryId, diaryFile) => {
+    const updateDiaries = productDiaries.map((diary) => {
+      if (diary.diaryId === diaryId) {
+        return { ...diary, diaryFile: diaryFile };
+      }
+      return diary;
+    });
+    setDiaries(updateDiaries);
+  };
+
+  // cập nhật thiết bị
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(value);
@@ -419,11 +456,7 @@ export default function EditEquipment() {
                 </div>
               </TabPanel>
               {/* Thông số kỹ thuật */}
-              <TabPanel
-                style={{ marginLeft: "80px" }}
-                // className="ps-5"
-                value="2"
-              >
+              <TabPanel style={{ marginLeft: "80px" }} value="2">
                 <div>
                   {productDetails.map((productDetail) => (
                     <div
@@ -487,7 +520,65 @@ export default function EditEquipment() {
                 </div>
               </TabPanel>
               {/* Bảo dưỡng sửa chữa */}
-              <TabPanel value="3">
+              <TabPanel value="3" style={{ marginLeft: "80px" }}>
+                <div>
+                  {productDiaries.map((diary) => (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "15px",
+                        height: "30px",
+                      }}
+                      key={diary.diaryId}
+                    >
+                      <TextField
+                        placeholder="Thông số"
+                        id="outlined-size-small"
+                        value={diary.diaryName}
+                        size="small"
+                        sx={{ marginRight: "20px" }}
+                        onChange={(e) =>
+                          handleInputChangeDiary(
+                            diary.diaryId,
+                            "diaryName",
+                            e.target.value
+                          )
+                        }
+                      />
+                      {diary?.diaryValue ? <p>{diary.diaryValue}</p> : ""}
+                      <Button component="label">
+                        <input
+                          style={{
+                            width: "300px",
+                          }}
+                          className="form-control"
+                          type="file"
+                          id={`fileInput${diary.diaryId}`}
+                          name="filename"
+                          onChange={(e) =>
+                            handleFileChangeDiary(
+                              diary.diaryId,
+                              e.target.files[0]
+                            )
+                          }
+                        />
+                      </Button>
+
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteDivDiary(diary.diaryId)}
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                  <p className="text-danger">{errorDiary}</p>
+                  <Button variant="contained" onClick={createDivDiary}>
+                    Thêm
+                  </Button>
+                </div>
+                {/* SUBMIT */}
                 <div
                   style={{
                     position: "absolute",

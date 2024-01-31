@@ -37,16 +37,18 @@ const EquipDetail = () => {
   const [product, setProduct] = useState();
   const [images, setImages] = useState([]);
   const [productDetails, setproductDetails] = useState([]);
+  const [productDiaries, setDiaries] = useState([]);
 
   const idEquip = params.code;
-  console.log(idEquip);
+  // console.log(idEquip);
   const getEquip = async (idEquip) => {
     try {
       const data = await selectEquipmentAPI(idEquip);
       setProduct(data);
-      console.log(data);
+      // console.log(data);
       setImages(data.productImages);
       setproductDetails(data.productDetails);
+      setDiaries(data.productDiaries);
       return data;
     } catch (error) {
       console.error("Error fetching equipments:", error);
@@ -58,8 +60,6 @@ const EquipDetail = () => {
   if (!product) {
     return;
   }
-  // console.log("images", images);
-  // console.log("productDetails", productDetails);
 
   return (
     <div>
@@ -141,6 +141,23 @@ const EquipDetail = () => {
                   <b>{detail.name}: </b>
                   <button onClick={() => getPdfDetail(detail.id)}>
                     {detail.value}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </List>
+        </Grid>
+        <Grid item xs={12} lg={6}>
+          <Typography variant="h5" gutterBottom>
+            Nhật kí bảo dưỡng
+          </Typography>
+          <List>
+            <ul>
+              {productDiaries?.map((diary) => (
+                <li className="mb-2">
+                  <b>{diary.name}: </b>
+                  <button onClick={() => getPdfDetail(diary.id)}>
+                    {diary?.value}
                   </button>
                 </li>
               ))}

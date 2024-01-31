@@ -16,7 +16,6 @@ export async function listEquipmentsAPI() {
 //Thêm thiết bị
 export async function addEquipmentAPI(equipments) {
   try {
-    // const requestData = JSON.stringify(equipments);
     const formData = new FormData();
     Object.keys(equipments).map((key) => {
       if (key === "productImages") {
@@ -69,7 +68,6 @@ export async function addEquipmentAPI(equipments) {
                 console.log(detail.file);
                 formData.append("fileIDNew", 0);
                 formData.append("fileHeaderNew", detail.name);
-                // formData.append("fileNameNew", detail.file.name);
                 formData.append("detailFile", detail.file);
               } else {
                 formData.append("detailID", 0);
@@ -79,7 +77,7 @@ export async function addEquipmentAPI(equipments) {
             }
           });
         }
-      } else if (key === "diaries") {
+      } else if (key === "productDiaries") {
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((diary) => {
             //EDIT
@@ -102,10 +100,6 @@ export async function addEquipmentAPI(equipments) {
                   formData.append("diaryFileHeaderUpdatePath", diary.diaryName);
                   formData.append("diaryFileNameUpdatePath", diary.diaryValue);
                 }
-              } else {
-                formData.append("diaryID", diary.diaryId);
-                formData.append("diaryName", diary.diaryName);
-                formData.append("diaryValue", diary.diaryValue);
               }
             }
             //NEW
@@ -115,10 +109,6 @@ export async function addEquipmentAPI(equipments) {
                 formData.append("diaryFileIDNew", 0);
                 formData.append("diaryFileHeaderNew", diary.diaryName);
                 formData.append("diaryFile", diary.diaryFile);
-              } else {
-                formData.append("diaryID", 0);
-                formData.append("diaryName", diary.diaryName);
-                formData.append("diaryValue", diary.diaryValue);
               }
             }
           });
@@ -173,7 +163,7 @@ export async function fetchPdfDetail(detailId) {
     // const response = await baseAPI.get(
     //   `products/detail/view/pdf/${detailId}`,
     const response = await axios.get(
-      `http://103.82.38.121:8080/products/detail/view/pdf/${detailId}`,
+      `http://103.82.38.121:8080/products/detail/view/${detailId}`,
       {
         responseType: "arraybuffer",
       }
