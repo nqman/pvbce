@@ -79,21 +79,66 @@ export async function addEquipmentAPI(equipments) {
             }
           });
         }
+      } else if (key === "diaries") {
+        if (Array.isArray(equipments[key])) {
+          equipments[key].forEach((diary) => {
+            //EDIT
+            if (diary.id > 0) {
+              if (
+                diary.pathFile !== null ||
+                (typeof diary.diaryFile !== "undefined" &&
+                  diary.diaryFile instanceof File)
+              ) {
+                if (
+                  typeof diary.diaryFile !== "undefined" &&
+                  diary.diaryFile instanceof File
+                ) {
+                  formData.append("diaryFileUpdate", diary.diaryFile);
+                  formData.append("diaryFileIDUpdatePart", diary.id);
+                  formData.append("diaryFileHeaderUpdatePart", diary.name);
+                } else {
+                  formData.append("pathFile", diary.pathFile);
+                  formData.append("diaryFileIDUpdatePath", diary.id);
+                  formData.append("diaryFileHeaderUpdatePath", diary.name);
+                  formData.append("diaryFileNameUpdatePath", diary.value);
+                }
+              } else {
+                formData.append("diaryID", diary.id);
+                formData.append("diaryName", diary.diaryName);
+                formData.append("diaryValue", diary.value);
+              }
+            }
+            //NEW
+            else {
+              if (diary.diaryFile instanceof File) {
+                console.log(diary.diaryFile);
+                formData.append("diaryFileIDNew", 0);
+                formData.append("diaryFileHeaderNew", diary.diaryName);
+                formData.append("diaryFile", diary.diaryFile);
+              } else {
+                formData.append("diaryID", 0);
+                formData.append("diaryName", diary.diaryName);
+                formData.append("diaryValue", diary.value);
+              }
+            }
+          });
+        }
       } else {
         formData.append(key, equipments[key]);
       }
     });
 
     // formData.forEach((a, k) => console.log("data", k, a));
-    // const resp = await axios.post(
-    //   "http://103.82.38.121:8080/products/save",
-    const resp = await baseAPI.post("products/save", formData, {
-      headers: {
-        // "Content-Type": "application/json",
-        // "Content-Type": "application/x-www-form-urlencoded",
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const resp = await axios.post(
+      "http://103.82.38.121:8080/products/save",
+      // const resp = await baseAPI.post("products/save",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
     return resp;
   } catch (error) {
     console.log(error);
@@ -119,5 +164,26 @@ export async function deleteEquipmentAPI(id) {
     return resp.data;
   } catch (error) {
     throw error.response.data;
+  }
+}
+
+//PDF
+export async function fetchPdfDetail(detailId) {
+  try {
+    // const response = await baseAPI.get(
+    //   `products/detail/view/pdf/${detailId}`,
+    const response = await axios.get(
+      `http://103.82.38.121:8080/products/detail/view/pdf/${detailId}`,
+      {
+        responseType: "arraybuffer",
+      }
+    );
+
+    const blob = new Blob([response.data], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    // console.log(url);
+    return url;
+  } catch (error) {
+    console.error("Error fetching PDF:", error);
   }
 }

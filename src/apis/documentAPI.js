@@ -53,7 +53,7 @@ export async function deleteDocumentAPI(id) {
   }
 }
 
-export async function fetchPdf(documentId) {
+export async function fetchPdfDoc(documentId) {
   try {
     const response = await baseAPI.get(
       `documents/view/${documentId}`,
@@ -66,7 +66,7 @@ export async function fetchPdf(documentId) {
 
     const blob = new Blob([response.data], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
-    console.log(url);
+    // console.log(url);
     return url;
   } catch (error) {
     console.error("Error fetching PDF:", error);

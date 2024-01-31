@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClearIcon from "@mui/icons-material/Clear";
-import { fetchPdf } from "../../../../apis/documentAPI";
+import { fetchPdfDoc } from "../../../../apis/documentAPI";
 
 export default function ListDocuments({ onDelete, listDocs }) {
   // READ
@@ -9,7 +9,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
   const getPdf = async (id) => {
     console.log(id);
     try {
-      const url = await fetchPdf(id);
+      const url = await fetchPdfDoc(id);
       console.log(url);
       setFileUrl(url);
       // if (url) {

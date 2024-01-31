@@ -4,9 +4,26 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useParams } from "react-router-dom";
-import { selectEquipmentAPI } from "../../../../apis/equipmentAPI";
-import cn from "classnames";
+import {
+  fetchPdfDetail,
+  selectEquipmentAPI,
+} from "../../../../apis/equipmentAPI";
+// import cn from "classnames";
 const EquipDetail = () => {
+  // READ
+  const [fileUrl, setFileUrl] = useState("");
+  const getPdfDetail = async (id) => {
+    console.log(id);
+    try {
+      const url = await fetchPdfDetail(id);
+      // console.log(url);
+      setFileUrl(url);
+      // if (url) {
+      window.open(fileUrl, "_blank");
+      // }
+      // console.log(url);
+    } catch (error) {}
+  };
   const carouselSettings = {
     dots: true,
     infinite: true,
@@ -41,8 +58,9 @@ const EquipDetail = () => {
   if (!product) {
     return;
   }
-  console.log("images", images);
-  console.log("productDetails", productDetails);
+  // console.log("images", images);
+  // console.log("productDetails", productDetails);
+
   return (
     <div>
       <Grid container maxWidth={"lg"} margin={"auto"} spacing={5}>
@@ -121,7 +139,9 @@ const EquipDetail = () => {
               {productDetails.map((detail) => (
                 <li className="mb-2">
                   <b>{detail.name}: </b>
-                  {detail.value}
+                  <button onClick={() => getPdfDetail(detail.id)}>
+                    {detail.value}
+                  </button>
                 </li>
               ))}
             </ul>

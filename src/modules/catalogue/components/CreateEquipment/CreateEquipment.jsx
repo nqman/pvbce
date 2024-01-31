@@ -104,37 +104,38 @@ export default function CreateEquipment() {
 
   //Nhật kí bảo dưỡng- sửa chữa
   const [diaries, setDiaries] = useState([
-    { id: -Date.now(), diaryName: "", diaryFile: null },
+    { diaryId: -Date.now(), diaryName: "", diaryValue: "", diaryFile: null },
   ]);
   const [errorDiary, setErrorDiary] = useState("");
 
   const createDivDiary = () => {
     const newDiary = {
-      id: -Date.now(),
+      diaryId: -Date.now(),
       diaryName: "",
+      diaryValue: "",
       diaryFile: null,
     };
     setDiaries([...diaries, newDiary]);
   };
 
-  const deleteDivDiary = (id) => {
-    const updatedDiaries = diaries.filter((diary) => diary.id !== id);
-    setDiaries(updatedDiaries);
+  const deleteDivDiary = (diaryId) => {
+    const updateDiaries = diaries.filter((diary) => diary.diaryId !== diaryId);
+    setDiaries(updateDiaries);
   };
 
-  const handleInputChangeDiary = (id, key, value) => {
-    const updatedDiaries = diaries.map((diary) =>
-      diary.id === id ? { ...diary, [key]: value } : diary
+  const handleInputChangeDiary = (diaryId, key, value) => {
+    const updateDiaries = diaries.map((diary) =>
+      diary.diaryId === diaryId ? { ...diary, [key]: value } : diary
     );
-    setDiaries(updatedDiaries);
+    setDiaries(updateDiaries);
   };
 
-  const handleFileChangeDiary = (id, diaryFile) => {
-    const updatedDiaries = diaries.map((diary) =>
-      diary.id === id ? { ...diary, diaryFile } : diary
+  const handleFileChangeDiary = (diaryId, diaryFile) => {
+    const updateDiaries = diaries.map((diary) =>
+      diary.diaryId === diaryId ? { ...diary, diaryFile } : diary
     );
 
-    setDiaries(updatedDiaries);
+    setDiaries(updateDiaries);
   };
 
   // Thêm thiết bị
@@ -436,7 +437,7 @@ export default function CreateEquipment() {
                 </div>
               </TabPanel>
               {/* Bảo dưỡng sửa chữa */}
-              <TabPanel style={{ marginLeft: "280px" }} value="3">
+              <TabPanel style={{ marginLeft: "80px" }} value="3">
                 <div>
                   {diaries.map((diary) => (
                     <div
@@ -446,7 +447,7 @@ export default function CreateEquipment() {
                         marginBottom: "15px",
                         height: "30px",
                       }}
-                      key={diary.id}
+                      key={diary.diaryId}
                     >
                       <TextField
                         placeholder="Thông số"
@@ -455,26 +456,42 @@ export default function CreateEquipment() {
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
-                          handleInputChangeDiary(
-                            diary.id,
+                          handleInputChange(
+                            diary.diaryId,
                             "diaryName",
                             e.target.value
                           )
                         }
                       />
-
+                      <TextField
+                        placeholder="Nội dung"
+                        id="outlined-size-small"
+                        value={diary.diaryValue || diary.diaryFile?.name}
+                        size="small"
+                        sx={{ marginRight: "20px" }}
+                        onChange={(e) =>
+                          handleInputChangeDiary(
+                            diary.diaryId,
+                            "diaryValue",
+                            e.target.value
+                          )
+                        }
+                      />
                       <input
                         type="file"
-                        id={`fileInput${diary.id}`}
-                        name="diaryFile"
+                        id={`fileInput${diary.diaryId}`}
+                        name="filename"
                         onChange={(e) =>
-                          handleFileChangeDiary(diary.id, e.target.files[0])
+                          handleFileChangeDiary(
+                            diary.diaryId,
+                            e.target.files[0]
+                          )
                         }
                       />
 
                       <button
                         className="btn btn-danger"
-                        onClick={() => deleteDivDiary(diary.id)}
+                        onClick={() => deleteDivDiary(diary.diaryId)}
                       >
                         x
                       </button>
@@ -483,22 +500,6 @@ export default function CreateEquipment() {
                   <p className="text-danger">{errorDiary}</p>
                   <Button variant="contained" onClick={createDivDiary}>
                     Thêm
-                  </Button>
-                </div>
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: "50px",
-                    right: "130px",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="success"
-                    // disabled={isLoading}
-                    type="submit"
-                  >
-                    Lưu
                   </Button>
                 </div>
               </TabPanel>

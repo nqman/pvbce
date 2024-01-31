@@ -51,7 +51,12 @@ export default function DocumentManagement() {
     // { name: "người lái thuyền", link: "youtybe.com", file: null },
   );
 
-  useEffect(() => fetchDocuments(), []);
+  useEffect(() => {
+    const asyncFn = async () => {
+      fetchDocuments();
+    };
+    asyncFn();
+  }, []);
 
   const fetchDocuments = async () => {
     try {
