@@ -83,9 +83,9 @@ export async function addEquipmentAPI(equipments) {
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((diary) => {
             //EDIT
-            if (diary.id > 0) {
+            if (diary.diaryId > 0) {
               if (
-                diary.pathFile !== null ||
+                diary.pathDiaryFile !== null ||
                 (typeof diary.diaryFile !== "undefined" &&
                   diary.diaryFile instanceof File)
               ) {
@@ -94,18 +94,18 @@ export async function addEquipmentAPI(equipments) {
                   diary.diaryFile instanceof File
                 ) {
                   formData.append("diaryFileUpdate", diary.diaryFile);
-                  formData.append("diaryFileIDUpdatePart", diary.id);
-                  formData.append("diaryFileHeaderUpdatePart", diary.name);
+                  formData.append("diaryFileIDUpdatePart", diary.diaryId);
+                  formData.append("diaryFileHeaderUpdatePart", diary.diaryName);
                 } else {
-                  formData.append("pathFile", diary.pathFile);
-                  formData.append("diaryFileIDUpdatePath", diary.id);
-                  formData.append("diaryFileHeaderUpdatePath", diary.name);
-                  formData.append("diaryFileNameUpdatePath", diary.value);
+                  formData.append("pathDiaryFile", diary.pathDiaryFile);
+                  formData.append("diaryFileIDUpdatePath", diary.diaryId);
+                  formData.append("diaryFileHeaderUpdatePath", diary.diaryName);
+                  formData.append("diaryFileNameUpdatePath", diary.diaryValue);
                 }
               } else {
-                formData.append("diaryID", diary.id);
+                formData.append("diaryID", diary.diaryId);
                 formData.append("diaryName", diary.diaryName);
-                formData.append("diaryValue", diary.value);
+                formData.append("diaryValue", diary.diaryValue);
               }
             }
             //NEW
@@ -118,7 +118,7 @@ export async function addEquipmentAPI(equipments) {
               } else {
                 formData.append("diaryID", 0);
                 formData.append("diaryName", diary.diaryName);
-                formData.append("diaryValue", diary.value);
+                formData.append("diaryValue", diary.diaryValue);
               }
             }
           });

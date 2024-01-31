@@ -456,7 +456,7 @@ export default function CreateEquipment() {
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
-                          handleInputChange(
+                          handleInputChangeDiary(
                             diary.diaryId,
                             "diaryName",
                             e.target.value
@@ -500,6 +500,22 @@ export default function CreateEquipment() {
                   <p className="text-danger">{errorDiary}</p>
                   <Button variant="contained" onClick={createDivDiary}>
                     Thêm
+                  </Button>
+                </div>
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "50px",
+                    right: "130px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="success"
+                    // disabled={isLoading}
+                    type="submit"
+                  >
+                    Lưu
                   </Button>
                 </div>
               </TabPanel>

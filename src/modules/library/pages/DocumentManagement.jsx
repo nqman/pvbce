@@ -40,16 +40,7 @@ export default function DocumentManagement() {
     link: "",
     file: null,
   };
-  const [listDocs, setListDocs] = useState(
-    []
-    // { name: "người lái đò", link: "https://google.com", file: null },
-    // {
-    //   name: "TCVN 7888:2014 - Cọc bê tông ly tâm ứng suất trước",
-    //   link: "",
-    //   file: "FILE.pdf",
-    // },
-    // { name: "người lái thuyền", link: "youtybe.com", file: null },
-  );
+  const [listDocs, setListDocs] = useState([]);
 
   useEffect(() => {
     const asyncFn = async () => {
