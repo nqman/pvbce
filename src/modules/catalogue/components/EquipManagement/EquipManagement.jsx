@@ -16,6 +16,7 @@ import {
   deleteEquipmentAPI,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
+import { Box, CircularProgress } from "@mui/material";
 // const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
 
 export default function EquipManagement() {
@@ -26,17 +27,19 @@ export default function EquipManagement() {
 
   const [equips, setEquips] = useState([]);
   const [selectedEquip, setSelectedEquip] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchEquips();
   }, []);
 
   const fetchEquips = async () => {
+    // setIsLoading(true);
     try {
       const data = await listEquipmentsAPI();
       toast.success("Lấy danh sách thiết bị thành công");
       setEquips(data);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching equipments:", error);
       toast.error("Lấy danh sách thiết bị thất bại");
@@ -96,13 +99,19 @@ export default function EquipManagement() {
       </div>
 
       {/* Danh sách thiết bị*/}
-      <EquipList
-        rows={equips}
-        onDelete={handleDeteleEquip}
-        onEdit={handleSelectEquip}
-        // onRead={() => handleRead()}
-        // selectedEquip={selectedEquip}
-      />
+      {!isLoading ? (
+        <EquipList
+          rows={equips}
+          onDelete={handleDeteleEquip}
+          onEdit={handleSelectEquip}
+          // onRead={() => handleRead()}
+          // selectedEquip={selectedEquip}
+        />
+      ) : (
+        <Box sx={{ display: "block", textAlign: "center" }}>
+          <CircularProgress size={"100px"} />
+        </Box>
+      )}
     </div>
   );
 }

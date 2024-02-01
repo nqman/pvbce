@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   FormControl,
   InputLabel,
@@ -16,9 +17,10 @@ import {
   deleteDocumentAPI,
   listDocumentsAPI,
 } from "../../../apis/documentAPI";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function DocumentManagement() {
+  const [isLoading, setIsLoading] = useState(true);
   //MODAL
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -53,8 +55,8 @@ export default function DocumentManagement() {
     try {
       const data = await listDocumentsAPI();
       toast.success("Lấy danh sách thư viện thành công");
-      // console.log(data)
       setListDocs(data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       toast.error("Lấy danh sách thư viện thất bại");
@@ -73,6 +75,7 @@ export default function DocumentManagement() {
     try {
       await addDocumentAPI(document);
       toast.success("Thêm tài liệu thành công");
+      fetchDocuments();
     } catch (error) {
       toast.error("Thêm tài liệu thất bại");
     }
@@ -84,6 +87,7 @@ export default function DocumentManagement() {
     try {
       await deleteDocumentAPI(id);
       toast.success("Xóa tài liệu thành công");
+      fetchDocuments();
     } catch (error) {
       toast.error("Xóa tài liệu thất bại");
     }
@@ -92,13 +96,19 @@ export default function DocumentManagement() {
   return (
     <>
       <Container maxWidth="lg" className="mt-4">
+        <Toaster position="top-right" />
         <div className="d-flex justify-content-end">
           <button className="btn btn-primary " onClick={handleShow}>
             Thêm tài liệu
           </button>
         </div>
-
-        <ListLibrary onDelete={handleDelete} listDocs={listDocs} />
+        {!isLoading ? (
+          <ListLibrary onDelete={handleDelete} listDocs={listDocs} />
+        ) : (
+          <Box sx={{ display: "block", textAlign: "center" }}>
+            <CircularProgress size={"100px"} />
+          </Box>
+        )}
 
         {/* MODAL */}
         <>
