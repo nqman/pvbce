@@ -109,7 +109,7 @@ export default function EquipManagement() {
         />
       ) : (
         <Box sx={{ display: "block", textAlign: "center" }}>
-          <CircularProgress size={"100px"} />
+          <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
         </Box>
       )}
     </div>

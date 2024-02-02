@@ -106,7 +106,7 @@ export default function DocumentManagement() {
           <ListLibrary onDelete={handleDelete} listDocs={listDocs} />
         ) : (
           <Box sx={{ display: "block", textAlign: "center" }}>
-            <CircularProgress size={"100px"} />
+            <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
           </Box>
         )}
 
