@@ -5,17 +5,13 @@ import { fetchPdfDoc } from "../../../../apis/documentAPI";
 
 export default function ListDocuments({ onDelete, listDocs }) {
   // READ
-  const [fileUrl, setFileUrl] = useState("");
+  // const [fileUrl, setFileUrl] = useState("");
   const getPdf = async (id) => {
-    console.log(id);
     try {
       const url = await fetchPdfDoc(id);
       console.log(url);
-      setFileUrl(url);
-      // if (url) {
-      window.open(fileUrl, "_blank");
-      // }
-      console.log(url);
+      // setFileUrl(url);
+      window.open(url, "_blank");
     } catch (error) {}
   };
 
