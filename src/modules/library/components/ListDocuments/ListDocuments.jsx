@@ -15,7 +15,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
       // if (url) {
       window.open(fileUrl, "_blank");
       // }
-      // console.log(url);
+      console.log(url);
     } catch (error) {}
   };
 

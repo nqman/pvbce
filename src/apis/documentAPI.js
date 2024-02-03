@@ -56,12 +56,12 @@ export async function deleteDocumentAPI(id) {
 export async function fetchPdfDoc(documentId) {
   try {
     const response = await baseAPI.get(
-      `documents/url/view/${documentId}`,
+      `documents/url/view/${documentId}`
       // const response = await axios.get(
       //   `http://103.82.38.121:8080/documents/view/${documentId}`,
-      {
-        responseType: "arraybuffer",
-      }
+      // {
+      //   responseType: "arraybuffer",
+      // }
     );
 
     // const blob = new Blob([response.data], { type: "application/pdf" });
