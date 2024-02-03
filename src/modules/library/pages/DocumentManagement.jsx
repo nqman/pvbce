@@ -126,6 +126,7 @@ export default function DocumentManagement() {
                     <InputLabel id="demo-simple-select-label">
                       Định dạng
                     </InputLabel>
+
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
