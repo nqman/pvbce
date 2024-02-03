@@ -56,7 +56,7 @@ export async function deleteDocumentAPI(id) {
 export async function fetchPdfDoc(documentId) {
   try {
     const response = await baseAPI.get(
-      `documents/view/${documentId}`,
+      `documents/url/view/${documentId}`,
       // const response = await axios.get(
       //   `http://103.82.38.121:8080/documents/view/${documentId}`,
       {
@@ -64,10 +64,11 @@ export async function fetchPdfDoc(documentId) {
       }
     );
 
-    const blob = new Blob([response.data], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
+    // const blob = new Blob([response.data], { type: "application/pdf" });
+    // const url = URL.createObjectURL(blob);
     // console.log(url);
-    return url;
+    // return url;
+    return response.data;
   } catch (error) {
     console.error("Error fetching PDF:", error);
   }

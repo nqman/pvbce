@@ -160,19 +160,19 @@ export async function deleteEquipmentAPI(id) {
 //PDF
 export async function fetchPdfDetail(detailId) {
   try {
-    // const response = await baseAPI.get(
-    //   `products/detail/view/pdf/${detailId}`,
-    const response = await axios.get(
-      `http://103.82.38.121:8080/products/detail/view/${detailId}`,
+    const response = await baseAPI.get(
+      `products/url/view/${detailId}`,
+      // const response = await axios.get(
+      //   `http://103.82.38.121:8080/products/detail/view/${detailId}`,
       {
         responseType: "arraybuffer",
       }
     );
 
-    const blob = new Blob([response.data], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
+    // const blob = new Blob([response.data], { type: "application/pdf" });
+    // const url = URL.createObjectURL(blob);
     // console.log(url);
-    return url;
+    return response.data;
   } catch (error) {
     console.error("Error fetching PDF:", error);
   }
