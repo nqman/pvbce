@@ -7,6 +7,7 @@ import EquipDetails from "./modules/catalogue/components/EquipDetails/EquipDetai
 import EditEquipment from "./modules/catalogue/components/CreateEquipment/EditEquipment";
 import Report from "./modules/report/pages/Report";
 import DocumentManagement from "./modules/library/pages/DocumentManagement";
+import NotFound from "./modules/home/components/NotFound";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         </Route>
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

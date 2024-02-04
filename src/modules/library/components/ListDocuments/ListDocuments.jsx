@@ -36,24 +36,28 @@ export default function ListDocuments({ onDelete, listDocs }) {
                 <>
                   <td>
                     <button
-                      className="read-doc"
+                      className="btn btn-success"
+                      style={{
+                        padding: "0px",
+                        height: "25px",
+                        width: "25px",
+                        marginRight: "10px",
+                      }}
                       onClick={() => getPdf(doc.id, "view")}
                     >
                       <VisibilityIcon
                         sx={{
                           fontSize: "17px",
-                          margin: "auto",
                         }}
                       />
                     </button>
                     <button
                       style={{
-                        border: "1px solid",
                         padding: "0px",
-                        marginLeft: "10px",
-                        color: "red",
+                        height: "25px",
+                        width: "25px",
                       }}
-                      className="btn"
+                      className="btn btn-danger"
                       onClick={() => onDelete(doc.id)}
                     >
                       <ClearIcon />
@@ -69,6 +73,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                         padding: "0px",
                         height: "25px",
                         width: "25px",
+                        marginRight: "10px",
                       }}
                       onClick={() => getPdf(doc.id, "view")}
                     >
@@ -84,7 +89,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                         padding: "0px",
                         height: "25px",
                         width: "25px",
-                        marginLeft: "10px",
+                        marginRight: "10px",
                       }}
                       onClick={() => getPdf(doc.id, "attachment")}
                     >
@@ -100,7 +105,6 @@ export default function ListDocuments({ onDelete, listDocs }) {
                         padding: "0px",
                         height: "25px",
                         width: "25px",
-                        marginLeft: "10px",
                       }}
                       className="btn btn-danger"
                       onClick={() => onDelete(doc.id)}

@@ -11,17 +11,11 @@ import {
 // import cn from "classnames";
 const EquipDetail = () => {
   // READ
-  const [fileUrl, setFileUrl] = useState("");
   const getPdfDetail = async (id) => {
     console.log(id);
     try {
       const url = await fetchPdfDetail(id);
-      // console.log(url);
-      setFileUrl(url);
-      // if (url) {
-      window.open(fileUrl, "_blank");
-      // }
-      // console.log(url);
+      window.open(url, "_blank");
     } catch (error) {}
   };
   const carouselSettings = {
@@ -139,7 +133,10 @@ const EquipDetail = () => {
               {productDetails.map((detail) => (
                 <li className="mb-2">
                   <b>{detail.name}: </b>
-                  <button onClick={() => getPdfDetail(detail.id)}>
+                  <button
+                    className="link"
+                    onClick={() => getPdfDetail(detail.id)}
+                  >
                     {detail.value}
                   </button>
                 </li>
