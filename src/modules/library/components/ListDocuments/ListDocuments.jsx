@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClearIcon from "@mui/icons-material/Clear";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { fetchPdfDoc } from "../../../../apis/documentAPI";
 
 export default function ListDocuments({ onDelete, listDocs }) {
-  // READ
-  // const [fileUrl, setFileUrl] = useState("");
-  const getPdf = async (id) => {
+  const getPdf = async (id, type) => {
     try {
-      const url = await fetchPdfDoc(id);
-      console.log(url);
-      // setFileUrl(url);
+      const url = await fetchPdfDoc(id, type);
+      // console.log(url);
       window.open(url, "_blank");
     } catch (error) {}
   };
@@ -20,10 +18,12 @@ export default function ListDocuments({ onDelete, listDocs }) {
       <table className="table">
         <thead>
           <tr>
-            <th style={{ color: "#00477b", fontWeight: "bold", width: "50%" }}>
+            <th style={{ color: "#00477b", fontWeight: "bold" }}>
               Tên tài liệu
             </th>
-            <th style={{ color: "#00477b", fontWeight: "bold", width: "10%" }}>
+            <th
+              style={{ color: "#00477b", fontWeight: "bold", width: "150px" }}
+            >
               Tùy chọn
             </th>
           </tr>
@@ -35,11 +35,16 @@ export default function ListDocuments({ onDelete, listDocs }) {
               {doc?.linkDoc ? (
                 <>
                   <td>
-                    {/* <a href={doc?.linkDoc} target="_blank">
-                      <VisibilityIcon />
-                    </a> */}
-                    <button onClick={() => getPdf(doc.id)}>
-                      <VisibilityIcon />
+                    <button
+                      className="read-doc"
+                      onClick={() => getPdf(doc.id, "view")}
+                    >
+                      <VisibilityIcon
+                        sx={{
+                          fontSize: "17px",
+                          margin: "auto",
+                        }}
+                      />
                     </button>
                     <button
                       style={{
@@ -58,24 +63,53 @@ export default function ListDocuments({ onDelete, listDocs }) {
               ) : (
                 <>
                   <td>
-                    {/* <a href={doc?.pathDoc} target="_blank">
-                      <VisibilityIcon />
-                    </a> */}
-                    <button onClick={() => getPdf(doc.id)}>
-                      <VisibilityIcon />
+                    <button
+                      className="btn btn-success"
+                      style={{
+                        padding: "0px",
+                        height: "25px",
+                        width: "25px",
+                      }}
+                      onClick={() => getPdf(doc.id, "view")}
+                    >
+                      <VisibilityIcon
+                        sx={{
+                          fontSize: "17px",
+                        }}
+                      />
+                    </button>
+                    <button
+                      className="btn btn-dark"
+                      style={{
+                        padding: "0px",
+                        height: "25px",
+                        width: "25px",
+                        marginLeft: "10px",
+                      }}
+                      onClick={() => getPdf(doc.id, "attachment")}
+                    >
+                      <FileDownloadIcon
+                        sx={{
+                          fontSize: "17px",
+                        }}
+                      />
                     </button>
 
                     <button
                       style={{
-                        border: "1px solid",
                         padding: "0px",
+                        height: "25px",
+                        width: "25px",
                         marginLeft: "10px",
-                        color: "red",
                       }}
-                      className="btn"
+                      className="btn btn-danger"
                       onClick={() => onDelete(doc.id)}
                     >
-                      <ClearIcon />
+                      <ClearIcon
+                        sx={{
+                          fontSize: "17px",
+                        }}
+                      />
                     </button>
                   </td>
                 </>
@@ -84,14 +118,6 @@ export default function ListDocuments({ onDelete, listDocs }) {
           ))}
         </tbody>
       </table>
-      {/* {fileUrl && (
-        <embed
-          src={fileUrl}
-          type="application/pdf"
-          width="100%"
-          height="600px"
-        />
-      )} */}
     </div>
   );
 }
