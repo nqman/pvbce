@@ -96,7 +96,11 @@ export default function EquipManagement() {
           <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
         </Box>
       )}
-      <ListEquipments />
+      <ListEquipments
+        rows={equips}
+        onDelete={handleDeteleEquip}
+        onEdit={handleSelectEquip}
+      />
     </div>
   );
 }

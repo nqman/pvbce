@@ -22,7 +22,12 @@ export default function ListDocuments({ onDelete, listDocs }) {
               Tên tài liệu
             </th>
             <th
-              style={{ color: "#00477b", fontWeight: "bold", width: "150px" }}
+              style={{
+                color: "#00477b",
+                fontWeight: "bold",
+                width: "150px",
+                textAlign: "end",
+              }}
             >
               Tùy chọn
             </th>
@@ -34,7 +39,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
               <td>{doc?.name}</td>
               {doc?.linkDoc ? (
                 <>
-                  <td>
+                  <td style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
                       className="btn btn-success"
                       style={{
@@ -48,6 +53,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                       <VisibilityIcon
                         sx={{
                           fontSize: "17px",
+                          marginBottom: "2px",
                         }}
                       />
                     </button>
@@ -60,13 +66,17 @@ export default function ListDocuments({ onDelete, listDocs }) {
                       className="btn btn-danger"
                       onClick={() => onDelete(doc.id)}
                     >
-                      <ClearIcon />
+                      <ClearIcon
+                        sx={{
+                          fontSize: "17px",
+                        }}
+                      />
                     </button>
                   </td>
                 </>
               ) : (
                 <>
-                  <td>
+                  <td style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
                       className="btn btn-success"
                       style={{
@@ -80,6 +90,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                       <VisibilityIcon
                         sx={{
                           fontSize: "17px",
+                          marginBottom: "2px",
                         }}
                       />
                     </button>

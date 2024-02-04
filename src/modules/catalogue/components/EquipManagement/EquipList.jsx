@@ -85,53 +85,54 @@ export default function EquipList({ rows, onEdit, onDelete, onRead }) {
                           <div style={{ display: "flex" }}>
                             <button
                               style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: "25px",
+                                padding: "0px",
                                 height: "25px",
+                                width: "25px",
+                                marginRight: "10px",
                               }}
-                              className="btn btn-outline-success me-2"
+                              className="btn btn-success me-2"
                               onClick={() => handleRead(row.id)}
                             >
                               <VisibilityIcon
                                 sx={{
                                   fontSize: "17px",
-                                  margin: "auto",
-                                  // paddingBottom: "5px",
+                                  marginBottom: "2px",
                                 }}
                               />
                             </button>
                             <button
                               style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: "25px",
+                                padding: "0px",
                                 height: "25px",
-                                color: "black",
+                                width: "25px",
+                                marginRight: "10px",
                               }}
-                              className="btn btn-outline-warning me-2"
+                              className="btn btn-warning me-2"
                               onClick={() => onEdit(row.id)}
                             >
                               <EditIcon
-                                sx={{ fontSize: "15px", margin: "auto" }}
+                                sx={{
+                                  fontSize: "17px",
+                                  marginBottom: "2px",
+                                }}
                               />
                             </button>
                             <button
                               style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: "25px",
+                                padding: "0px",
                                 height: "25px",
+                                width: "25px",
                               }}
-                              className="btn btn-outline-danger"
+                              className="btn btn-danger"
                               onClick={() => {
                                 onDelete(row.id);
                               }}
                             >
-                              <ClearIcon />
+                              <ClearIcon
+                                sx={{
+                                  fontSize: "17px",
+                                }}
+                              />
                             </button>
                           </div>
                         </TableCell>
