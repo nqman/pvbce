@@ -93,7 +93,7 @@ export default function EditEquipment() {
       // console.log(data.productImages);
       setProductDetails(data.productDetails); // set them gia tri cho productDetail
       setSelectedImages(data.productImages);
-      setSelectedImages(data.productDiaries);
+      setProductDiaries(data.productDiaries);
 
       return data;
     } catch (error) {
@@ -183,7 +183,7 @@ export default function EditEquipment() {
   };
 
   //nhật ký bảo dưỡng
-  const [productDiaries, setDiaries] = useState([]);
+  const [productDiaries, setProductDiaries] = useState([]);
   const [errorDiary, setErrorDiary] = useState("");
 
   const createDivDiary = () => {
@@ -192,21 +192,21 @@ export default function EditEquipment() {
       diaryName: "",
       diaryFile: null,
     };
-    setDiaries([...productDiaries, newDiary]);
+    setProductDiaries([...productDiaries, newDiary]);
   };
 
   const deleteDivDiary = (diaryId) => {
     const updateDiaries = productDiaries.filter(
       (diary) => diary.diaryId !== diaryId
     );
-    setDiaries(updateDiaries);
+    setProductDiaries(updateDiaries);
   };
 
   const handleInputChangeDiary = (diaryId, key, value) => {
     const updateDiaries = productDiaries.map((diary) =>
       diary.diaryId === diaryId ? { ...diary, [key]: value } : diary
     );
-    setDiaries(updateDiaries);
+    setProductDiaries(updateDiaries);
   };
 
   const handleFileChangeDiary = (diaryId, diaryFile) => {
@@ -216,7 +216,7 @@ export default function EditEquipment() {
       }
       return diary;
     });
-    setDiaries(updateDiaries);
+    setProductDiaries(updateDiaries);
   };
 
   // cập nhật thiết bị
