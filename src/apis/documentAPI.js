@@ -29,7 +29,7 @@ export async function addDocumentAPI(document) {
 
     const resp = await baseAPI.post("documents/save", formData, {
       // const resp = await axios.post(
-      //   "http://103.82.38.121:8080/documents/save",
+      //   "http://103.82.39.125:8080/documents/save",
       //   formData,
       //   {
       headers: {
