@@ -119,16 +119,13 @@ export async function addEquipmentAPI(equipments) {
     });
 
     // formData.forEach((a, k) => console.log("data", k, a));
-    const resp = await axios.post(
-      "http://103.82.38.121:8080/products/save",
-      // const resp = await baseAPI.post("products/save",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    // const resp = await axios.post(
+    //   "http://103.82.38.121:8080/products/save",
+    const resp = await baseAPI.post("products/save", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return resp;
   } catch (error) {
     console.log(error);

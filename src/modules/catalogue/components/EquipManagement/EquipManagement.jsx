@@ -17,6 +17,7 @@ import {
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 import { Box, CircularProgress } from "@mui/material";
+import ListEquipments from "./ListEquipments";
 // const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
 
 export default function EquipManagement() {
@@ -70,20 +71,6 @@ export default function EquipManagement() {
   return (
     <div style={{ position: "relative" }}>
       <Toaster position="top-right" />
-      {/* Tìm kiếm thiết bị */}
-      {/* <div className="d-flex justify-content-center m-3">
-        <div className="input-group  w-50 ">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Tìm kiếm thiết bị..."
-            aria-label="Tìm kiếm thiết bị..."
-            aria-describedby="basic-addon2"
-            value={searchTerm}
-            // onChange={handleSearch}
-          />
-        </div>
-      </div> */}
       {/* BTN THÊM THIẾT BỊ */}
       <div
         style={{
@@ -97,21 +84,19 @@ export default function EquipManagement() {
           Thêm thiết bị
         </button>
       </div>
-
       {/* Danh sách thiết bị*/}
       {!isLoading ? (
         <EquipList
           rows={equips}
           onDelete={handleDeteleEquip}
           onEdit={handleSelectEquip}
-          // onRead={() => handleRead()}
-          // selectedEquip={selectedEquip}
         />
       ) : (
         <Box sx={{ display: "block", textAlign: "center" }}>
           <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
         </Box>
       )}
+      <ListEquipments />
     </div>
   );
 }

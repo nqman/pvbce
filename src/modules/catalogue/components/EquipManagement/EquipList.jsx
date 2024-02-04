@@ -24,7 +24,7 @@ export default function EquipList({ rows, onEdit, onDelete, onRead }) {
     { id: "constructionProject", name: "THI CÔNG DỰ ÁN" },
     { id: "location", name: "NẰM Ở KHO BÃI" },
     { id: "note", name: "GHI CHÚ" },
-    { id: "edit", name: "TÙY CHỌN" },
+    { id: "action", name: "TÙY CHỌN" },
   ];
 
   const handlechangepage = (event, newpage) => {
