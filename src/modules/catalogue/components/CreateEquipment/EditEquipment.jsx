@@ -166,10 +166,10 @@ export default function EditEquipment() {
   };
 
   // check file, neu product va product detail khac null thi moi lay value con khong thi cho default = null
-  const oldFiles =
-    value && Array.isArray(value.productDetails)
-      ? value.productDetails.filter((file) => file.pathFile !== null)
-      : null;
+  // const oldFiles =
+  //   value && Array.isArray(value.productDetails)
+  //     ? value.productDetails.filter((file) => file.pathFile !== null)
+  //     : null;
 
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) => {
@@ -285,7 +285,6 @@ export default function EditEquipment() {
                     <input
                       id="name"
                       name="name"
-                      // ref={nameRef}
                       value={value.name}
                       className=" form-control w-50"
                       type="text"
@@ -412,7 +411,7 @@ export default function EditEquipment() {
                           alt={`Image ${index + 1}`}
                           height={"100px"}
                           src={
-                            image.pathImage ||
+                            image.imageOfProduct ||
                             URL.createObjectURL(image.imageFile)
                           }
                         />
@@ -601,7 +600,7 @@ export default function EditEquipment() {
                 <div style={{ textAlign: "center", paddingTop: "50px" }}>
                   <img
                     style={{ width: "200px", height: "200px" }}
-                    src={`${value.pathOfQR}`}
+                    src={`${value.imageOfQR}`}
                     alt=""
                   />
                   <h3 style={{ marginTop: "20px" }}>{value.divideCode}</h3>

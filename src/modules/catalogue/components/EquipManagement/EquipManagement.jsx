@@ -1,23 +1,18 @@
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import EquipList from "./EquipList";
-import CreateEquipment from "../CreateEquipment/CreateEquipment";
 import toast, { Toaster } from "react-hot-toast";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import ListEquipments from "./ListEquipments";
 
 // API
 
 import axios from "axios";
 import {
   listEquipmentsAPI,
-  addEquipmentAPI,
   deleteEquipmentAPI,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 import { Box, CircularProgress } from "@mui/material";
-import ListEquipments from "./ListEquipments";
 // const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
 
 export default function EquipManagement() {
@@ -85,17 +80,7 @@ export default function EquipManagement() {
         </button>
       </div>
       {/* Danh sách thiết bị*/}
-      {/* {!isLoading ? (
-        <EquipList
-          rows={equips}
-          onDelete={handleDeteleEquip}
-          onEdit={handleSelectEquip}
-        />
-      ) : (
-        <Box sx={{ display: "block", textAlign: "center" }}>
-          <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
-        </Box>
-      )} */}
+
       {!isLoading ? (
         <ListEquipments
           rows={equips}

@@ -7,10 +7,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import toast, { Toaster } from "react-hot-toast";
 
 // API
-import {
-  addEquipmentAPI,
-  editEquipmentAPI,
-} from "../../../../apis/equipmentAPI";
+import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateEquipment() {
@@ -33,7 +30,6 @@ export default function CreateEquipment() {
     setValue({
       ...value,
       productDetails: productDetails,
-      productDiaries: productDiaries,
     });
     // console.log(productDetails);
     // console.log(value);
@@ -57,7 +53,6 @@ export default function CreateEquipment() {
     }
     setSelectedImages(newImages);
     setValue({ ...value, productImages: newImages });
-    // console.log(newImages);
   };
   //Xóa ảnh
   const handleRemoveImage = (index) => {
@@ -140,14 +135,12 @@ export default function CreateEquipment() {
       diary.diaryId === diaryId ? { ...diary, diaryFile } : diary
     );
     setProductDiaries(updateDiaries);
+    setValue({ ...value, productDiaries: updateDiaries });
   };
-  // const saveValue = () => {
-  //   setValue({ ...value, productDiaries: productDiaries });
-  // };
+
   // Thêm thiết bị
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // saveValue();
     console.log(value);
     // setValue({ ...value, productDiaries: productDiaries });
 

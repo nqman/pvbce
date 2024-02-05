@@ -24,7 +24,6 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
               field: "qr",
               headerName: "QR",
               width: 100,
-
               renderCell: (params) => (
                 <img
                   style={{ width: "50px", height: "50px" }}
@@ -41,7 +40,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
               width: 200,
             },
             { field: "location", headerName: "NẰM Ở KHO BÃI", width: 200 },
-            { field: "note", headerName: "GHI CHÚ", width: 200 },
+            { field: "note", headerName: "GHI CHÚ", width: 180 },
             {
               field: "action",
               headerName: "TÙY CHỌN",
