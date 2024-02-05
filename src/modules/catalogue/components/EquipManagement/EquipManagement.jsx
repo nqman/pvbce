@@ -85,7 +85,7 @@ export default function EquipManagement() {
         </button>
       </div>
       {/* Danh sách thiết bị*/}
-      {!isLoading ? (
+      {/* {!isLoading ? (
         <EquipList
           rows={equips}
           onDelete={handleDeteleEquip}
@@ -95,12 +95,18 @@ export default function EquipManagement() {
         <Box sx={{ display: "block", textAlign: "center" }}>
           <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
         </Box>
+      )} */}
+      {!isLoading ? (
+        <ListEquipments
+          rows={equips}
+          onDelete={handleDeteleEquip}
+          onEdit={handleSelectEquip}
+        />
+      ) : (
+        <Box sx={{ display: "block", textAlign: "center" }}>
+          <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
+        </Box>
       )}
-      <ListEquipments
-        rows={equips}
-        onDelete={handleDeteleEquip}
-        onEdit={handleSelectEquip}
-      />
     </div>
   );
 }
