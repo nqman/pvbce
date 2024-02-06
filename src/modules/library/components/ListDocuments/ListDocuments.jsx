@@ -8,7 +8,6 @@ export default function ListDocuments({ onDelete, listDocs }) {
   const getPdf = async (id, type) => {
     try {
       const url = await fetchPdfDoc(id, type);
-      // console.log(url);
       window.open(url, "_blank");
     } catch (error) {}
   };

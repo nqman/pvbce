@@ -25,62 +25,7 @@ import {
 // };
 
 export default function EditEquipment() {
-  // const data = {
-  //   id: 2,
-  //   name: "mantest",
-  //   divideCode: "mantest",
-  //   constructionProject: "mantest",
-  //   location: "mantest",
-  //   note: "mantest",
-  //   productImages: [
-  //     {
-  //       id: 3,
-  //       pathImage:
-  //         "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983072/vd6kvsweandbea2sqzr5.png",
-  //       imageOfProduct: null,
-  //     },
-  //     {
-  //       id: 4,
-  //       pathImage:
-  //         "https://images.unsplash.com/photo-1519929125787-88a2485dc4f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  //       imageOfProduct: null,
-  //     },
-  //   ],
-  //   productDetails: [
-  //     {
-  //       id: 1,
-  //       name: "mantest",
-  //       value: "download.png",
-  //       detailFile:
-  //         "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983071/wnwteqp5pquabyinfjem.png",
-  //       fileName: "tên file322432",
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "mantest1231323",
-  //       value: "hehehe.png",
-  //       detailFile:
-  //         "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983071/wnwteqp5pquabyinfjem.png",
-  //       fileName: "tên file",
-  //     },
-  //     {
-  //       id: 5,
-  //       name: "mantest1231323",
-  //       value: "hihiha.png",
-  //       detailFile:
-  //         "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983071/wnwteqp5pquabyinfjem.png",
-  //       fileName: "tên file",
-  //     },
-  //   ],
-  //   createdTime: 1705983069995,
-  //   updatedTime: 1705983074244,
-  //   pathOfQR:
-  //     "https://res.cloudinary.com/dxvbucvch/image/upload/v1705983073/zzc5ghf62levqgynnork.png",
-  //   imageOfQR: null,
-  // };
-
   const [value, setValue] = useState();
-
   const params = useParams();
   const idEquip = params.id;
   const [selectedImages, setSelectedImages] = useState([]);
@@ -100,7 +45,7 @@ export default function EditEquipment() {
       console.error("Error fetching equipments:", error);
     }
   };
-  // getEquip(idEquip);
+
   useEffect(() => {
     // Call the asynchronous function inside the useEffect
     getEquip(idEquip);
@@ -188,31 +133,29 @@ export default function EditEquipment() {
 
   const createDivDiary = () => {
     const newDiary = {
-      diaryId: -Date.now(),
-      diaryName: "",
-      diaryFile: null,
+      id: -Date.now(),
+      name: "",
+      file: null,
     };
     setProductDiaries([...productDiaries, newDiary]);
   };
 
-  const deleteDivDiary = (diaryId) => {
-    const updateDiaries = productDiaries.filter(
-      (diary) => diary.diaryId !== diaryId
-    );
+  const deleteDivDiary = (id) => {
+    const updateDiaries = productDiaries.filter((diary) => diary.id !== id);
     setProductDiaries(updateDiaries);
   };
 
-  const handleInputChangeDiary = (diaryId, key, value) => {
+  const handleInputChangeDiary = (id, key, value) => {
     const updateDiaries = productDiaries.map((diary) =>
-      diary.diaryId === diaryId ? { ...diary, [key]: value } : diary
+      diary.id === id ? { ...diary, [key]: value } : diary
     );
     setProductDiaries(updateDiaries);
   };
 
-  const handleFileChangeDiary = (diaryId, diaryFile) => {
+  const handleFileChangeDiary = (id, file) => {
     const updateDiaries = productDiaries.map((diary) => {
-      if (diary.diaryId === diaryId) {
-        return { ...diary, diaryFile: diaryFile };
+      if (diary.id === id) {
+        return { ...diary, file: file };
       }
       return diary;
     });
@@ -529,23 +472,23 @@ export default function EditEquipment() {
                         marginBottom: "15px",
                         height: "30px",
                       }}
-                      key={diary.diaryId}
+                      key={diary.id}
                     >
                       <TextField
                         placeholder="Thông số"
                         id="outlined-size-small"
-                        value={diary.diaryName}
+                        value={diary.name}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
                           handleInputChangeDiary(
-                            diary.diaryId,
-                            "diaryName",
+                            diary.id,
+                            "name",
                             e.target.value
                           )
                         }
                       />
-                      {diary?.diaryValue ? <p>{diary.diaryValue}</p> : ""}
+                      {/* {diary?.value ? <p>{diary.value}</p> : ""} */}
                       <Button component="label">
                         <input
                           style={{
@@ -553,20 +496,18 @@ export default function EditEquipment() {
                           }}
                           className="form-control"
                           type="file"
-                          id={`fileInput${diary.diaryId}`}
+                          id={`fileInput${diary.id}`}
                           name="filename"
+                          accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                           onChange={(e) =>
-                            handleFileChangeDiary(
-                              diary.diaryId,
-                              e.target.files[0]
-                            )
+                            handleFileChangeDiary(diary.id, e.target.files[0])
                           }
                         />
                       </Button>
 
                       <button
                         className="btn btn-danger"
-                        onClick={() => deleteDivDiary(diary.diaryId)}
+                        onClick={() => deleteDivDiary(diary.id)}
                       >
                         x
                       </button>

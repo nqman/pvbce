@@ -45,14 +45,17 @@ export default function CreateEquipment() {
   const [selectedImages, setSelectedImages] = useState([]);
   const handleImageChange = (event) => {
     const files = event.target.files;
-    console.log(files);
-    const newImages = [...selectedImages];
-    console.log(newImages);
-    for (let i = 0; i < files.length; i++) {
-      newImages.push({ id: -Date.now(), imageFile: files[i] });
+    if (files.length > 5) {
+      alert("Số lượng ảnh không được quá 5");
+    } else {
+      const newImages = [...selectedImages];
+      console.log(newImages);
+      for (let i = 0; i < files.length; i++) {
+        newImages.push({ id: -Date.now(), imageFile: files[i] });
+      }
+      setSelectedImages(newImages);
+      setValue({ ...value, productImages: newImages });
     }
-    setSelectedImages(newImages);
-    setValue({ ...value, productImages: newImages });
   };
   //Xóa ảnh
   const handleRemoveImage = (index) => {
@@ -103,36 +106,34 @@ export default function CreateEquipment() {
 
   //Nhật kí bảo dưỡng- sửa chữa
   const [productDiaries, setProductDiaries] = useState([
-    { diaryId: -Date.now(), diaryName: "", diaryFile: null },
+    { id: -Date.now(), name: "", file: null },
   ]);
   const [errorDiary, setErrorDiary] = useState("");
 
   const createDivDiary = () => {
     const newDiary = {
-      diaryId: -Date.now(),
-      diaryName: "",
-      diaryFile: null,
+      id: -Date.now(),
+      name: "",
+      file: null,
     };
     setProductDiaries([...productDiaries, newDiary]);
   };
 
-  const deleteDivDiary = (diaryId) => {
-    const updateDiaries = productDiaries.filter(
-      (diary) => diary.diaryId !== diaryId
+  const deleteDivDiary = (id) => {
+    const updateDiaries = productDiaries.filter((diary) => diary.id !== id);
+    setProductDiaries(updateDiaries);
+  };
+
+  const handleInputChangeDiary = (id, key, value) => {
+    const updateDiaries = productDiaries.map((diary) =>
+      diary.id === id ? { ...diary, [key]: value } : diary
     );
     setProductDiaries(updateDiaries);
   };
 
-  const handleInputChangeDiary = (diaryId, key, value) => {
+  const handleFileChangeDiary = (id, file) => {
     const updateDiaries = productDiaries.map((diary) =>
-      diary.diaryId === diaryId ? { ...diary, [key]: value } : diary
-    );
-    setProductDiaries(updateDiaries);
-  };
-
-  const handleFileChangeDiary = (diaryId, diaryFile) => {
-    const updateDiaries = productDiaries.map((diary) =>
-      diary.diaryId === diaryId ? { ...diary, diaryFile } : diary
+      diary.id === id ? { ...diary, file } : diary
     );
     setProductDiaries(updateDiaries);
     setValue({ ...value, productDiaries: updateDiaries });
@@ -449,18 +450,18 @@ export default function CreateEquipment() {
                         marginBottom: "15px",
                         height: "30px",
                       }}
-                      key={diary.diaryId}
+                      key={diary.id}
                     >
                       <TextField
                         placeholder="Thông số"
                         id="outlined-size-small"
-                        value={diary.diaryName}
+                        value={diary.name}
                         size="small"
                         sx={{ marginRight: "20px" }}
                         onChange={(e) =>
                           handleInputChangeDiary(
-                            diary.diaryId,
-                            "diaryName",
+                            diary.id,
+                            "name",
                             e.target.value
                           )
                         }
@@ -473,19 +474,17 @@ export default function CreateEquipment() {
                           }}
                           className="form-control"
                           type="file"
-                          id={`fileInput${diary.diaryId}`}
+                          id={`fileInput${diary.id}`}
                           name="filename"
+                          accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                           onChange={(e) =>
-                            handleFileChangeDiary(
-                              diary.diaryId,
-                              e.target.files[0]
-                            )
+                            handleFileChangeDiary(diary.id, e.target.files[0])
                           }
                         />
                       </Button>
                       <button
                         className="btn btn-danger"
-                        onClick={() => deleteDivDiary(diary.diaryId)}
+                        onClick={() => deleteDivDiary(diary.id)}
                       >
                         x
                       </button>

@@ -5,16 +5,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useParams } from "react-router-dom";
 import {
-  fetchPdfDetail,
+  fetchPdfProduct,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 // import cn from "classnames";
 const EquipDetail = () => {
   // READ
-  const getPdfDetail = async (id) => {
-    console.log(id);
+  const getPdfDetail = async (id, type) => {
     try {
-      const url = await fetchPdfDetail(id);
+      const url = await fetchPdfProduct(id, type);
       window.open(url, "_blank");
     } catch (error) {}
   };
@@ -31,18 +30,17 @@ const EquipDetail = () => {
   const [product, setProduct] = useState();
   const [images, setImages] = useState([]);
   const [productDetails, setproductDetails] = useState([]);
-  const [productDiaries, setDiaries] = useState([]);
+  const [productDiaries, setProductDiaries] = useState([]);
 
   const idEquip = params.code;
-  // console.log(idEquip);
   const getEquip = async (idEquip) => {
     try {
       const data = await selectEquipmentAPI(idEquip);
       setProduct(data);
-      // console.log(data);
+
       setImages(data.productImages);
       setproductDetails(data.productDetails);
-      setDiaries(data.productDiaries);
+      setProductDiaries(data.productDiaries);
       return data;
     } catch (error) {
       console.error("Error fetching equipments:", error);
@@ -64,7 +62,7 @@ const EquipDetail = () => {
               <div>
                 <img
                   style={{ width: "100%", height: "570px" }}
-                  src={image.pathImage}
+                  src={image.imageOfProduct}
                   alt={image.id}
                 />
               </div>
@@ -118,7 +116,7 @@ const EquipDetail = () => {
           <div>
             <img
               style={{ width: "200px", border: "1px solid" }}
-              src={product.pathOfQR}
+              src={product.imageOfQR}
               alt=""
             />
           </div>
@@ -133,12 +131,17 @@ const EquipDetail = () => {
               {productDetails.map((detail) => (
                 <li className="mb-2">
                   <b>{detail.name}: </b>
-                  <button
-                    className="link"
-                    onClick={() => getPdfDetail(detail.id)}
-                  >
-                    {detail.value}
-                  </button>
+                  {detail.pathFile ? (
+                    <span
+                      className="link-primary"
+                      style={{ textDecoration: "underline", cursor: "pointer" }}
+                      onClick={() => getPdfDetail(detail.id, "detail")}
+                    >
+                      {detail.value}
+                    </span>
+                  ) : (
+                    <span>{detail.value}</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -153,9 +156,13 @@ const EquipDetail = () => {
               {productDiaries?.map((diary) => (
                 <li className="mb-2">
                   <b>{diary.name}: </b>
-                  <button onClick={() => getPdfDetail(diary.id)}>
+                  <span
+                    className="link-primary"
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
+                    onClick={() => getPdfDetail(diary?.id, "diary")}
+                  >
                     {diary?.value}
-                  </button>
+                  </span>
                 </li>
               ))}
             </ul>

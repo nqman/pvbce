@@ -15,32 +15,41 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
   };
   return (
     <StyledEngineProvider injectFirst>
-      <div style={{ height: 500, width: "1150px" }}>
+      <div
+        style={{
+          height: 500,
+          width: "100%",
+          margin: "auto",
+          overflow: "hidden",
+        }}
+      >
         <DataGrid
+          style={{ padding: 10 }}
           rows={rows.map((row) => ({ ...row, id: row.id }))}
           columns={[
-            { field: "id", hideable: false, headerName: "STT", width: 50 },
+            { field: "id", headerName: "STT", width: 50 },
             {
               field: "qr",
-              headerName: "QR",
+              headerName: "MÃ QR",
               width: 100,
+              // align: "center",
               renderCell: (params) => (
                 <img
                   style={{ width: "50px", height: "50px" }}
-                  src={params.row.pathOfQR}
+                  src={params.row.imageOfQR}
                   alt={params.row.name}
                 />
               ),
             },
             { field: "name", headerName: "TÊN THIẾT BỊ", width: 200 },
-            { field: "divideCode", headerName: "MÃ THIẾT BỊ", width: 200 },
+            { field: "divideCode", headerName: "MÃ THIẾT BỊ", width: 150 },
             {
               field: "constructionProject",
               headerName: "THI CÔNG DỰ ÁN",
-              width: 200,
+              width: 180,
             },
-            { field: "location", headerName: "NẰM Ở KHO BÃI", width: 200 },
-            { field: "note", headerName: "GHI CHÚ", width: 180 },
+            { field: "location", headerName: "NẰM Ở KHO BÃI", width: 180 },
+            { field: "note", headerName: "GHI CHÚ", width: 150 },
             {
               field: "action",
               headerName: "TÙY CHỌN",

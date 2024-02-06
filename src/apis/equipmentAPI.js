@@ -81,34 +81,34 @@ export async function addEquipmentAPI(equipments) {
         if (Array.isArray(equipments[key])) {
           equipments[key].forEach((diary) => {
             //EDIT
-            if (diary.diaryId > 0) {
+            if (diary.id > 0) {
               if (
-                diary.pathDiaryFile !== null ||
-                (typeof diary.diaryFile !== "undefined" &&
-                  diary.diaryFile instanceof File)
+                diary.file !== null ||
+                (typeof diary.file !== "undefined" &&
+                  diary.file instanceof File)
               ) {
                 if (
-                  typeof diary.diaryFile !== "undefined" &&
-                  diary.diaryFile instanceof File
+                  typeof diary.file !== "undefined" &&
+                  diary.file instanceof File
                 ) {
-                  formData.append("diaryFileUpdate", diary.diaryFile);
-                  formData.append("diaryFileIDUpdatePart", diary.diaryId);
-                  formData.append("diaryFileHeaderUpdatePart", diary.diaryName);
+                  formData.append("diaryFileUpdate", diary.file);
+                  formData.append("diaryFileIDUpdatePart", diary.id);
+                  formData.append("diaryFileHeaderUpdatePart", diary.name);
                 } else {
-                  formData.append("pathDiaryFile", diary.pathDiaryFile);
-                  formData.append("diaryFileIDUpdatePath", diary.diaryId);
-                  formData.append("diaryFileHeaderUpdatePath", diary.diaryName);
-                  formData.append("diaryFileNameUpdatePath", diary.diaryValue);
+                  formData.append("pathFile", diary.pathFile);
+                  formData.append("diaryFileIDUpdatePath", diary.id);
+                  formData.append("diaryFileHeaderUpdatePath", diary.name);
+                  formData.append("diaryFileNameUpdatePath", diary.value);
                 }
               }
             }
             //NEW
             else {
-              if (diary.diaryFile instanceof File) {
-                console.log(diary.diaryFile);
+              if (diary.file instanceof File) {
+                console.log(diary.file);
                 formData.append("diaryFileIDNew", 0);
-                formData.append("diaryFileHeaderNew", diary.diaryName);
-                formData.append("diaryFile", diary.diaryFile);
+                formData.append("diaryFileHeaderNew", diary.name);
+                formData.append("diaryFile", diary.file);
               }
             }
           });
@@ -138,6 +138,7 @@ export async function addEquipmentAPI(equipments) {
 export async function selectEquipmentAPI(id) {
   try {
     const resp = await baseAPI.get(`products/${id}`);
+    console.log(resp.data);
     return resp.data;
   } catch (error) {
     console.error(error);
@@ -155,20 +156,9 @@ export async function deleteEquipmentAPI(id) {
 }
 
 //PDF
-export async function fetchPdfDetail(detailId) {
+export async function fetchPdfProduct(id, tab) {
   try {
-    const response = await baseAPI.get(
-      `products/url/view/${detailId}`,
-      // const response = await axios.get(
-      //   `http://103.82.38.121:8080/products/detail/view/${detailId}`,
-      {
-        responseType: "arraybuffer",
-      }
-    );
-
-    // const blob = new Blob([response.data], { type: "application/pdf" });
-    // const url = URL.createObjectURL(blob);
-    // console.log(url);
+    const response = await baseAPI.get(`products/url/${tab}/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching PDF:", error);
