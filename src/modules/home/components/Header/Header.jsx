@@ -25,16 +25,19 @@ function Header() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  // const handleOpenUserMenu = (event) => {
+  //   setAnchorElUser(event.currentTarget);
+  // };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
+  const handleLogin = () => {
+    navigate("/login");
   };
   const navigate = useNavigate();
   const handleChangeNavBar = (page) => {
@@ -132,7 +135,7 @@ function Header() {
                     color: "#00477b",
                     fontSize: "18px",
                     display: "block",
-                    margin: "0 5px -10px 5px",
+                    margin: "0 5px 0px 5px",
                     fontWeight: "600",
                   }}
                 >
@@ -174,13 +177,12 @@ function Header() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu && (() => handleChangeNavBar(page))}
-                // sx={{ my: 2, color: "white", display: "block" }}
                 sx={{
                   my: 1,
                   color: "#00477b",
                   fontSize: "18px",
                   display: "block",
-                  margin: "0 5px -10px 5px",
+                  margin: "0 5px 0px 5px",
                   fontWeight: "600",
                 }}
               >
@@ -189,35 +191,19 @@ function Header() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Đăng nhập">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircle fontSize="large" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          <button
+            style={{
+              backgroundColor: "#405CF5",
+              color: "white",
+              fontSize: "16px",
+              padding: "5px 10px",
+              border: "none",
+              borderRadius: "5px",
+            }}
+            onClick={() => handleLogin()}
+          >
+            Đăng nhập
+          </button>
         </Toolbar>
       </Container>
     </AppBar>

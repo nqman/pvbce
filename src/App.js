@@ -9,6 +9,7 @@ import Report from "./modules/report/pages/Report";
 import DocumentManagement from "./modules/library/pages/DocumentManagement";
 import NotFound from "./modules/home/components/NotFound";
 import SignUp from "./modules/authentication/pages/SignUp";
+import Login from "./modules/authentication/pages/Login";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/report" element={<Report />}></Route>
           <Route path="/library" element={<DocumentManagement />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
+          <Route path="/login" element={<Login />}></Route>
         </Route>
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
