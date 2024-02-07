@@ -36,7 +36,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
           {listDocs?.map((doc) => (
             <tr>
               <td>{doc?.name}</td>
-              {doc?.linkDoc ? (
+              {doc?.type === "link" ? (
                 <>
                   <td style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
@@ -73,7 +73,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                     </button>
                   </td>
                 </>
-              ) : (
+              ) : doc?.type === "pdf" ? (
                 <>
                   <td style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
@@ -93,6 +93,43 @@ export default function ListDocuments({ onDelete, listDocs }) {
                         }}
                       />
                     </button>
+                    <button
+                      className="btn btn-dark"
+                      style={{
+                        padding: "0px",
+                        height: "25px",
+                        width: "25px",
+                        marginRight: "10px",
+                      }}
+                      onClick={() => getPdf(doc.id, "attachment")}
+                    >
+                      <FileDownloadIcon
+                        sx={{
+                          fontSize: "17px",
+                        }}
+                      />
+                    </button>
+
+                    <button
+                      style={{
+                        padding: "0px",
+                        height: "25px",
+                        width: "25px",
+                      }}
+                      className="btn btn-danger"
+                      onClick={() => onDelete(doc.id)}
+                    >
+                      <ClearIcon
+                        sx={{
+                          fontSize: "17px",
+                        }}
+                      />
+                    </button>
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
                       className="btn btn-dark"
                       style={{
