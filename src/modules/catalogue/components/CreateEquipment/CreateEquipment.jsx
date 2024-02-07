@@ -387,7 +387,6 @@ export default function CreateEquipment() {
                       key={productDetail.id}
                     >
                       <TextField
-                        // label="Thông số"
                         placeholder="Thông số"
                         id="outlined-size-small"
                         value={productDetail.name}
@@ -402,7 +401,6 @@ export default function CreateEquipment() {
                         }
                       />
                       <TextField
-                        // label="Nội dung"
                         placeholder="Nội dung"
                         id="outlined-size-small"
                         value={productDetail.value || productDetail.file?.name}
