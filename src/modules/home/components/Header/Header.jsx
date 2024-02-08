@@ -36,8 +36,8 @@ function Header() {
   // const handleCloseUserMenu = () => {
   //   setAnchorElUser(null);
   // };
-  const handleLogin = () => {
-    navigate("/login");
+  const handleSignIn = () => {
+    navigate("/signin");
   };
   const navigate = useNavigate();
   const handleChangeNavBar = (page) => {
@@ -193,14 +193,14 @@ function Header() {
 
           <button
             style={{
-              backgroundColor: "#405CF5",
+              backgroundColor: "#3B65B3",
               color: "white",
-              fontSize: "16px",
-              padding: "5px 10px",
+              fontSize: "14px",
+              padding: "8px 15px",
               border: "none",
               borderRadius: "5px",
             }}
-            onClick={() => handleLogin()}
+            onClick={() => handleSignIn()}
           >
             Đăng nhập
           </button>

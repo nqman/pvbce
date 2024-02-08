@@ -1,9 +1,9 @@
 import { Button, TextField } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import "./signIn.css";
 
-export default function Login() {
+export default function SignIn() {
   const navigate = useNavigate();
   const handleSignUp = () => {
     navigate("/signup");
@@ -12,6 +12,7 @@ export default function Login() {
   return (
     <div className="d-flex" style={{ justifyContent: "center" }}>
       <div className="form">
+        <h3 className="text-center mb-3">Đăng nhập</h3>
         <form action="">
           <div className="mb-3">
             <TextField
