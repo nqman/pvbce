@@ -21,9 +21,9 @@ function App() {
           <Route path="/catalogue/:code" element={<EquipDetails />} />
           <Route path="/report" element={<Report />}></Route>
           <Route path="/library" element={<DocumentManagement />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/signin" element={<SignIn />}></Route>
         </Route>
+        <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
         <Route path="*" element={<NotFound />} />

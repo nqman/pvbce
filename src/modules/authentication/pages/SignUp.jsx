@@ -1,9 +1,14 @@
 import { Button, TextField } from "@mui/material";
 import React from "react";
 import "./signIn.css";
+
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+import HomeIcon from "@mui/icons-material/Home";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -36,30 +41,26 @@ export default function SignUp() {
       username: "",
       password: "",
     },
-    mode: "onSubmit",
+    mode: "onTouched",
     resolver: yupResolver(schema),
   });
-  // const emptyValue = {};
-  const handleChange = (e) => {
-    // console.log(e);
+  const handleSignUp = (data) => {
+    console.log(data);
   };
 
-  const handleSignUp = (e) => {
-    // console.log(e);
-  };
-  const onSubmit = (data) => console.log(data);
+  const navigate = useNavigate();
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div className="form" style={{ width: "500px" }}>
         <h3 className="text-center mb-3">Đăng ký</h3>
-
         <form
           style={{
             flexDirection: "column",
             display: "flex",
             alignItems: "center",
           }}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleSignUp)}
         >
           <div className="mb-3 w-100">
             <TextField
@@ -82,7 +83,7 @@ export default function SignUp() {
           </div>
           <div className="mb-3 w-100">
             <TextField
-              className="w-100 mb-3"
+              className="w-100 "
               size="small"
               label="Số điện thoại"
               {...register("phone")}
@@ -91,7 +92,7 @@ export default function SignUp() {
           </div>
           <div className="mb-3 w-100">
             <TextField
-              className="w-100 mb-3"
+              className="w-100"
               size="small"
               label="Tài khoản"
               {...register("username")}
@@ -100,7 +101,7 @@ export default function SignUp() {
           </div>
           <div className="mb-3 w-100">
             <TextField
-              className="w-100 mb-3"
+              className="w-100 "
               size="small"
               label="Mật khẩu"
               type="password"
@@ -108,21 +109,56 @@ export default function SignUp() {
             />
             <span className="text-danger ">{errors.password?.message}</span>
           </div>
-          <button
+          <div
             style={{
-              backgroundColor: "#FB8332",
-              color: "white",
-              fontSize: "16px",
-              padding: "10px 20px",
-              border: "none",
-              borderRadius: "5px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              position: "relative",
+              marginTop: "10px",
             }}
-            type="submit"
-            variant="contained"
-            onClick={() => handleSignUp()}
           >
-            Đăng ký
-          </button>
+            <a
+              className="home-icon"
+              style={{ position: "absolute", left: 0 }}
+              href="/"
+            >
+              <KeyboardReturnIcon />
+              <HomeIcon />
+            </a>
+
+            <button
+              style={{
+                backgroundColor: "#FB8332",
+                color: "white",
+                fontSize: "16px",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "5px",
+              }}
+              type="submit"
+              variant="contained"
+            >
+              Đăng ký
+            </button>
+          </div>
+          <div
+            style={{
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+            }}
+            className="d-flex mt-2 "
+          >
+            <p className="mb-0">Bạn đã có tài khoản?</p>
+            <button
+              className="btn btn-link"
+              onClick={() => navigate("/signin")}
+            >
+              Đăng nhập
+            </button>
+          </div>
         </form>
       </div>
     </div>
