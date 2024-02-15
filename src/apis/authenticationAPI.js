@@ -72,7 +72,9 @@ export async function editUserAPI(user) {
 export async function verifyUser(data) {
   try {
     const code = data.code;
-    const resp = await baseAPI.get(`verify/${code}`);
+    const resp = await baseAPI.get(
+      `http://103.82.39.125:8080/users/verify/${code}`
+    );
     return resp;
   } catch (error) {}
 }
