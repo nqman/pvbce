@@ -13,7 +13,7 @@ import { addUserAPI } from "../../../apis/authenticationAPI";
 
 const schema = yup
   .object({
-    fullName: yup.string().required("Vui lòng không bỏ trống"),
+    name: yup.string().required("Vui lòng không bỏ trống"),
     email: yup
       .string()
       .required("Vui lòng không bỏ trống")
@@ -35,7 +35,7 @@ export default function SignUp() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      fullName: "",
+      name: "",
       phone: "",
       email: "",
       password: "",
@@ -44,7 +44,7 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (user) => {
-    // await addUserAPI(user);
+    await addUserAPI(user);
     alert("Vui lòng xác nhận tài khoản qua email của bạn!");
     navigate("/signin");
   };
@@ -68,9 +68,9 @@ export default function SignUp() {
               className="w-100"
               size="small"
               label="Họ tên"
-              {...register("fullName")}
+              {...register("name")}
             />
-            <span className="text-danger ">{errors.fullName?.message}</span>
+            <span className="text-danger ">{errors.name?.message}</span>
           </div>
           <div className="mb-3 w-100">
             <TextField

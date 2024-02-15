@@ -1,3 +1,4 @@
+import axios from "axios";
 import baseAPI from "./baseAPI";
 
 export async function listUserAPI() {
@@ -14,12 +15,15 @@ export async function listUserAPI() {
 export async function addUserAPI(user) {
   try {
     const formData = new FormData();
-    formData.append("id", 0);
-    formData.append("fullName", user.fullName);
+    formData.append("name", user.name);
     formData.append("phone", user.phone);
     formData.append("email", user.email);
     formData.append("password", user.password);
     const resp = await baseAPI.post("users/save", formData);
+    // const resp = await axios.post(
+    //   "http://103.82.39.125:8080/users/save",
+    //   formData
+    // );
     return resp;
   } catch (error) {
     console.error(error);
@@ -67,9 +71,8 @@ export async function editUserAPI(user) {
 
 export async function verifyUser(data) {
   try {
-    const formData = new FormData();
-    formData.append("code", data.code);
-    const resp = await baseAPI.post("users/verify", formData);
+    const code = data.code;
+    const resp = await baseAPI.get(`verify/${code}`);
     return resp;
   } catch (error) {}
 }

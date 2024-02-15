@@ -26,7 +26,7 @@ function App() {
         </Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
-        <Route path="/users/verify/:code" element={<VerifyUser />}></Route>
+        <Route path="/verify/:code" element={<VerifyUser />}></Route>
         {/* ADMIN */}
         <Route path="/admin" element={<AdminManagement />}></Route>
 
