@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React from "react";
 import "./signIn.css";
 
@@ -9,6 +9,7 @@ import * as yup from "yup";
 import HomeIcon from "@mui/icons-material/Home";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { useNavigate } from "react-router-dom";
+import { addUserAPI } from "../../../apis/authenticationAPI";
 
 const schema = yup
   .object({
@@ -18,7 +19,6 @@ const schema = yup
       .required("Vui lòng không bỏ trống")
       .email("Email không đúng định dạng"),
     phone: yup.string().required("Vui lòng không bỏ trống"),
-    username: yup.string().required("Vui lòng không bỏ trống"),
     password: yup
       .string()
       .required("Vui lòng không bỏ trống")
@@ -36,16 +36,17 @@ export default function SignUp() {
   } = useForm({
     defaultValues: {
       fullName: "",
-      email: "",
       phone: "",
-      username: "",
+      email: "",
       password: "",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
-  const handleSignUp = (data) => {
-    console.log(data);
+  const handleSignUp = async (user) => {
+    // await addUserAPI(user);
+    alert("Vui lòng xác nhận tài khoản qua email của bạn!");
+    navigate("/signin");
   };
 
   const navigate = useNavigate();
@@ -73,16 +74,6 @@ export default function SignUp() {
           </div>
           <div className="mb-3 w-100">
             <TextField
-              className="w-100"
-              size="small"
-              type="email"
-              label="Email"
-              {...register("email")}
-            />
-            <span className="text-danger ">{errors.email?.message}</span>
-          </div>
-          <div className="mb-3 w-100">
-            <TextField
               className="w-100 "
               size="small"
               label="Số điện thoại"
@@ -94,11 +85,13 @@ export default function SignUp() {
             <TextField
               className="w-100"
               size="small"
-              label="Tài khoản"
-              {...register("username")}
+              type="email"
+              label="Email"
+              {...register("email")}
             />
-            <span className="text-danger ">{errors.username?.message}</span>
+            <span className="text-danger ">{errors.email?.message}</span>
           </div>
+
           <div className="mb-3 w-100">
             <TextField
               className="w-100 "

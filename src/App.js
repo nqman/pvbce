@@ -10,6 +10,8 @@ import DocumentManagement from "./modules/library/pages/DocumentManagement";
 import NotFound from "./modules/home/components/NotFound";
 import SignUp from "./modules/authentication/pages/SignUp";
 import SignIn from "./modules/authentication/pages/SignIn";
+import AdminManagement from "./admin/AdminManagement";
+import VerifyUser from "./modules/authentication/pages/VerifyUser";
 
 function App() {
   return (
@@ -24,6 +26,10 @@ function App() {
         </Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
+        <Route path="/users/verify/:code" element={<VerifyUser />}></Route>
+        {/* ADMIN */}
+        <Route path="/admin" element={<AdminManagement />}></Route>
+
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
         <Route path="*" element={<NotFound />} />

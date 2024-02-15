@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./signIn.css";
@@ -10,7 +10,10 @@ import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 
 const schema = yup
   .object({
-    username: yup.string().required("Vui lòng không bỏ trống"),
+    email: yup
+      .string()
+      .required("Vui lòng không bỏ trống")
+      .email("Email không đúng định dạng"),
     password: yup.string().required("Vui lòng không bỏ trống"),
   })
   .required();
@@ -44,20 +47,20 @@ export default function SignIn() {
         >
           <div className="mb-3 w-100">
             <TextField
-              id="username"
-              type="text"
-              label="Tài khoản"
+              id="email"
+              type="email"
+              label="Email"
               size="small"
               style={{ width: "100%" }}
-              {...register("username")}
+              {...register("email")}
             />
-            <span className="text-danger ">{errors.username?.message}</span>
+            <span className="text-danger ">{errors.email?.message}</span>
           </div>
           <div className="mb-3 w-100">
             <TextField
               label="Mật khẩu"
               id="password"
-              type="text"
+              type="password"
               size="small"
               style={{ width: "100%" }}
               {...register("password")}
