@@ -21,6 +21,7 @@ const settings = ["Account", "Logout"];
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  // const loggedUser = useSelector((state) => state.user.loggedUser);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
