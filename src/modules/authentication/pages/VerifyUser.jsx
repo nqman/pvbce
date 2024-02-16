@@ -8,14 +8,17 @@ export default function VerifyUser() {
   const navigate = useNavigate();
   const param = useParams();
   useEffect(() => {
-    // Alert("Tài khoản của bạn đã được kích hoạt thành công");
-    <Alert severity="success">
-      <AlertTitle>Thông báo</AlertTitle>
-      Tài khoản của bạn đã được kích hoạt thành công
-    </Alert>;
     verifyUser(param);
-    navigate("/signin");
+    // navigate("/signin");
   }, []);
 
-  return <></>;
+  return (
+    <>
+      <Alert severity="success">
+        <AlertTitle>Thông báo</AlertTitle>
+        Tài khoản của bạn đã được kích hoạt thành công
+      </Alert>
+      <button onClick={() => navigate("/signin")}>Đăng nhập</button>;
+    </>
+  );
 }
