@@ -68,7 +68,6 @@ export async function editUserAPI(user) {
 }
 
 //Verify
-
 export async function verifyUser(data) {
   try {
     const code = data.code;
@@ -77,4 +76,14 @@ export async function verifyUser(data) {
     );
     return resp;
   } catch (error) {}
+}
+
+//Forgot Password
+export async function forgotPasswordAPI() {
+  try {
+    const resp = await baseAPI.get();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }

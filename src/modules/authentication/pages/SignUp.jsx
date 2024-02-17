@@ -1,10 +1,4 @@
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  CircularProgress,
-  TextField,
-} from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import React, { useState } from "react";
 import "./authentication.css";
 
@@ -13,9 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import HomeIcon from "@mui/icons-material/Home";
-import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import { useNavigate } from "react-router-dom";
 import { addUserAPI } from "../../../apis/authenticationAPI";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const schema = yup
   .object({
@@ -60,6 +55,7 @@ export default function SignUp() {
   };
 
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -70,7 +66,10 @@ export default function SignUp() {
         </Box>
       ) : (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div className="form" style={{ width: "500px" }}>
+          <div
+            className="form"
+            style={{ width: "500px", position: "relative" }}
+          >
             <h3 className="text-center mb-3">Đăng ký</h3>
             <form
               style={{
@@ -110,13 +109,27 @@ export default function SignUp() {
               </div>
 
               <div className="mb-3 w-100">
-                <TextField
-                  className="w-100 "
-                  size="small"
-                  label="Mật khẩu"
-                  type="password"
-                  {...register("password")}
-                />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                  }}
+                >
+                  <TextField
+                    className="w-100 "
+                    size="small"
+                    label="Mật khẩu"
+                    type={visible ? "text" : "password"}
+                    {...register("password")}
+                  />
+                  <div
+                    onClick={() => setVisible(!visible)}
+                    style={{ position: "absolute", right: "10px" }}
+                  >
+                    {visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </div>
+                </div>
                 <span className="text-danger ">{errors.password?.message}</span>
               </div>
               <div
@@ -125,16 +138,19 @@ export default function SignUp() {
                   justifyContent: "center",
                   alignItems: "center",
                   width: "100%",
-                  position: "relative",
                   marginTop: "10px",
                 }}
               >
                 <a
-                  className="home-icon"
-                  style={{ position: "absolute", left: 0 }}
+                  style={{
+                    position: "absolute",
+                    left: "10px",
+                    top: "10px",
+                    padding: 0,
+                  }}
+                  className="btn btn-outline-primary"
                   href="/"
                 >
-                  <KeyboardReturnIcon />
                   <HomeIcon />
                 </a>
 
@@ -163,7 +179,7 @@ export default function SignUp() {
               >
                 <p className="mb-0">Bạn đã có tài khoản?</p>
                 <button
-                  className="btn btn-link"
+                  className="btn text-primary"
                   onClick={() => navigate("/signin")}
                 >
                   Đăng nhập

@@ -76,7 +76,7 @@ export default function SignIn() {
         ></div>
         <div className="text-center">
           <button
-            onClick={() => navigate("/forgotpassword")}
+            onClick={() => navigate("/forgot-password")}
             className="btn text-primary "
           >
             Quên mật khẩu?
@@ -116,8 +116,6 @@ export default function SignIn() {
             className="btn btn-outline-primary"
             href="/"
           >
-            {/* <KeyboardReturnIcon /> */}
-
             <HomeIcon />
           </a>
         </div>

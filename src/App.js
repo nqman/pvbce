@@ -13,6 +13,7 @@ import SignIn from "./modules/authentication/pages/SignIn";
 import AdminManagement from "./admin/AdminManagement";
 import VerifyUser from "./modules/authentication/pages/VerifyUser";
 import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
+import ChangePassword from "./modules/authentication/pages/ChangePassword";
 
 function App() {
   return (
@@ -29,7 +30,11 @@ function App() {
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/verify/:code" element={<VerifyUser />}></Route>
-        <Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route
+          path="/change-password/:code"
+          element={<ChangePassword />}
+        ></Route>
 
         {/* ADMIN */}
         <Route path="/admin" element={<AdminManagement />}></Route>
