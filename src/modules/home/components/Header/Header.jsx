@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { useNavigate } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
+import LoginIcon from "@mui/icons-material/Login";
 
 const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -194,16 +195,20 @@ function Header() {
 
           <button
             style={{
-              backgroundColor: "#3B65B3",
-              color: "white",
-              fontSize: "14px",
-              padding: "8px 15px",
-              border: "none",
-              borderRadius: "5px",
+              // backgroundColor: "#3B65B3",
+              // color: "white",
+              fontSize: "10px",
+
+              // padding: "8px 15px",
+              // border: "none",
+              // borderRadius: "5px",
             }}
+            className="btn btn-outline-primary p-2"
             onClick={() => handleSignIn()}
+            title="Đăng nhập"
           >
-            Đăng nhập
+            {/* Đăng nhập */}
+            <LoginIcon />
           </button>
         </Toolbar>
       </Container>

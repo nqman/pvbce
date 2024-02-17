@@ -35,7 +35,7 @@ export default function SignIn() {
   };
   return (
     <div className="d-flex" style={{ justifyContent: "center" }}>
-      <div className="form" style={{ width: "500px" }}>
+      <div className="form" style={{ width: "500px", position: "relative" }}>
         <h3 className="text-center mb-3">Đăng nhập</h3>
         <form
           onSubmit={handleSubmit(handleSignIn)}
@@ -67,10 +67,29 @@ export default function SignIn() {
             />
             <span className="text-danger ">{errors.password?.message}</span>
           </div>
-          <button className="button-9">Đăng nhập</button>
+          <button className="btn btn-success w-100">Đăng nhập</button>
         </form>
-        <div style={{ borderBottom: "1px solid", margin: "30px -20px" }}></div>
-        <p className="text-center">Bạn chưa có tài khoản?</p>
+        <div
+          style={{ borderBottom: "1px solid", margin: "30px -20px 10px -20px" }}
+        ></div>
+        <div className="text-center">
+          <button className="btn text-primary ">Quên mật khẩu?</button>
+        </div>
+        <div
+          style={{
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <p className="mb-0">Bạn chưa có tài khoản?</p>
+          <button
+            onClick={() => navigate("/signup")}
+            className="btn text-primary ms-2 p-1"
+          >
+            Đăng ký
+          </button>
+        </div>
 
         <div
           style={{
@@ -78,21 +97,23 @@ export default function SignIn() {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            position: "relative",
+            // position: "relative",
           }}
         >
           <a
-            style={{ position: "absolute", left: 0 }}
-            className="home-icon"
+            style={{
+              position: "absolute",
+              left: "10px",
+              top: "10px",
+              padding: 0,
+            }}
+            className="btn btn-outline-primary"
             href="/"
           >
-            <KeyboardReturnIcon />
+            {/* <KeyboardReturnIcon /> */}
+
             <HomeIcon />
           </a>
-
-          <button onClick={() => navigate("/signup")} className="button-8">
-            Đăng ký
-          </button>
         </div>
       </div>
     </div>
