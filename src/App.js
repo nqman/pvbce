@@ -12,6 +12,7 @@ import SignUp from "./modules/authentication/pages/SignUp";
 import SignIn from "./modules/authentication/pages/SignIn";
 import AdminManagement from "./admin/AdminManagement";
 import VerifyUser from "./modules/authentication/pages/VerifyUser";
+import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
 
 function App() {
   return (
@@ -24,9 +25,12 @@ function App() {
           <Route path="/report" element={<Report />}></Route>
           <Route path="/library" element={<DocumentManagement />}></Route>
         </Route>
+        {/* authentication */}
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/verify/:code" element={<VerifyUser />}></Route>
+        <Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+
         {/* ADMIN */}
         <Route path="/admin" element={<AdminManagement />}></Route>
 

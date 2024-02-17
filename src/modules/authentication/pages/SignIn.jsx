@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import HomeIcon from "@mui/icons-material/Home";
-import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 
 const schema = yup
   .object({
@@ -34,7 +33,10 @@ export default function SignIn() {
     console.log(data);
   };
   return (
-    <div className="d-flex" style={{ justifyContent: "center" }}>
+    <div
+      className="d-flex"
+      style={{ justifyContent: "center", paddingTop: "50px" }}
+    >
       <div className="form" style={{ width: "500px", position: "relative" }}>
         <h3 className="text-center mb-3">Đăng nhập</h3>
         <form
@@ -73,7 +75,12 @@ export default function SignIn() {
           style={{ borderBottom: "1px solid", margin: "30px -20px 10px -20px" }}
         ></div>
         <div className="text-center">
-          <button className="btn text-primary ">Quên mật khẩu?</button>
+          <button
+            onClick={() => navigate("/forgotpassword")}
+            className="btn text-primary "
+          >
+            Quên mật khẩu?
+          </button>
         </div>
         <div
           style={{
@@ -97,7 +104,6 @@ export default function SignIn() {
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
-            // position: "relative",
           }}
         >
           <a
