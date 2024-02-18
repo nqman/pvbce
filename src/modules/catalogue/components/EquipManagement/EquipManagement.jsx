@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import ListEquipments from "./ListEquipments";
+import Swal from "sweetalert2";
 
 // API
 
@@ -44,9 +45,23 @@ export default function EquipManagement() {
   // Xóa thiết bị
   const handleDeteleEquip = async (id) => {
     try {
-      if (window.confirm("Bạn có chắc chắn xóa thiết bị không?")) {
+      const result = await Swal.fire({
+        title: "Bạn chắc chắn muốn xóa thiết bị? ",
+        text: "Thiết bị này sẽ bị xóa vĩnh viễn!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Xóa thiết bị",
+        cancelButtonText: "Hủy bỏ",
+      });
+      if (result.isConfirmed) {
         await deleteEquipmentAPI(id);
-        toast.success("Xóa thiết bị thành công");
+        Swal.fire({
+          title: "Đã xóa!",
+          text: "Thiết bị đã được xóa thành công.",
+          icon: "success",
+        });
         fetchEquips();
       }
     } catch (error) {
