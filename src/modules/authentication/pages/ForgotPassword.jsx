@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { forgotPasswordAPI } from "../../../apis/authenticationAPI";
+import Swal from "sweetalert2";
 
 const schema = yup
   .object({
@@ -23,8 +25,17 @@ export default function ForgotPassword() {
     formState: { errors },
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
 
-  const handleSendEmail = (e) => {
-    console.log(e);
+  const handleSendEmail = async (e) => {
+    try {
+      console.log(e.email);
+      const status = await forgotPasswordAPI(e.email);
+      if (!status) {
+        Swal.fire("Email không tồn tại!");
+      } else {
+        Swal.fire("Vui lòng kiểm tra email để tạo mật khẩu mới!");
+        navigate("/");
+      }
+    } catch (error) {}
   };
   return (
     <div
@@ -59,7 +70,11 @@ export default function ForgotPassword() {
             >
               Hủy bỏ
             </button>
-            <button className="ms-3 btn btn-primary" style={{ width: "100px" }}>
+            <button
+              type="submit"
+              className="ms-3 btn btn-primary"
+              style={{ width: "100px" }}
+            >
               Gửi
             </button>
           </div>

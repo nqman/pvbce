@@ -8,9 +8,11 @@ import * as yup from "yup";
 
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
-import { addUserAPI } from "../../../apis/authenticationAPI";
+import { addUserAPI, checkEmailAPI } from "../../../apis/authenticationAPI";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import Loading from "../../home/components/Loading/Loading";
+import Swal from "sweetalert2";
 
 const schema = yup
   .object({
@@ -50,20 +52,22 @@ export default function SignUp() {
   const handleSignUp = async (user) => {
     setIsLoading(true);
     await addUserAPI(user);
-    alert("Vui lòng xác nhận tài khoản qua email của bạn!");
+    Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
     navigate("/signin");
   };
 
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
-
+  const [checkEmail, setCheckEmail] = useState(true);
+  const handleCheckEmail = async (e) => {
+    try {
+      setCheckEmail(await checkEmailAPI(e.target.value));
+    } catch (error) {}
+  };
   return (
     <>
       {isLoading ? (
-        <Box sx={{ display: "block", textAlign: "center" }}>
-          <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
-          <h1 style={{ marginTop: "20px" }}>Vui lòng đợi...</h1>
-        </Box>
+        <Loading />
       ) : (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div
@@ -87,6 +91,7 @@ export default function SignUp() {
                   {...register("name")}
                 />
                 <span className="text-danger ">{errors.name?.message}</span>
+                {}
               </div>
               <div className="mb-3 w-100">
                 <TextField
@@ -104,8 +109,14 @@ export default function SignUp() {
                   type="email"
                   label="Email"
                   {...register("email")}
+                  onBlur={handleCheckEmail}
                 />
                 <span className="text-danger ">{errors.email?.message}</span>
+                {checkEmail ? (
+                  ""
+                ) : (
+                  <span className="text-danger ">Email đã tồn tại</span>
+                )}
               </div>
 
               <div className="mb-3 w-100">

@@ -66,6 +66,20 @@ export async function editUserAPI(user) {
     throw error;
   }
 }
+//check trùng email
+export async function checkEmailAPI(valueOfEmail) {
+  try {
+    // console.log(valueOfEmail);
+
+    const resp = await baseAPI.get(
+      `http://103.82.39.125:8080/users/validate/email/${valueOfEmail}`
+    );
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 //Verify
 export async function verifyUser(data) {
@@ -79,9 +93,28 @@ export async function verifyUser(data) {
 }
 
 //Forgot Password
-export async function forgotPasswordAPI() {
+export async function forgotPasswordAPI(valueOfEmail) {
   try {
-    const resp = await baseAPI.get();
+    const resp = await baseAPI.get(
+      `http://103.82.39.125:8080/users/forgot-password/${valueOfEmail}`
+    );
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+//change Password
+export async function changePasswordAPI(newPassword, param) {
+  try {
+    const formData = new FormData();
+    formData.append("newPassword", newPassword);
+    formData.append("verificationCode", param);
+    const resp = await baseAPI.post(
+      `http://103.82.39.125:8080/users/change-password`,
+      formData
+    );
+    console.log(resp);
   } catch (error) {
     console.error(error);
     throw error;

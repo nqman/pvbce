@@ -1,12 +1,14 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import "./authentication.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { changePasswordAPI } from "../../../apis/authenticationAPI";
+import Swal from "sweetalert2";
 
 const schema = yup
   .object({
@@ -35,8 +37,15 @@ export default function ChangePassword() {
     formState: { errors },
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
 
-  const handleSendEmail = (e) => {
-    console.log(e);
+  const param = useParams();
+  const handleSendPassword = async (e) => {
+    const status = await changePasswordAPI(e.password, param.code);
+    if (!status) {
+      Swal.fire("Thay đổi mật khẩu thất bại!");
+    } else {
+      Swal.fire("Thay đổi mật khẩu thành công!");
+      navigate("/signin");
+    }
   };
 
   const [visible, setVisible] = useState(false);
@@ -51,7 +60,7 @@ export default function ChangePassword() {
       <div className="form" style={{ width: "500px" }}>
         <h3>Đổi mật khẩu</h3>
         <p>Vui lòng nhập mật khẩu mới.</p>
-        <form onSubmit={handleSubmit(handleSendEmail)}>
+        <form onSubmit={handleSubmit(handleSendPassword)}>
           <div
             style={{
               display: "flex",
