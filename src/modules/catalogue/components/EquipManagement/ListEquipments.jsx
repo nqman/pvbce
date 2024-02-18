@@ -67,6 +67,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                     }}
                     className="btn btn-success me-2"
                     onClick={() => handleRead(params.id)}
+                    title="Xem"
                   >
                     <VisibilityIcon
                       sx={{
@@ -85,6 +86,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                     }}
                     className="btn btn-warning me-2"
                     onClick={() => onEdit(params.id)}
+                    title="Sửa"
                   >
                     <EditIcon
                       sx={{
@@ -104,6 +106,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                     onClick={() => {
                       onDelete(params.id);
                     }}
+                    title="Xóa"
                   >
                     <ClearIcon
                       sx={{

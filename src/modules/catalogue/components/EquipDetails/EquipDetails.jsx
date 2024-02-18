@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Typography, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Container,
+} from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,7 +15,6 @@ import {
   fetchPdfProduct,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
-// import cn from "classnames";
 const EquipDetail = () => {
   // READ
   const getPdfDetail = async (id, type) => {
@@ -55,120 +61,125 @@ const EquipDetail = () => {
 
   return (
     <div>
-      <Grid container maxWidth={"lg"} margin={"auto"} spacing={5}>
-        <Grid item xs={12} lg={6}>
-          <Slider {...carouselSettings}>
-            {images?.map((image) => (
-              <div>
-                <img
-                  style={{ width: "100%", height: "570px" }}
-                  src={image.imageOfProduct}
-                  alt={image.id}
-                />
-              </div>
-            ))}
-          </Slider>
-        </Grid>
-        <Grid item xs={12} lg={6}>
-          <Typography variant="h5" gutterBottom>
-            Thông tin chung:
-          </Typography>
-          <List>
-            <ul>
-              {
-                <li className="mb-2">
-                  {" "}
-                  <b>Tên thiết bị: </b>
-                  {product.name}
-                </li>
-              }
-              {
-                <li className="mb-2">
-                  <b>Mã thiết bị: </b> {product.divideCode}
-                </li>
-              }
-              {product.constructionProject ? (
-                <li className="mb-2">
-                  <b>Thi công dự án:</b> {product.constructionProject}
-                </li>
-              ) : (
-                ""
-              )}
-              {product.location ? (
-                <li className="mb-2">
-                  <b>Nằm ở kho bãi: </b>
-                  {product.location}
-                </li>
-              ) : (
-                ""
-              )}
-              {
-                <li className="mb-2">
-                  <b>Ghi chú: </b>
-                  {product.note}
-                </li>
-              }
-            </ul>
-          </List>
-          <Typography variant="h5" gutterBottom>
-            Mã QR:
-          </Typography>
-          <div>
-            <img
-              style={{ width: "200px", border: "1px solid" }}
-              src={product.imageOfQR}
-              alt=""
-            />
-          </div>
-        </Grid>
+      <Container className="mt-4">
+        <Grid container spacing={5} style={{ overflow: "hidden" }}>
+          <Grid item xs={12} lg={6}>
+            <Slider {...carouselSettings}>
+              {images?.map((image) => (
+                <div>
+                  <img
+                    style={{ width: "100%", maxWidth: "100%", height: "570px" }}
+                    src={image.imageOfProduct}
+                    alt={image.id}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            <Typography variant="h5" gutterBottom>
+              Thông tin chung:
+            </Typography>
+            <List>
+              <ul>
+                {
+                  <li className="mb-2">
+                    {" "}
+                    <b>Tên thiết bị: </b>
+                    {product.name}
+                  </li>
+                }
+                {
+                  <li className="mb-2">
+                    <b>Mã thiết bị: </b> {product.divideCode}
+                  </li>
+                }
+                {product.constructionProject ? (
+                  <li className="mb-2">
+                    <b>Thi công dự án:</b> {product.constructionProject}
+                  </li>
+                ) : (
+                  ""
+                )}
+                {product.location ? (
+                  <li className="mb-2">
+                    <b>Nằm ở kho bãi: </b>
+                    {product.location}
+                  </li>
+                ) : (
+                  ""
+                )}
+                {
+                  <li className="mb-2">
+                    <b>Ghi chú: </b>
+                    {product.note}
+                  </li>
+                }
+              </ul>
+            </List>
+            <Typography variant="h5" gutterBottom>
+              Mã QR:
+            </Typography>
+            <div>
+              <img
+                style={{ width: "200px", border: "1px solid" }}
+                src={product.imageOfQR}
+                alt=""
+              />
+            </div>
+          </Grid>
 
-        <Grid item xs={12} lg={6}>
-          <Typography variant="h5" gutterBottom>
-            Thông số kỹ thuật:
-          </Typography>
-          <List>
-            <ul>
-              {productDetails.map((detail) => (
-                <li className="mb-2">
-                  <b>{detail.name}: </b>
-                  {detail.pathFile ? (
+          <Grid item xs={12} lg={6}>
+            <Typography variant="h5" gutterBottom>
+              Thông số kỹ thuật:
+            </Typography>
+            <List>
+              <ul>
+                {productDetails.map((detail) => (
+                  <li className="mb-2">
+                    <b>{detail.name}: </b>
+                    {detail.pathFile ? (
+                      <span
+                        className="link-primary"
+                        style={{
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => getPdfDetail(detail.id, "detail")}
+                      >
+                        {detail.value}
+                      </span>
+                    ) : (
+                      <span>{detail.value}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </List>
+          </Grid>
+          <Grid item xs={12} lg={6}>
+            <Typography variant="h5" gutterBottom>
+              Nhật kí bảo dưỡng
+            </Typography>
+            <List>
+              <ul>
+                {productDiaries?.map((diary) => (
+                  <li className="mb-2">
+                    <b>{diary.name}: </b>
                     <span
                       className="link-primary"
                       style={{ textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => getPdfDetail(detail.id, "detail")}
+                      onClick={() => getPdfDetail(diary?.id, "diary")}
                     >
-                      {detail.value}
+                      {diary?.value}
                     </span>
-                  ) : (
-                    <span>{detail.value}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </List>
+                  </li>
+                ))}
+              </ul>
+            </List>
+          </Grid>
         </Grid>
-        <Grid item xs={12} lg={6}>
-          <Typography variant="h5" gutterBottom>
-            Nhật kí bảo dưỡng
-          </Typography>
-          <List>
-            <ul>
-              {productDiaries?.map((diary) => (
-                <li className="mb-2">
-                  <b>{diary.name}: </b>
-                  <span
-                    className="link-primary"
-                    style={{ textDecoration: "underline", cursor: "pointer" }}
-                    onClick={() => getPdfDetail(diary?.id, "diary")}
-                  >
-                    {diary?.value}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </List>
-        </Grid>
-      </Grid>
+      </Container>
     </div>
   );
 };
