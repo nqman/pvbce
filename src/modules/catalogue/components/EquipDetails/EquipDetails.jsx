@@ -124,7 +124,7 @@ const EquipDetail = () => {
               <img
                 style={{ width: "200px", border: "1px solid" }}
                 src={product.imageOfQR}
-                alt=""
+                alt={product.divideCode}
               />
             </div>
           </Grid>
