@@ -18,6 +18,7 @@ import {
   listDocumentsAPI,
 } from "../../../apis/documentAPI";
 import toast, { Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
@@ -85,9 +86,25 @@ export default function DocumentManagement() {
   // xóa tài liệu
   const handleDelete = async (id) => {
     try {
-      await deleteDocumentAPI(id);
-      toast.success("Xóa tài liệu thành công");
-      fetchDocuments();
+      const result = await Swal.fire({
+        title: "Bạn chắc chắn muốn xóa? ",
+        text: "Tài liệu này sẽ bị xóa vĩnh viễn!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Xóa tài liệu",
+        cancelButtonText: "Hủy bỏ",
+      });
+      if (result.isConfirmed) {
+        await deleteDocumentAPI(id);
+        Swal.fire({
+          title: "Đã xóa!",
+          text: "Tài liệu đã được xóa thành công.",
+          icon: "success",
+        });
+        fetchDocuments();
+      }
     } catch (error) {
       toast.error("Xóa tài liệu thất bại");
     }
