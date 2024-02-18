@@ -44,9 +44,11 @@ export default function EquipManagement() {
   // Xóa thiết bị
   const handleDeteleEquip = async (id) => {
     try {
-      await deleteEquipmentAPI(id);
-      toast.success("Xóa thiết bị thành công");
-      fetchEquips();
+      if (window.confirm("Bạn có chắc chắn xóa thiết bị không?")) {
+        await deleteEquipmentAPI(id);
+        toast.success("Xóa thiết bị thành công");
+        fetchEquips();
+      }
     } catch (error) {
       toast.error("Xóa thiết bị thất bại");
     }

@@ -13,6 +13,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
   const handleRead = (id) => {
     navigate(`/catalogue/${id}`);
   };
+
   return (
     <StyledEngineProvider injectFirst>
       <div
@@ -53,7 +54,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
             {
               field: "action",
               headerName: "TÙY CHỌN",
-              width: 100,
+              width: 120,
 
               renderCell: (params) => (
                 <div style={{ display: "flex" }}>
@@ -75,6 +76,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                     />
                   </button>
                   <button
+                    disabled={true}
                     style={{
                       padding: "0px",
                       height: "25px",
@@ -96,6 +98,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                       padding: "0px",
                       height: "25px",
                       width: "25px",
+                      lineHeight: "15px",
                     }}
                     className="btn btn-danger"
                     onClick={() => {
@@ -104,7 +107,7 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                   >
                     <ClearIcon
                       sx={{
-                        fontSize: "17px",
+                        fontSize: "20px",
                       }}
                     />
                   </button>
