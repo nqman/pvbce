@@ -111,10 +111,10 @@ export async function changePasswordAPI(newPassword, param) {
     formData.append("newPassword", newPassword);
     formData.append("verificationCode", param);
     const resp = await baseAPI.post(
-      `http://103.82.39.125:8080/users/change-password`,
+      "http://103.82.39.125:8080/users/change-password",
       formData
     );
-    console.log(resp);
+    return resp;
   } catch (error) {
     console.error(error);
     throw error;

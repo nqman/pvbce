@@ -40,9 +40,8 @@ export default function ChangePassword() {
   const param = useParams();
   const handleSendPassword = async (e) => {
     const status = await changePasswordAPI(e.password, param.code);
-    if (!status) {
-      Swal.fire("Thay đổi mật khẩu thất bại!");
-    } else {
+    console.log(status);
+    if (status) {
       Swal.fire("Thay đổi mật khẩu thành công!");
       navigate("/signin");
     }
