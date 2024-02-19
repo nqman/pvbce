@@ -14,16 +14,6 @@ import {
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 
-// const emptyValue = {
-//   name: "",
-//   divideCode: "",
-//   constructionProject: "",
-//   location: "",
-//   note: "",
-//   productImages: "",
-//   productDetails: "",
-// };
-
 export default function EditEquipment() {
   const [value, setValue] = useState();
   const params = useParams();
@@ -59,7 +49,7 @@ export default function EditEquipment() {
     setValue({ ...value, productDetails: productDetails });
   };
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   const handleImageChange = (event) => {
     const files = event.target.files;
@@ -110,12 +100,6 @@ export default function EditEquipment() {
     setProductDetails(updatedProductDetails);
   };
 
-  // check file, neu product va product detail khac null thi moi lay value con khong thi cho default = null
-  // const oldFiles =
-  //   value && Array.isArray(value.productDetails)
-  //     ? value.productDetails.filter((file) => file.pathFile !== null)
-  //     : null;
-
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) => {
       if (productDetail.id === id) {
@@ -142,7 +126,9 @@ export default function EditEquipment() {
 
   const deleteDivDiary = (id) => {
     const updateDiaries = productDiaries.filter((diary) => diary.id !== id);
+    console.log(updateDiaries);
     setProductDiaries(updateDiaries);
+    setValue({ ...value, productDiaries: updateDiaries });
   };
 
   const handleInputChangeDiary = (id, key, value) => {
@@ -160,6 +146,7 @@ export default function EditEquipment() {
       return diary;
     });
     setProductDiaries(updateDiaries);
+    setValue({ ...value, productDiaries: updateDiaries });
   };
 
   // cập nhật thiết bị
@@ -488,7 +475,17 @@ export default function EditEquipment() {
                           )
                         }
                       />
-                      {/* {diary?.value ? <p>{diary.value}</p> : ""} */}
+                      {diary?.value ? (
+                        <TextField
+                          value={diary.value}
+                          size="small"
+                          sx={{ marginRight: "20px", width: "250px" }}
+                          disabled={true}
+                          title={diary.value}
+                        />
+                      ) : (
+                        ""
+                      )}
                       <Button component="label">
                         <input
                           style={{

@@ -95,7 +95,7 @@ export async function addEquipmentAPI(equipments) {
                   formData.append("diaryFileIDUpdatePart", diary.id);
                   formData.append("diaryFileHeaderUpdatePart", diary.name);
                 } else {
-                  formData.append("pathFile", diary.pathFile);
+                  formData.append("pathDiaryFile", diary.pathFile);
                   formData.append("diaryFileIDUpdatePath", diary.id);
                   formData.append("diaryFileHeaderUpdatePath", diary.name);
                   formData.append("diaryFileNameUpdatePath", diary.value);
