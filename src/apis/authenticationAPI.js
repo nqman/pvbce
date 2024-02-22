@@ -11,7 +11,7 @@ export async function listUserAPI() {
     throw error;
   }
 }
-
+//sign up
 export async function addUserAPI(user) {
   try {
     const formData = new FormData();
@@ -115,6 +115,20 @@ export async function changePasswordAPI(newPassword, param) {
       formData
     );
     return resp;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+//sign in
+
+export async function getToken(account) {
+  try {
+    const resp = await baseAPI.post(
+      `http://103.82.39.125:8080/authenticate/login`,
+      account
+    );
+    return resp.data;
   } catch (error) {
     console.error(error);
     throw error;

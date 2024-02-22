@@ -1,4 +1,4 @@
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import "./authentication.css";
 
@@ -152,7 +152,7 @@ export default function SignUp() {
                   marginTop: "10px",
                 }}
               >
-                <a
+                <button
                   style={{
                     position: "absolute",
                     left: "10px",
@@ -160,10 +160,10 @@ export default function SignUp() {
                     padding: 0,
                   }}
                   className="btn btn-outline-primary"
-                  href="/"
+                  onClick={() => navigate("/")}
                 >
                   <HomeIcon />
-                </a>
+                </button>
 
                 <button
                   style={{

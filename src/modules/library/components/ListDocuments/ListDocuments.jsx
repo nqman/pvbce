@@ -36,6 +36,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
           {listDocs?.map((doc) => (
             <tr>
               <td>{doc?.name}</td>
+
               {doc?.type === "link" ? (
                 <>
                   <td style={{ display: "flex", justifyContent: "flex-end" }}>

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import HomeIcon from "@mui/icons-material/Home";
+import { getToken } from "../../../apis/authenticationAPI";
 
 const schema = yup
   .object({
@@ -29,8 +30,10 @@ export default function SignIn() {
     formState: { errors },
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
 
-  const handleSignIn = (data) => {
+  const handleSignIn = async (data) => {
     console.log(data);
+    const token = await getToken(data);
+    console.log(token);
   };
   return (
     <div
@@ -106,7 +109,7 @@ export default function SignIn() {
             width: "100%",
           }}
         >
-          <a
+          <button
             style={{
               position: "absolute",
               left: "10px",
@@ -114,10 +117,10 @@ export default function SignIn() {
               padding: 0,
             }}
             className="btn btn-outline-primary"
-            href="/"
+            onClick={() => navigate("/")}
           >
             <HomeIcon />
-          </a>
+          </button>
         </div>
       </div>
     </div>

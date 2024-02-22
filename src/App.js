@@ -14,6 +14,7 @@ import AdminManagement from "./admin/AdminManagement";
 import VerifyUser from "./modules/authentication/pages/VerifyUser";
 import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
 import ChangePassword from "./modules/authentication/pages/ChangePassword";
+import CreateProject from "./modules/report/components/CreateProject";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
           <Route path="/catalogue" element={<Catalogue />}></Route>
           <Route path="/catalogue/:code" element={<EquipDetails />} />
           <Route path="/report" element={<Report />}></Route>
+          <Route path="/report/create-project" element={<CreateProject />} />
+
           <Route path="/library" element={<DocumentManagement />}></Route>
         </Route>
         {/* authentication */}
@@ -41,6 +44,9 @@ function App() {
 
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
+
+        {/* REPORT */}
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
