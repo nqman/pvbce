@@ -15,6 +15,7 @@ import VerifyUser from "./modules/authentication/pages/VerifyUser";
 import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
 import ChangePassword from "./modules/authentication/pages/ChangePassword";
 import CreateProject from "./modules/report/components/CreateProject";
+import Category from "./modules/report/components/Category";
 
 function App() {
   return (
@@ -24,11 +25,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/catalogue" element={<Catalogue />}></Route>
           <Route path="/catalogue/:code" element={<EquipDetails />} />
+          {/* REPORT */}
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
+          <Route path="/report/category" element={<Category />} />
 
           <Route path="/library" element={<DocumentManagement />}></Route>
         </Route>
+
         {/* authentication */}
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/signin" element={<SignIn />}></Route>
