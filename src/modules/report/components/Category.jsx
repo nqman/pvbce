@@ -10,7 +10,11 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { addCategoryAPI, getCategoriesAPI } from "../../../apis/reportAPI";
+import {
+  addCategoryAPI,
+  deleteCategoryAPI,
+  getCategoriesAPI,
+} from "../../../apis/reportAPI";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -22,34 +26,33 @@ import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 
 export default function Category() {
-  const [category, setCategory] = useState("");
-  const rows = [
-    { id: 1, value: "Nhật kí bảo dưỡng" },
-    { id: 2, value: "Nhật kí sửa chữa" },
-    { id: 3, value: "Chi phí khác" },
-  ];
+  const [category, setCategory] = useState({ name: "", unit: "" });
+
+  const fetchListCategory = async () => {
+    try {
+      const data = await getCategoriesAPI();
+      setCategories(data);
+      return data;
+    } catch (error) {}
+  };
   const handleChange = (e) => {
-    // console.log(e.target.value);
-    setCategory(e.target.value);
+    setCategory({ ...category, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(category);
     try {
-      // await addCategoryAPI(category);
-      rows.push({ id: 0, value: category });
-      // console.log(testCategories);
-      setCategories(rows);
-
-      setCategory("");
+      await addCategoryAPI(category);
+      toast.success("Thêm hạng mục thành công");
+      setCategory({ name: "", unit: "" });
+      fetchListCategory();
+      console.log(category);
     } catch (error) {}
   };
 
-  const [categories, setCategories] = useState(rows);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
-    // setCategories(getCategoriesAPI());
-    console.log(categories);
-  }, [rows]);
+    fetchListCategory();
+  }, []);
 
   const navigate = useNavigate();
   //Xem chi tiết thiết bị
@@ -71,13 +74,13 @@ export default function Category() {
         cancelButtonText: "Hủy bỏ",
       });
       if (result.isConfirmed) {
-        // await deleteEquipmentAPI(id);
+        await deleteCategoryAPI(id);
         Swal.fire({
           title: "Đã xóa!",
           text: "Thiết bị đã được xóa thành công.",
           icon: "success",
         });
-        // fetchEquips();
+        fetchListCategory();
       }
     } catch (error) {
       toast.error("Xóa thiết bị thất bại");
@@ -96,24 +99,38 @@ export default function Category() {
 
   return (
     <div>
+      <Toaster />
       <Container>
         <div
           style={{
-            display: "flex",
-            marginTop: "50px",
-            justifyContent: "space-between",
+            marginTop: "20px",
           }}
         >
           <div>
-            <h3>Thêm hạng mục</h3>
+            <h3 className="text-center mb-3">Thêm hạng mục</h3>
             <form
-              style={{ display: "flex", alignItems: "center" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
               onSubmit={handleSubmit}
             >
               <TextField
                 label="Tên hạng mục"
                 id="outlined-size-small"
-                value={category}
+                value={category.name}
+                name="name"
+                sx={{ marginRight: "20px" }}
+                onChange={handleChange}
+                size="small"
+                style={{ width: "300px" }}
+              />
+              <TextField
+                label="Đơn vị"
+                id="outlined-size-small"
+                value={category.unit}
+                name="unit"
                 sx={{ marginRight: "20px" }}
                 onChange={handleChange}
                 size="small"
@@ -132,18 +149,21 @@ export default function Category() {
             <StyledEngineProvider injectFirst>
               <div
                 style={{
-                  height: 500,
+                  height: 450,
                   width: "100%",
                   margin: "auto",
                   overflow: "hidden",
                 }}
               >
                 <DataGrid
-                  style={{ padding: 10 }}
-                  rows={rows.map((row) => ({ ...row, id: row.id }))}
+                  style={{
+                    padding: 10,
+                  }}
+                  rows={categories.map((row) => ({ ...row, id: row.id }))}
                   columns={[
                     { field: "id", headerName: "STT", width: 50 },
-                    { field: "name", headerName: "TÊN HẠNG MỤC", width: 200 },
+                    { field: "name", headerName: "TÊN HẠNG MỤC", width: 400 },
+                    { field: "unit", headerName: "ĐƠN VỊ", width: 100 },
                     {
                       field: "action",
                       headerName: "TÙY CHỌN",
@@ -195,9 +215,9 @@ export default function Category() {
                   slots={{
                     toolbar: GridToolbar,
                   }}
-                  {...rows}
+                  {...categories}
                   initialState={{
-                    ...rows.initialState,
+                    ...categories.initialState,
                     pagination: { paginationModel: { pageSize: 5 } },
                   }}
                   pageSizeOptions={[5, 10, 15]}
