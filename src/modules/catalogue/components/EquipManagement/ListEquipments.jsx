@@ -77,7 +77,6 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                     />
                   </button>
                   <button
-                    // disabled={true}
                     style={{
                       padding: "0px",
                       height: "25px",

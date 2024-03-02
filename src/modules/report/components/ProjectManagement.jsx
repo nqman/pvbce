@@ -2,6 +2,7 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Category from "./Category";
 
 export default function ProjectManagement() {
   const navigate = useNavigate();
