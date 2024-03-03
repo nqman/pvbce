@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import "./authentication.css";
-
+//Validation
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -91,7 +91,6 @@ export default function SignUp() {
                   {...register("name")}
                 />
                 <span className="text-danger ">{errors.name?.message}</span>
-                {}
               </div>
               <div className="mb-3 w-100">
                 <TextField

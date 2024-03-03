@@ -3,13 +3,28 @@ import {
   Box,
   Button,
   Container,
-  Grid,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Tab,
   TextField,
-  Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+//validation
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+//API
+import { getCategoriesAPI } from "../../../apis/reportAPI";
+
+//Calendar
+import dayjs from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function CreateProject() {
   const [item, setItem] = useState("1");
@@ -32,6 +47,31 @@ export default function CreateProject() {
   };
 
   // RpQuantityDetailMode----Hạng mục và đơn giá
+
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
+  const [unit, setUnit] = useState("");
+
+  const handleSelect = async (event) => {
+    setCategory(event.target.value);
+    let response = await getCategoriesAPI();
+    for (let index = 0; index < response.length; index++) {
+      const element = response[index].name;
+      if (event.target.value === element) {
+        setUnit(response[index].unit);
+        // console.log(response[index].unit);
+      }
+    }
+  };
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = await getCategoriesAPI();
+      setCategories(response);
+    }
+
+    fetchMyAPI();
+  }, []);
+
   const [quantityDetails, setQuantityDetails] = useState([
     {
       id: -Date.now(),
@@ -39,6 +79,7 @@ export default function CreateProject() {
       quantity: "",
       price: "",
       amount: "",
+      date: "",
     },
   ]);
 
@@ -51,6 +92,7 @@ export default function CreateProject() {
       quantity: "",
       price: "",
       amount: "",
+      date: "",
     };
     setQuantityDetails([...quantityDetails, newQuantityDetail]);
   };
@@ -87,8 +129,45 @@ export default function CreateProject() {
         ? { ...quantityDetail, [key]: value }
         : quantityDetail
     );
+    console.log(updatedQuantityDetails);
     setQuantityDetails(updatedQuantityDetails);
   };
+
+  // Thời gian dự án
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const handlePickStartDate = (date) => {
+    setStartDate(date);
+    handlePickDate(date, "Ngày bắt đầu");
+  };
+
+  const handlePickEndDate = (date) => {
+    setEndDate(date);
+    handlePickDate(date, "Ngày kết thúc");
+  };
+
+  const handlePickDate = (date, label) => {
+    if (date !== null) {
+      const formattedDate = new Intl.DateTimeFormat("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date);
+
+      console.log(`${label}: ${formattedDate}`);
+    }
+  };
+  const [timeDiff, setTimeDiff] = useState(0);
+
+  useEffect(() => {
+    if (endDate !== null && startDate !== null) {
+      let start = new Date(startDate);
+      let end = new Date(endDate);
+      setTimeDiff((end - start) / (1000 * 60 * 60 * 24) + 1);
+    }
+  }, [endDate, startDate]);
+  console.log(timeDiff);
 
   //Thư viện dự án ---projectDiary
   const [projectDiaries, setProjectDiaries] = useState([
@@ -153,35 +232,37 @@ export default function CreateProject() {
                       }}
                       key={quantityDetail.id}
                     >
-                      <TextField
-                        label="Hạng mục"
-                        id="outlined-size-small"
-                        value={quantityDetail.category}
-                        size="small"
-                        type="text"
-                        sx={{ marginRight: "20px" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            quantityDetail.id,
-                            "category",
-                            e.target.value
-                          )
-                        }
-                      />
+                      <Box>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">
+                            Hạng mục
+                          </InputLabel>
+                          <Select
+                            sx={{
+                              marginRight: "20px",
+                              width: "200px",
+                            }}
+                            id="outlined-size-small"
+                            value={category}
+                            label="Hạng mục"
+                            onChange={handleSelect}
+                            size="small"
+                          >
+                            {categories?.map((category) => (
+                              <MenuItem value={category.name}>
+                                {category.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Box>
                       <TextField
                         label="ĐVT"
                         id="outlined-size-small"
-                        value={quantityDetail.category}
+                        value={unit}
                         size="small"
                         disabled={true}
                         sx={{ marginRight: "20px", width: "100px" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            quantityDetail.id,
-                            "unit",
-                            e.target.value
-                          )
-                        }
                       />
                       <TextField
                         label="Sản lượng"
@@ -198,7 +279,6 @@ export default function CreateProject() {
                           )
                         }
                       />
-
                       <TextField
                         label="Đơn giá"
                         id="outlined-size-small"
@@ -217,9 +297,9 @@ export default function CreateProject() {
                       <TextField
                         label="Thành tiền"
                         id="outlined-size-small"
-                        value={(
+                        value={`${(
                           quantityDetail.quantity * quantityDetail.price
-                        ).toLocaleString()}
+                        ).toLocaleString()} VND`}
                         size="small"
                         disabled={true}
                         sx={{ marginRight: "20px" }}
@@ -244,6 +324,34 @@ export default function CreateProject() {
                   <Button variant="contained" onClick={createDiv}>
                     Thêm
                   </Button>
+                </div>
+                <div className="calendar d-flex mt-3">
+                  <div>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        className="me-4"
+                        value={startDate}
+                        onChange={handlePickStartDate}
+                        renderInput={(params) => <TextField {...params} />}
+                        label="Ngày bắt đầu"
+                        format="DD-MM-YYYY"
+                      />
+                      <DatePicker
+                        className="me-4"
+                        value={endDate}
+                        onChange={handlePickEndDate}
+                        renderInput={(params) => <TextField {...params} />}
+                        label="Ngày kết thúc"
+                        format="DD-MM-YYYY"
+                      />
+                      <TextField
+                        value={`${timeDiff} ngày`}
+                        label={"Tổng số ngày"}
+                        disabled={true}
+                        size=""
+                      />
+                    </LocalizationProvider>
+                  </div>
                 </div>
               </div>
             </Container>

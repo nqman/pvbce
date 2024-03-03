@@ -1,14 +1,4 @@
-import {
-  Button,
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@mui/material";
+import { Container, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   addCategoryAPI,
@@ -18,14 +8,37 @@ import {
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { StyledEngineProvider } from "@mui/material";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
+//Validation
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+const schema = yup
+  .object({
+    name: yup.string().required("Vui lòng không bỏ trống"),
+    unit: yup.string().required("Vui lòng không bỏ trống"),
+  })
+  .required();
 
 export default function Category() {
+  const {
+    resetField,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      unit: "",
+    },
+    mode: "onTouched",
+    resolver: yupResolver(schema),
+  });
+
   const [category, setCategory] = useState({ name: "", unit: "" });
 
   const fetchListCategory = async () => {
@@ -35,17 +48,17 @@ export default function Category() {
       return data;
     } catch (error) {}
   };
-  const handleChange = (e) => {
-    setCategory({ ...category, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleChange = (e) => {
+  //   setCategory({ ...category, [e.target.name]: e.target.value });
+  // };
+  const handleAddCategory = async (category) => {
     try {
       await addCategoryAPI(category);
       toast.success("Thêm hạng mục thành công");
-      setCategory({ name: "", unit: "" });
+      // setCategory({ name: "", unit: "" });
+      resetField("name");
+      resetField("unit");
       fetchListCategory();
-      console.log(category);
     } catch (error) {}
   };
 
@@ -64,26 +77,26 @@ export default function Category() {
   const handleDeteleCategory = async (id) => {
     try {
       const result = await Swal.fire({
-        title: "Bạn chắc chắn muốn xóa thiết bị? ",
-        text: "Thiết bị này sẽ bị xóa vĩnh viễn!",
+        title: "Bạn chắc chắn muốn xóa hạng mục? ",
+        text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Xóa thiết bị",
+        confirmButtonText: "Xóa hạng mục",
         cancelButtonText: "Hủy bỏ",
       });
       if (result.isConfirmed) {
         await deleteCategoryAPI(id);
         Swal.fire({
           title: "Đã xóa!",
-          text: "Thiết bị đã được xóa thành công.",
+          text: "Hạng mục đã được xóa thành công.",
           icon: "success",
         });
         fetchListCategory();
       }
     } catch (error) {
-      toast.error("Xóa thiết bị thất bại");
+      toast.error("Xóa hạng mục thất bại");
     }
   };
 
@@ -99,7 +112,7 @@ export default function Category() {
 
   return (
     <div>
-      <Toaster />
+      <Toaster position="top-right" />
       <Container>
         <div
           style={{
@@ -114,35 +127,35 @@ export default function Category() {
                 alignItems: "center",
                 marginBottom: "20px",
               }}
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(handleAddCategory)}
             >
-              <TextField
-                label="Tên hạng mục"
-                id="outlined-size-small"
-                value={category.name}
-                name="name"
-                sx={{ marginRight: "20px" }}
-                onChange={handleChange}
-                size="small"
-                style={{ width: "300px" }}
-              />
-              <TextField
-                label="Đơn vị"
-                id="outlined-size-small"
-                value={category.unit}
-                name="unit"
-                sx={{ marginRight: "20px" }}
-                onChange={handleChange}
-                size="small"
-                style={{ width: "300px" }}
-              />
-              <button
-                className="btn btn-primary"
-                // disabled={isLoading}
-                type="submit"
-              >
-                Thêm
-              </button>
+              <div className=" w-50 me-3" style={{ height: "50px" }}>
+                <TextField
+                  className="w-100"
+                  size="small"
+                  label="Tên hạng mục"
+                  {...register("name")}
+                />
+                <span className="text-danger ">{errors.name?.message}</span>
+              </div>
+              <div className=" w-25 me-3" style={{ height: "50px" }}>
+                <TextField
+                  className="w-100"
+                  size="small"
+                  label="Đơn vị"
+                  {...register("unit")}
+                />
+                <span className="text-danger ">{errors.unit?.message}</span>
+              </div>
+              <div style={{ height: "50px" }}>
+                <button
+                  className="btn btn-primary"
+                  // disabled={isLoading}
+                  type="submit"
+                >
+                  Thêm
+                </button>
+              </div>
             </form>
           </div>
           <div>
