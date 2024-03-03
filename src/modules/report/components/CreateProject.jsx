@@ -136,7 +136,6 @@ export default function CreateProject() {
             <TabList onChange={handleChangeItem}>
               <Tab label="THÔNG TIN HỢP ĐỒNG" value="1" />
               <Tab label="THƯ VIỆN" value="2" />
-              <Tab label="KHÁC" value="3" />
             </TabList>
           </Box>
           {/* Thông tin hợp đồng */}
@@ -165,6 +164,21 @@ export default function CreateProject() {
                           handleInputChange(
                             quantityDetail.id,
                             "category",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <TextField
+                        label="ĐVT"
+                        id="outlined-size-small"
+                        value={quantityDetail.category}
+                        size="small"
+                        disabled={true}
+                        sx={{ marginRight: "20px", width: "100px" }}
+                        onChange={(e) =>
+                          handleInputChange(
+                            quantityDetail.id,
+                            "unit",
                             e.target.value
                           )
                         }

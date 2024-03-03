@@ -30,7 +30,7 @@ function App() {
           {/* REPORT */}
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
-          <Route path="/report/categories" element={<Category />} />
+          <Route path="/report/category" element={<Category />} />
           <Route
             path="/report/listprojects"
             element={<ProjectManagement />}

@@ -5,9 +5,7 @@ import { Container } from "@mui/material";
 export default function Report() {
   return (
     <>
-      <Container maxWidth="lg">
-        <ProjectManagement />
-      </Container>
+      <Container maxWidth="lg">{/* <ProjectManagement /> */}</Container>
     </>
   );
 }

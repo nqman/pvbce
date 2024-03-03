@@ -118,8 +118,9 @@ function Header() {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (value) => {
     setAnchorEl(null);
+    navigate(`report/${value}`);
   };
   return (
     <AppBar
@@ -296,29 +297,26 @@ function Header() {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem
-                onClick={() => navigate("report/categories")}
-                disableRipple
-              >
+              <MenuItem onClick={() => handleClose("category")} disableRipple>
                 <CategoryIcon />
                 Hạng mục
               </MenuItem>
               <MenuItem
-                onClick={() => navigate("report/listprojects")}
+                onClick={() => handleClose("listprojects")}
                 disableRipple
               >
                 <FormatListNumberedIcon />
-                DANH SÁCH DỰ ÁN
+                Danh sách dự án
               </MenuItem>
               {/* <Divider sx={{ my: 0.5 }} /> */}
               {/* GẠCH NGĂN CÁCH */}
-              <MenuItem onClick={handleClose} disableRipple>
+              <MenuItem onClick={() => handleClose("rp_total")} disableRipple>
                 <AssessmentIcon />
-                BÁO CÁO TỔNG
+                Báo cáo tổng
               </MenuItem>
-              <MenuItem onClick={handleClose} disableRipple>
+              <MenuItem onClick={() => handleClose("rp_revenue")} disableRipple>
                 <SummarizeIcon />
-                BÁO CÁO DOANH THU
+                Báo cáo doanh thu
               </MenuItem>
             </StyledMenu>
             {/* BÁO CÁO */}
