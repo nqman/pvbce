@@ -16,6 +16,8 @@ import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
 import ChangePassword from "./modules/authentication/pages/ChangePassword";
 import CreateProject from "./modules/report/components/CreateProject";
 import Category from "./modules/report/components/Category";
+import ListProjects from "./modules/report/components/ListProjects";
+import ProjectManagement from "./modules/report/components/ProjectManagement";
 
 function App() {
   return (
@@ -28,7 +30,11 @@ function App() {
           {/* REPORT */}
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
-          <Route path="/report/category" element={<Category />} />
+          <Route path="/report/categories" element={<Category />} />
+          <Route
+            path="/report/listprojects"
+            element={<ProjectManagement />}
+          ></Route>
 
           <Route path="/library" element={<DocumentManagement />}></Route>
         </Route>

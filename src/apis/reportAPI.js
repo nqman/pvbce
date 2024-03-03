@@ -30,3 +30,35 @@ export async function deleteCategoryAPI(id) {
     throw error.response.data;
   }
 }
+
+// PROJECTS
+//Lấy danh sách các thiết bị
+export async function listProjectsAPI() {
+  try {
+    const resp = await baseAPI.get("projects");
+    const data = resp.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function selectProjectAPI(id) {
+  try {
+    const resp = await baseAPI.get(`projects/${id}`);
+    // console.log(resp.data);
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function deleteProjectAPI(id) {
+  try {
+    const resp = await baseAPI.get(`projects/delete/${id}`);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}

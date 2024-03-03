@@ -138,7 +138,6 @@ export async function addEquipmentAPI(equipments) {
 export async function selectEquipmentAPI(id) {
   try {
     const resp = await baseAPI.get(`products/${id}`);
-    // console.log(resp.data);
     return resp.data;
   } catch (error) {
     console.error(error);
