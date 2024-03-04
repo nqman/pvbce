@@ -68,7 +68,6 @@ export default function CreateProject() {
       let response = await getCategoriesAPI();
       setCategories(response);
     }
-
     fetchMyAPI();
   }, []);
 
@@ -94,6 +93,7 @@ export default function CreateProject() {
       amount: "",
       date: "",
     };
+
     setQuantityDetails([...quantityDetails, newQuantityDetail]);
   };
 
@@ -227,28 +227,34 @@ export default function CreateProject() {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        marginBottom: "25px",
+                        marginBottom: "35px",
                         height: "30px",
                       }}
                       key={quantityDetail.id}
                     >
-                      <Box>
+                      <Box
+                        sx={{
+                          minWidth: 130,
+                          marginRight: "20px",
+                        }}
+                      >
                         <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">
+                          <InputLabel
+                            style={{ marginTop: "-8px" }}
+                            id="demo-simple-select-label"
+                          >
                             Hạng mục
                           </InputLabel>
                           <Select
-                            sx={{
-                              marginRight: "20px",
-                              width: "200px",
-                            }}
-                            id="outlined-size-small"
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
                             value={category}
                             label="Hạng mục"
                             onChange={handleSelect}
                             size="small"
+                            style={{ display: "flex" }}
                           >
-                            {categories?.map((category) => (
+                            {categories.map((category) => (
                               <MenuItem value={category.name}>
                                 {category.name}
                               </MenuItem>
@@ -311,7 +317,6 @@ export default function CreateProject() {
                           )
                         }
                       />
-
                       <button
                         className="btn btn-danger"
                         onClick={() => deleteDiv(quantityDetail.id)}
@@ -321,7 +326,11 @@ export default function CreateProject() {
                     </div>
                   ))}
                   <p className="text-danger">{errorDetail}</p>
-                  <Button variant="contained" onClick={createDiv}>
+                  <Button
+                    variant="contained"
+                    style={{ marginTop: "-10px", marginBottom: "20px" }}
+                    onClick={createDiv}
+                  >
                     Thêm
                   </Button>
                 </div>
@@ -336,6 +345,8 @@ export default function CreateProject() {
                         label="Ngày bắt đầu"
                         format="DD-MM-YYYY"
                       />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         className="me-4"
                         value={endDate}
@@ -426,6 +437,22 @@ export default function CreateProject() {
                     Thêm
                   </Button>
                 </div>
+              </div>
+              {/* SUBMIT */}
+              <div
+                style={{
+                  marginTop: "20px",
+                  textAlign: "end",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="success"
+                  // disabled={isLoading}
+                  type="submit"
+                >
+                  Lưu
+                </Button>
               </div>
             </Container>
           </TabPanel>
