@@ -25,6 +25,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import ProjectItem from "./ProjectItem";
 
 export default function CreateProject() {
   const [item, setItem] = useState("1");
@@ -48,89 +49,99 @@ export default function CreateProject() {
 
   // RpQuantityDetailMode----Hạng mục và đơn giá
 
-  const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
-  const [unit, setUnit] = useState("");
+  // const [categories, setCategories] = useState([]);
+  // const [category, setCategory] = useState("");
+  // const [unit, setUnit] = useState("");
 
-  const handleSelect = async (event) => {
-    setCategory(event.target.value);
-    let response = await getCategoriesAPI();
-    for (let index = 0; index < response.length; index++) {
-      const element = response[index].name;
-      if (event.target.value === element) {
-        setUnit(response[index].unit);
-        // console.log(response[index].unit);
-      }
-    }
-  };
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await getCategoriesAPI();
-      setCategories(response);
-    }
-    fetchMyAPI();
-  }, []);
+  // const handleSelect = async (event) => {
+  //   setCategory(event.target.value);
+  //   let response = await getCategoriesAPI();
+  //   for (let index = 0; index < response.length; index++) {
+  //     const element = response[index].name;
+  //     if (event.target.value === element) {
+  //       setUnit(response[index].unit);
+  //       // console.log(response[index].unit);
+  //     }
+  //   }
+  //   setQuantityDetails([...quantityDetails, unit]);
+  // };
+  // useEffect(() => {
+  //   async function fetchMyAPI() {
+  //     let response = await getCategoriesAPI();
+  //     setCategories(response);
+  //   }
+  //   fetchMyAPI();
+  // }, []);
 
-  const [quantityDetails, setQuantityDetails] = useState([
-    {
-      id: -Date.now(),
-      category: "",
-      quantity: "",
-      price: "",
-      amount: "",
-      date: "",
-    },
-  ]);
+  // const [quantityDetails, setQuantityDetails] = useState([
+  //   {
+  //     id: -Date.now(),
+  //     category: "",
+  //     quantity: "",
+  //     price: "",
+  //     amount: "",
+  //     date: "",
+  //   },
+  // ]);
 
-  const [errorDetail, setErrorDetail] = useState("");
+  // const [errorDetail, setErrorDetail] = useState("");
 
-  const createDiv = () => {
-    const newQuantityDetail = {
-      id: -Date.now(),
-      category: "",
-      quantity: "",
-      price: "",
-      amount: "",
-      date: "",
-    };
+  // const createDiv = () => {
+  //   const newQuantityDetail = {
+  //     id: -Date.now(),
+  //     category: "",
+  //     quantity: "",
+  //     price: "",
+  //     amount: "",
+  //     date: "",
+  //   };
 
-    setQuantityDetails([...quantityDetails, newQuantityDetail]);
-  };
+  //   setQuantityDetails([...quantityDetails, newQuantityDetail]);
+  // };
 
-  const deleteDiv = async (id) => {
-    try {
-      const result = await Swal.fire({
-        title: "Bạn chắc chắn muốn xóa? ",
-        text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Xóa hạng mục",
-        cancelButtonText: "Hủy bỏ",
-      });
-      if (result.isConfirmed) {
-        const updatedQuantityDetails = quantityDetails.filter(
-          (quantityDetail) => quantityDetail.id !== id
-        );
-        Swal.fire({
-          title: "Đã xóa!",
-          text: "Hạng mục đã được xóa thành công.",
-          icon: "success",
-        });
-        setQuantityDetails(updatedQuantityDetails);
-      }
-    } catch (error) {}
-  };
+  // const deleteDiv = async (id) => {
+  //   try {
+  //     const result = await Swal.fire({
+  //       title: "Bạn chắc chắn muốn xóa? ",
+  //       text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Xóa hạng mục",
+  //       cancelButtonText: "Hủy bỏ",
+  //     });
+  //     if (result.isConfirmed) {
+  //       const updatedQuantityDetails = quantityDetails.filter(
+  //         (quantityDetail) => quantityDetail.id !== id
+  //       );
+  //       Swal.fire({
+  //         title: "Đã xóa!",
+  //         text: "Hạng mục đã được xóa thành công.",
+  //         icon: "success",
+  //       });
+  //       setQuantityDetails(updatedQuantityDetails);
+  //     }
+  //   } catch (error) {}
+  // };
 
-  const handleInputChange = (id, key, value) => {
-    const updatedQuantityDetails = quantityDetails.map((quantityDetail) =>
-      quantityDetail.id === id
-        ? { ...quantityDetail, [key]: value }
-        : quantityDetail
-    );
-    console.log(updatedQuantityDetails);
-    setQuantityDetails(updatedQuantityDetails);
+  // const handleInputChange = (id, key, value) => {
+  //   const updatedQuantityDetails = quantityDetails.map((quantityDetail) =>
+  //     quantityDetail.id === id
+  //       ? { ...quantityDetail, [key]: value }
+  //       : quantityDetail
+  //   );
+  //   setQuantityDetails(updatedQuantityDetails);
+  // };
+
+  const [projectItems, setProjectItems] = useState([]);
+
+  const addProjectItem = () => {
+    const newComponents = [
+      ...projectItems,
+      <ProjectItem key={projectItems.length} />,
+    ];
+    setProjectItems(newComponents);
   };
 
   // Thời gian dự án
@@ -167,7 +178,7 @@ export default function CreateProject() {
       setTimeDiff((end - start) / (1000 * 60 * 60 * 24) + 1);
     }
   }, [endDate, startDate]);
-  console.log(timeDiff);
+  // console.log(timeDiff);
 
   //Thư viện dự án ---projectDiary
   const [projectDiaries, setProjectDiaries] = useState([
@@ -222,7 +233,7 @@ export default function CreateProject() {
             <Container className="">
               <div>
                 <div>
-                  {quantityDetails.map((quantityDetail) => (
+                  {/* {quantityDetails.map((quantityDetail) => (
                     <div
                       style={{
                         display: "flex",
@@ -250,7 +261,7 @@ export default function CreateProject() {
                             id="demo-simple-select"
                             value={category}
                             label="Hạng mục"
-                            onChange={handleSelect}
+                            onChange={(id) => handleSelect}
                             size="small"
                             style={{ display: "flex" }}
                           >
@@ -324,12 +335,16 @@ export default function CreateProject() {
                         x
                       </button>
                     </div>
+                  ))} */}
+
+                  {projectItems.map((projectItem, index) => (
+                    <div key={index}>{projectItem}</div>
                   ))}
-                  <p className="text-danger">{errorDetail}</p>
+                  {/* <p className="text-danger">{errorDetail}</p> */}
                   <Button
                     variant="contained"
                     style={{ marginTop: "-10px", marginBottom: "20px" }}
-                    onClick={createDiv}
+                    onClick={addProjectItem}
                   >
                     Thêm
                   </Button>
@@ -432,7 +447,7 @@ export default function CreateProject() {
                       </button>
                     </div>
                   ))}
-                  <p className="text-danger">{errorDetail}</p>
+                  {/* <p className="text-danger">{errorDetail}</p> */}
                   <Button variant="contained" onClick={createDivDiary}>
                     Thêm
                   </Button>

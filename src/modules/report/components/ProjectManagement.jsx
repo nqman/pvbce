@@ -29,7 +29,6 @@ export default function ProjectManagement() {
     try {
       const data = await listEquipmentsAPI();
       toast.success("Lấy danh sách thiết bị thành công");
-      console.log(data);
       setProjects(data);
       setIsLoading(false);
     } catch (error) {
