@@ -43,6 +43,17 @@ export async function listProjectsAPI() {
     throw error;
   }
 }
+export async function addProjectAPI(category) {
+  try {
+    const formData = new FormData();
+    console.log(category);
+    formData.append("id", 0);
+    formData.append("name", category.name);
+    formData.append("unit", category.unit);
+    const resp = await baseAPI.post("categories/save", formData);
+  } catch (error) {}
+}
+
 export async function selectProjectAPI(id) {
   try {
     const resp = await baseAPI.get(`projects/${id}`);

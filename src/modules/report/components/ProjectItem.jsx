@@ -6,19 +6,42 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 export default function ProjectItem({
   detail = {},
   categories = [],
-  onChange = () => { },
-  onRemove = () => { },
+  onChange = () => {},
+  onRemove = () => {},
+  updateTotalAmount,
 }) {
+  // Hàm để tính tổng tiền
+  const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState(0);
+  const totalAmount = quantity * price;
+  // console.log(totalAmount);
+  // updateTotalAmount(totalAmount);
+  useEffect(() => updateTotalAmount(totalAmount, detail.id), [totalAmount]);
+
+  const handleInputChange = (id, key, value) => {
+    // debugger;
+    if (key === "quantity") {
+      setQuantity(value);
+    } else if (key === "price") {
+      setPrice(value);
+    }
+    // console.log(value);
+    onChange({
+      ...detail,
+      [key]: value,
+    });
+  };
+
   const handleSelectCategory = async (event) => {
     const category = event.target.value;
     let unit;
-    const selectedCategory = categories.find(el => el.name === category);
+    const selectedCategory = categories.find((el) => el.name === category);
     if (selectedCategory) {
       unit = selectedCategory.unit;
     }
@@ -26,7 +49,7 @@ export default function ProjectItem({
       ...detail,
       category,
       unit,
-    })
+    });
   };
 
   const [errorDetail, setErrorDetail] = useState("");
@@ -51,14 +74,7 @@ export default function ProjectItem({
         });
         onRemove(detail);
       }
-    } catch (error) { }
-  };
-
-  const handleInputChange = (id, key, value) => {
-    onChange({
-      ...detail,
-      [key]: value,
-    });
+    } catch (error) {}
   };
 
   return (
@@ -79,7 +95,8 @@ export default function ProjectItem({
         >
           <FormControl fullWidth>
             <InputLabel
-              style={{ marginTop: "-8px" }}
+              style={{ marginTop: "px", bottom: "8px" }}
+              // sx={{ height: "100px", paddingBottom: "-8px" }}
               id="demo-simple-select-label"
             >
               Hạng mục
@@ -91,10 +108,15 @@ export default function ProjectItem({
               label="Hạng mục"
               onChange={handleSelectCategory}
               size="small"
-              style={{ display: "flex" }}
+              sx={{ display: "flex", width: "250px" }}
             >
               {categories.map((category) => (
-                <MenuItem key={category.id + "_" + category.value} value={category.name}>{category.name}</MenuItem>
+                <MenuItem
+                  key={category.id + "_" + category.value}
+                  value={category.name}
+                >
+                  {category.name}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -113,7 +135,7 @@ export default function ProjectItem({
           value={detail.quantity}
           size="small"
           type="number"
-          sx={{ marginRight: "20px" }}
+          sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "quantity", e.target.value)
           }
@@ -124,7 +146,7 @@ export default function ProjectItem({
           value={detail.price}
           size="small"
           type="number"
-          sx={{ marginRight: "20px" }}
+          sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
@@ -132,15 +154,10 @@ export default function ProjectItem({
         <TextField
           label="Thành tiền"
           id="outlined-size-small"
-          value={`${(
-            detail.quantity * detail.price
-          ).toLocaleString()} VND`}
+          value={`${totalAmount.toLocaleString()} VND`}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px" }}
-          onChange={(e) =>
-            handleInputChange(detail.id, "price", e.target.value)
-          }
+          sx={{ marginRight: "20px", width: "200px" }}
         />
         <button
           className="btn btn-danger"
