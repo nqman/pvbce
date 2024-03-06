@@ -124,7 +124,7 @@ export default function ProjectItem({
         <TextField
           label="ĐVT"
           id="outlined-size-small"
-          value={detail.unit}
+          value={detail.unit || "none"}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "100px" }}
