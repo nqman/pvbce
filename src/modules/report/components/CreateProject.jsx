@@ -27,6 +27,17 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ProjectItem from "./ProjectItem";
 
+const newEmptyProjectDetail = () => {
+  return ({
+    id: -Date.now(),
+    category: "",
+    quantity: "",
+    price: "",
+    amount: "",
+    date: "",
+  });
+}
+
 export default function CreateProject() {
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
@@ -134,14 +145,20 @@ export default function CreateProject() {
   //   setQuantityDetails(updatedQuantityDetails);
   // };
 
-  const [projectItems, setProjectItems] = useState([]);
+  const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
 
   const addProjectItem = () => {
-    const newComponents = [
-      ...projectItems,
-      <ProjectItem key={projectItems.length} />,
-    ];
-    setProjectItems(newComponents);
+    // const newComponents = [
+    //   ...projectItems,
+    //   <ProjectItem key={projectItems.length} />,
+    // ];
+
+    setProjectItems(oldProjectItems => {
+      return [
+        ...oldProjectItems,
+        newEmptyProjectDetail(),
+      ]
+    });
   };
 
   // Thời gian dự án
@@ -185,6 +202,8 @@ export default function CreateProject() {
     { id: -Date.now(), name: "", value: "", file: null },
   ]);
 
+  const [categories, setCategories] = useState([]);
+
   const [errorDiary, setErrorDiary] = useState("");
 
   const createDivDiary = () => {
@@ -218,6 +237,36 @@ export default function CreateProject() {
     // setValue({ ...value, projectDiaries: updateDiaries });
   };
 
+
+  useEffect(() => {
+    // Get category selection
+    async function fetchMyAPI() {
+      let response = await getCategoriesAPI();
+      setCategories(response);
+    }
+    fetchMyAPI();
+  }, []);
+
+
+  const handleProjectDetailChange = (detail) => {
+    setProjectItems(oldProjectItems => {
+      const index = oldProjectItems.findIndex(el => el.id === detail.id);
+      const newProjectItems = [...oldProjectItems]; // clione array, avoid side effect
+      newProjectItems.splice(index, 1, detail);
+      return [
+        ...newProjectItems,
+      ]
+    });
+  }
+
+  const handleRemoveProjectDetail = (detail) => {
+    setProjectItems(oldProjectItems => {
+      return [
+        ...oldProjectItems.filter(el => detail.id !== el.id),
+      ]
+    });
+  }
+
   return (
     <div>
       <form noValidate onSubmit={handleSubmit}>
@@ -233,112 +282,14 @@ export default function CreateProject() {
             <Container className="">
               <div>
                 <div>
-                  {/* {quantityDetails.map((quantityDetail) => (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "35px",
-                        height: "30px",
-                      }}
-                      key={quantityDetail.id}
-                    >
-                      <Box
-                        sx={{
-                          minWidth: 130,
-                          marginRight: "20px",
-                        }}
-                      >
-                        <FormControl fullWidth>
-                          <InputLabel
-                            style={{ marginTop: "-8px" }}
-                            id="demo-simple-select-label"
-                          >
-                            Hạng mục
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={category}
-                            label="Hạng mục"
-                            onChange={(id) => handleSelect}
-                            size="small"
-                            style={{ display: "flex" }}
-                          >
-                            {categories.map((category) => (
-                              <MenuItem value={category.name}>
-                                {category.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </Box>
-                      <TextField
-                        label="ĐVT"
-                        id="outlined-size-small"
-                        value={unit}
-                        size="small"
-                        disabled={true}
-                        sx={{ marginRight: "20px", width: "100px" }}
-                      />
-                      <TextField
-                        label="Sản lượng"
-                        id="outlined-size-small"
-                        value={quantityDetail.quantity}
-                        size="small"
-                        type="number"
-                        sx={{ marginRight: "20px" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            quantityDetail.id,
-                            "quantity",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <TextField
-                        label="Đơn giá"
-                        id="outlined-size-small"
-                        value={quantityDetail.price}
-                        size="small"
-                        type="number"
-                        sx={{ marginRight: "20px" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            quantityDetail.id,
-                            "price",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <TextField
-                        label="Thành tiền"
-                        id="outlined-size-small"
-                        value={`${(
-                          quantityDetail.quantity * quantityDetail.price
-                        ).toLocaleString()} VND`}
-                        size="small"
-                        disabled={true}
-                        sx={{ marginRight: "20px" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            quantityDetail.id,
-                            "price",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => deleteDiv(quantityDetail.id)}
-                      >
-                        x
-                      </button>
-                    </div>
-                  ))} */}
-
-                  {projectItems.map((projectItem, index) => (
-                    <div key={index}>{projectItem}</div>
+                  {projectItems.map((detail) => (
+                    <ProjectItem
+                      key={detail.id}
+                      detail={detail}
+                      categories={categories}
+                      onChange={handleProjectDetailChange}
+                      onRemove={handleRemoveProjectDetail}
+                    />
                   ))}
                   {/* <p className="text-danger">{errorDetail}</p> */}
                   <Button

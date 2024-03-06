@@ -1,50 +1,33 @@
 import {
   Box,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
-import { getCategoriesAPI } from "../../../apis/reportAPI";
 
-export default function ProjectItem() {
-  const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
-  const [unit, setUnit] = useState("");
-
-  const handleSelect = async (event) => {
-    debugger;
-    setCategory(event.target.value);
-    for (let index = 0; index < categories.length; index++) {
-      const element = categories[index].name;
-      if (event.target.value === element) {
-        setUnit(categories[index].unit);
-        break;
-      }
+export default function ProjectItem({
+  detail = {},
+  categories = [],
+  onChange = () => { },
+  onRemove = () => { },
+}) {
+  const handleSelectCategory = async (event) => {
+    const category = event.target.value;
+    let unit;
+    const selectedCategory = categories.find(el => el.name === category);
+    if (selectedCategory) {
+      unit = selectedCategory.unit;
     }
-    setQuantityDetails([...quantityDetails, unit]);
+    onChange({
+      ...detail,
+      category,
+      unit,
+    })
   };
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await getCategoriesAPI();
-      setCategories(response);
-    }
-    fetchMyAPI();
-  }, []);
-  const [quantityDetails, setQuantityDetails] = useState([
-    {
-      id: -Date.now(),
-      category: "",
-      quantity: "",
-      price: "",
-      amount: "",
-      date: "",
-    },
-  ]);
 
   const [errorDetail, setErrorDetail] = useState("");
 
@@ -61,122 +44,113 @@ export default function ProjectItem() {
         cancelButtonText: "Hủy bỏ",
       });
       if (result.isConfirmed) {
-        const updatedQuantityDetails = quantityDetails.filter(
-          (quantityDetail) => quantityDetail.id !== id
-        );
         Swal.fire({
           title: "Đã xóa!",
           text: "Hạng mục đã được xóa thành công.",
           icon: "success",
         });
-        setQuantityDetails(updatedQuantityDetails);
+        onRemove(detail);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handleInputChange = (id, key, value) => {
-    const updatedQuantityDetails = quantityDetails.map((quantityDetail) =>
-      quantityDetail.id === id
-        ? { ...quantityDetail, [key]: value }
-        : quantityDetail
-    );
-    // console.log(updatedQuantityDetails);
-    setQuantityDetails(updatedQuantityDetails);
+    onChange({
+      ...detail,
+      [key]: value,
+    });
   };
+
   return (
-    <div>
-      <div>
-        {quantityDetails.map((quantityDetail) => (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "35px",
-              height: "30px",
-            }}
-            key={quantityDetail.id}
-          >
-            <Box
-              sx={{
-                minWidth: 130,
-                marginRight: "20px",
-              }}
+    <div data-cc="root">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "35px",
+          height: "30px",
+        }}
+      >
+        <Box
+          sx={{
+            minWidth: 130,
+            marginRight: "20px",
+          }}
+        >
+          <FormControl fullWidth>
+            <InputLabel
+              style={{ marginTop: "-8px" }}
+              id="demo-simple-select-label"
             >
-              <FormControl fullWidth>
-                <InputLabel
-                  style={{ marginTop: "-8px" }}
-                  id="demo-simple-select-label"
-                >
-                  Hạng mục
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={category}
-                  label="Hạng mục"
-                  onChange={handleSelect}
-                  size="small"
-                  style={{ display: "flex" }}
-                >
-                  {categories.map((category) => (
-                    <MenuItem value={category.name}>{category.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-            <TextField
-              label="ĐVT"
-              id="outlined-size-small"
-              value={unit}
+              Hạng mục
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={detail.category}
+              label="Hạng mục"
+              onChange={handleSelectCategory}
               size="small"
-              disabled={true}
-              sx={{ marginRight: "20px", width: "100px" }}
-            />
-            <TextField
-              label="Sản lượng"
-              id="outlined-size-small"
-              value={quantityDetail.quantity}
-              size="small"
-              type="number"
-              sx={{ marginRight: "20px" }}
-              onChange={(e) =>
-                handleInputChange(quantityDetail.id, "quantity", e.target.value)
-              }
-            />
-            <TextField
-              label="Đơn giá"
-              id="outlined-size-small"
-              value={quantityDetail.price}
-              size="small"
-              type="number"
-              sx={{ marginRight: "20px" }}
-              onChange={(e) =>
-                handleInputChange(quantityDetail.id, "price", e.target.value)
-              }
-            />
-            <TextField
-              label="Thành tiền"
-              id="outlined-size-small"
-              value={`${(
-                quantityDetail.quantity * quantityDetail.price
-              ).toLocaleString()} VND`}
-              size="small"
-              disabled={true}
-              sx={{ marginRight: "20px" }}
-              onChange={(e) =>
-                handleInputChange(quantityDetail.id, "price", e.target.value)
-              }
-            />
-            <button
-              className="btn btn-danger"
-              onClick={() => deleteDiv(quantityDetail.id)}
+              style={{ display: "flex" }}
             >
-              x
-            </button>
-          </div>
-        ))}
-        <p className="text-danger">{errorDetail}</p>
+              {categories.map((category) => (
+                <MenuItem key={category.id + "_" + category.value} value={category.name}>{category.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <TextField
+          label="ĐVT"
+          id="outlined-size-small"
+          value={detail.unit}
+          size="small"
+          disabled={true}
+          sx={{ marginRight: "20px", width: "100px" }}
+        />
+        <TextField
+          label="Sản lượng"
+          id="outlined-size-small"
+          value={detail.quantity}
+          size="small"
+          type="number"
+          sx={{ marginRight: "20px" }}
+          onChange={(e) =>
+            handleInputChange(detail.id, "quantity", e.target.value)
+          }
+        />
+        <TextField
+          label="Đơn giá"
+          id="outlined-size-small"
+          value={detail.price}
+          size="small"
+          type="number"
+          sx={{ marginRight: "20px" }}
+          onChange={(e) =>
+            handleInputChange(detail.id, "price", e.target.value)
+          }
+        />
+        <TextField
+          label="Thành tiền"
+          id="outlined-size-small"
+          value={`${(
+            detail.quantity * detail.price
+          ).toLocaleString()} VND`}
+          size="small"
+          disabled={true}
+          sx={{ marginRight: "20px" }}
+          onChange={(e) =>
+            handleInputChange(detail.id, "price", e.target.value)
+          }
+        />
+        <button
+          className="btn btn-danger"
+          onClick={() => deleteDiv(detail.id)}
+          type="button"
+        >
+          x
+        </button>
       </div>
+      <p className="text-danger">{errorDetail}</p>
     </div>
   );
 }
