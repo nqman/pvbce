@@ -37,18 +37,18 @@ export default function ProjectItem({
       [key]: value,
     });
   };
-
+  const [unit, setUnit] = useState("");
   const handleSelectCategory = async (event) => {
     const category = event.target.value;
-    let unit;
+    // let unit;
     const selectedCategory = categories.find((el) => el.name === category);
     if (selectedCategory) {
-      unit = selectedCategory.unit;
+      setUnit(selectedCategory.unit);
     }
     onChange({
       ...detail,
       category,
-      unit,
+      // unit,
     });
   };
 
@@ -124,7 +124,7 @@ export default function ProjectItem({
         <TextField
           label="ĐVT"
           id="outlined-size-small"
-          value={detail.unit || "none"}
+          value={unit}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "100px" }}
