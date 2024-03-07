@@ -46,7 +46,7 @@ export async function listProjectsAPI() {
 export async function addProjectAPI(category) {
   try {
     const formData = new FormData();
-    console.log(category);
+    // console.log(category);
     formData.append("id", 0);
     formData.append("name", category.name);
     formData.append("unit", category.unit);

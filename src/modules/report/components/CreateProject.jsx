@@ -37,21 +37,21 @@ const newEmptyProjectDetail = () => {
     quantity: "",
     price: "",
     amount: "",
-    date: "",
+    // date: "",
   };
 };
 
 export default function CreateProject() {
   const emptyValue = {
-    projectItems: "",
+    rpQuantityAndRevenueDetails: "",
     totalAmount: "",
     startDate: "",
     endDate: "",
-    totalDate: "",
+    totalTime: "",
     projectDiaries: "",
   };
   const navigate = useNavigate();
-  const [value, setValue] = useState(emptyValue);
+  const [project, setProject] = useState(emptyValue);
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
@@ -62,10 +62,11 @@ export default function CreateProject() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log(project);
     try {
-      await addProjectAPI(value);
+      await addProjectAPI(project);
       toast.success("Khởi tạo dự án thành công");
-      navigate("/catalogue");
+      navigate("/report/listprojects");
     } catch (error) {
       console.log(error);
       toast.error("Khởi tạo dự án thất bại");
@@ -82,11 +83,16 @@ export default function CreateProject() {
   //Tính tổng tiền
   const [totalAmount, setTotalAmount] = useState(0);
 
-  // Hàm này sẽ được truyền xuống ProjectItem để tính tổng giá trị tiền
-  const updateTotalAmount = (amount, id) => {
-    console.log(id);
-    console.log(amount);
-    setTotalAmount(amount);
+  const updateTotalAmount = () => {
+    const totalAmountNew = projectItems.reduce((accumulator, projectItem) => {
+      return accumulator + projectItem.quantity * projectItem.price;
+    }, 0);
+    setTotalAmount(totalAmountNew);
+    setProject({
+      ...project,
+      totalAmount: totalAmountNew,
+      rpQuantityAndRevenueDetails: projectItems,
+    });
   };
 
   // Thời gian dự án
@@ -95,12 +101,13 @@ export default function CreateProject() {
 
   const handlePickStartDate = (date) => {
     setStartDate(date);
-    handlePickDate(date, "Ngày bắt đầu");
+    handlePickDate(date, "startDate");
   };
 
   const handlePickEndDate = (date) => {
     setEndDate(date);
-    handlePickDate(date, "Ngày kết thúc");
+
+    handlePickDate(date, "endDate");
   };
 
   const handlePickDate = (date, label) => {
@@ -110,20 +117,25 @@ export default function CreateProject() {
         month: "2-digit",
         day: "2-digit",
       }).format(date);
-
-      console.log(`${label}: ${formattedDate}`);
+      if (label === "startDate") {
+        setProject({ ...project, startDate: formattedDate });
+      } else if (label === "endDate") {
+        setProject({ ...project, endDate: formattedDate });
+      }
     }
   };
+
   const [timeDiff, setTimeDiff] = useState(0);
 
   useEffect(() => {
     if (endDate !== null && startDate !== null) {
       let start = new Date(startDate);
       let end = new Date(endDate);
-      setTimeDiff((end - start) / (1000 * 60 * 60 * 24) + 1);
+      const timeDiffNew = (end - start) / (1000 * 60 * 60 * 24) + 1;
+      setTimeDiff(timeDiffNew);
+      setProject({ ...project, totalTime: timeDiffNew });
     }
   }, [endDate, startDate]);
-  // console.log(timeDiff);
 
   //Thư viện dự án ---projectDiary
   const [projectDiaries, setProjectDiaries] = useState([
@@ -162,11 +174,11 @@ export default function CreateProject() {
       projectDiary.id === id ? { ...projectDiary, file } : projectDiary
     );
     setProjectDiaries(updateDiaries);
-    setValue({ ...value, projectDiaries: updateDiaries });
+    setProject({ ...project, projectDiaries: updateDiaries });
   };
 
+  // Get category selection
   useEffect(() => {
-    // Get category selection
     async function fetchMyAPI() {
       let response = await getCategoriesAPI();
       setCategories(response);
@@ -218,7 +230,12 @@ export default function CreateProject() {
                       />
                     ))}
                     {/* <p className="text-danger">{errorDetail}</p> */}
-                    <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <Button
                         variant="contained"
                         style={{ marginTop: "-10px", marginBottom: "20px" }}
@@ -226,9 +243,9 @@ export default function CreateProject() {
                       >
                         Thêm
                       </Button>
-                      <p>
-                        Total amount: {`${totalAmount.toLocaleString()} VND`}
-                      </p>
+                      <b style={{ paddingRight: "120px" }}>
+                        Tổng cộng: {`${totalAmount.toLocaleString()} VND`}
+                      </b>
                     </div>
                   </div>
                   <div className="calendar d-flex mt-3">

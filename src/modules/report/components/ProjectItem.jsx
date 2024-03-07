@@ -6,7 +6,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 
 export default function ProjectItem({
@@ -19,28 +19,29 @@ export default function ProjectItem({
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
-  const totalAmount = quantity * price;
-  // console.log(totalAmount);
-  // updateTotalAmount(totalAmount);
-  useEffect(() => updateTotalAmount(totalAmount, detail.id), [totalAmount]);
+  const amount = quantity * price;
+
+  useEffect(() => updateTotalAmount(), [amount]);
 
   const handleInputChange = (id, key, value) => {
-    // debugger;
     if (key === "quantity") {
       setQuantity(value);
     } else if (key === "price") {
       setPrice(value);
     }
-    // console.log(value);
     onChange({
       ...detail,
       [key]: value,
+      // amount: amount,
     });
   };
+  // const handleGetAmount = () => {
+  //   detail = { ...detail, amount: amount };
+  //   console.log(detail);
+  // };
   const [unit, setUnit] = useState("");
   const handleSelectCategory = async (event) => {
     const category = event.target.value;
-    // let unit;
     const selectedCategory = categories.find((el) => el.name === category);
     if (selectedCategory) {
       setUnit(selectedCategory.unit);
@@ -48,7 +49,6 @@ export default function ProjectItem({
     onChange({
       ...detail,
       category,
-      // unit,
     });
   };
 
@@ -95,6 +95,7 @@ export default function ProjectItem({
         >
           <FormControl fullWidth>
             <InputLabel
+              size="small"
               style={{ marginTop: "px", bottom: "8px" }}
               // sx={{ height: "100px", paddingBottom: "-8px" }}
               id="demo-simple-select-label"
@@ -139,6 +140,7 @@ export default function ProjectItem({
           onChange={(e) =>
             handleInputChange(detail.id, "quantity", e.target.value)
           }
+          // onBlur={handleGetAmount}
         />
         <TextField
           label="Đơn giá"
@@ -150,11 +152,12 @@ export default function ProjectItem({
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
+          // onBlur={handleGetAmount}
         />
         <TextField
           label="Thành tiền"
           id="outlined-size-small"
-          value={`${totalAmount.toLocaleString()} VND`}
+          value={`${amount.toLocaleString()} VND`}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "200px" }}
