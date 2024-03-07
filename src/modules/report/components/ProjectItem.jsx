@@ -122,7 +122,7 @@ export default function ProjectItem({
           </FormControl>
         </Box>
         <TextField
-          label="ĐVT"
+          label="Đơn vị"
           id="outlined-size-small"
           value={unit}
           size="small"
