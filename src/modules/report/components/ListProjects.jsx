@@ -11,7 +11,7 @@ export default function ListProjects({ rows, onEdit, onDelete }) {
   const navigate = useNavigate();
   //Xem chi tiết thiết bị
   const handleRead = (id) => {
-    navigate(`/catalogue/${id}`);
+    navigate(`/projects/${id}`);
   };
 
   return (
@@ -29,27 +29,14 @@ export default function ListProjects({ rows, onEdit, onDelete }) {
           rows={rows?.map((row) => ({ ...row, id: row.id }))}
           columns={[
             { field: "id", headerName: "STT", width: 50 },
-            {
-              field: "qr",
-              headerName: "MÃ QR",
-              width: 100,
-              // align: "center",
-              renderCell: (params) => (
-                <img
-                  style={{ width: "50px", height: "50px" }}
-                  src={params.row.imageOfQR}
-                  alt={params.row.name}
-                />
-              ),
-            },
-            { field: "name", headerName: "TÊN THIẾT BỊ", width: 200 },
-            { field: "divideCode", headerName: "MÃ THIẾT BỊ", width: 150 },
+
+            { field: "name", headerName: "TÊN DỰ ÁN", width: 200 },
+            { field: "divideCode", headerName: "NGÀY BẮT ĐẦU", width: 150 },
             {
               field: "constructionProject",
-              headerName: "THI CÔNG DỰ ÁN",
+              headerName: "NGÀY KẾT THÚC",
               width: 180,
             },
-            { field: "location", headerName: "NẰM Ở KHO BÃI", width: 180 },
             { field: "note", headerName: "GHI CHÚ", width: 150 },
             {
               field: "action",

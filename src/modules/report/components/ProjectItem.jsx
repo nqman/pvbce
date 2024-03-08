@@ -21,7 +21,16 @@ export default function ProjectItem({
   const [price, setPrice] = useState(0);
   const amount = quantity * price;
 
-  useEffect(() => updateTotalAmount(), [amount]);
+  // useEffect(() => updateTotalAmount(), [amount]);
+  useEffect(() => {
+    updateTotalAmount();
+
+    // onChange({
+    //   ...detail,
+    //   amount: quantity * price,
+    // });
+  }, [amount]);
+  // useEffect(() => {n...detail,amount:amount}, [amount]);
 
   const handleInputChange = (id, key, value) => {
     if (key === "quantity") {
@@ -31,14 +40,11 @@ export default function ProjectItem({
     }
     onChange({
       ...detail,
+      unit: unit,
       [key]: value,
-      // amount: amount,
     });
   };
-  // const handleGetAmount = () => {
-  //   detail = { ...detail, amount: amount };
-  //   console.log(detail);
-  // };
+
   const [unit, setUnit] = useState("");
   const handleSelectCategory = async (event) => {
     const category = event.target.value;

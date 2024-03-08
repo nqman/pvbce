@@ -34,9 +34,11 @@ const newEmptyProjectDetail = () => {
   return {
     id: -Date.now(),
     category: "",
+    unit: "",
     quantity: "",
     price: "",
     amount: "",
+
     // date: "",
   };
 };
@@ -48,7 +50,7 @@ export default function CreateProject() {
     startDate: "",
     endDate: "",
     totalTime: "",
-    projectDiaries: "",
+    projectLibraries: "",
   };
   const navigate = useNavigate();
   const [project, setProject] = useState(emptyValue);
@@ -117,10 +119,12 @@ export default function CreateProject() {
         month: "2-digit",
         day: "2-digit",
       }).format(date);
+      const [day, month, year] = formattedDate.split("/");
+      const formattedDateString = `${day}-${month}-${year}`;
       if (label === "startDate") {
-        setProject({ ...project, startDate: formattedDate });
+        setProject({ ...project, startDate: formattedDateString });
       } else if (label === "endDate") {
-        setProject({ ...project, endDate: formattedDate });
+        setProject({ ...project, endDate: formattedDateString });
       }
     }
   };
@@ -138,46 +142,52 @@ export default function CreateProject() {
   }, [endDate, startDate]);
 
   //Thư viện dự án ---projectDiary
-  const [projectDiaries, setProjectDiaries] = useState([
+
+  const [projectLibraries, setProjectLibraries] = useState([
     { id: -Date.now(), name: "", value: "", file: null },
   ]);
+  const [errorLibary, setErrorLibrary] = useState("");
 
-  const [categories, setCategories] = useState([]);
-
-  const [errorDiary, setErrorDiary] = useState("");
-
-  const createDivDiary = () => {
-    const newDiary = {
+  const createDiv = () => {
+    const newLibraryDetail = {
       id: -Date.now(),
       name: "",
+      value: "",
       file: null,
     };
-    setProjectDiaries([...projectDiaries, newDiary]);
+    setProjectLibraries([...projectLibraries, newLibraryDetail]);
   };
 
-  const deleteDivDiary = (id) => {
-    const updatedProjectDiaries = projectDiaries.filter(
-      (projectDiary) => projectDiary.id !== id
+  const deleteDiv = (id) => {
+    const updatedProjectLibraries = projectLibraries.filter(
+      (productDetail) => productDetail.id !== id
     );
-    setProjectDiaries(updatedProjectDiaries);
+    setProjectLibraries(updatedProjectLibraries);
   };
 
-  const handleInputChangeDiary = (id, key, value) => {
-    const updateDiaries = projectDiaries.map((projectDiary) =>
-      projectDiary.id === id ? { ...projectDiary, [key]: value } : projectDiary
+  const handleInputChange = (id, key, value) => {
+    const updatedProjectLibraries = projectLibraries.map((projectLibrary) =>
+      projectLibrary.id === id
+        ? { ...projectLibrary, [key]: value }
+        : projectLibrary
     );
-    setProjectDiaries(updateDiaries);
+    setProjectLibraries(updatedProjectLibraries);
   };
 
-  const handleFileChangeDiary = (id, file) => {
-    const updateDiaries = projectDiaries.map((projectDiary) =>
-      projectDiary.id === id ? { ...projectDiary, file } : projectDiary
+  const handleFileChange = (id, file) => {
+    const updatedProjectLibraries = projectLibraries.map((projectLibrary) =>
+      projectLibrary.id === id ? { ...projectLibrary, file } : projectLibrary
     );
-    setProjectDiaries(updateDiaries);
-    setProject({ ...project, projectDiaries: updateDiaries });
+
+    setProjectLibraries(updatedProjectLibraries);
+    // setProject({ ...project, projectLibraries: updatedProjectLibraries });
+  };
+  const handleBlurInput = () => {
+    setProject({ ...project, projectLibraries: projectLibraries });
   };
 
   // Get category selection
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await getCategoriesAPI();
@@ -284,73 +294,70 @@ export default function CreateProject() {
             {/* Thư viện */}
             <TabPanel value="2">
               <Container className="">
-                <div className="library">
-                  <div>
-                    {projectDiaries.map((projectDiary) => (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginBottom: "15px",
-                          height: "30px",
-                        }}
-                        key={projectDiary.id}
-                      >
-                        <TextField
-                          placeholder="Thông số"
-                          id="outlined-size-small"
-                          value={projectDiary.name}
-                          size="small"
-                          sx={{ marginRight: "20px" }}
-                          onChange={(e) =>
-                            handleInputChangeDiary(
-                              projectDiary.id,
-                              "name",
-                              e.target.value
-                            )
-                          }
-                        />
-                        <TextField
-                          placeholder="Nội dung"
-                          id="outlined-size-small"
-                          value={projectDiary.value || projectDiary.file?.name}
-                          size="small"
-                          sx={{ marginRight: "20px" }}
-                          onChange={(e) =>
-                            handleInputChangeDiary(
-                              projectDiary.id,
-                              "value",
-                              e.target.value
-                            )
-                          }
-                        />
-                        <input
-                          style={{ width: "130px" }}
-                          className="custom-file-input"
-                          type="file"
-                          id={`fileInput${projectDiary.id}`}
-                          name="filename"
-                          onChange={(e) =>
-                            handleFileChangeDiary(
-                              projectDiary.id,
-                              e.target.files[0]
-                            )
-                          }
-                        />
+                <div>
+                  {projectLibraries.map((projectLibrary) => (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "15px",
+                        height: "30px",
+                      }}
+                      key={projectLibrary.id}
+                    >
+                      <TextField
+                        placeholder="Thông số"
+                        id="outlined-size-small"
+                        value={projectLibrary.name}
+                        size="small"
+                        sx={{ marginRight: "20px" }}
+                        onChange={(e) =>
+                          handleInputChange(
+                            projectLibrary.id,
+                            "name",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <TextField
+                        placeholder="Nội dung"
+                        id="outlined-size-small"
+                        value={
+                          projectLibrary.value || projectLibrary.file?.name
+                        }
+                        size="small"
+                        sx={{ marginRight: "20px" }}
+                        onChange={(e) =>
+                          handleInputChange(
+                            projectLibrary.id,
+                            "value",
+                            e.target.value
+                          )
+                        }
+                        onBlur={handleBlurInput}
+                      />
+                      <input
+                        type="file"
+                        id={`fileInput${projectLibrary.id}`}
+                        name="filename"
+                        onChange={(e) =>
+                          handleFileChange(projectLibrary.id, e.target.files[0])
+                        }
+                        onBlur={handleBlurInput}
+                      />
 
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => deleteDivDiary(projectDiary.id)}
-                        >
-                          x
-                        </button>
-                      </div>
-                    ))}
-                    {/* <p className="text-danger">{errorDetail}</p> */}
-                    <Button variant="contained" onClick={createDivDiary}>
-                      Thêm
-                    </Button>
-                  </div>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteDiv(projectLibrary.id)}
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                  <p className="text-danger">{errorLibary}</p>
+                  <Button variant="contained" onClick={createDiv}>
+                    Thêm
+                  </Button>
                 </div>
                 {/* SUBMIT */}
                 <div

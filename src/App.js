@@ -16,8 +16,8 @@ import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
 import ChangePassword from "./modules/authentication/pages/ChangePassword";
 import CreateProject from "./modules/report/components/CreateProject";
 import Category from "./modules/report/components/Category";
-import ListProjects from "./modules/report/components/ListProjects";
 import ProjectManagement from "./modules/report/components/ProjectManagement";
+import ProjectDetail from "./modules/report/components/ProjectDetail";
 
 function App() {
   return (
@@ -35,6 +35,7 @@ function App() {
             path="/report/listprojects"
             element={<ProjectManagement />}
           ></Route>
+          <Route path="/projects/:code" element={<ProjectDetail />} />
 
           <Route path="/library" element={<DocumentManagement />}></Route>
         </Route>
