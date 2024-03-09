@@ -136,8 +136,9 @@ export async function addProjectAPI(project) {
 
 export async function selectProjectAPI(id) {
   try {
-    const resp = await baseAPI.get(`projects/${id}`);
-    // console.log(resp.data);
+    console.log(id);
+    const resp = await baseAPI.get(`rp-quantity-revenue/${id}`);
+    console.log(resp.data);
     return resp.data;
   } catch (error) {
     console.error(error);
@@ -151,5 +152,14 @@ export async function deleteProjectAPI(id) {
     return resp.data;
   } catch (error) {
     throw error.response.data;
+  }
+}
+
+export async function fetchPdfProject(documentId, type) {
+  try {
+    const response = await baseAPI.get(`projects/url/${type}/${documentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching PDF:", error);
   }
 }

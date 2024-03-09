@@ -27,13 +27,13 @@ export default function ProjectManagement() {
 
   const fetchProjects = async () => {
     try {
-      const data = await listEquipmentsAPI();
-      toast.success("Lấy danh sách thiết bị thành công");
+      const data = await listEquipmentsAPI(); //đổi API
+      toast.success("Lấy danh sách dự án thành công");
       setProjects(data);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching equipments:", error);
-      toast.error("Lấy danh sách thiết bị thất bại");
+      console.error("Error fetching projects:", error);
+      toast.error("Lấy danh sách dự án thất bại");
     }
   };
 
@@ -64,11 +64,11 @@ export default function ProjectManagement() {
     }
   };
 
-  const handleSelectProject = async (id) => {
+  const handleEditProject = async (id) => {
     try {
       const data = await selectProjectAPI(id);
       setSelectedProject(data);
-      navigate(`/catalogue/edit/${id}`);
+      navigate(`/project/edit/${id}`);
     } catch (error) {
       toast.error("Đã có lỗi xảy ra");
     }
@@ -100,7 +100,7 @@ export default function ProjectManagement() {
           <ListProjects
             rows={projects}
             onDelete={handleDeleteProject}
-            onEdit={handleSelectProject}
+            onEdit={handleEditProject}
           />
         ) : (
           <Box sx={{ display: "block", textAlign: "center" }}>

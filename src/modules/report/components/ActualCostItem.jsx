@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 
-export default function ProjectItem({
+export default function ActualCostItem({
   detail = {},
   categories = [],
   onChange = () => {},
@@ -122,7 +122,7 @@ export default function ProjectItem({
           value={unit}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "100px" }}
+          sx={{ marginRight: "20px", width: "80px" }}
         />
         <TextField
           label="Sản lượng"
@@ -130,7 +130,7 @@ export default function ProjectItem({
           value={detail.quantity}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "150px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "quantity", e.target.value)
           }
@@ -142,7 +142,7 @@ export default function ProjectItem({
           value={detail.price}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "150px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
@@ -154,7 +154,7 @@ export default function ProjectItem({
           value={`${amount.toLocaleString()} VND`}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "150px" }}
         />
         <button
           className="btn btn-danger"

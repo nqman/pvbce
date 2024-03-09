@@ -425,6 +425,8 @@ export default function CreateEquipment() {
                           />
                           <input
                             type="file"
+                            style={{ width: "130px" }}
+                            className="custom-file-input"
                             id={`fileInput${productDetail.id}`}
                             name="filename"
                             onChange={(e) =>

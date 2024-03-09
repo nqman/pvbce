@@ -1,15 +1,5 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Tab,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Container, Tab, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 //validation
@@ -45,38 +35,30 @@ const newEmptyProjectDetail = () => {
 
 export default function CreateProject() {
   const emptyValue = {
+    name: "",
     rpQuantityAndRevenueDetails: "",
     totalAmount: "",
     startDate: "",
     endDate: "",
     totalTime: "",
     projectLibraries: "",
+    note: "",
   };
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState(emptyValue);
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
   };
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    console.log(project);
-    try {
-      await addProjectAPI(project);
-      toast.success("Khởi tạo dự án thành công");
-      navigate("/report/listprojects");
-    } catch (error) {
-      console.log(error);
-      toast.error("Khởi tạo dự án thất bại");
-    }
+  //General project information
+  const handleChangeGeneralInfor = (e) => {
+    setProject({ ...project, [e.target.name]: e.target.value });
   };
-
+  console.log(project);
+  //Project Item
   const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
-
   const addProjectItem = () => {
     setProjectItems((oldProjectItems) => {
       return [...oldProjectItems, newEmptyProjectDetail()];
@@ -102,13 +84,13 @@ export default function CreateProject() {
   const [endDate, setEndDate] = useState(null);
 
   const handlePickStartDate = (date) => {
+    // console.log(date);
     setStartDate(date);
     handlePickDate(date, "startDate");
   };
 
   const handlePickEndDate = (date) => {
     setEndDate(date);
-
     handlePickDate(date, "endDate");
   };
 
@@ -210,6 +192,19 @@ export default function CreateProject() {
       return [...oldProjectItems.filter((el) => detail.id !== el.id)];
     });
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    console.log(project);
+    try {
+      await addProjectAPI(project);
+      toast.success("Khởi tạo dự án thành công");
+      navigate("/report/listprojects");
+    } catch (error) {
+      console.log(error);
+      toast.error("Khởi tạo dự án thất bại");
+    }
+  };
 
   return (
     <div>
@@ -228,6 +223,28 @@ export default function CreateProject() {
             <TabPanel value="1">
               <Container className="">
                 <div>
+                  <div
+                    className="mb-4 pb-3"
+                    style={{ borderBottom: "2px solid black", display: "flex" }}
+                  >
+                    <TextField
+                      value={project.name}
+                      name="name"
+                      size="small"
+                      className="me-4 w-50"
+                      label={"Tên dự án"}
+                      onChange={handleChangeGeneralInfor}
+                    />
+                    <TextField
+                      value={project.note}
+                      name="note"
+                      size="small"
+                      className="w-50"
+                      label={"Ghi chú"}
+                      onChange={handleChangeGeneralInfor}
+                    />
+                  </div>
+
                   <div>
                     {projectItems.map((detail) => (
                       <ProjectItem
@@ -338,6 +355,8 @@ export default function CreateProject() {
                       />
                       <input
                         type="file"
+                        style={{ width: "130px" }}
+                        className="custom-file-input"
                         id={`fileInput${projectLibrary.id}`}
                         name="filename"
                         onChange={(e) =>
