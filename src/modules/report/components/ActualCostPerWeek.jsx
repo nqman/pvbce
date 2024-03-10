@@ -25,8 +25,6 @@ export function ActualCostPerWeek(props) {
   const [project, setProject] = useState();
   const [rpQuantityAndRevenueDetails, setRpQuantityAndRevenueDetails] =
     useState([]);
-  const [rpQuantityAndRevenueLibraries, setRpQuantityAndRevenueLibraries] =
-    useState([]);
 
   const idProject = params.code;
   const getProjects = async (idProject) => {
@@ -34,7 +32,6 @@ export function ActualCostPerWeek(props) {
       const data = await selectProjectAPI(idProject);
       setProject(data);
       setRpQuantityAndRevenueDetails(data.rpQuantityAndRevenueDetails);
-      setRpQuantityAndRevenueLibraries(data.rpQuantityAndRevenueLibraries);
       return data;
     } catch (error) {
       console.error("Error fetching equipments:", error);
@@ -106,10 +103,9 @@ export function ActualCostPerWeek(props) {
               fontWeight: "bold",
               color: "black",
               borderRadius: "5px",
-              // boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
             }}
           >
-            12-02-2024
+            {props.currentWeek}
           </span>
         </Grid>
         <Grid item lg={12}>
@@ -130,6 +126,7 @@ export function ActualCostPerWeek(props) {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                paddingBottom: "10px",
               }}
             >
               <Button style={{}} onClick={addProjectItem}>

@@ -160,3 +160,25 @@ export async function fetchPdfProject(documentId, type) {
     console.error("Error fetching PDF:", error);
   }
 }
+
+//Get-next-monday
+export async function getNextMondayAPI(currentWeek, id) {
+  try {
+    const resp = await baseAPI.get(`date/get-next-monday/${currentWeek}/${id}`);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+
+//get actual-quantity-revenue
+export async function getActualQuantityRevenueAPI(id) {
+  try {
+    // const resp = await baseAPI.get(`actual-quantity-revenue/${id}`);
+    const resp = await baseAPI.get(`actual-quantity-revenue/${21}`);
+    console.log(resp.data);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
