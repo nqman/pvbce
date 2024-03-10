@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Grid, TextField } from "@mui/material";
 import ActualCostItem from "./ActualCostItem";
 
-export function ActualCostPerWeek() {
+export function ActualCostPerWeek(props) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const newEmptyProjectDetail = () => {
@@ -83,25 +83,36 @@ export function ActualCostPerWeek() {
     });
   };
   return (
-    <div>
+    <div style={{ marginBottom: "50px" }}>
       <Grid
         container
         spacing={5}
-        style={{ overflow: "hidden", display: "flex", alignItems: "start" }}
+        style={{
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "start",
+          border: "1px solid",
+          borderRadius: "5px",
+          padding: "10px 0",
+        }}
       >
-        <Grid item lg={2} sx={{ marginTop: "5px" }}>
+        <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
           <span
             style={{
+              padding: "5px 10px",
+              border: "1px solid",
+              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+              backgroundColor: "rgb(242, 228, 38)",
               fontWeight: "bold",
-              border: "1px solid black",
-              borderRadius: "2px",
-              padding: "10px 20px",
+              color: "black",
+              borderRadius: "5px",
+              // boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
             }}
           >
             12-02-2024
           </span>
         </Grid>
-        <Grid item lg={10}>
+        <Grid item lg={12}>
           <div>
             {projectItems.map((detail) => (
               <ActualCostItem
@@ -118,12 +129,10 @@ export function ActualCostPerWeek() {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              <Button
-                style={{ marginTop: "-10px", marginBottom: "20px" }}
-                onClick={addProjectItem}
-              >
+              <Button style={{}} onClick={addProjectItem}>
                 Thêm
               </Button>
               <TextField
@@ -132,15 +141,14 @@ export function ActualCostPerWeek() {
                 disabled={true}
                 value={`${totalAmount.toLocaleString()} VND`}
                 sx={{
-                  marginRight: "90px",
-                  width: "320px",
+                  marginRight: "120px",
+                  width: "200px",
                 }}
               />
             </div>
           </div>
         </Grid>
       </Grid>
-      <Button className="btn btn-warning">Thêm tuần</Button>
     </div>
   );
 }

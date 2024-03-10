@@ -11,7 +11,6 @@ import { addProjectAPI, getCategoriesAPI } from "../../../apis/reportAPI";
 
 //Calendar
 import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -56,7 +55,6 @@ export default function CreateProject() {
   const handleChangeGeneralInfor = (e) => {
     setProject({ ...project, [e.target.name]: e.target.value });
   };
-  console.log(project);
   //Project Item
   const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
   const addProjectItem = () => {
@@ -162,7 +160,6 @@ export default function CreateProject() {
     );
 
     setProjectLibraries(updatedProjectLibraries);
-    // setProject({ ...project, projectLibraries: updatedProjectLibraries });
   };
   const handleBlurInput = () => {
     setProject({ ...project, projectLibraries: projectLibraries });

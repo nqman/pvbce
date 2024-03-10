@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick-theme.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectProjectAPI, fetchPdfProject } from "../../../apis/reportAPI";
 import "./styles.css";
-import { ActualCosts } from "./ActualCosts";
 
 const ProjectDetail = () => {
   const navigate = useNavigate();

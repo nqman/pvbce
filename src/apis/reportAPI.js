@@ -38,7 +38,6 @@ export async function listProjectsAPI() {
   try {
     const resp = await baseAPI.get("projects");
     const data = resp.data;
-    return data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -136,9 +135,7 @@ export async function addProjectAPI(project) {
 
 export async function selectProjectAPI(id) {
   try {
-    console.log(id);
     const resp = await baseAPI.get(`rp-quantity-revenue/${id}`);
-    console.log(resp.data);
     return resp.data;
   } catch (error) {
     console.error(error);

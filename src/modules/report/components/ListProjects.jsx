@@ -31,9 +31,9 @@ export default function ListProjects({ rows, onEdit, onDelete }) {
             { field: "id", headerName: "STT", width: 50 },
 
             { field: "name", headerName: "TÊN DỰ ÁN", width: 200 },
-            { field: "divideCode", headerName: "NGÀY BẮT ĐẦU", width: 150 },
+            { field: "startDate", headerName: "NGÀY BẮT ĐẦU", width: 150 },
             {
-              field: "constructionProject",
+              field: "endDate",
               headerName: "NGÀY KẾT THÚC",
               width: 180,
             },

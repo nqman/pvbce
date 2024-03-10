@@ -122,7 +122,7 @@ export default function ActualCostItem({
           value={unit}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "80px" }}
+          sx={{ marginRight: "20px", width: "100px" }}
         />
         <TextField
           label="Sản lượng"
@@ -130,7 +130,7 @@ export default function ActualCostItem({
           value={detail.quantity}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "150px" }}
+          sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "quantity", e.target.value)
           }
@@ -142,7 +142,7 @@ export default function ActualCostItem({
           value={detail.price}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "150px" }}
+          sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
@@ -154,7 +154,7 @@ export default function ActualCostItem({
           value={`${amount.toLocaleString()} VND`}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "150px" }}
+          sx={{ marginRight: "20px", width: "200px" }}
         />
         <button
           className="btn btn-danger"
