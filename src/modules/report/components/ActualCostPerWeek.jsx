@@ -81,71 +81,148 @@ export function ActualCostPerWeek(props) {
   };
   return (
     <div style={{ marginBottom: "50px" }}>
-      <Grid
-        container
-        spacing={5}
-        style={{
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "start",
-          border: "1px solid",
-          borderRadius: "5px",
-          padding: "10px 0",
-        }}
-      >
-        <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
-          <span
-            style={{
-              padding: "5px 10px",
-              border: "1px solid",
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-              backgroundColor: "rgb(242, 228, 38)",
-              fontWeight: "bold",
-              color: "black",
-              borderRadius: "5px",
-            }}
-          >
-            {props.currentWeek}
-          </span>
-        </Grid>
-        <Grid item lg={12}>
-          <div>
-            {projectItems.map((detail) => (
-              <ActualCostItem
-                key={detail.id}
-                detail={detail}
-                categories={categories}
-                onChange={handleProjectDetailChange}
-                onRemove={handleRemoveProjectDetail}
-                updateTotalAmount={updateTotalAmount}
-              />
-            ))}
-            {/* <p className="text-danger">{errorDetail}</p> */}
-            <div
+      {/* OLD */}
+      {props.oldCostPerWeek ? (
+        <Grid
+          container
+          spacing={5}
+          style={{
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "start",
+            border: "1px solid",
+            borderRadius: "5px",
+            padding: "10px 0",
+          }}
+        >
+          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+            <span
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingBottom: "10px",
+                padding: "5px 10px",
+                border: "1px solid",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                backgroundColor: "rgb(242, 228, 38)",
+                fontWeight: "bold",
+                color: "black",
+                borderRadius: "5px",
               }}
             >
-              <Button style={{}} onClick={addProjectItem}>
-                Thêm
-              </Button>
-              <TextField
-                label={"Tổng cộng"}
-                size="small"
-                disabled={true}
-                value={`${totalAmount.toLocaleString()} VND`}
-                sx={{
-                  marginRight: "120px",
-                  width: "200px",
+              {props.oldWeek}
+            </span>
+          </Grid>
+          <Grid item lg={12}>
+            <div>
+              {props.actualQuantityAndRevenueDetails.map((detail) => (
+                <ActualCostItem
+                  key={detail.id}
+                  oldDetail={detail}
+                  categories={categories}
+                  oldCategory={detail.category}
+                  onChange={handleProjectDetailChange}
+                  onRemove={handleRemoveProjectDetail}
+                  updateTotalAmount={updateTotalAmount}
+                />
+              ))}
+              {/* <p className="text-danger">{errorDetail}</p> */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: "10px",
                 }}
-              />
+              >
+                <Button style={{}} onClick={addProjectItem}>
+                  Thêm
+                </Button>
+                <TextField
+                  label={"Tổng cộng"}
+                  size="small"
+                  disabled={true}
+                  value={`${totalAmount.toLocaleString()} VND`}
+                  sx={{
+                    marginRight: "120px",
+                    width: "200px",
+                  }}
+                />
+              </div>
             </div>
-          </div>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        ""
+      )}
+
+      {/* NEW */}
+      {props.currentWeek ? (
+        <Grid
+          container
+          spacing={5}
+          style={{
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "start",
+            border: "1px solid",
+            borderRadius: "5px",
+            padding: "10px 0",
+          }}
+        >
+          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+            <span
+              style={{
+                padding: "5px 10px",
+                border: "1px solid",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                backgroundColor: "rgb(242, 228, 38)",
+                fontWeight: "bold",
+                color: "black",
+                borderRadius: "5px",
+              }}
+            >
+              {props.currentWeek}
+            </span>
+          </Grid>
+          <Grid item lg={12}>
+            <div>
+              {projectItems.map((detail) => (
+                <ActualCostItem
+                  key={detail.id}
+                  detail={detail}
+                  categories={categories}
+                  onChange={handleProjectDetailChange}
+                  onRemove={handleRemoveProjectDetail}
+                  updateTotalAmount={updateTotalAmount}
+                />
+              ))}
+              {/* <p className="text-danger">{errorDetail}</p> */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: "10px",
+                }}
+              >
+                <Button style={{}} onClick={addProjectItem}>
+                  Thêm
+                </Button>
+                <TextField
+                  label={"Tổng cộng"}
+                  size="small"
+                  disabled={true}
+                  value={`${totalAmount.toLocaleString()} VND`}
+                  sx={{
+                    marginRight: "120px",
+                    width: "200px",
+                  }}
+                />
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

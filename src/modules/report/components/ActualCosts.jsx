@@ -15,6 +15,7 @@ export default function ActualCosts() {
   const [actualQuantityAndRevenues, setActualQuantityAndRevenues] = useState();
   const [errorGetMonday, setErrorGetMonday] = useState(false);
   const [actualCostPerWeeks, setActualCostPerWeeks] = useState([]); //set = API
+  const [oldCostPerWeeks, setOldCostPerWeeks] = useState([]);
   const [currentWeek, setCurrentWeek] = useState("");
   const idProject = params.code;
   const getNextModay = async (currentWeek, idProject) => {
@@ -40,8 +41,8 @@ export default function ActualCosts() {
     // debugger;
     try {
       const data = await getActualQuantityRevenueAPI(idProject);
-      console.log(data);
       setActualQuantityAndRevenues(data);
+      setOldCostPerWeeks(data.actualQuantityAndRevenueWeeks);
       return data;
     } catch (error) {
       console.error("Error fetching actualQuantityAndRevenue:", error);
@@ -59,8 +60,8 @@ export default function ActualCosts() {
       return [
         ...oldActualCostPerWeeks,
         <ActualCostPerWeek
-          data={project?.rpQuantityAndRevenueDetails}
-          startDate={project?.startDate}
+          // data={project?.rpQuantityAndRevenueDetails}
+          // startDate={project?.startDate}
           currentWeek={currentWeek === "" ? project.startDate : currentWeek}
           key={Date.now()}
         />,
@@ -76,9 +77,23 @@ export default function ActualCosts() {
   return (
     <div>
       <Container className="mt-5">
+        {oldCostPerWeeks
+          ? oldCostPerWeeks.map((oldCostPerWeek) => (
+              <ActualCostPerWeek
+                oldCostPerWeek={oldCostPerWeek}
+                oldWeek={oldCostPerWeek.week}
+                actualQuantityAndRevenueDetails={
+                  oldCostPerWeek.actualQuantityAndRevenueDetails
+                }
+                key={oldCostPerWeek.id}
+              />
+            ))
+          : ""}
+
         {actualCostPerWeeks.map((actualCostPerWeek, index) => (
           <div key={index}>{actualCostPerWeek}</div>
         ))}
+
         <div
           style={{
             display: "flex",

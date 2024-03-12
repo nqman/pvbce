@@ -176,7 +176,6 @@ export async function getActualQuantityRevenueAPI(id) {
   try {
     // const resp = await baseAPI.get(`actual-quantity-revenue/${id}`);
     const resp = await baseAPI.get(`actual-quantity-revenue/${21}`);
-    console.log(resp.data);
     return resp.data;
   } catch (error) {
     throw error.response.data;
