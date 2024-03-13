@@ -27,7 +27,7 @@ export default function ProjectManagement() {
 
   const fetchProjects = async () => {
     try {
-      const data = await listEquipmentsAPI(); //đổi API
+      const data = await listProjectsAPI(); //đổi API
       toast.success("Lấy danh sách dự án thành công");
       setProjects(data);
       setIsLoading(false);

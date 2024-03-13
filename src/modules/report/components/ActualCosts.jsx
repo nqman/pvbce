@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActualCostPerWeek } from "./ActualCostPerWeek";
 import { Container } from "@mui/material";
 import {
+  addActualQuantityAndRevenueAPI,
   getActualQuantityRevenueAPI,
   getNextMondayAPI,
   selectProjectAPI,
@@ -22,7 +23,7 @@ export default function ActualCosts() {
     try {
       const nextMonday = await getNextMondayAPI(currentWeek, idProject);
       setCurrentWeek(nextMonday);
-      console.log(nextMonday);
+      // console.log(nextMonday);
     } catch (error) {
       setErrorGetMonday(true);
       console.error("Error fetching currentWeek:", error);
@@ -42,7 +43,7 @@ export default function ActualCosts() {
     try {
       const data = await getActualQuantityRevenueAPI(idProject);
       setActualQuantityAndRevenues(data);
-      setOldCostPerWeeks(data.actualQuantityAndRevenueWeeks);
+      setOldCostPerWeeks(data?.actualQuantityAndRevenueWeeks);
       return data;
     } catch (error) {
       console.error("Error fetching actualQuantityAndRevenue:", error);
@@ -53,6 +54,16 @@ export default function ActualCosts() {
     getProjects(idProject);
     getActualQuantityRevenues(idProject);
   }, [idProject]);
+  const [valueFromChild, setValueFromChild] = useState([]);
+
+  const handleChildValueChange = (data, currentWeek) => {
+    const tempWeek = { currentWeek: currentWeek, actualCostPerWeek: data };
+    setValueFromChild((prevState) => [
+      ...prevState, // Giữ lại tất cả các giá trị hiện có của mảng prevState
+      tempWeek, // Thêm tempWeek vào mảng prevState
+    ]);
+    // console.log(tempWeek);
+  };
   const addActualCostPerWeek = () => {
     // debugger;
     setCurrentWeek(project?.startDate);
@@ -64,6 +75,7 @@ export default function ActualCosts() {
           // startDate={project?.startDate}
           currentWeek={currentWeek === "" ? project.startDate : currentWeek}
           key={Date.now()}
+          onValueChange={handleChildValueChange}
         />,
       ];
     });
@@ -72,7 +84,10 @@ export default function ActualCosts() {
       return;
     }
     getNextModay(currentWeek, idProject);
-    console.log(currentWeek);
+    // console.log(currentWeek);
+  };
+  const handleSaveActualCost = () => {
+    console.log(valueFromChild);
   };
   return (
     <div>
@@ -86,6 +101,7 @@ export default function ActualCosts() {
                   oldCostPerWeek.actualQuantityAndRevenueDetails
                 }
                 key={oldCostPerWeek.id}
+                // sendDataToAPI={sendDataToAPI}
               />
             ))
           : ""}
@@ -110,7 +126,9 @@ export default function ActualCosts() {
             Thêm tuần
           </button>
 
-          <button className="btn btn-success">Lưu</button>
+          <button className="btn btn-success" onClick={handleSaveActualCost}>
+            Lưu
+          </button>
         </div>
       </Container>
     </div>
