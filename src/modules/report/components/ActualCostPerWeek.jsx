@@ -81,24 +81,13 @@ export function ActualCostPerWeek(props) {
       return [...oldProjectItems.filter((el) => detail.id !== el.id)];
     });
   };
-  // console.log(projectItems);
-  // const [childValue, setChildValue] = useState("");
 
-  // const handleChange = (event) => {
-  //   const value = event.target.value;
-  //   setChildValue(value);
-  //   // Gọi hàm callback để truyền giá trị lên component cha
-  //   props.onValueChange(value);
-  // };
-
-  // useEffect(() => {
-  //   // setChildValue(projectItems);
-  //   // Gọi hàm callback để truyền giá trị lên component cha
+  // const saveProjectItem = () => {
   //   props.onValueChange(projectItems, props.currentWeek);
-  // }, [projectItems]);
-  const saveProjectItem = () => {
+  // };
+  useEffect(() => {
     props.onValueChange(projectItems, props.currentWeek);
-  };
+  }, [projectItems]);
 
   return (
     <div style={{ marginBottom: "50px" }}>
@@ -227,9 +216,9 @@ export function ActualCostPerWeek(props) {
                 <Button style={{}} onClick={addProjectItem}>
                   Thêm
                 </Button>
-                <Button style={{}} onClick={saveProjectItem}>
+                {/* <Button style={{}} onClick={saveProjectItem}>
                   Lưu tuần
-                </Button>
+                </Button> */}
                 <TextField
                   label={"Tổng cộng"}
                   size="small"

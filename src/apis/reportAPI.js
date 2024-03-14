@@ -179,78 +179,41 @@ export async function getActualQuantityRevenueAPI(id) {
   }
 }
 
-export async function addActualQuantityAndRevenueAPI(data) {
+export async function addActualQuantityAndRevenueAPI(
+  actualQuantityAndRevenues,
+  idProject
+) {
   try {
+    // console.log(actualQuantityAndRevenues);
     const formData = new FormData();
-    Object.keys(data).map((key) => {
-      if (key === "rpQuantityAndRevenueDetails") {
-        if (Array.isArray(data[key])) {
-          data[key].forEach((detail) => {
-            //EDIT
-            if (detail.id > 0) {
-              formData.append("idDetails", detail.id);
-            }
-            //NEW
-            else {
-              formData.append("idDetails", 0);
-            }
-            formData.append("categories", detail.category);
-            formData.append("units", detail.unit);
-            formData.append("quantities", detail.quantity);
-            formData.append("prices", detail.price);
-          });
-        }
-      } else if (key === "dataLibraries") {
-        if (Array.isArray(data[key])) {
-          data[key].forEach((detail) => {
-            //EDIT
-            if (detail.id > 0) {
-              if (
-                detail.pathFile !== null ||
-                (typeof detail.file !== "undefined" &&
-                  detail.file instanceof File)
-              ) {
-                if (
-                  typeof detail.file !== "undefined" &&
-                  detail.file instanceof File
-                ) {
-                  formData.append("idUpdatePartLibraries", detail.id);
-                  formData.append("partNameUpdateLibraries", detail.name);
-                  formData.append("partUpdateLibraries", detail.file);
-                } else {
-                  formData.append("idUpdatePathLibraries", detail.id);
-                  formData.append("pathNameUpdateLibraries", detail.name);
-                  formData.append("pathValueUpdateLibraries", detail.value);
-                  formData.append("pathUpdateLibraries", detail.pathFile);
-                }
-              } else {
-                formData.append("idLinkLibraries", detail.id);
-                formData.append("linkNameLibraries", detail.name);
-                formData.append("linkLibraries", detail.value);
+    actualQuantityAndRevenues.map((dataPerWeek) =>
+      Object.keys(dataPerWeek).map((key) => {
+        if (key === "actualCostPerWeek") {
+          if (Array.isArray(dataPerWeek[key])) {
+            dataPerWeek[key].forEach((detail) => {
+              //EDIT
+              if (detail.id > 0) {
+                formData.append("idActualDetails", detail.id);
               }
-            }
-            //NEW
-            else {
-              if (detail.file instanceof File) {
-                console.log(detail.file);
-                formData.append("idNewPartLibraries", 0);
-                formData.append("partNameNewLibraries", detail.name);
-                formData.append("partNewLibraries", detail.file);
-              } else {
-                formData.append("idLinkLibraries", 0);
-                formData.append("linkNameLibraries", detail.name);
-                formData.append("linkLibraries", detail.value);
+              //NEW
+              else {
+                formData.append("idActualDetails", 0);
               }
-            }
-          });
+              formData.append("categories", detail.category);
+              formData.append("units", detail.unit);
+              formData.append("quantities", detail.quantity);
+              formData.append("prices", detail.price);
+            });
+          }
+        } else if (key === "currentWeek") {
+          formData.append("entryDate", dataPerWeek[key]);
+          formData.append("actualWeeks", dataPerWeek[key]);
+          formData.append("idActualWeek", 0);
         }
-      } else {
-        formData.append(key, data[key]);
-      }
-    });
-
+      })
+    );
     const resp = await baseAPI.post(
-      `actual-quantity-revenue/save/${data.id}`,
+      `actual-quantity-revenue/save/${idProject}`,
       formData,
       {
         headers: {

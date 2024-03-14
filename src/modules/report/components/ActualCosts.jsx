@@ -9,6 +9,7 @@ import {
 } from "../../../apis/reportAPI";
 import { useParams } from "react-router-dom";
 import "./styles.css";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ActualCosts() {
   const params = useParams();
@@ -62,7 +63,6 @@ export default function ActualCosts() {
       ...prevState, // Giữ lại tất cả các giá trị hiện có của mảng prevState
       tempWeek, // Thêm tempWeek vào mảng prevState
     ]);
-    // console.log(tempWeek);
   };
   const addActualCostPerWeek = () => {
     // debugger;
@@ -73,24 +73,53 @@ export default function ActualCosts() {
         <ActualCostPerWeek
           // data={project?.rpQuantityAndRevenueDetails}
           // startDate={project?.startDate}
-          currentWeek={currentWeek === "" ? project.startDate : currentWeek}
+          currentWeek={currentWeek === "" ? project?.startDate : currentWeek}
           key={Date.now()}
           onValueChange={handleChildValueChange}
         />,
       ];
     });
     if (currentWeek === "") {
-      getNextModay(project.startDate, idProject);
+      getNextModay(project?.startDate, idProject);
       return;
     }
     getNextModay(currentWeek, idProject);
     // console.log(currentWeek);
   };
-  const handleSaveActualCost = () => {
-    console.log(valueFromChild);
+
+  const handleSaveActualCost = async () => {
+    debugger;
+    const tempData = [];
+
+    // Tạo một đối tượng tạm thời để lưu các object cuối cùng của mỗi currentWeek
+    const tempObject = {};
+    valueFromChild.forEach((item) => {
+      const week = item.currentWeek;
+      tempObject[week] = item;
+    });
+
+    // Chuyển đổi đối tượng tempObject thành một mảng các object và thêm vào tempData
+    for (const key in tempObject) {
+      tempData.push(tempObject[key]);
+    }
+    try {
+      await addActualQuantityAndRevenueAPI(tempData, idProject);
+      toast.success("Cập nhật sản lượng thực tế thành công");
+    } catch (error) {
+      console.error(error);
+      toast.error("Cập nhật sản lượng thực tế thất bại");
+    }
+
+    // Cập nhật valueFromChild với tempData
+    setValueFromChild(tempData);
+
+    // Log tempData
+    console.log(tempData);
   };
+
   return (
     <div>
+      <Toaster position="top-right" />
       <Container className="mt-5">
         {oldCostPerWeeks
           ? oldCostPerWeeks.map((oldCostPerWeek) => (
