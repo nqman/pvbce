@@ -1,14 +1,12 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import HomeIcon from "@mui/icons-material/Home";
 import { TextField } from "@mui/material";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
 import "./authentication.css";
-import { handelLogin } from "../../../store/reducers/authReducer";
-import toast, { Toaster } from "react-hot-toast";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import HomeIcon from "@mui/icons-material/Home";
+import { getToken } from "../../../apis/authenticationAPI";
 
 const schema = yup
   .object({
@@ -22,7 +20,6 @@ const schema = yup
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   // const handleSignUp = () => {
   //   navigate("/signup");
   // };
@@ -33,34 +30,20 @@ export default function SignIn() {
     formState: { errors },
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
 
-  // const handleSignIn = async (data) => {
-  //   console.log(data);
-  //   const token = await getToken(data);
-  //   console.log(token);
-  // };
-
-  const _onSubmit = (data) => {
-    dispatch(handelLogin(data)).then((result) => {
-      console.log("first", result);
-      if (!!!result.error) {
-        toast.success("Dang nhap thanh cong");
-        navigate("/");
-      } else {
-        return false;
-      }
-    });
+  const handleSignIn = async (data) => {
+    console.log(data);
+    const token = await getToken(data);
+    console.log(token);
   };
-
   return (
     <div
       className="d-flex"
       style={{ justifyContent: "center", paddingTop: "50px" }}
     >
-      <Toaster position="top-right" />
       <div className="form" style={{ width: "500px", position: "relative" }}>
         <h3 className="text-center mb-3">Đăng nhập</h3>
         <form
-          onSubmit={handleSubmit(_onSubmit)}
+          onSubmit={handleSubmit(handleSignIn)}
           style={{
             flexDirection: "column",
             display: "flex",

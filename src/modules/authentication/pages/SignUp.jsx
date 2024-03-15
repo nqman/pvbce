@@ -13,8 +13,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Loading from "../../home/components/Loading/Loading";
 import Swal from "sweetalert2";
-import baseAPI from "../../../apis/baseAPI";
-import toast, { Toaster } from "react-hot-toast";
 
 const schema = yup
   .object({
@@ -53,21 +51,9 @@ export default function SignUp() {
   });
   const handleSignUp = async (user) => {
     setIsLoading(true);
-    try {
-      const res = await baseAPI.get(
-        `authenticate/validate/email/${user.email}`
-      );
-      if (res?.data) {
-        await addUserAPI(user);
-        Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
-        navigate("/signin");
-      } else {
-        setIsLoading(false);
-        toast.error("Email da duoc dang ky");
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
+    await addUserAPI(user);
+    Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
+    navigate("/signin");
   };
 
   const navigate = useNavigate();
@@ -76,13 +62,10 @@ export default function SignUp() {
   const handleCheckEmail = async (e) => {
     try {
       setCheckEmail(await checkEmailAPI(e.target.value));
-    } catch (error) {
-      console.log("error", error);
-    }
+    } catch (error) {}
   };
   return (
     <>
-      <Toaster position="top-right" />
       {isLoading ? (
         <Loading />
       ) : (
