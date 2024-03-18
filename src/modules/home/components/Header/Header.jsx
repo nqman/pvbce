@@ -1,32 +1,33 @@
-import { Person } from "@mui/icons-material";
-import AssessmentIcon from "@mui/icons-material/Assessment";
-import CategoryIcon from "@mui/icons-material/Category";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import MenuIcon from "@mui/icons-material/Menu";
-import SummarizeIcon from "@mui/icons-material/Summarize";
+import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { alpha, styled } from "@mui/material/styles";
-import * as React from "react";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import SummarizeIcon from "@mui/icons-material/Summarize";
+import CategoryIcon from "@mui/icons-material/Category";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import { useNavigate } from "react-router-dom";
-import { handleLogout } from "../../../../store/reducers/authReducer";
-import token from "../../../../utils/token";
+import { AccountCircle } from "@mui/icons-material";
+import { styled, alpha } from "@mui/material/styles";
+import EditIcon from "@mui/icons-material/Edit";
+import Divider from "@mui/material/Divider";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const settings = ["Account", "Logout"];
-
-//styled components
 
 function Header() {
   const StyledMenu = styled((props) => (
@@ -71,11 +72,6 @@ function Header() {
       },
     },
   }));
-
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const { email, name } = user || {};
-
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   // const loggedUser = useSelector((state) => state.user.loggedUser);
@@ -129,13 +125,6 @@ function Header() {
   const handleClose = (value) => {
     setAnchorEl(null);
   };
-
-  const _onLogout = (e) => {
-    e?.stopPropagation();
-    dispatch(handleLogout());
-    toast.success("Dang xuat thanh cong");
-  };
-
   return (
     <AppBar
       position="static"
@@ -381,81 +370,21 @@ function Header() {
               {"THƯ VIỆN"}
             </Button>
           </Box>
-          {!!!token.get() ? (
-            <button
-              style={{
-                // backgroundColor: "#3B65B3",
-                // color: "white",
-                fontSize: "14px",
-                // padding: "8px 15px",
-                // border: "none",
-                // borderRadius: "5px",
-              }}
-              className="btn btn-outline-primary"
-              onClick={() => handleSignIn()}
-            >
-              Đăng nhập
-            </button>
-          ) : (
-            <>
-              <Button
-                id="demo-customized-button"
-                aria-controls={open ? "demo-customized-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                disableElevation
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
-                sx={{
-                  my: 1,
-                  color: "#00477b",
-                  fontSize: "18px",
-                  margin: "0 5px 0px 5px",
-                  fontWeight: "600",
-                }}
-              >
-                <Person />
-                {name || email}
-              </Button>
-              <StyledMenu
-                id="demo-customized-menu"
-                MenuListProps={{
-                  "aria-labelledby": "demo-customized-button",
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem
-                  onClick={() => handleNavigate("category")}
-                  disableRipple
-                >
-                  <CategoryIcon />
-                  Hạng mục
-                </MenuItem>
-                <MenuItem
-                  onClick={() => handleNavigate("listprojects")}
-                  disableRipple
-                >
-                  <FormatListNumberedIcon />
-                  Danh sách dự án
-                </MenuItem>
-                {/* <Divider sx={{ my: 0.5 }} /> */}
-                {/* GẠCH NGĂN CÁCH */}
-                <MenuItem onClick={(e) => _onLogout(e)} disableRipple>
-                  <AssessmentIcon />
-                  Đăng xuất
-                </MenuItem>
-                <MenuItem
-                  onClick={() => handleNavigate("rp_revenue")}
-                  disableRipple
-                >
-                  <SummarizeIcon />
-                  Báo cáo doanh thu
-                </MenuItem>
-              </StyledMenu>
-            </>
-          )}
+
+          <button
+            style={{
+              // backgroundColor: "#3B65B3",
+              // color: "white",
+              fontSize: "14px",
+              // padding: "8px 15px",
+              // border: "none",
+              // borderRadius: "5px",
+            }}
+            className="btn btn-outline-primary"
+            onClick={() => handleSignIn()}
+          >
+            Đăng nhập
+          </button>
         </Toolbar>
       </Container>
     </AppBar>
