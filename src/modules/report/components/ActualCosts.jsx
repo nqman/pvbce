@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { ActualCostPerWeek } from "./ActualCostPerWeek";
-import { Container } from "@mui/material";
+import { Button, Container, Link } from "@mui/material";
 import {
   addActualQuantityAndRevenueAPI,
-  getActualQuantityRevenueAPI,
   getNextMondayAPI,
+  getOldQuantityRevenueAPI,
   selectProjectAPI,
 } from "../../../apis/reportAPI";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./styles.css";
 import toast, { Toaster } from "react-hot-toast";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function ActualCosts() {
+  const navigate = useNavigate();
   const params = useParams();
   const [project, setProject] = useState();
   const [actualQuantityAndRevenues, setActualQuantityAndRevenues] = useState();
@@ -39,12 +41,15 @@ export default function ActualCosts() {
       console.error("Error fetching project:", error);
     }
   };
-  const getActualQuantityRevenues = async (idProject) => {
+  const getOldQuantityRevenues = async (idProject) => {
     // debugger;
     try {
-      const data = await getActualQuantityRevenueAPI(idProject);
-      setActualQuantityAndRevenues(data);
-      setOldCostPerWeeks(data?.actualQuantityAndRevenueWeeks);
+      const data = await getOldQuantityRevenueAPI(idProject);
+      // setActualQuantityAndRevenues(data);
+      // setActualCostPerWeeks(data);
+      setOldCostPerWeeks(data);
+      console.log(data);
+
       return data;
     } catch (error) {
       console.error("Error fetching actualQuantityAndRevenue:", error);
@@ -53,7 +58,7 @@ export default function ActualCosts() {
 
   useEffect(() => {
     getProjects(idProject);
-    getActualQuantityRevenues(idProject);
+    getOldQuantityRevenues(idProject);
   }, [idProject]);
   const [valueFromChild, setValueFromChild] = useState([]);
 
@@ -109,6 +114,7 @@ export default function ActualCosts() {
       console.error(error);
       toast.error("Cập nhật sản lượng thực tế thất bại");
     }
+    getOldQuantityRevenues(idProject);
 
     // Cập nhật valueFromChild với tempData
     setValueFromChild(tempData);
@@ -120,24 +126,38 @@ export default function ActualCosts() {
   return (
     <div>
       <Toaster position="top-right" />
-      <Container className="mt-5">
-        {oldCostPerWeeks
-          ? oldCostPerWeeks.map((oldCostPerWeek) => (
-              <ActualCostPerWeek
-                oldCostPerWeek={oldCostPerWeek}
-                oldWeek={oldCostPerWeek.week}
-                actualQuantityAndRevenueDetails={
-                  oldCostPerWeek.actualQuantityAndRevenueDetails
-                }
-                key={oldCostPerWeek.id}
-                // sendDataToAPI={sendDataToAPI}
-              />
-            ))
-          : ""}
+      <Container sx={{ marginTop: "20px" }}>
+        <Link
+          sx={{ fontSize: "16px", marginBottom: "50px" }}
+          component="button"
+          variant="body2"
+          onClick={() => {
+            navigate(`/projects/${idProject}`);
+          }}
+        >
+          <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+          Quay lại dự án
+        </Link>
 
-        {actualCostPerWeeks.map((actualCostPerWeek, index) => (
-          <div key={index}>{actualCostPerWeek}</div>
-        ))}
+        <div>
+          {oldCostPerWeeks
+            ? oldCostPerWeeks.map((oldCostPerWeek) => (
+                <ActualCostPerWeek
+                  oldCostPerWeek={oldCostPerWeek}
+                  oldWeek={oldCostPerWeek.week}
+                  actualQuantityAndRevenueDetails={
+                    oldCostPerWeek.actualQuantityAndRevenueDetails
+                  }
+                  key={oldCostPerWeek.id}
+                  onValueChange={handleChildValueChange}
+                />
+              ))
+            : ""}
+
+          {actualCostPerWeeks.map((actualCostPerWeek, index) => (
+            <div key={index}>{actualCostPerWeek}</div>
+          ))}
+        </div>
 
         <div
           style={{
@@ -148,13 +168,11 @@ export default function ActualCosts() {
         >
           <button
             className="btn btn-warning"
-            // style={{ marginTop: "-30px" }}
             onClick={addActualCostPerWeek}
             disabled={errorGetMonday}
           >
             Thêm tuần
           </button>
-
           <button className="btn btn-success" onClick={handleSaveActualCost}>
             Lưu
           </button>

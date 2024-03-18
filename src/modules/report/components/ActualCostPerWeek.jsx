@@ -124,7 +124,7 @@ export function ActualCostPerWeek(props) {
             <div>
               {props.actualQuantityAndRevenueDetails.map((detail) => (
                 <ActualCostItem
-                  key={detail.id}
+                  key={detail?.id}
                   oldDetail={detail}
                   categories={categories}
                   oldCategory={detail.category}
@@ -216,9 +216,6 @@ export function ActualCostPerWeek(props) {
                 <Button style={{}} onClick={addProjectItem}>
                   Thêm
                 </Button>
-                {/* <Button style={{}} onClick={saveProjectItem}>
-                  Lưu tuần
-                </Button> */}
                 <TextField
                   label={"Tổng cộng"}
                   size="small"

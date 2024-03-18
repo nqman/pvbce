@@ -1,4 +1,3 @@
-import axios from "axios";
 import baseAPI from "./baseAPI";
 
 //Lấy danh sách hạng mục
@@ -11,14 +10,28 @@ export async function getCategoriesAPI() {
     throw error;
   }
 }
+export async function selectCategoryAPI(id) {
+  try {
+    const resp = await baseAPI.get(`categories/${id}`);
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 export async function addCategoryAPI(category) {
   try {
     const formData = new FormData();
-    console.log(category);
-    formData.append("id", 0);
-    formData.append("name", category.name);
-    formData.append("unit", category.unit);
+    if (category.id === null) {
+      formData.append("id", 0);
+      formData.append("name", category.name);
+      formData.append("unit", category.unit);
+    } else {
+      formData.append("id", category.id);
+      formData.append("name", category.name);
+      formData.append("unit", category.unit);
+    }
     const resp = await baseAPI.post("categories/save", formData);
   } catch (error) {}
 }
@@ -29,6 +42,49 @@ export async function deleteCategoryAPI(id) {
     return resp.data;
   } catch (error) {
     throw error.response.data;
+  }
+}
+
+//Lấy danh sách CHI PHÍ
+export async function getCostsAPI() {
+  try {
+    const resp = await baseAPI.get("costs");
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function addCostAPI(cost) {
+  try {
+    const formData = new FormData();
+    if (cost.id === null) {
+      formData.append("id", 0);
+      formData.append("name", cost.name);
+    } else {
+      formData.append("id", cost.id);
+      formData.append("name", cost.name);
+    }
+    const resp = await baseAPI.post("costs/save", formData);
+  } catch (error) {}
+}
+
+export async function deleteCostAPI(id) {
+  try {
+    const resp = await baseAPI.get(`costs/delete/${id}`);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+export async function selectCostAPI(id) {
+  try {
+    const resp = await baseAPI.get(`costs/${id}`);
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
 
@@ -169,9 +225,8 @@ export async function getNextMondayAPI(currentWeek, id) {
 }
 
 //get actual-quantity-revenue
-export async function getActualQuantityRevenueAPI(id) {
+export async function getOldQuantityRevenueAPI(id) {
   try {
-    // const resp = await baseAPI.get(`actual-quantity-revenue/${id}`);
     const resp = await baseAPI.get(`actual-quantity-revenue/${id}`);
     return resp.data;
   } catch (error) {
@@ -199,6 +254,7 @@ export async function addActualQuantityAndRevenueAPI(
               else {
                 formData.append("idActualDetails", 0);
               }
+              formData.append("entryDate", dataPerWeek.currentWeek);
               formData.append("categories", detail.category);
               formData.append("units", detail.unit);
               formData.append("quantities", detail.quantity);
@@ -206,7 +262,6 @@ export async function addActualQuantityAndRevenueAPI(
             });
           }
         } else if (key === "currentWeek") {
-          formData.append("entryDate", dataPerWeek[key]);
           formData.append("actualWeeks", dataPerWeek[key]);
           formData.append("idActualWeek", 0);
         }

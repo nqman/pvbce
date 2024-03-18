@@ -318,6 +318,10 @@ function Header() {
                 <CategoryIcon />
                 Hạng mục
               </MenuItem>
+              <MenuItem onClick={() => handleNavigate("cost")} disableRipple>
+                <CategoryIcon />
+                Chi phí
+              </MenuItem>
               <MenuItem
                 onClick={() => handleNavigate("listprojects")}
                 disableRipple
