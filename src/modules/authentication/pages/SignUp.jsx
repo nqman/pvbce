@@ -13,6 +13,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Loading from "../../home/components/Loading/Loading";
 import Swal from "sweetalert2";
+import toast, { Toaster } from "react-hot-toast";
 
 const schema = yup
   .object({
@@ -21,7 +22,10 @@ const schema = yup
       .string()
       .required("Vui lòng không bỏ trống")
       .email("Email không đúng định dạng"),
-    phone: yup.string().required("Vui lòng không bỏ trống"),
+    phone: yup
+      .string()
+      .required("Vui lòng không bỏ trống")
+      .matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, "SĐT không đúng định dạng"),
     password: yup
       .string()
       .required("Vui lòng không bỏ trống")
@@ -50,10 +54,22 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (user) => {
-    setIsLoading(true);
-    await addUserAPI(user);
-    Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
-    navigate("/signin");
+    try {
+      const res = await checkEmailAPI(user?.email);
+      console.log("res", res);
+      if (!!res) {
+        console.log("ok");
+        setIsLoading(true);
+        await addUserAPI(user);
+        Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
+        navigate("/signin");
+      } else {
+        toast.error("Email đã tồn tại");
+        return false;
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
   const navigate = useNavigate();
@@ -66,6 +82,7 @@ export default function SignUp() {
   };
   return (
     <>
+      <Toaster position="top-right" />
       {isLoading ? (
         <Loading />
       ) : (

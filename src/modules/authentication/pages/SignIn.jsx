@@ -7,6 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import HomeIcon from "@mui/icons-material/Home";
 import { getToken } from "../../../apis/authenticationAPI";
+import Cookies from "js-cookie";
+import toast, { Toaster } from "react-hot-toast";
 
 const schema = yup
   .object({
@@ -31,15 +33,26 @@ export default function SignIn() {
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
 
   const handleSignIn = async (data) => {
-    console.log(data);
-    const token = await getToken(data);
-    console.log(token);
+    try {
+      const res = await getToken(data);
+      if (!!res) {
+        Cookies.set("token", JSON.stringify(res?.token));
+        Cookies.set("email", JSON.stringify(res?.user?.email));
+        Cookies.set("name", JSON.stringify(res?.user?.name));
+        Cookies.set("phone", JSON.stringify(res?.user?.phone));
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.mess);
+      console.log("error", error);
+    }
   };
   return (
     <div
       className="d-flex"
       style={{ justifyContent: "center", paddingTop: "50px" }}
     >
+      <Toaster position="top-right" />
       <div className="form" style={{ width: "500px", position: "relative" }}>
         <h3 className="text-center mb-3">Đăng nhập</h3>
         <form
