@@ -49,10 +49,23 @@ const ProjectDetail = () => {
         <div style={{ textAlign: "end" }}>
           <Button
             variant="contained"
-            sx={{ backgroundColor: "#0B5ED7", textTransform: "inherit" }}
+            sx={{
+              backgroundColor: "#0B5ED7",
+              textTransform: "inherit",
+              marginRight: "10px",
+            }}
+            onClick={() =>
+              navigate(`/projects/actual-quantity-revenue/${idProject}`)
+            }
+          >
+            Sản lượng thực tế
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{ textTransform: "inherit" }}
             onClick={() => navigate(`/projects/actual-cost/${idProject}`)}
           >
-            Thông tin thực tế
+            Chi phí thực tế
           </Button>
         </div>
 

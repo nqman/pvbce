@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminManagement from "./admin/AdminManagement";
 import ChangePassword from "./modules/authentication/pages/ChangePassword";
+
 import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
 import ProfileUser from "./modules/authentication/pages/ProfileUser";
 import SignIn from "./modules/authentication/pages/SignIn";
@@ -21,6 +22,15 @@ import ProjectDetail from "./modules/report/components/ProjectDetail";
 import ProjectManagement from "./modules/report/components/ProjectManagement";
 import Report from "./modules/report/pages/Report";
 
+import CreateProject from "./modules/report/components/CreateProject";
+import Category from "./modules/report/components/Category";
+import ProjectManagement from "./modules/report/components/ProjectManagement";
+import ProjectDetail from "./modules/report/components/ProjectDetail";
+
+import Cost from "./modules/report/components/Cost";
+import ActualCosts from "./modules/report/components/ActualCosts";
+import QuantityRevenues from "./modules/report/components/QuantityRevenues";
+
 function App() {
   return (
     <BrowserRouter>
@@ -33,11 +43,20 @@ function App() {
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
           <Route path="/report/category" element={<Category />} />
+          <Route path="/report/cost" element={<Cost />} />
           <Route
             path="/report/listprojects"
             element={<ProjectManagement />}
           ></Route>
           <Route path="/projects/:code" element={<ProjectDetail />} />
+          {/* <Route
+            path="/projects/actual-quantity-revenue/:code"
+            element={<ActualQuantityRevenues />}
+          /> */}
+          {/* <Route
+            path="/projects/actual-quantity-revenue/:code"
+            element={<QuantityRevenues />}
+          /> */}
           <Route path="/projects/actual-cost/:code" element={<ActualCosts />} />
 
           <Route path="/library" element={<DocumentManagement />}></Route>

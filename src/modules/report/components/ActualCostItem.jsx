@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export default function ActualCostItem(
+export default function PresentCostItem(
   props
   // detail = {},
   // categories = [],
@@ -159,10 +159,10 @@ export default function ActualCostItem(
             id="outlined-size-small"
             // value={`${amount.toLocaleString()} VND`}
             value={`
-              ${
-                props.oldDetail?.price *
-                props.oldDetail?.quantity.toLocaleString()
-              } VND`}
+                ${
+                  props.oldDetail?.price *
+                  props.oldDetail?.quantity.toLocaleString()
+                } VND`}
             size="small"
             disabled={true}
             sx={{ marginRight: "20px", width: "200px" }}

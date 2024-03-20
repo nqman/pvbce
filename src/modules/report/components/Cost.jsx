@@ -1,10 +1,10 @@
 import { Container, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
-  addCategoryAPI,
-  deleteCategoryAPI,
-  getCategoriesAPI,
-  selectCategoryAPI,
+  addCostAPI,
+  deleteCostAPI,
+  getCostsAPI,
+  selectCostAPI,
 } from "../../../apis/reportAPI";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
@@ -21,11 +21,10 @@ import * as yup from "yup";
 const schema = yup
   .object({
     name: yup.string().required("Vui lòng không bỏ trống"),
-    unit: yup.string().required("Vui lòng không bỏ trống"),
   })
   .required();
 
-export default function Category() {
+export default function Cost() {
   const {
     resetField,
     register,
@@ -34,72 +33,75 @@ export default function Category() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      id: "",
       name: "",
-      unit: "",
+      id: "",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
 
-  const fetchListCategory = async () => {
+  const [cost, setCost] = useState({ name: "" });
+
+  const fetchListCost = async () => {
     try {
-      const data = await getCategoriesAPI();
-      setCategories(data);
+      const data = await getCostsAPI();
+      setCosts(data);
       return data;
     } catch (error) {}
   };
-
-  const handleAddCategory = async (category) => {
+  // const handleChange = (e) => {
+  //   setcost({ ...cost, [e.target.name]: e.target.value });
+  // };
+  const handleAddCost = async (cost) => {
+    console.log(cost);
     try {
-      await addCategoryAPI(category);
-      toast.success("Thêm hạng mục thành công");
+      await addCostAPI(cost);
+      toast.success("Thêm chi phí thành công");
       resetField("name");
-      resetField("unit");
-      fetchListCategory();
+      fetchListCost();
     } catch (error) {}
   };
 
-  const [categories, setCategories] = useState([]);
+  const [costs, setCosts] = useState([]);
   useEffect(() => {
-    fetchListCategory();
+    fetchListCost();
   }, []);
 
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
-  // Xóa hạng mục
-  const handleDeteleCategory = async (id) => {
+  // Xóa chi phí
+  const handleDetelecost = async (id) => {
     try {
       const result = await Swal.fire({
-        title: "Bạn chắc chắn muốn xóa hạng mục? ",
-        text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
+        title: "Bạn chắc chắn muốn xóa chi phí? ",
+        text: "chi phí này sẽ bị xóa vĩnh viễn!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Xóa hạng mục",
+        confirmButtonText: "Xóa chi phí",
         cancelButtonText: "Hủy bỏ",
       });
       if (result.isConfirmed) {
-        await deleteCategoryAPI(id);
+        await deleteCostAPI(id);
         Swal.fire({
           title: "Đã xóa!",
-          text: "Hạng mục đã được xóa thành công.",
+          text: "chi phí đã được xóa thành công.",
           icon: "success",
         });
-        fetchListCategory();
+        fetchListCost();
       }
     } catch (error) {
-      toast.error("Xóa hạng mục thất bại");
+      toast.error("Xóa chi phí thất bại");
     }
   };
 
-  const handleSelectCategory = async (id) => {
+  const handleSelectCost = async (id) => {
     try {
-      const data = await selectCategoryAPI(id);
-      setValue("id", data.id);
+      const data = await selectCostAPI(id);
+      //   console.log(data);
       setValue("name", data.name);
-      setValue("unit", data.unit);
+      setValue("id", data.id);
     } catch (error) {
       toast.error("Đã có lỗi xảy ra");
     }
@@ -115,33 +117,26 @@ export default function Category() {
           }}
         >
           <div>
-            <h3 className="text-center mb-3">Thêm hạng mục</h3>
+            <h3 className="text-center mb-3">Thêm chi phí</h3>
             <form
               style={{
                 display: "flex",
                 alignItems: "center",
                 marginBottom: "20px",
               }}
-              onSubmit={handleSubmit(handleAddCategory)}
+              onSubmit={handleSubmit(handleAddCost)}
             >
               <div className=" w-50 me-3" style={{ height: "50px" }}>
                 <TextField
                   className="w-100"
                   size="small"
-                  placeholder="Tên hạng mục"
+                  placeholder="Tên chi phí"
                   {...register("name")}
+                  //   value={cost.name}
                 />
                 <span className="text-danger ">{errors.name?.message}</span>
               </div>
-              <div className=" w-25 me-3" style={{ height: "50px" }}>
-                <TextField
-                  className="w-100"
-                  size="small"
-                  placeholder="Đơn vị"
-                  {...register("unit")}
-                />
-                <span className="text-danger ">{errors.unit?.message}</span>
-              </div>
+
               <div style={{ height: "50px" }}>
                 <button
                   className="btn btn-primary"
@@ -167,11 +162,10 @@ export default function Category() {
                   style={{
                     padding: 10,
                   }}
-                  rows={categories.map((row) => ({ ...row, id: row.id }))}
+                  rows={costs.map((row) => ({ ...row, id: row.id }))}
                   columns={[
                     { field: "id", headerName: "STT", width: 50 },
-                    { field: "name", headerName: "TÊN HẠNG MỤC", width: 400 },
-                    { field: "unit", headerName: "ĐƠN VỊ", width: 100 },
+                    { field: "name", headerName: "TÊN CHI PHÍ", width: 400 },
                     // {
                     //   field: "action",
                     //   headerName: "TÙY CHỌN",
@@ -187,7 +181,7 @@ export default function Category() {
                     //           marginRight: "10px",
                     //         }}
                     //         className="btn btn-warning me-2"
-                    //         onClick={() => handleSelectCategory(params.id)}
+                    //         onClick={() => handleSelectCost(params.id)}
                     //         title="Sửa"
                     //       >
                     //         <EditIcon
@@ -206,7 +200,7 @@ export default function Category() {
                     //         }}
                     //         className="btn btn-danger"
                     //         onClick={() => {
-                    //           handleDeteleCategory(params.id);
+                    //           handleDetelecost(params.id);
                     //         }}
                     //         title="Xóa"
                     //       >
@@ -223,9 +217,9 @@ export default function Category() {
                   slots={{
                     toolbar: GridToolbar,
                   }}
-                  {...categories}
+                  {...costs}
                   initialState={{
-                    ...categories.initialState,
+                    ...costs.initialState,
                     pagination: { paginationModel: { pageSize: 5 } },
                   }}
                   pageSizeOptions={[5, 10, 15]}
