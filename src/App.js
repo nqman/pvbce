@@ -22,14 +22,8 @@ import ProjectDetail from "./modules/report/components/ProjectDetail";
 import ProjectManagement from "./modules/report/components/ProjectManagement";
 import Report from "./modules/report/pages/Report";
 
-import CreateProject from "./modules/report/components/CreateProject";
-import Category from "./modules/report/components/Category";
-import ProjectManagement from "./modules/report/components/ProjectManagement";
-import ProjectDetail from "./modules/report/components/ProjectDetail";
-
 import Cost from "./modules/report/components/Cost";
-import ActualCosts from "./modules/report/components/ActualCosts";
-import QuantityRevenues from "./modules/report/components/QuantityRevenues";
+// import QuantityRevenues from "./modules/report/components/QuantityRevenues";
 
 function App() {
   return (
