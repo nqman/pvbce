@@ -16,7 +16,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import { useNavigate } from "react-router-dom";
-import { AccountCircle } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Logout,
+  ManageAccounts,
+  Person,
+  PersonSearch,
+} from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
 import EditIcon from "@mui/icons-material/Edit";
 import Divider from "@mui/material/Divider";
@@ -24,12 +30,47 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import { useEffect } from "react";
+import { selectUserAPI } from "../../../../apis/authenticationAPI";
 
 const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const settings = ["Account", "Logout"];
 
 function Header() {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const getUser = {
+      token: JSON.parse(
+        Cookies.get("token") !== undefined ? Cookies.get("token") : null
+      ),
+      email: JSON.parse(
+        Cookies.get("email") !== undefined ? Cookies.get("email") : null
+      ),
+      role: JSON.parse(
+        Cookies.get("role") !== undefined ? Cookies.get("role") : null
+      ),
+      name: JSON.parse(
+        Cookies.get("name") !== undefined ? Cookies.get("name") : null
+      ),
+    };
+    setUser(getUser);
+  }, []);
+
+  console.log("user", user);
+
+  const _onlogout = () => {
+    Cookies.remove("token");
+    Cookies.remove("email");
+    Cookies.remove("name");
+    Cookies.remove("role");
+    setUser({});
+    navigate("/");
+  };
+
   const StyledMenu = styled((props) => (
     <Menu
       elevation={0}
@@ -79,20 +120,21 @@ function Header() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  // const handleOpenUserMenu = (event) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
   const handleSignIn = () => {
     navigate("/signin");
   };
+
   const navigate = useNavigate();
   const handleChangeNavBar = (page) => {
     switch (page) {
@@ -371,20 +413,74 @@ function Header() {
             </Button>
           </Box>
 
-          <button
-            style={{
-              // backgroundColor: "#3B65B3",
-              // color: "white",
-              fontSize: "14px",
-              // padding: "8px 15px",
-              // border: "none",
-              // borderRadius: "5px",
-            }}
-            className="btn btn-outline-primary"
-            onClick={() => handleSignIn()}
-          >
-            Đăng nhập
-          </button>
+          {user?.name ? (
+            <Box>
+              <Button
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-user"
+                aria-haspopup="true"
+                onClick={handleOpenUserMenu}
+                endIcon={<KeyboardArrowDownIcon />}
+                color="inherit"
+                sx={{
+                  my: 1,
+                  color: "#00477b",
+                  fontSize: 15,
+                  margin: "0 5px 0px 5px",
+                  fontWeight: "500",
+                }}
+              >
+                <Person />
+                {user?.name}
+              </Button>
+              <StyledMenu
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={() => navigate("/profile")} disableRipple>
+                  <PersonSearch />
+                  Thông tin cá nhân
+                </MenuItem>
+                {user?.role === "Admin" && (
+                  <MenuItem onClick={() => navigate("/admin")} disableRipple>
+                    <PersonSearch />
+                    Quản lý tài khoản
+                  </MenuItem>
+                )}
+                <MenuItem onClick={_onlogout} disableRipple>
+                  <Logout />
+                  Đăng xuất
+                </MenuItem>
+              </StyledMenu>
+            </Box>
+          ) : (
+            <button
+              style={{
+                // backgroundColor: "#3B65B3",
+                // color: "white",
+                fontSize: "14px",
+                // padding: "8px 15px",
+                // border: "none",
+                // borderRadius: "5px",
+              }}
+              className="btn btn-outline-primary"
+              onClick={() => handleSignIn()}
+            >
+              Đăng nhập
+            </button>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

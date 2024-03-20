@@ -19,9 +19,13 @@ import {
 } from "../../../apis/documentAPI";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
+  const role = Cookies.get("role");
+  console.log("role", role);
+
   //MODAL
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -114,13 +118,20 @@ export default function DocumentManagement() {
     <>
       <Container maxWidth="lg" className="mt-4">
         <Toaster position="top-right" />
-        <div className="d-flex justify-content-end">
-          <button className="btn btn-primary " onClick={handleShow}>
-            Thêm tài liệu
-          </button>
-        </div>
+        {role === "Admin" && (
+          <div className="d-flex justify-content-end">
+            <button className="btn btn-primary " onClick={handleShow}>
+              Thêm tài liệu
+            </button>
+          </div>
+        )}
+
         {!isLoading ? (
-          <ListLibrary onDelete={handleDelete} listDocs={listDocs} />
+          <ListLibrary
+            role={role}
+            onDelete={handleDelete}
+            listDocs={listDocs}
+          />
         ) : (
           <Box sx={{ display: "block", textAlign: "center" }}>
             <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />

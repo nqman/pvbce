@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { StyledEngineProvider } from "@mui/material";
 import "./styles.css";
 
-export default function ListEquipments({ rows, onEdit, onDelete }) {
+export default function ListEquipments({ rows, onEdit, onDelete, role }) {
   const navigate = useNavigate();
   //Xem chi tiết thiết bị
   const handleRead = (id) => {
@@ -57,7 +57,13 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
               width: 120,
 
               renderCell: (params) => (
-                <div style={{ display: "flex" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "center",
+                  }}
+                >
                   <button
                     style={{
                       padding: "0px",
@@ -76,43 +82,47 @@ export default function ListEquipments({ rows, onEdit, onDelete }) {
                       }}
                     />
                   </button>
-                  <button
-                    style={{
-                      padding: "0px",
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "10px",
-                    }}
-                    className="btn btn-warning me-2"
-                    onClick={() => onEdit(params.id)}
-                    title="Sửa"
-                  >
-                    <EditIcon
-                      sx={{
-                        fontSize: "17px",
-                        marginBottom: "2px",
+                  {role === "Admin" && (
+                    <button
+                      style={{
+                        padding: "0px",
+                        height: "25px",
+                        width: "25px",
+                        marginRight: "10px",
                       }}
-                    />
-                  </button>
-                  <button
-                    style={{
-                      padding: "0px",
-                      height: "25px",
-                      width: "25px",
-                      lineHeight: "15px",
-                    }}
-                    className="btn btn-danger"
-                    onClick={() => {
-                      onDelete(params.id);
-                    }}
-                    title="Xóa"
-                  >
-                    <ClearIcon
-                      sx={{
-                        fontSize: "20px",
+                      className="btn btn-warning me-2"
+                      onClick={() => onEdit(params.id)}
+                      title="Sửa"
+                    >
+                      <EditIcon
+                        sx={{
+                          fontSize: "17px",
+                          marginBottom: "2px",
+                        }}
+                      />
+                    </button>
+                  )}
+                  {role === "Admin" && (
+                    <button
+                      style={{
+                        padding: "0px",
+                        height: "25px",
+                        width: "25px",
+                        lineHeight: "15px",
                       }}
-                    />
-                  </button>
+                      className="btn btn-danger"
+                      onClick={() => {
+                        onDelete(params.id);
+                      }}
+                      title="Xóa"
+                    >
+                      <ClearIcon
+                        sx={{
+                          fontSize: "20px",
+                        }}
+                      />
+                    </button>
+                  )}
                 </div>
               ),
             },

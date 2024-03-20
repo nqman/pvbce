@@ -41,9 +41,9 @@ export async function deleteUserAPI(id) {
   }
 }
 // selected
-export async function selectUserAPI(id) {
+export async function selectUserAPI(email) {
   try {
-    const resp = await baseAPI.get(`users/${id}`);
+    const resp = await baseAPI.get(`users/${email}`);
     return resp.data;
   } catch (error) {
     console.error(error);
@@ -72,7 +72,7 @@ export async function checkEmailAPI(valueOfEmail) {
     // console.log(valueOfEmail);
 
     const resp = await baseAPI.get(
-      `http://103.82.39.125:8080/users/validate/email/${valueOfEmail}`
+      `authenticate/validate/email/${valueOfEmail}`
     );
     return resp.data;
   } catch (error) {
@@ -124,10 +124,7 @@ export async function changePasswordAPI(newPassword, param) {
 
 export async function getToken(account) {
   try {
-    const resp = await baseAPI.post(
-      `http://103.82.39.125:8080/authenticate/login`,
-      account
-    );
+    const resp = await baseAPI.post(`authenticate/login`, account);
     return resp.data;
   } catch (error) {
     console.error(error);
