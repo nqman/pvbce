@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Container, Grid, TextField } from "@mui/material";
 import ActualCostItem from "./ActualCostItem";
 
-export function ActualCostPerWeek(props) {
+export function PresentCostPerWeek(props) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const newEmptyProjectDetail = () => {

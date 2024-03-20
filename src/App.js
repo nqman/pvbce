@@ -18,8 +18,10 @@ import CreateProject from "./modules/report/components/CreateProject";
 import Category from "./modules/report/components/Category";
 import ProjectManagement from "./modules/report/components/ProjectManagement";
 import ProjectDetail from "./modules/report/components/ProjectDetail";
-import ActualCosts from "./modules/report/components/ActualCosts";
+
 import Cost from "./modules/report/components/Cost";
+import ActualCosts from "./modules/report/components/ActualCosts";
+import QuantityRevenues from "./modules/report/components/QuantityRevenues";
 
 function App() {
   return (
@@ -39,6 +41,14 @@ function App() {
             element={<ProjectManagement />}
           ></Route>
           <Route path="/projects/:code" element={<ProjectDetail />} />
+          {/* <Route
+            path="/projects/actual-quantity-revenue/:code"
+            element={<ActualQuantityRevenues />}
+          /> */}
+          {/* <Route
+            path="/projects/actual-quantity-revenue/:code"
+            element={<QuantityRevenues />}
+          /> */}
           <Route path="/projects/actual-cost/:code" element={<ActualCosts />} />
 
           <Route path="/library" element={<DocumentManagement />}></Route>

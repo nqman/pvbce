@@ -215,9 +215,9 @@ export async function fetchPdfProject(documentId, type) {
 }
 
 //Get-next-monday
-export async function getNextMondayAPI(currentWeek, id) {
+export async function getNextMondayAPI(actualWeek, id) {
   try {
-    const resp = await baseAPI.get(`date/get-next-monday/${currentWeek}/${id}`);
+    const resp = await baseAPI.get(`date/get-next-monday/${actualWeek}/${id}`);
     return resp.data;
   } catch (error) {
     throw error.response.data;
@@ -239,11 +239,11 @@ export async function addActualQuantityAndRevenueAPI(
   idProject
 ) {
   try {
-    // console.log(actualQuantityAndRevenues);
+    console.log(actualQuantityAndRevenues);
     const formData = new FormData();
     actualQuantityAndRevenues.map((dataPerWeek) =>
       Object.keys(dataPerWeek).map((key) => {
-        if (key === "actualCostPerWeek") {
+        if (key === "actualQuantityRevenuePerWeek") {
           if (Array.isArray(dataPerWeek[key])) {
             dataPerWeek[key].forEach((detail) => {
               //EDIT
@@ -254,14 +254,14 @@ export async function addActualQuantityAndRevenueAPI(
               else {
                 formData.append("idActualDetails", 0);
               }
-              formData.append("entryDate", dataPerWeek.currentWeek);
+              formData.append("entryDate", dataPerWeek.actualWeek);
               formData.append("categories", detail.category);
               formData.append("units", detail.unit);
               formData.append("quantities", detail.quantity);
               formData.append("prices", detail.price);
             });
           }
-        } else if (key === "currentWeek") {
+        } else if (key === "actualWeek") {
           formData.append("actualWeeks", dataPerWeek[key]);
           formData.append("idActualWeek", 0);
         }

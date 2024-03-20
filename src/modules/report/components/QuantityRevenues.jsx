@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { presentCostPerWeek } from "./ActualCostPerWeek";
 import { Button, Container, Link } from "@mui/material";
 import {
   addActualQuantityAndRevenueAPI,
@@ -11,15 +10,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./styles.css";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { QuantityRevenuePerWeek } from "./QuantityRevenuePerWeek";
 
-export default function ActualCosts() {
+export default function QuantityRevenues() {
   const navigate = useNavigate();
   const params = useParams();
   const [project, setProject] = useState();
-  const [actualQuantityAndRevenues, setActualQuantityAndRevenues] = useState();
+  const [quantityRevenues, setQuantityRevenues] = useState(); //set = API
   const [errorGetMonday, setErrorGetMonday] = useState(false);
-  const [presentCostPerWeeks, setPresentCostPerWeeks] = useState([]); //set = API
-  const [oldCostPerWeeks, setOldCostPerWeeks] = useState([]);
   const [currentWeek, setCurrentWeek] = useState("");
   const idProject = params.code;
   const getNextModay = async (currentWeek, idProject) => {
@@ -45,9 +43,7 @@ export default function ActualCosts() {
     // debugger;
     try {
       const data = await getOldQuantityRevenueAPI(idProject);
-      // setActualQuantityAndRevenues(data);
-      // setPresentCostPerWeeks(data);
-      setOldCostPerWeeks(data);
+      setQuantityRevenues(data);
       console.log(data);
 
       return data;
@@ -63,19 +59,19 @@ export default function ActualCosts() {
   const [valueFromChild, setValueFromChild] = useState([]);
 
   const handleChildValueChange = (data, currentWeek) => {
-    const tempWeek = { currentWeek: currentWeek, presentCostPerWeek: data };
+    const tempWeek = { currentWeek: currentWeek, quantityRevenue: data };
     setValueFromChild((prevState) => [
       ...prevState, // Giữ lại tất cả các giá trị hiện có của mảng prevState
       tempWeek, // Thêm tempWeek vào mảng prevState
     ]);
   };
-  const addpresentCostPerWeek = () => {
+  const addQuantityRevenuePerWeek = () => {
     // debugger;
     setCurrentWeek(project?.startDate);
-    setPresentCostPerWeeks((oldpresentCostPerWeeks) => {
+    setQuantityRevenues((oldQuantityRevenuePerWeeks) => {
       return [
-        ...oldpresentCostPerWeeks,
-        <presentCostPerWeek
+        ...oldQuantityRevenuePerWeeks,
+        <QuantityRevenuePerWeek
           // data={project?.rpQuantityAndRevenueDetails}
           // startDate={project?.startDate}
           currentWeek={currentWeek === "" ? project?.startDate : currentWeek}
@@ -92,7 +88,7 @@ export default function ActualCosts() {
     // console.log(currentWeek);
   };
 
-  const handleSavepresentCost = async () => {
+  const handleSaveQuantityRevenue = async () => {
     debugger;
     const tempData = [];
 
@@ -140,22 +136,8 @@ export default function ActualCosts() {
         </Link>
 
         <div>
-          {oldCostPerWeeks
-            ? oldCostPerWeeks.map((oldCostPerWeek) => (
-                <presentCostPerWeek
-                  oldCostPerWeek={oldCostPerWeek}
-                  oldWeek={oldCostPerWeek.week}
-                  actualQuantityAndRevenueDetails={
-                    oldCostPerWeek.actualQuantityAndRevenueDetails
-                  }
-                  key={oldCostPerWeek.id}
-                  onValueChange={handleChildValueChange}
-                />
-              ))
-            : ""}
-
-          {presentCostPerWeeks.map((presentCostPerWeek, index) => (
-            <div key={index}>{presentCostPerWeek}</div>
+          {quantityRevenues?.map((quantityRevenue, index) => (
+            <div key={index}>{quantityRevenue}</div>
           ))}
         </div>
 
@@ -168,12 +150,15 @@ export default function ActualCosts() {
         >
           <button
             className="btn btn-warning"
-            onClick={addpresentCostPerWeek}
+            onClick={addQuantityRevenuePerWeek}
             disabled={errorGetMonday}
           >
             Thêm tuần
           </button>
-          <button className="btn btn-success" onClick={handleSavepresentCost}>
+          <button
+            className="btn btn-success"
+            onClick={handleSaveQuantityRevenue}
+          >
             Lưu
           </button>
         </div>
