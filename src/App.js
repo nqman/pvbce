@@ -1,24 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./modules/home/pages/Home";
-import MainLayout from "./modules/home/components/MainLayout";
-import Catalogue from "./modules/catalogue/pages/Catalogue";
-import CreateEquipment from "./modules/catalogue/components/CreateEquipment/CreateEquipment";
-import EquipDetails from "./modules/catalogue/components/EquipDetails/EquipDetails";
-import EditEquipment from "./modules/catalogue/components/CreateEquipment/EditEquipment";
-import Report from "./modules/report/pages/Report";
-import DocumentManagement from "./modules/library/pages/DocumentManagement";
-import NotFound from "./modules/home/components/NotFound";
-import SignUp from "./modules/authentication/pages/SignUp";
-import SignIn from "./modules/authentication/pages/SignIn";
 import AdminManagement from "./admin/AdminManagement";
-import VerifyUser from "./modules/authentication/pages/VerifyUser";
-import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
 import ChangePassword from "./modules/authentication/pages/ChangePassword";
-import CreateProject from "./modules/report/components/CreateProject";
-import Category from "./modules/report/components/Category";
-import ProjectManagement from "./modules/report/components/ProjectManagement";
-import ProjectDetail from "./modules/report/components/ProjectDetail";
+import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
+import ProfileUser from "./modules/authentication/pages/ProfileUser";
+import SignIn from "./modules/authentication/pages/SignIn";
+import SignUp from "./modules/authentication/pages/SignUp";
+import VerifyUser from "./modules/authentication/pages/VerifyUser";
+import CreateEquipment from "./modules/catalogue/components/CreateEquipment/CreateEquipment";
+import EditEquipment from "./modules/catalogue/components/CreateEquipment/EditEquipment";
+import EquipDetails from "./modules/catalogue/components/EquipDetails/EquipDetails";
+import Catalogue from "./modules/catalogue/pages/Catalogue";
+import MainLayout from "./modules/home/components/MainLayout";
+import NotFound from "./modules/home/components/NotFound";
+import Home from "./modules/home/pages/Home";
+import DocumentManagement from "./modules/library/pages/DocumentManagement";
 import ActualCosts from "./modules/report/components/ActualCosts";
+import Category from "./modules/report/components/Category";
+import CreateProject from "./modules/report/components/CreateProject";
+import ProjectDetail from "./modules/report/components/ProjectDetail";
+import ProjectManagement from "./modules/report/components/ProjectManagement";
+import Report from "./modules/report/pages/Report";
 
 function App() {
   return (
@@ -40,6 +41,9 @@ function App() {
           <Route path="/projects/actual-cost/:code" element={<ActualCosts />} />
 
           <Route path="/library" element={<DocumentManagement />}></Route>
+
+          {/* Profile */}
+          <Route path="/profile" element={<ProfileUser />}></Route>
         </Route>
 
         {/* authentication */}

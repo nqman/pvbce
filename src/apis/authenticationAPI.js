@@ -41,9 +41,9 @@ export async function deleteUserAPI(id) {
   }
 }
 // selected
-export async function selectUserAPI(id) {
+export async function selectUserAPI(email) {
   try {
-    const resp = await baseAPI.get(`users/${id}`);
+    const resp = await baseAPI.get(`users/${email}`);
     return resp.data;
   } catch (error) {
     console.error(error);

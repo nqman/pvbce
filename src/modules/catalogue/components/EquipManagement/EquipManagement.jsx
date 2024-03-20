@@ -14,9 +14,12 @@ import {
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 import { Box, CircularProgress } from "@mui/material";
+import Cookies from "js-cookie";
 // const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
 
 export default function EquipManagement() {
+  const role = Cookies.get("role");
+  console.log("role", role);
   const navigate = useNavigate();
   const handleAdd = () => {
     navigate("/catalogue/create");
@@ -91,14 +94,23 @@ export default function EquipManagement() {
           marginTop: "20px",
         }}
       >
-        <button onClick={() => handleAdd()} className="btn btn-primary">
-          Thêm thiết bị
-        </button>
+        {role === "Admin" ? (
+          <button
+            disabled={role === "Admin" ? false : true}
+            onClick={() => handleAdd()}
+            className="btn btn-primary"
+          >
+            Thêm thiết bị
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
       {/* Danh sách thiết bị*/}
 
       {!isLoading ? (
         <ListEquipments
+          role={role}
           rows={equips}
           onDelete={handleDeteleEquip}
           onEdit={handleSelectEquip}

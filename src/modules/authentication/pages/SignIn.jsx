@@ -35,11 +35,13 @@ export default function SignIn() {
   const handleSignIn = async (data) => {
     try {
       const res = await getToken(data);
+      console.log("res", res);
       if (!!res) {
         Cookies.set("token", JSON.stringify(res?.token));
-        Cookies.set("email", JSON.stringify(res?.user?.email));
-        Cookies.set("name", JSON.stringify(res?.user?.name));
-        Cookies.set("phone", JSON.stringify(res?.user?.phone));
+        Cookies.set("email", JSON.stringify(res?.email));
+        Cookies.set("role", JSON.stringify(res?.role));
+        Cookies.set("name", JSON.stringify(res?.name));
+
         navigate("/");
       }
     } catch (error) {

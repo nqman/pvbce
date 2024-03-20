@@ -33,6 +33,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
+import { selectUserAPI } from "../../../../apis/authenticationAPI";
 
 const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -49,6 +50,9 @@ function Header() {
       email: JSON.parse(
         Cookies.get("email") !== undefined ? Cookies.get("email") : null
       ),
+      role: JSON.parse(
+        Cookies.get("role") !== undefined ? Cookies.get("role") : null
+      ),
       name: JSON.parse(
         Cookies.get("name") !== undefined ? Cookies.get("name") : null
       ),
@@ -56,12 +60,15 @@ function Header() {
     setUser(getUser);
   }, []);
 
+  console.log("user", user);
+
   const _onlogout = () => {
     Cookies.remove("token");
     Cookies.remove("email");
     Cookies.remove("name");
-    Cookies.remove("phone");
+    Cookies.remove("role");
     setUser({});
+    navigate("/");
   };
 
   const StyledMenu = styled((props) => (
@@ -438,20 +445,16 @@ function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem
-                  onClick={() => navigate("listprojects")}
-                  disableRipple
-                >
+                <MenuItem onClick={() => navigate("/profile")} disableRipple>
                   <PersonSearch />
                   Thông tin cá nhân
                 </MenuItem>
-                <MenuItem
-                  onClick={() => navigate("/change-password/:code")}
-                  disableRipple
-                >
-                  <ManageAccounts />
-                  Thay đổi mật khẩu
-                </MenuItem>
+                {user?.role === "Admin" && (
+                  <MenuItem onClick={() => navigate("/admin")} disableRipple>
+                    <PersonSearch />
+                    Quản lý tài khoản
+                  </MenuItem>
+                )}
                 <MenuItem onClick={_onlogout} disableRipple>
                   <Logout />
                   Đăng xuất

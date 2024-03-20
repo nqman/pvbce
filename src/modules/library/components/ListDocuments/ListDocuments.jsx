@@ -4,7 +4,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { fetchPdfDoc } from "../../../../apis/documentAPI";
 
-export default function ListDocuments({ onDelete, listDocs }) {
+export default function ListDocuments({ onDelete, listDocs, role }) {
+  console.log("role", role);
   const getPdf = async (id, type) => {
     try {
       const url = await fetchPdfDoc(id, type);
@@ -36,8 +37,65 @@ export default function ListDocuments({ onDelete, listDocs }) {
           {listDocs?.map((doc) => (
             <tr>
               <td>{doc?.name}</td>
+              <td style={{ display: "flex", justifyContent: "flex-end" }}>
+                {doc?.type !== "excel" && (
+                  <button
+                    className="btn btn-success"
+                    style={{
+                      padding: "0px",
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "10px",
+                    }}
+                    onClick={() => getPdf(doc.id, "view")}
+                  >
+                    <VisibilityIcon
+                      sx={{
+                        fontSize: "17px",
+                        marginBottom: "2px",
+                      }}
+                    />
+                  </button>
+                )}
+                {doc?.type !== "link" && (
+                  <button
+                    className="btn btn-dark"
+                    style={{
+                      padding: "0px",
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "10px",
+                    }}
+                    onClick={() => getPdf(doc.id, "attachment")}
+                  >
+                    <FileDownloadIcon
+                      sx={{
+                        fontSize: "17px",
+                      }}
+                    />
+                  </button>
+                )}
 
-              {doc?.type === "link" ? (
+                {role === "Admin" && (
+                  <button
+                    style={{
+                      padding: "0px",
+                      height: "25px",
+                      width: "25px",
+                    }}
+                    className="btn btn-danger"
+                    onClick={() => onDelete(doc.id)}
+                  >
+                    <ClearIcon
+                      sx={{
+                        fontSize: "17px",
+                      }}
+                    />
+                  </button>
+                )}
+              </td>
+
+              {/* {doc?.type === "link" ? (
                 <>
                   <td style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
@@ -165,7 +223,7 @@ export default function ListDocuments({ onDelete, listDocs }) {
                     </button>
                   </td>
                 </>
-              )}
+              )} */}
             </tr>
           ))}
         </tbody>

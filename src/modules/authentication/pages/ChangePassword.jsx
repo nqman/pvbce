@@ -39,12 +39,13 @@ export default function ChangePassword() {
 
   const param = useParams();
   const handleSendPassword = async (e) => {
-    const status = await changePasswordAPI(e.password, param.code);
-    console.log(status);
-    if (status) {
-      Swal.fire("Thay đổi mật khẩu thành công!");
-      navigate("/signin");
-    }
+    console.log("param", param);
+    // const status = await changePasswordAPI(e.password, param.code);
+    // console.log(status);
+    // if (status) {
+    //   Swal.fire("Thay đổi mật khẩu thành công!");
+    //   navigate("/signin");
+    // }
   };
 
   const [visible, setVisible] = useState(false);
