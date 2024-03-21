@@ -23,7 +23,7 @@ import ProjectManagement from "./modules/report/components/ProjectManagement";
 import Report from "./modules/report/pages/Report";
 
 import Cost from "./modules/report/components/Cost";
-// import QuantityRevenues from "./modules/report/components/QuantityRevenues";
+import QuantityRevenues from "./modules/report/components/QuantityRevenues";
 
 function App() {
   return (
@@ -47,10 +47,10 @@ function App() {
             path="/projects/actual-quantity-revenue/:code"
             element={<ActualQuantityRevenues />}
           /> */}
-          {/* <Route
+          <Route
             path="/projects/actual-quantity-revenue/:code"
             element={<QuantityRevenues />}
-          /> */}
+          />
           <Route path="/projects/actual-cost/:code" element={<ActualCosts />} />
 
           <Route path="/library" element={<DocumentManagement />}></Route>

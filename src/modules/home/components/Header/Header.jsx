@@ -60,7 +60,7 @@ function Header() {
     setUser(getUser);
   }, []);
 
-  console.log("user", user);
+  // console.log("user", user);
 
   const _onlogout = () => {
     Cookies.remove("token");

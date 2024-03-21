@@ -9,25 +9,32 @@ import {
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export default function QuantityRevenueItem(props) {
+export default function QuantityRevenueItem({
+  detail,
+  categories,
+  updateTotalAmount = () => {},
+  onChange = () => {},
+  onRemove = () => {},
+}) {
   // Hàm để tính tổng tiền
-  const [quantity, setQuantity] = useState(0);
-  const [price, setPrice] = useState(0);
-  const amount = quantity * price;
+  const [quantity, setQuantity] = useState(detail?.quantity || "");
+  const [price, setPrice] = useState(detail?.price || "");
+  const [amount, setAmount] = useState(detail?.amount || quantity * price);
 
   useEffect(() => {
-    props.updateTotalAmount();
+    updateTotalAmount();
   }, [amount]);
-
   const handleInputChange = (id, key, value) => {
+    // debugger;
     if (key === "quantity") {
       setQuantity(value);
+      setAmount(value * price);
     } else if (key === "price") {
       setPrice(value);
+      setAmount(value * quantity);
     }
-    props.onChange({
-      ...props.detail,
-      unit: unit,
+    onChange({
+      ...detail,
       [key]: value,
     });
   };
@@ -36,15 +43,14 @@ export default function QuantityRevenueItem(props) {
   const handleSelectCategory = async (event) => {
     // debugger;
     const category = event.target.value;
-    const selectedCategory = props.categories.find(
-      (el) => el.name === category
-    );
+    const selectedCategory = categories.find((el) => el.name === category);
     if (selectedCategory) {
       setUnit(selectedCategory.unit);
     }
 
-    props.onChange({
-      ...props.detail,
+    onChange({
+      ...detail,
+      unit: selectedCategory.unit,
       category,
     });
   };
@@ -69,7 +75,7 @@ export default function QuantityRevenueItem(props) {
           text: "Hạng mục đã được xóa thành công.",
           icon: "success",
         });
-        props.onRemove(props.detail);
+        onRemove(detail);
       }
     } catch (error) {}
   };
@@ -97,13 +103,13 @@ export default function QuantityRevenueItem(props) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={props.detail?.category}
+              value={detail?.category}
               label="Hạng mục"
               onChange={handleSelectCategory}
               size="small"
               sx={{ display: "flex", width: "250px" }}
             >
-              {props.categories?.map((category) => (
+              {categories?.map((category) => (
                 <MenuItem
                   key={category.id + "_" + category.value}
                   value={category.name}
@@ -117,7 +123,7 @@ export default function QuantityRevenueItem(props) {
         <TextField
           label="Đơn vị"
           id="outlined-size-small"
-          value={unit}
+          value={unit || detail?.unit}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "100px" }}
@@ -125,23 +131,23 @@ export default function QuantityRevenueItem(props) {
         <TextField
           label="Sản lượng"
           id="outlined-size-small"
-          value={props.detail?.quantity}
+          value={quantity}
           size="small"
           type="number"
           sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
-            handleInputChange(props.detail.id, "quantity", e.target.value)
+            handleInputChange(detail.id, "quantity", e.target.value)
           }
         />
         <TextField
           label="Đơn giá"
           id="outlined-size-small"
-          value={props.detail?.price}
+          value={price}
           size="small"
           type="number"
           sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
-            handleInputChange(props.detail.id, "price", e.target.value)
+            handleInputChange(detail.id, "price", e.target.value)
           }
         />
         <TextField
@@ -154,7 +160,7 @@ export default function QuantityRevenueItem(props) {
         />
         <button
           className="btn btn-danger"
-          onClick={() => deleteDiv(props.detail.id)}
+          onClick={() => deleteDiv(detail.id)}
           type="button"
         >
           x

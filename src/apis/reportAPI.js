@@ -243,18 +243,19 @@ export async function addActualQuantityAndRevenueAPI(
     const formData = new FormData();
     actualQuantityAndRevenues.map((dataPerWeek) =>
       Object.keys(dataPerWeek).map((key) => {
-        if (key === "actualQuantityRevenuePerWeek") {
+        if (key === "quantityRevenue") {
           if (Array.isArray(dataPerWeek[key])) {
             dataPerWeek[key].forEach((detail) => {
               //EDIT
               if (detail.id > 0) {
                 formData.append("idActualDetails", detail.id);
+                formData.append("entryDate", detail.entryDate);
               }
               //NEW
               else {
                 formData.append("idActualDetails", 0);
+                formData.append("entryDate", dataPerWeek.actualWeek);
               }
-              formData.append("entryDate", dataPerWeek.actualWeek);
               formData.append("categories", detail.category);
               formData.append("units", detail.unit);
               formData.append("quantities", detail.quantity);
@@ -262,8 +263,15 @@ export async function addActualQuantityAndRevenueAPI(
             });
           }
         } else if (key === "actualWeek") {
+          // EDIT
+          if (dataPerWeek.idQuantityRevenue > 0) {
+            formData.append("idActualWeek", dataPerWeek.idQuantityRevenue);
+          }
+          // NEW
+          else {
+            formData.append("idActualWeek", 0);
+          }
           formData.append("actualWeeks", dataPerWeek[key]);
-          formData.append("idActualWeek", 0);
         }
       })
     );
