@@ -1,13 +1,16 @@
 import Button from "react-bootstrap/Button";
-import ProjectItem from "./ProjectItem";
 import { useEffect, useState } from "react";
 import { getCategoriesAPI, selectProjectAPI } from "../../../apis/reportAPI";
-import { useNavigate, useParams } from "react-router-dom";
-import { Container, Grid, TextField } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { Grid, TextField } from "@mui/material";
 import QuantityRevenueItem from "./QuantityRevenueItem";
 
-export function QuantityRevenuePerWeek(props) {
-  const navigate = useNavigate();
+export function QuantityRevenuePerWeek({
+  idQuantityRevenue,
+  week,
+  actualQuantityAndRevenueDetails,
+  onValueChange = () => {},
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const newEmptyQuantityRevenueDetail = () => {
     return {
@@ -40,9 +43,11 @@ export function QuantityRevenuePerWeek(props) {
     getProjects(idProject);
   }, [idProject]);
 
-  const [quantityRevenueItems, setQuantityRevenueItems] = useState([
-    newEmptyQuantityRevenueDetail(),
-  ]);
+  const [quantityRevenueItems, setQuantityRevenueItems] = useState(
+    actualQuantityAndRevenueDetails
+      ? actualQuantityAndRevenueDetails
+      : [newEmptyQuantityRevenueDetail()]
+  );
   // const [quantityRevenueItems, setQuantityRevenueItems] = useState([]);
   const addProjectItem = () => {
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
@@ -88,76 +93,144 @@ export function QuantityRevenuePerWeek(props) {
   };
 
   useEffect(() => {
-    props.onValueChange(quantityRevenueItems, props.actualWeek);
-  }, [quantityRevenueItems]);
+    onValueChange(quantityRevenueItems, week, idQuantityRevenue);
+  }, [quantityRevenueItems, idQuantityRevenue]);
 
   return (
     <div style={{ marginBottom: "50px" }}>
-      <Grid
-        container
-        spacing={5}
-        style={{
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "start",
-          border: "1px solid",
-          borderRadius: "5px",
-          padding: "10px 0",
-        }}
-      >
-        <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
-          <span
-            style={{
-              padding: "5px 10px",
-              border: "1px solid",
-              boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-              backgroundColor: "rgb(242, 228, 38)",
-              fontWeight: "bold",
-              color: "black",
-              borderRadius: "5px",
-            }}
-          >
-            {props.actualWeek}
-          </span>
-        </Grid>
-        <Grid item lg={12}>
-          <div>
-            {quantityRevenueItems.map((detail) => (
-              <QuantityRevenueItem
-                key={detail.id}
-                detail={detail}
-                categories={categories}
-                onChange={handleQuantityRevenueDetailChange}
-                onRemove={handleRemoveQuantityRevenueDetail}
-                updateTotalAmount={updateTotalAmount}
-              />
-            ))}
-            {/* <p className="text-danger">{errorDetail}</p> */}
-            <div
+      {idQuantityRevenue > 0 ? (
+        <Grid
+          container
+          spacing={5}
+          style={{
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "start",
+            border: "1px solid",
+            borderRadius: "5px",
+            padding: "10px 0",
+          }}
+        >
+          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+            <span
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingBottom: "10px",
+                padding: "5px 10px",
+                border: "1px solid",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                backgroundColor: "rgb(242, 228, 38)",
+                fontWeight: "bold",
+                color: "black",
+                borderRadius: "5px",
               }}
             >
-              <Button style={{}} onClick={addProjectItem}>
-                Thêm
-              </Button>
-              <TextField
-                label={"Tổng cộng"}
-                size="small"
-                disabled={true}
-                value={`${totalAmount.toLocaleString()} VND`}
-                sx={{
-                  marginRight: "120px",
-                  width: "200px",
+              {week}
+            </span>
+          </Grid>
+          <Grid item lg={12}>
+            <div>
+              {quantityRevenueItems.map((detail) => (
+                <QuantityRevenueItem
+                  key={detail.id}
+                  detail={detail}
+                  categories={categories}
+                  onChange={handleQuantityRevenueDetailChange}
+                  onRemove={handleRemoveQuantityRevenueDetail}
+                  updateTotalAmount={updateTotalAmount}
+                />
+              ))}
+              {/* <p className="text-danger">{errorDetail}</p> */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: "10px",
                 }}
-              />
+              >
+                <Button style={{}} onClick={addProjectItem}>
+                  Thêm
+                </Button>
+                <TextField
+                  label={"Tổng cộng"}
+                  size="small"
+                  disabled={true}
+                  value={`${totalAmount.toLocaleString()} VND`}
+                  sx={{
+                    marginRight: "120px",
+                    width: "200px",
+                  }}
+                />
+              </div>
             </div>
-          </div>
+          </Grid>
         </Grid>
-      </Grid>
+      ) : (
+        <Grid
+          container
+          spacing={5}
+          style={{
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "start",
+            border: "1px solid",
+            borderRadius: "5px",
+            padding: "10px 0",
+          }}
+        >
+          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+            <span
+              style={{
+                padding: "5px 10px",
+                border: "1px solid",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                backgroundColor: "rgb(242, 228, 38)",
+                fontWeight: "bold",
+                color: "black",
+                borderRadius: "5px",
+              }}
+            >
+              {week}
+            </span>
+          </Grid>
+          <Grid item lg={12}>
+            <div>
+              {quantityRevenueItems.map((detail) => (
+                <QuantityRevenueItem
+                  key={detail.id}
+                  detail={detail}
+                  categories={categories}
+                  onChange={handleQuantityRevenueDetailChange}
+                  onRemove={handleRemoveQuantityRevenueDetail}
+                  updateTotalAmount={updateTotalAmount}
+                />
+              ))}
+              {/* <p className="text-danger">{errorDetail}</p> */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: "10px",
+                }}
+              >
+                <Button style={{}} onClick={addProjectItem}>
+                  Thêm
+                </Button>
+                <TextField
+                  label={"Tổng cộng"}
+                  size="small"
+                  disabled={true}
+                  value={`${totalAmount.toLocaleString()} VND`}
+                  sx={{
+                    marginRight: "120px",
+                    width: "200px",
+                  }}
+                />
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      )}
     </div>
   );
 }

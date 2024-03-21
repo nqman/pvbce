@@ -18,16 +18,16 @@ export default function QuantityRevenues() {
   const [project, setProject] = useState();
   const [quantityRevenues, setQuantityRevenues] = useState(); //set = API
   const [errorGetMonday, setErrorGetMonday] = useState(false);
-  const [currentWeek, setCurrentWeek] = useState("");
+  const [actualWeek, setActualWeek] = useState("");
   const idProject = params.code;
-  const getNextModay = async (currentWeek, idProject) => {
+  const getNextModay = async (actualWeek, idProject) => {
     try {
-      const nextMonday = await getNextMondayAPI(currentWeek, idProject);
-      setCurrentWeek(nextMonday);
+      const nextMonday = await getNextMondayAPI(actualWeek, idProject);
+      setActualWeek(nextMonday);
       // console.log(nextMonday);
     } catch (error) {
       setErrorGetMonday(true);
-      console.error("Error fetching currentWeek:", error);
+      console.error("Error fetching actualWeek:", error);
     }
   };
   const getProjects = async (idProject) => {
@@ -42,13 +42,33 @@ export default function QuantityRevenues() {
   const getOldQuantityRevenues = async (idProject) => {
     // debugger;
     try {
-      const data = await getOldQuantityRevenueAPI(idProject);
-      setQuantityRevenues(data);
-      console.log(data);
+      const oldQuantityRevenues = await getOldQuantityRevenueAPI(idProject);
+      console.log(oldQuantityRevenues);
+      const tempQuantityRevenues = oldQuantityRevenues?.map(
+        (quantityRevenue) => (
+          <QuantityRevenuePerWeek
+            idQuantityRevenue={quantityRevenue.id}
+            week={quantityRevenue.week}
+            actualQuantityAndRevenueDetails={
+              quantityRevenue.actualQuantityAndRevenueDetails
+            }
+            key={quantityRevenue.id}
+            onValueChange={handleChildValueChange}
+          />
+        )
+      );
+      if (oldQuantityRevenues.length !== 0) {
+        const actualWeek = oldQuantityRevenues?.map(
+          (oldQuantityRevenuePerWeek) => oldQuantityRevenuePerWeek.week
+        );
+        getNextModay(actualWeek.pop(), idProject);
+        console.log(actualWeek.pop());
+      }
+      setQuantityRevenues(tempQuantityRevenues);
 
-      return data;
+      return oldQuantityRevenues;
     } catch (error) {
-      console.error("Error fetching actualQuantityAndRevenue:", error);
+      console.error("Error fetching QuantityAndRevenue:", error);
     }
   };
 
@@ -58,8 +78,12 @@ export default function QuantityRevenues() {
   }, [idProject]);
   const [valueFromChild, setValueFromChild] = useState([]);
 
-  const handleChildValueChange = (data, currentWeek) => {
-    const tempWeek = { currentWeek: currentWeek, quantityRevenue: data };
+  const handleChildValueChange = (data, week, id) => {
+    const tempWeek = {
+      actualWeek: week,
+      quantityRevenue: data,
+      idQuantityRevenue: id,
+    };
     setValueFromChild((prevState) => [
       ...prevState, // Giữ lại tất cả các giá trị hiện có của mảng prevState
       tempWeek, // Thêm tempWeek vào mảng prevState
@@ -67,39 +91,37 @@ export default function QuantityRevenues() {
   };
   const addQuantityRevenuePerWeek = () => {
     // debugger;
-    setCurrentWeek(project?.startDate);
+    setActualWeek(project?.startDate);
     setQuantityRevenues((oldQuantityRevenuePerWeeks) => {
       return [
         ...oldQuantityRevenuePerWeeks,
         <QuantityRevenuePerWeek
           // data={project?.rpQuantityAndRevenueDetails}
           // startDate={project?.startDate}
-          currentWeek={currentWeek === "" ? project?.startDate : currentWeek}
+          idQuantityRevenue={-Date.now()}
+          week={actualWeek === "" ? project?.startDate : actualWeek}
           key={Date.now()}
           onValueChange={handleChildValueChange}
         />,
       ];
     });
-    if (currentWeek === "") {
+    if (actualWeek === "") {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    getNextModay(currentWeek, idProject);
-    // console.log(currentWeek);
+    getNextModay(actualWeek, idProject);
   };
 
   const handleSaveQuantityRevenue = async () => {
     debugger;
     const tempData = [];
 
-    // Tạo một đối tượng tạm thời để lưu các object cuối cùng của mỗi currentWeek
     const tempObject = {};
     valueFromChild.forEach((item) => {
-      const week = item.currentWeek;
+      const week = item.actualWeek;
       tempObject[week] = item;
     });
 
-    // Chuyển đổi đối tượng tempObject thành một mảng các object và thêm vào tempData
     for (const key in tempObject) {
       tempData.push(tempObject[key]);
     }
@@ -112,11 +134,7 @@ export default function QuantityRevenues() {
     }
     getOldQuantityRevenues(idProject);
 
-    // Cập nhật valueFromChild với tempData
     setValueFromChild(tempData);
-
-    // Log tempData
-    console.log(tempData);
   };
 
   return (
