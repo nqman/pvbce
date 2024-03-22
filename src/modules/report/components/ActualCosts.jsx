@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { presentCostPerWeek } from "./ActualCostPerWeek";
 import { Button, Container, Link } from "@mui/material";
 import {
-  addActualQuantityAndRevenueAPI,
+  addActualCostAPI,
   getNextMondayAPI,
-  getOldQuantityRevenueAPI,
+  getOldActualCostAPI,
   selectProjectAPI,
 } from "../../../apis/reportAPI";
 import { useNavigate, useParams } from "react-router-dom";
 import "./styles.css";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ActualCostPerWeek from "./ActualCostPerWeek";
 
 export default function ActualCosts() {
   const navigate = useNavigate();
   const params = useParams();
   const [project, setProject] = useState();
-  const [actualQuantityAndRevenues, setActualQuantityAndRevenues] = useState();
+  const [actualCosts, setActualCosts] = useState(); //set = API
   const [errorGetMonday, setErrorGetMonday] = useState(false);
-  const [presentCostPerWeeks, setPresentCostPerWeeks] = useState([]); //set = API
-  const [oldCostPerWeeks, setOldCostPerWeeks] = useState([]);
-  const [currentWeek, setCurrentWeek] = useState("");
+  const [actualWeek, setActualWeek] = useState("");
   const idProject = params.code;
-  const getNextModay = async (currentWeek, idProject) => {
+  const getNextModay = async (actualWeek, idProject) => {
     try {
-      const nextMonday = await getNextMondayAPI(currentWeek, idProject);
-      setCurrentWeek(nextMonday);
-      // console.log(nextMonday);
+      const nextMonday = await getNextMondayAPI(actualWeek, idProject);
+      setActualWeek(nextMonday);
     } catch (error) {
       setErrorGetMonday(true);
-      console.error("Error fetching currentWeek:", error);
+      console.error("Error fetching actualWeek:", error);
     }
   };
   const getProjects = async (idProject) => {
@@ -41,86 +38,96 @@ export default function ActualCosts() {
       console.error("Error fetching project:", error);
     }
   };
-  const getOldQuantityRevenues = async (idProject) => {
+  const getOldCosts = async (idProject) => {
     // debugger;
     try {
-      const data = await getOldQuantityRevenueAPI(idProject);
-      // setActualQuantityAndRevenues(data);
-      // setPresentCostPerWeeks(data);
-      setOldCostPerWeeks(data);
-      console.log(data);
+      const oldCosts = await getOldActualCostAPI(idProject);
+      // console.log(oldCosts);
+      const tempCosts = oldCosts?.map((actualCost) => (
+        <ActualCostPerWeek
+          idActualCost={actualCost.id}
+          week={actualCost.week}
+          actualCostDetails={actualCost.actualCostDetails}
+          key={actualCost.id}
+          onValueChange={handleChildValueChange}
+        />
+      ));
+      if (oldCosts.length !== 0) {
+        const actualWeek = oldCosts?.map(
+          (oldActualCostPerWeek) => oldActualCostPerWeek.week
+        );
+        getNextModay(actualWeek.pop(), idProject);
+        console.log(actualWeek.pop());
+      }
+      setActualCosts(tempCosts);
 
-      return data;
+      return oldCosts;
     } catch (error) {
-      console.error("Error fetching actualQuantityAndRevenue:", error);
+      console.error("Error fetching QuantityAndRevenue:", error);
     }
   };
 
   useEffect(() => {
     getProjects(idProject);
-    getOldQuantityRevenues(idProject);
+    getOldCosts(idProject);
   }, [idProject]);
   const [valueFromChild, setValueFromChild] = useState([]);
 
-  const handleChildValueChange = (data, currentWeek) => {
-    const tempWeek = { currentWeek: currentWeek, presentCostPerWeek: data };
+  const handleChildValueChange = (data, week, id) => {
+    const tempWeek = {
+      actualWeek: week,
+      actualCost: data,
+      idActualCost: id,
+    };
     setValueFromChild((prevState) => [
       ...prevState, // Giữ lại tất cả các giá trị hiện có của mảng prevState
       tempWeek, // Thêm tempWeek vào mảng prevState
     ]);
   };
-  const addpresentCostPerWeek = () => {
+  const addActualCostPerWeek = () => {
     // debugger;
-    setCurrentWeek(project?.startDate);
-    setPresentCostPerWeeks((oldpresentCostPerWeeks) => {
+    setActualWeek(project?.startDate);
+    setActualCosts((oldActualCostPerWeeks) => {
       return [
-        ...oldpresentCostPerWeeks,
-        <presentCostPerWeek
-          // data={project?.rpQuantityAndRevenueDetails}
-          // startDate={project?.startDate}
-          currentWeek={currentWeek === "" ? project?.startDate : currentWeek}
+        ...oldActualCostPerWeeks,
+        <ActualCostPerWeek
+          idActualCost={-Date.now()}
+          week={actualWeek === "" ? project?.startDate : actualWeek}
           key={Date.now()}
           onValueChange={handleChildValueChange}
         />,
       ];
     });
-    if (currentWeek === "") {
+    if (actualWeek === "") {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    getNextModay(currentWeek, idProject);
-    // console.log(currentWeek);
+    getNextModay(actualWeek, idProject);
   };
 
-  const handleSavepresentCost = async () => {
-    debugger;
+  const handleSaveActualCost = async () => {
+    // debugger;
     const tempData = [];
 
-    // Tạo một đối tượng tạm thời để lưu các object cuối cùng của mỗi currentWeek
     const tempObject = {};
     valueFromChild.forEach((item) => {
-      const week = item.currentWeek;
+      const week = item.actualWeek;
       tempObject[week] = item;
     });
 
-    // Chuyển đổi đối tượng tempObject thành một mảng các object và thêm vào tempData
     for (const key in tempObject) {
       tempData.push(tempObject[key]);
     }
     try {
-      await addActualQuantityAndRevenueAPI(tempData, idProject);
-      toast.success("Cập nhật sản lượng thực tế thành công");
+      await addActualCostAPI(tempData, idProject);
+      toast.success("Cập nhật chi phí thực tế thành công");
     } catch (error) {
       console.error(error);
-      toast.error("Cập nhật sản lượng thực tế thất bại");
+      toast.error("Cập nhật chi phí thực tế thất bại");
     }
-    getOldQuantityRevenues(idProject);
+    getOldCosts(idProject);
 
-    // Cập nhật valueFromChild với tempData
     setValueFromChild(tempData);
-
-    // Log tempData
-    console.log(tempData);
   };
 
   return (
@@ -140,22 +147,8 @@ export default function ActualCosts() {
         </Link>
 
         <div>
-          {oldCostPerWeeks
-            ? oldCostPerWeeks.map((oldCostPerWeek) => (
-                <presentCostPerWeek
-                  oldCostPerWeek={oldCostPerWeek}
-                  oldWeek={oldCostPerWeek.week}
-                  actualQuantityAndRevenueDetails={
-                    oldCostPerWeek.actualQuantityAndRevenueDetails
-                  }
-                  key={oldCostPerWeek.id}
-                  onValueChange={handleChildValueChange}
-                />
-              ))
-            : ""}
-
-          {presentCostPerWeeks.map((presentCostPerWeek, index) => (
-            <div key={index}>{presentCostPerWeek}</div>
+          {actualCosts?.map((actualCost, index) => (
+            <div key={index}>{actualCost}</div>
           ))}
         </div>
 
@@ -168,12 +161,12 @@ export default function ActualCosts() {
         >
           <button
             className="btn btn-warning"
-            onClick={addpresentCostPerWeek}
+            onClick={addActualCostPerWeek}
             disabled={errorGetMonday}
           >
             Thêm tuần
           </button>
-          <button className="btn btn-success" onClick={handleSavepresentCost}>
+          <button className="btn btn-success" onClick={handleSaveActualCost}>
             Lưu
           </button>
         </div>

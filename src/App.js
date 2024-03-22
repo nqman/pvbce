@@ -22,7 +22,7 @@ import ProjectDetail from "./modules/report/components/ProjectDetail";
 import ProjectManagement from "./modules/report/components/ProjectManagement";
 import Report from "./modules/report/pages/Report";
 
-import Cost from "./modules/report/components/Cost";
+import CostName from "./modules/report/components/CostName";
 import QuantityRevenues from "./modules/report/components/QuantityRevenues";
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
           <Route path="/report/category" element={<Category />} />
-          <Route path="/report/cost" element={<Cost />} />
+          <Route path="/report/costname" element={<CostName />} />
           <Route
             path="/report/listprojects"
             element={<ProjectManagement />}

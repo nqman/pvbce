@@ -1,98 +1,92 @@
 import Button from "react-bootstrap/Button";
-import ProjectItem from "./ProjectItem";
 import { useEffect, useState } from "react";
-import {
-  addActualQuantityAndRevenueAPI,
-  getCategoriesAPI,
-  selectProjectAPI,
-} from "../../../apis/reportAPI";
-import { useNavigate, useParams } from "react-router-dom";
-import { Container, Grid, TextField } from "@mui/material";
+import { getCostsAPI, selectProjectAPI } from "../../../apis/reportAPI";
+import { useParams } from "react-router-dom";
+import { Grid, TextField } from "@mui/material";
 import ActualCostItem from "./ActualCostItem";
 
-export function PresentCostPerWeek(props) {
-  const navigate = useNavigate();
+export default function ActualCostPerWeek({
+  idActualCost,
+  week,
+  actualCostDetails,
+  onValueChange = () => {},
+}) {
   const [isLoading, setIsLoading] = useState(false);
-  const newEmptyProjectDetail = () => {
+  const newEmptyActualCostDetail = () => {
     return {
       id: -Date.now(),
-      category: "",
-      unit: "",
-      quantity: "",
+      costName: "",
       price: "",
-      amount: "",
     };
   };
   const params = useParams();
-  const [project, setProject] = useState();
-  const [rpQuantityAndRevenueDetails, setRpQuantityAndRevenueDetails] =
-    useState([]);
+  // const [project, setProject] = useState();
 
   const idProject = params.code;
-  const getProjects = async (idProject) => {
-    try {
-      const data = await selectProjectAPI(idProject);
-      setProject(data);
-      setRpQuantityAndRevenueDetails(data.rpQuantityAndRevenueDetails);
-      return data;
-    } catch (error) {
-      console.error("Error fetching equipments:", error);
-    }
-  };
-  useEffect(() => {
-    getProjects(idProject);
-  }, [idProject]);
+  // const getProjects = async (idProject) => {
+  //   try {
+  //     const data = await selectProjectAPI(idProject);
+  //     setProject(data);
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error fetching equipments:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getProjects(idProject);
+  // }, [idProject]);
 
-  const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
-  const addProjectItem = () => {
-    setProjectItems((oldProjectItems) => {
-      return [...oldProjectItems, newEmptyProjectDetail()];
+  const [actualCostItems, setActualCostItems] = useState(
+    actualCostDetails ? actualCostDetails : [newEmptyActualCostDetail()]
+  );
+  const addActualCostItem = () => {
+    setActualCostItems((oldActualCostItems) => {
+      return [...oldActualCostItems, newEmptyActualCostDetail()];
     });
   };
   //Tính tổng tiền
   const [totalAmount, setTotalAmount] = useState(0);
 
   const updateTotalAmount = () => {
-    const totalAmountNew = projectItems.reduce((accumulator, projectItem) => {
-      return accumulator + projectItem.quantity * projectItem.price;
-    }, 0);
+    const totalAmountNew = actualCostItems.reduce(
+      (accumulator, actualCostItem) => {
+        return accumulator + actualCostItem.price * 1;
+      },
+      0
+    );
     setTotalAmount(totalAmountNew);
   };
-  // Get category selection
-  const [categories, setCategories] = useState([]);
+  // Get cost selection
+  const [costNames, setCostNames] = useState([]);
   useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await getCategoriesAPI();
-      setCategories(response);
+    async function fetchCostsAPI() {
+      let response = await getCostsAPI();
+      setCostNames(response);
     }
-    fetchMyAPI();
+    fetchCostsAPI();
   }, []);
-  const handleProjectDetailChange = (detail) => {
-    setProjectItems((oldProjectItems) => {
-      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
-      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
-      newProjectItems.splice(index, 1, detail);
-      return [...newProjectItems];
+  const handleActualCostDetailChange = (detail) => {
+    setActualCostItems((oldActualCostItems) => {
+      const index = oldActualCostItems.findIndex((el) => el.id === detail.id);
+      const newActualCostItems = [...oldActualCostItems]; // clone array, avoid side effect
+      newActualCostItems.splice(index, 1, detail);
+      return [...newActualCostItems];
     });
   };
 
-  const handleRemoveProjectDetail = (detail) => {
-    setProjectItems((oldProjectItems) => {
-      return [...oldProjectItems.filter((el) => detail.id !== el.id)];
+  const handleRemoveActualCostDetail = (detail) => {
+    setActualCostItems((oldActualCostItems) => {
+      return [...oldActualCostItems.filter((el) => detail.id !== el.id)];
     });
   };
 
-  // const saveProjectItem = () => {
-  //   props.onValueChange(projectItems, props.currentWeek);
-  // };
   useEffect(() => {
-    props.onValueChange(projectItems, props.currentWeek);
-  }, [projectItems]);
+    onValueChange(actualCostItems, week, idActualCost);
+  }, [actualCostItems, idActualCost]);
 
   return (
     <div style={{ marginBottom: "50px" }}>
-      {/* OLD */}
-      {props.oldCostPerWeek ? (
+      {idActualCost > 0 ? (
         <Grid
           container
           spacing={5}
@@ -117,90 +111,18 @@ export function PresentCostPerWeek(props) {
                 borderRadius: "5px",
               }}
             >
-              {props.oldWeek}
+              {week}
             </span>
           </Grid>
           <Grid item lg={12}>
             <div>
-              {props.actualQuantityAndRevenueDetails.map((detail) => (
-                <ActualCostItem
-                  key={detail?.id}
-                  oldDetail={detail}
-                  categories={categories}
-                  oldCategory={detail.category}
-                  onChange={handleProjectDetailChange}
-                  onRemove={handleRemoveProjectDetail}
-                  updateTotalAmount={updateTotalAmount}
-                />
-              ))}
-              {/* <p className="text-danger">{errorDetail}</p> */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingBottom: "10px",
-                }}
-              >
-                <Button style={{}} onClick={addProjectItem}>
-                  Thêm
-                </Button>
-                <TextField
-                  label={"Tổng cộng"}
-                  size="small"
-                  disabled={true}
-                  value={`${totalAmount.toLocaleString()} VND`}
-                  sx={{
-                    marginRight: "120px",
-                    width: "200px",
-                  }}
-                />
-              </div>
-            </div>
-          </Grid>
-        </Grid>
-      ) : (
-        ""
-      )}
-
-      {/* NEW */}
-      {props.currentWeek ? (
-        <Grid
-          container
-          spacing={5}
-          style={{
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "start",
-            border: "1px solid",
-            borderRadius: "5px",
-            padding: "10px 0",
-          }}
-        >
-          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
-            <span
-              style={{
-                padding: "5px 10px",
-                border: "1px solid",
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                backgroundColor: "rgb(242, 228, 38)",
-                fontWeight: "bold",
-                color: "black",
-                borderRadius: "5px",
-              }}
-            >
-              {props.currentWeek}
-            </span>
-          </Grid>
-          <Grid item lg={12}>
-            <div>
-              {projectItems.map((detail) => (
+              {actualCostItems.map((detail) => (
                 <ActualCostItem
                   key={detail.id}
                   detail={detail}
-                  categories={categories}
-                  onChange={handleProjectDetailChange}
-                  onRemove={handleRemoveProjectDetail}
+                  costNames={costNames}
+                  onChange={handleActualCostDetailChange}
+                  onRemove={handleRemoveActualCostDetail}
                   updateTotalAmount={updateTotalAmount}
                 />
               ))}
@@ -213,17 +135,17 @@ export function PresentCostPerWeek(props) {
                   paddingBottom: "10px",
                 }}
               >
-                <Button style={{}} onClick={addProjectItem}>
+                <Button style={{}} onClick={addActualCostItem}>
                   Thêm
                 </Button>
                 <TextField
                   label={"Tổng cộng"}
                   size="small"
-                  disabled={true}
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
                     marginRight: "120px",
                     width: "200px",
+                    pointerEvents: "none",
                   }}
                 />
               </div>
@@ -231,7 +153,72 @@ export function PresentCostPerWeek(props) {
           </Grid>
         </Grid>
       ) : (
-        ""
+        <Grid
+          container
+          spacing={5}
+          style={{
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "start",
+            border: "1px solid",
+            borderRadius: "5px",
+            padding: "10px 0",
+          }}
+        >
+          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+            <span
+              style={{
+                padding: "5px 10px",
+                border: "1px solid",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                backgroundColor: "rgb(242, 228, 38)",
+                fontWeight: "bold",
+                color: "black",
+                borderRadius: "5px",
+              }}
+            >
+              {week}
+            </span>
+          </Grid>
+          <Grid item lg={12}>
+            <div>
+              {actualCostItems.map((detail) => (
+                <ActualCostItem
+                  key={detail.id}
+                  detail={detail}
+                  costNames={costNames}
+                  onChange={handleActualCostDetailChange}
+                  onRemove={handleRemoveActualCostDetail}
+                  updateTotalAmount={updateTotalAmount}
+                />
+              ))}
+              {/* <p className="text-danger">{errorDetail}</p> */}
+              <div
+                style={{
+                  display: "flex",
+                  // justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: "10px",
+                }}
+              >
+                <Button style={{}} onClick={addActualCostItem}>
+                  Thêm
+                </Button>
+                <TextField
+                  label={"Tổng cộng"}
+                  size="small"
+                  // disabled={true}
+                  value={`${totalAmount.toLocaleString()} VND`}
+                  sx={{
+                    marginLeft: "300px",
+                    width: "200px",
+                    pointerEvents: "none",
+                  }}
+                />
+              </div>
+            </div>
+          </Grid>
+        </Grid>
       )}
     </div>
   );

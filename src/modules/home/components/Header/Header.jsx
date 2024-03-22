@@ -244,7 +244,7 @@ function Header() {
                   fontSize: "18px",
                   display: "block",
                   margin: "0 5px 0px 5px",
-                  fontWeight: "600",
+                  fontWeight: "800",
                 }}
               >
                 <Typography textAlign="center">GIỚI THIỆU</Typography>
@@ -259,7 +259,7 @@ function Header() {
                   fontSize: "18px",
                   display: "block",
                   margin: "0 5px 0px 5px",
-                  fontWeight: "600",
+                  fontWeight: "800",
                 }}
               >
                 <Typography textAlign="center">{page}</Typography>
@@ -309,7 +309,7 @@ function Header() {
                 fontSize: "18px",
                 display: "block",
                 margin: "0 5px 0px 5px",
-                fontWeight: "600",
+                fontWeight: "800",
               }}
             >
               {"GIỚI THIỆU"}
@@ -328,7 +328,7 @@ function Header() {
                 color: "#00477b",
                 fontSize: "18px",
                 margin: "0 5px 0px 5px",
-                fontWeight: "600",
+                fontWeight: "800",
               }}
             >
               BÁO CÁO
@@ -390,7 +390,7 @@ function Header() {
                 fontSize: "18px",
                 display: "block",
                 margin: "0 5px 0px 5px",
-                fontWeight: "600",
+                fontWeight: "800",
               }}
             >
               {"CATALOGUE"}
@@ -406,7 +406,7 @@ function Header() {
                 fontSize: "18px",
                 display: "block",
                 margin: "0 5px 0px 5px",
-                fontWeight: "600",
+                fontWeight: "800",
               }}
             >
               {"THƯ VIỆN"}
