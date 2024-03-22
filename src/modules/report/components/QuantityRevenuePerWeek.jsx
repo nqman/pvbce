@@ -23,25 +23,21 @@ export function QuantityRevenuePerWeek({
     };
   };
   const params = useParams();
-  const [project, setProject] = useState();
-  const [quantityAndRevenueDetails, setQuantityAndRevenueDetails] = useState(
-    []
-  );
+  // const [project, setProject] = useState();
 
   const idProject = params.code;
-  const getProjects = async (idProject) => {
-    try {
-      const data = await selectProjectAPI(idProject);
-      setProject(data);
-      setQuantityAndRevenueDetails(data.quantityAndRevenueDetails);
-      return data;
-    } catch (error) {
-      console.error("Error fetching equipments:", error);
-    }
-  };
-  useEffect(() => {
-    getProjects(idProject);
-  }, [idProject]);
+  // const getProjects = async (idProject) => {
+  //   try {
+  //     const data = await selectProjectAPI(idProject);
+  //     setProject(data);
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error fetching equipments:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getProjects(idProject);
+  // }, [idProject]);
 
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
     actualQuantityAndRevenueDetails
@@ -153,11 +149,11 @@ export function QuantityRevenuePerWeek({
                 <TextField
                   label={"Tổng cộng"}
                   size="small"
-                  disabled={true}
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
                     marginRight: "120px",
                     width: "200px",
+                    pointerEvents: "none",
                   }}
                 />
               </div>
@@ -219,11 +215,11 @@ export function QuantityRevenuePerWeek({
                 <TextField
                   label={"Tổng cộng"}
                   size="small"
-                  disabled={true}
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
                     marginRight: "120px",
                     width: "200px",
+                    pointerEvents: "none",
                   }}
                 />
               </div>

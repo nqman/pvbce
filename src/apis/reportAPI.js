@@ -294,3 +294,66 @@ export async function addActualQuantityAndRevenueAPI(
     throw error.message;
   }
 }
+
+//get actual-quantity-revenue
+export async function getOldActualCostAPI(id) {
+  try {
+    const resp = await baseAPI.get(`actual-cost/${id}`);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
+
+export async function addActualCostAPI(actualCosts, idProject) {
+  try {
+    console.log(actualCosts);
+    const formData = new FormData();
+    actualCosts.map((dataPerWeek) =>
+      Object.keys(dataPerWeek).map((key) => {
+        if (key === "actualCost") {
+          if (Array.isArray(dataPerWeek[key])) {
+            dataPerWeek[key].forEach((detail) => {
+              //EDIT
+              if (detail.id > 0) {
+                formData.append("idActualDetails", detail.id);
+                formData.append("entryDate", detail.entryDate);
+              }
+              //NEW
+              else {
+                formData.append("idActualDetails", 0);
+                formData.append("entryDate", dataPerWeek.actualWeek);
+              }
+              formData.append("costNames", detail.costName);
+
+              formData.append("prices", detail.price);
+            });
+          }
+        } else if (key === "actualWeek") {
+          // EDIT
+          if (dataPerWeek.idActualCost > 0) {
+            formData.append("idActualWeek", dataPerWeek.idActualCost);
+          }
+          // NEW
+          else {
+            formData.append("idActualWeek", 0);
+          }
+          formData.append("actualWeeks", dataPerWeek[key]);
+        }
+      })
+    );
+    const resp = await baseAPI.post(`actual-cost/save/${idProject}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(formData);
+    return resp;
+  } catch (error) {
+    console.log(error);
+    if (error.response) {
+      throw error.response;
+    }
+    throw error.message;
+  }
+}

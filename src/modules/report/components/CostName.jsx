@@ -24,7 +24,7 @@ const schema = yup
   })
   .required();
 
-export default function Cost() {
+export default function CostName() {
   const {
     resetField,
     register,
