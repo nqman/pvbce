@@ -248,12 +248,12 @@ export async function addActualQuantityAndRevenueAPI(
             dataPerWeek[key].forEach((detail) => {
               //EDIT
               if (detail.id > 0) {
-                formData.append("idActualDetails", detail.id);
+                formData.append("idActualCostDetails", detail.id);
                 formData.append("entryDate", detail.entryDate);
               }
               //NEW
               else {
-                formData.append("idActualDetails", 0);
+                formData.append("idActualCostDetails", 0);
                 formData.append("entryDate", dataPerWeek.actualWeek);
               }
               formData.append("categories", detail.category);
@@ -316,17 +316,17 @@ export async function addActualCostAPI(actualCosts, idProject) {
             dataPerWeek[key].forEach((detail) => {
               //EDIT
               if (detail.id > 0) {
-                formData.append("idActualDetails", detail.id);
+                formData.append("idActualCostDetails", detail.id);
                 formData.append("entryDate", detail.entryDate);
               }
               //NEW
               else {
-                formData.append("idActualDetails", 0);
+                formData.append("idActualCostDetails", 0);
                 formData.append("entryDate", dataPerWeek.actualWeek);
               }
-              formData.append("costNames", detail.costName);
+              formData.append("cost", detail.costName);
 
-              formData.append("prices", detail.price);
+              formData.append("amounts", detail.price);
             });
           }
         } else if (key === "actualWeek") {
