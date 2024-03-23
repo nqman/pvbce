@@ -86,13 +86,13 @@ export default function ActualCostItem({
         >
           <FormControl fullWidth>
             <InputLabel size="small" id="demo-simple-select-label">
-              Hạng mục
+              Loại chi phí
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={detail?.costName}
-              label="Hạng mục"
+              label="Loại chi phí"
               onChange={handleSelectCostName}
               size="small"
               sx={{ display: "flex", width: "350px" }}
@@ -110,7 +110,7 @@ export default function ActualCostItem({
         </Box>
 
         <TextField
-          label="Chi phí"
+          label="Thành tiền"
           id="outlined-size-small"
           value={price}
           size="small"
