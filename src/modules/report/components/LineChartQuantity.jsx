@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
 
-function LineChart({ unit, detailModel }) {
+function LineChartQuantity({ unit, detailModel }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -46,12 +46,12 @@ function LineChart({ unit, detailModel }) {
     ]);
 
     const tableData = [headerRow, ...dataRows];
-    console.log(tableData);
+    // console.log(tableData);
     setData(tableData);
   };
 
   const options = {
-    title: `Đơn vị ${unit}`,
+    // title: `Đơn vị ${unit}`,
     chart: {
       title: "Box Office Earnings in First Two Weeks of Opening",
       subtitle: "in millions of dollars (USD)",
@@ -71,8 +71,11 @@ function LineChart({ unit, detailModel }) {
       ) : (
         ""
       )}
+      <h3
+        style={{ textAlign: "center" }}
+      >{`Biểu đồ sản lượng theo đơn vị (${unit})`}</h3>
     </div>
   );
 }
 
-export default LineChart;
+export default LineChartQuantity;

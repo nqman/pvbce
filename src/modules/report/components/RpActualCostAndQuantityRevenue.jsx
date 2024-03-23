@@ -10,7 +10,8 @@ import {
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getViewReportQuantityRevenueAndCostAPI } from "../../../apis/reportAPI";
-import LineChart from "./LineChart.jsx";
+import LineChartQuantity from "./LineChartQuantity";
+import LineChartActualCostAndRevenue from "./LineChartActualCostAndRevenue";
 
 export default function RpActualCostAndQuantityRevenue() {
   // debugger;
@@ -30,8 +31,22 @@ export default function RpActualCostAndQuantityRevenue() {
   const handleChangeTypeReport = (e) => {
     setTypeReport(e.target.value);
   };
+
+  const [units, setUnits] = useState([]);
+
+  const [unit, setUnit] = useState("");
+  const [detailModel, setDetailModel] = useState([]);
+  const [detailModelRevenue, setDetailModelRevenue] = useState([]);
+  const handleChangeUnit = (e) => {
+    setUnit(e.target.value);
+    const tempDetail = viewReports.filter(
+      (report) => report.unit === e.target.value
+    );
+    setDetailModel(tempDetail[0].listRpQuantityDetailModels);
+    // console.log(tempDetail[0].listRpQuantityDetailModels);
+  };
   const handleExportReport = async () => {
-    // debugger;
+    debugger;
     try {
       const data = await getViewReportQuantityRevenueAndCostAPI(
         idProject,
@@ -39,14 +54,26 @@ export default function RpActualCostAndQuantityRevenue() {
         typeTime
       );
       setViewReports(data);
-      // console.log(data);
+      if (data[0].unit) {
+        const tempUnits = data
+          .map((d) => (d.unit ? d.unit : null))
+          .filter((unit) => unit !== null);
+        setUnits(tempUnits);
+        setUnit(tempUnits[0]);
+        const tempDetail = data.filter(
+          (report) => report.unit === tempUnits[0]
+        );
+        setDetailModel(tempDetail[0].listRpQuantityDetailModels);
+      }
+      setDetailModelRevenue(data);
+      console.log(data);
       return data;
     } catch (error) {}
   };
 
   return (
     <div>
-      <Container className="mt-4">
+      <Container className="mt-4 mb-4">
         <div
           style={{
             display: "flex",
@@ -89,7 +116,6 @@ export default function RpActualCostAndQuantityRevenue() {
               >
                 <MenuItem value={"quantity"}>Báo cáo sản lượng</MenuItem>
                 <MenuItem value={"revenue"}>Báo cáo doanh thu</MenuItem>
-                <MenuItem value={"actual-cost"}>Báo cáo chi phí</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -105,22 +131,58 @@ export default function RpActualCostAndQuantityRevenue() {
             Xuất báo cáo
           </Button>
         </div>
-        {viewReports.lenght !== 0 ? (
-          viewReports?.map((view, index) => (
-            <Box key={index}>
-              <LineChart
-                unit={view?.unit}
-                detailModel={view?.listRpQuantityDetailModels}
-              />
-            </Box>
-          ))
+        {units?.length > 0 ? (
+          <div>
+            <div style={{ display: "flex", justifyContent: "end" }}>
+              <Box
+                sx={{
+                  width: 200,
+                  marginTop: "20px",
+                }}
+              >
+                <FormControl fullWidth>
+                  <InputLabel size="small" id="demo-simple-select-label">
+                    Đơn vị
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    onChange={handleChangeUnit}
+                    value={unit}
+                    label="Đơn vị"
+                    size="small"
+                  >
+                    {units?.map((unit) => (
+                      <MenuItem value={unit}>{unit}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+            </div>
+            {viewReports.lenght !== 0 &&
+            viewReports.filter((report) => report.unit === unit) ? (
+              <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
+                <LineChartQuantity unit={unit} detailModel={detailModel} />
+              </Box>
+            ) : (
+              // <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
+              //   <h1>Vui lòng chonj đồ thị</h1>
+              // </Box>
+              ""
+            )}
+          </div>
         ) : (
-          <h1>Vui lòng đợi đồ thị</h1>
+          ""
         )}
-
-        <Box>
-          <LineChart />
-        </Box>
+        {detailModelRevenue.length > 0 ? (
+          <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
+            <LineChartActualCostAndRevenue
+              detailModelRevenue={detailModelRevenue}
+            />
+          </Box>
+        ) : (
+          ""
+        )}
       </Container>
     </div>
   );
