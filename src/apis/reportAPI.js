@@ -361,12 +361,13 @@ export async function addActualCostAPI(actualCosts, idProject) {
 // EXPORT REPORT
 export async function getViewReportQuantityRevenueAndCostAPI(
   idProject,
-  typeTime,
-  typeReport
+  typeReport,
+  typeTime
 ) {
+  // debugger;
   try {
     const resp = await baseAPI.get(
-      `prokects/view-report/${idProject}/${typeReport}/${typeTime}`
+      `projects/view-report/${idProject}/${typeReport}/${typeTime}`
     );
     return resp.data;
   } catch (error) {

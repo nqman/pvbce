@@ -4,42 +4,43 @@ import {
   Container,
   FormControl,
   InputLabel,
-  Menu,
   MenuItem,
-  NativeSelect,
   Select,
 } from "@mui/material";
 import React, { useState } from "react";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useNavigate, useParams } from "react-router-dom";
 import { getViewReportQuantityRevenueAndCostAPI } from "../../../apis/reportAPI";
+import LineChart from "./LineChart.jsx";
 
 export default function RpActualCostAndQuantityRevenue() {
+  // debugger;
   const navigate = useNavigate();
   const params = useParams();
   const idProject = params.code;
-
-  // MENU WEEK
+  const [viewReports, setViewReports] = useState([]);
+  useState("");
+  // TYPE OF TIME
   const [typeTime, setTypeTime] = useState("");
-
-  const handleChangeTime = (e) => {
+  const handleChangeTypeTime = (e) => {
     setTypeTime(e.target.value);
   };
   // TYPE OF REPORT
   const [typeReport, setTypeReport] = useState("");
 
-  const handleChangeType = (e) => {
+  const handleChangeTypeReport = (e) => {
     setTypeReport(e.target.value);
   };
   const handleExportReport = async () => {
+    // debugger;
     try {
-      // const viewReport = await getViewReportQuantityRevenueAndCostAPI(
-      //   idProject,
-      //   typeReport,
-      //   typeTime
-      // );
-      console.log(idProject, typeReport, typeTime);
-      // return viewReport;
+      const data = await getViewReportQuantityRevenueAndCostAPI(
+        idProject,
+        typeReport,
+        typeTime
+      );
+      setViewReports(data);
+      // console.log(data);
+      return data;
     } catch (error) {}
   };
 
@@ -61,7 +62,7 @@ export default function RpActualCostAndQuantityRevenue() {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                onChange={handleChangeTime}
+                onChange={handleChangeTypeTime}
                 value={typeTime}
                 label="Đơn vị thời gian"
                 size="small"
@@ -81,7 +82,7 @@ export default function RpActualCostAndQuantityRevenue() {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                onChange={handleChangeType}
+                onChange={handleChangeTypeReport}
                 value={typeReport}
                 label="Loại báo cáo"
                 size="small"
@@ -104,6 +105,22 @@ export default function RpActualCostAndQuantityRevenue() {
             Xuất báo cáo
           </Button>
         </div>
+        {viewReports.lenght !== 0 ? (
+          viewReports?.map((view, index) => (
+            <Box key={index}>
+              <LineChart
+                unit={view?.unit}
+                detailModel={view?.listRpQuantityDetailModels}
+              />
+            </Box>
+          ))
+        ) : (
+          <h1>Vui lòng đợi đồ thị</h1>
+        )}
+
+        <Box>
+          <LineChart />
+        </Box>
       </Container>
     </div>
   );
