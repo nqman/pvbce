@@ -11,8 +11,11 @@ import "./styles.css";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ActualCostPerWeek from "./ActualCostPerWeek";
+import Loading from "../../home/components/Loading/Loading";
 
 export default function ActualCosts() {
+  const [isLoading, setIsLoading] = useState(true);
+
   const navigate = useNavigate();
   const params = useParams();
   const [project, setProject] = useState();
@@ -60,6 +63,7 @@ export default function ActualCosts() {
         console.log(actualWeek.pop());
       }
       setActualCosts(tempCosts);
+      setIsLoading(false);
 
       return oldCosts;
     } catch (error) {
@@ -129,7 +133,9 @@ export default function ActualCosts() {
 
     setValueFromChild(tempData);
   };
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div>
       <Toaster position="top-right" />

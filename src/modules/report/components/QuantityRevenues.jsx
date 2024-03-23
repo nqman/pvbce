@@ -11,8 +11,10 @@ import "./styles.css";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { QuantityRevenuePerWeek } from "./QuantityRevenuePerWeek";
+import Loading from "../../home/components/Loading/Loading";
 
 export default function QuantityRevenues() {
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
   const [project, setProject] = useState();
@@ -65,7 +67,7 @@ export default function QuantityRevenues() {
         console.log(actualWeek.pop());
       }
       setQuantityRevenues(tempQuantityRevenues);
-
+      setIsLoading(false);
       return oldQuantityRevenues;
     } catch (error) {
       console.error("Error fetching QuantityAndRevenue:", error);
@@ -136,7 +138,9 @@ export default function QuantityRevenues() {
 
     setValueFromChild(tempData);
   };
-
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div>
       <Toaster position="top-right" />

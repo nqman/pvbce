@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   FormControl,
   InputLabel,
@@ -20,6 +19,7 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import Loading from "../../home/components/Loading/Loading";
 
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
@@ -133,9 +133,7 @@ export default function DocumentManagement() {
             listDocs={listDocs}
           />
         ) : (
-          <Box sx={{ display: "block", textAlign: "center" }}>
-            <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
-          </Box>
+          <Loading />
         )}
 
         {/* MODAL */}
