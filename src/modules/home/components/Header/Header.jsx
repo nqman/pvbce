@@ -343,13 +343,16 @@ function Header() {
               onClose={handleClose}
             >
               <MenuItem
-                onClick={() => handleNavigate("category")}
+                onClick={() => handleNavigate("categorylist")}
                 disableRipple
               >
                 <CategoryIcon />
                 Hạng mục
               </MenuItem>
-              <MenuItem onClick={() => handleNavigate("cost")} disableRipple>
+              <MenuItem
+                onClick={() => handleNavigate("costlist")}
+                disableRipple
+              >
                 <CategoryIcon />
                 Chi phí
               </MenuItem>

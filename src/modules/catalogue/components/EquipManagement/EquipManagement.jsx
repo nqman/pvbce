@@ -7,7 +7,6 @@ import Swal from "sweetalert2";
 
 // API
 
-import axios from "axios";
 import {
   listEquipmentsAPI,
   deleteEquipmentAPI,
@@ -15,7 +14,7 @@ import {
 } from "../../../../apis/equipmentAPI";
 import { Box, CircularProgress } from "@mui/material";
 import Cookies from "js-cookie";
-// const listEquipmentsAPI = "https://pvbce.io.vn/API/products";
+import Loading from "../../../home/components/Loading/Loading";
 
 export default function EquipManagement() {
   const role = Cookies.get("role");
@@ -116,9 +115,7 @@ export default function EquipManagement() {
           onEdit={handleSelectEquip}
         />
       ) : (
-        <Box sx={{ display: "block", textAlign: "center" }}>
-          <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
-        </Box>
+        <Loading />
       )}
     </div>
   );

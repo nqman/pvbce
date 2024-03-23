@@ -357,3 +357,19 @@ export async function addActualCostAPI(actualCosts, idProject) {
     throw error.message;
   }
 }
+
+// EXPORT REPORT
+export async function getViewReportQuantityRevenueAndCostAPI(
+  idProject,
+  typeTime,
+  typeReport
+) {
+  try {
+    const resp = await baseAPI.get(
+      `prokects/view-report/${idProject}/${typeReport}/${typeTime}`
+    );
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}

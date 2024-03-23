@@ -24,6 +24,7 @@ import Report from "./modules/report/pages/Report";
 
 import CostName from "./modules/report/components/CostName";
 import QuantityRevenues from "./modules/report/components/QuantityRevenues";
+import RpActualCostAndQuantityRevenue from "./modules/report/components/RpActualCostAndQuantityRevenue";
 
 function App() {
   return (
@@ -36,23 +37,27 @@ function App() {
           {/* REPORT */}
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
-          <Route path="/report/category" element={<Category />} />
-          <Route path="/report/costname" element={<CostName />} />
+          <Route path="/report/categorylist" element={<Category />} />
+          <Route path="/report/costlist" element={<CostName />} />
           <Route
             path="/report/listprojects"
             element={<ProjectManagement />}
           ></Route>
           <Route path="/projects/:code" element={<ProjectDetail />} />
-          {/* <Route
-            path="/projects/actual-quantity-revenue/:code"
-            element={<ActualQuantityRevenues />}
-          /> */}
+
+          {/* ActualQuantityRevenue */}
           <Route
             path="/projects/actual-quantity-revenue/:code"
             element={<QuantityRevenues />}
           />
+          {/* ActualCost */}
           <Route path="/projects/actual-cost/:code" element={<ActualCosts />} />
+          <Route
+            path="/projects/report-cost-quantity-revenue/:code"
+            element={<RpActualCostAndQuantityRevenue />}
+          />
 
+          {/* LIBRARY */}
           <Route path="/library" element={<DocumentManagement />}></Route>
 
           {/* Profile */}
