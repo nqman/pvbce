@@ -35,10 +35,12 @@ function LineChartQuantity({ unit, detailModel, typeTime }) {
   };
 
   const options = {
-    // title: `Đơn vị ${unit}`,
-    chart: {
-      title: "Box Office Earnings in First Two Weeks of Opening",
-      subtitle: "in millions of dollars (USD)",
+    legend: { position: "bottom" },
+    hAxis: {
+      title: "Thời gian",
+    },
+    vAxis: {
+      title: "Sản lượng",
     },
   };
 
@@ -48,7 +50,7 @@ function LineChartQuantity({ unit, detailModel, typeTime }) {
         <Chart
           chartType="LineChart"
           width="100%"
-          height="400px"
+          height="450px"
           data={data}
           options={options}
         />
@@ -56,7 +58,12 @@ function LineChartQuantity({ unit, detailModel, typeTime }) {
         ""
       )}
       <h3
-        style={{ textAlign: "center" }}
+        style={{
+          textAlign: "center",
+          marginTop: "10px",
+          fontWeight: "bold",
+          marginBottom: "-5px",
+        }}
       >{`Biểu đồ sản lượng theo ${typeTimeVN} (đơn vị: ${unit} )`}</h3>
     </div>
   );

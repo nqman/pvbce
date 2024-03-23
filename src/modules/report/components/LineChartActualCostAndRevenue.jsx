@@ -40,10 +40,12 @@ function LineChartActualCostAndRevenue({ detailModelRevenue, typeTime }) {
   };
 
   const options = {
-    // title: `Đơn vị ${unit}`,
-    chart: {
-      title: "Box Office Earnings in First Two Weeks of Opening",
-      subtitle: "in millions of dollars (USD)",
+    legend: { position: "bottom" },
+    hAxis: {
+      title: "Thời gian",
+    },
+    vAxis: {
+      title: "Chi phí",
     },
   };
 
@@ -53,14 +55,21 @@ function LineChartActualCostAndRevenue({ detailModelRevenue, typeTime }) {
         <Chart
           chartType="LineChart"
           width="100%"
-          height="400px"
+          height="450px"
           data={data}
           options={options}
         />
       ) : (
         ""
       )}
-      <h3 style={{ textAlign: "center" }}>
+      <h3
+        style={{
+          textAlign: "center",
+          marginBottom: "-5px",
+          marginTop: "10px",
+          fontWeight: "bold",
+        }}
+      >
         {`Biểu đồ doanh thu & chi phí theo ${typeTimeVN}`}
       </h3>
     </div>

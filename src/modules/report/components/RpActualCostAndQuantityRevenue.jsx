@@ -46,7 +46,7 @@ export default function RpActualCostAndQuantityRevenue() {
     // console.log(tempDetail[0].listRpQuantityDetailModels);
   };
   const handleExportReport = async () => {
-    debugger;
+    // debugger;
     try {
       const data = await getViewReportQuantityRevenueAndCostAPI(
         idProject,
@@ -69,7 +69,7 @@ export default function RpActualCostAndQuantityRevenue() {
       }
       setUnits([]);
       setDetailModelRevenue(data);
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (error) {}
   };
@@ -135,8 +135,16 @@ export default function RpActualCostAndQuantityRevenue() {
           </Button>
         </div>
         {units?.length > 0 ? (
-          <div>
-            <div style={{ display: "flex", justifyContent: "end" }}>
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                // display: "flex",
+                // justifyContent: "end",
+                position: "absolute",
+                right: "20px",
+                zIndex: 100,
+              }}
+            >
               <Box
                 sx={{
                   width: 200,
@@ -155,8 +163,10 @@ export default function RpActualCostAndQuantityRevenue() {
                     label="Đơn vị"
                     size="small"
                   >
-                    {units?.map((unit) => (
-                      <MenuItem value={unit}>{unit}</MenuItem>
+                    {units?.map((unit, index) => (
+                      <MenuItem key={index} value={unit}>
+                        {unit}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
