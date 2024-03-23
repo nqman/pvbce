@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
 
-function LineChartActualCostAndRevenue({ detailModelRevenue }) {
+function LineChartActualCostAndRevenue({ detailModelRevenue, typeTime }) {
   const [data, setData] = useState([]);
-
+  const [typeTimeVN, setTypeTimeVN] = useState(typeTime);
   useEffect(() => {
     if (detailModelRevenue?.length > 0) {
       handleConvertData();
@@ -27,6 +27,16 @@ function LineChartActualCostAndRevenue({ detailModelRevenue }) {
 
     const tableData = [headerRow, ...dataRows];
     setData(tableData);
+    switch (typeTime) {
+      case "week":
+        return setTypeTimeVN("tuần");
+      case "month":
+        return setTypeTimeVN("tháng");
+      case "year":
+        return setTypeTimeVN("năm");
+      default:
+        return typeTime;
+    }
   };
 
   const options = {
@@ -50,7 +60,9 @@ function LineChartActualCostAndRevenue({ detailModelRevenue }) {
       ) : (
         ""
       )}
-      <h3 style={{ textAlign: "center" }}>Biểu đồ chi phí</h3>
+      <h3 style={{ textAlign: "center" }}>
+        {`Biểu đồ doanh thu & chi phí theo ${typeTimeVN}`}
+      </h3>
     </div>
   );
 }

@@ -64,7 +64,10 @@ export default function RpActualCostAndQuantityRevenue() {
           (report) => report.unit === tempUnits[0]
         );
         setDetailModel(tempDetail[0].listRpQuantityDetailModels);
+        setDetailModelRevenue([]);
+        return;
       }
+      setUnits([]);
       setDetailModelRevenue(data);
       console.log(data);
       return data;
@@ -162,12 +165,13 @@ export default function RpActualCostAndQuantityRevenue() {
             {viewReports.lenght !== 0 &&
             viewReports.filter((report) => report.unit === unit) ? (
               <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
-                <LineChartQuantity unit={unit} detailModel={detailModel} />
+                <LineChartQuantity
+                  typeTime={typeTime}
+                  unit={unit}
+                  detailModel={detailModel}
+                />
               </Box>
             ) : (
-              // <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
-              //   <h1>Vui lòng chonj đồ thị</h1>
-              // </Box>
               ""
             )}
           </div>
@@ -177,6 +181,7 @@ export default function RpActualCostAndQuantityRevenue() {
         {detailModelRevenue.length > 0 ? (
           <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
             <LineChartActualCostAndRevenue
+              typeTime={typeTime}
               detailModelRevenue={detailModelRevenue}
             />
           </Box>
