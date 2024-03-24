@@ -11,21 +11,22 @@ import Swal from "sweetalert2";
 
 export default function ActualCostItem({
   detail,
-  costNames,
+  costs,
   updateTotalAmount = () => {},
   onChange = () => {},
   onRemove = () => {},
 }) {
   // Hàm để tính tổng tiền
-  const [price, setPrice] = useState(detail?.price || "");
+  debugger;
+  const [amount, setAmount] = useState(detail?.amount || "");
 
   useEffect(() => {
     updateTotalAmount();
-  }, [price]);
+  }, [amount]);
   const handleInputChange = (id, key, value) => {
     debugger;
-    if (key === "price") {
-      setPrice(value);
+    if (key === "amount") {
+      setAmount(value);
     }
     onChange({
       ...detail,
@@ -33,13 +34,13 @@ export default function ActualCostItem({
     });
   };
 
-  const handleSelectCostName = async (event) => {
-    debugger;
-    const costName = event.target.value;
+  const handleSelectcost = async (event) => {
+    // debugger;
+    const cost = event.target.value;
 
     onChange({
       ...detail,
-      costName,
+      cost,
     });
   };
 
@@ -91,18 +92,15 @@ export default function ActualCostItem({
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={detail?.costName}
+              value={detail?.cost}
               label="Loại chi phí"
-              onChange={handleSelectCostName}
+              onChange={handleSelectcost}
               size="small"
               sx={{ display: "flex", width: "350px" }}
             >
-              {costNames?.map((costName) => (
-                <MenuItem
-                  key={costName.id + "_" + costName.value}
-                  value={costName.name}
-                >
-                  {costName.name}
+              {costs?.map((cost) => (
+                <MenuItem key={cost.id + "_" + cost.value} value={cost.name}>
+                  {cost.name}
                 </MenuItem>
               ))}
             </Select>
@@ -112,12 +110,12 @@ export default function ActualCostItem({
         <TextField
           label="Thành tiền"
           id="outlined-size-small"
-          value={price}
+          value={amount}
           size="small"
           type="number"
           sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
-            handleInputChange(detail.id, "price", e.target.value)
+            handleInputChange(detail.id, "amount", e.target.value)
           }
         />
 
