@@ -21,7 +21,7 @@ export default function ActualCostPerWeek({
   };
   const params = useParams();
   // const [project, setProject] = useState();
-  console.log(actualCostDetails);
+  // console.log(actualCostDetails);
 
   const idProject = params.code;
   // const getProjects = async (idProject) => {

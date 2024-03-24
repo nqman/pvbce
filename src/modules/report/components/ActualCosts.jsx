@@ -21,15 +21,15 @@ export default function ActualCosts() {
   const [project, setProject] = useState();
   const [actualCosts, setActualCosts] = useState(); //set = API
   const [errorGetMonday, setErrorGetMonday] = useState(false);
-  const [actualWeek, setActualWeek] = useState("");
+  const [actualCostWeek, setActualCostWeek] = useState("");
   const idProject = params.code;
-  const getNextModay = async (actualWeek, idProject) => {
+  const getNextModay = async (actualCostWeek, idProject) => {
     try {
-      const nextMonday = await getNextMondayAPI(actualWeek, idProject);
-      setActualWeek(nextMonday);
+      const nextMonday = await getNextMondayAPI(actualCostWeek, idProject);
+      setActualCostWeek(nextMonday);
     } catch (error) {
       setErrorGetMonday(true);
-      console.error("Error fetching actualWeek:", error);
+      console.error("Error fetching actualCostWeek:", error);
     }
   };
   const getProjects = async (idProject) => {
@@ -56,11 +56,11 @@ export default function ActualCosts() {
         />
       ));
       if (oldCosts.length !== 0) {
-        const actualWeek = oldCosts?.map(
+        const actualCostWeek = oldCosts?.map(
           (oldActualCostPerWeek) => oldActualCostPerWeek.week
         );
-        getNextModay(actualWeek.pop(), idProject);
-        // console.log(actualWeek.pop());
+        getNextModay(actualCostWeek.pop(), idProject);
+        // console.log(actualCostWeek.pop());
       }
       setActualCosts(tempCosts);
       setIsLoading(false);
@@ -79,7 +79,7 @@ export default function ActualCosts() {
 
   const handleChildValueChange = (data, week, id) => {
     const tempWeek = {
-      actualWeek: week,
+      actualCostWeek: week,
       actualCost: data,
       idActualCost: id,
     };
@@ -90,23 +90,23 @@ export default function ActualCosts() {
   };
   const addActualCostPerWeek = () => {
     // debugger;
-    setActualWeek(project?.startDate);
+    setActualCostWeek(project?.startDate);
     setActualCosts((oldActualCostPerWeeks) => {
       return [
         ...oldActualCostPerWeeks,
         <ActualCostPerWeek
           idActualCost={-Date.now()}
-          week={actualWeek === "" ? project?.startDate : actualWeek}
+          week={actualCostWeek === "" ? project?.startDate : actualCostWeek}
           key={Date.now()}
           onValueChange={handleChildValueChange}
         />,
       ];
     });
-    if (actualWeek === "") {
+    if (actualCostWeek === "") {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    getNextModay(actualWeek, idProject);
+    getNextModay(actualCostWeek, idProject);
   };
 
   const handleSaveActualCost = async () => {
@@ -115,7 +115,7 @@ export default function ActualCosts() {
 
     const tempObject = {};
     valueFromChild.forEach((item) => {
-      const week = item.actualWeek;
+      const week = item.actualCostWeek;
       tempObject[week] = item;
     });
 
