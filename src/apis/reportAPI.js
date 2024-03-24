@@ -326,7 +326,7 @@ export async function addActualCostAPI(actualCosts, idProject) {
               }
               formData.append("cost", detail.costName);
 
-              formData.append("amounts", detail.price);
+              formData.append("amounts", detail.amount);
             });
           }
         } else if (key === "actualWeek") {

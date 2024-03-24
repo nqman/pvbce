@@ -15,12 +15,13 @@ export default function ActualCostPerWeek({
   const newEmptyActualCostDetail = () => {
     return {
       id: -Date.now(),
-      costName: "",
-      price: "",
+      cost: "",
+      amount: "",
     };
   };
   const params = useParams();
   // const [project, setProject] = useState();
+  console.log(actualCostDetails);
 
   const idProject = params.code;
   // const getProjects = async (idProject) => {
@@ -48,20 +49,21 @@ export default function ActualCostPerWeek({
   const [totalAmount, setTotalAmount] = useState(0);
 
   const updateTotalAmount = () => {
+    debugger;
     const totalAmountNew = actualCostItems.reduce(
       (accumulator, actualCostItem) => {
-        return accumulator + actualCostItem.price * 1;
+        return accumulator + actualCostItem.amount * 1;
       },
       0
     );
     setTotalAmount(totalAmountNew);
   };
   // Get cost selection
-  const [costNames, setCostNames] = useState([]);
+  const [costs, setCosts] = useState([]);
   useEffect(() => {
     async function fetchCostsAPI() {
       let response = await getCostsAPI();
-      setCostNames(response);
+      setCosts(response);
     }
     fetchCostsAPI();
   }, []);
@@ -120,7 +122,7 @@ export default function ActualCostPerWeek({
                 <ActualCostItem
                   key={detail.id}
                   detail={detail}
-                  costNames={costNames}
+                  costs={costs}
                   onChange={handleActualCostDetailChange}
                   onRemove={handleRemoveActualCostDetail}
                   updateTotalAmount={updateTotalAmount}
@@ -186,7 +188,7 @@ export default function ActualCostPerWeek({
                 <ActualCostItem
                   key={detail.id}
                   detail={detail}
-                  costNames={costNames}
+                  costs={costs}
                   onChange={handleActualCostDetailChange}
                   onRemove={handleRemoveActualCostDetail}
                   updateTotalAmount={updateTotalAmount}

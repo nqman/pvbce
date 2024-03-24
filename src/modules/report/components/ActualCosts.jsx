@@ -60,7 +60,7 @@ export default function ActualCosts() {
           (oldActualCostPerWeek) => oldActualCostPerWeek.week
         );
         getNextModay(actualWeek.pop(), idProject);
-        console.log(actualWeek.pop());
+        // console.log(actualWeek.pop());
       }
       setActualCosts(tempCosts);
       setIsLoading(false);
