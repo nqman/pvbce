@@ -82,46 +82,47 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                       }}
                     />
                   </button>
-                  {role === "Admin" && (
-                    <button
-                      style={{
-                        padding: "0px",
-                        height: "25px",
-                        width: "25px",
-                        marginRight: "10px",
-                      }}
-                      className="btn btn-warning me-2"
-                      onClick={() => onEdit(params.id)}
-                      title="Sửa"
-                    >
-                      <EditIcon
-                        sx={{
-                          fontSize: "17px",
-                          marginBottom: "2px",
+                  {role && !role !== "Admin" && (
+                    <>
+                      <button
+                        style={{
+                          padding: "0px",
+                          height: "25px",
+                          width: "25px",
+                          marginRight: "10px",
                         }}
-                      />
-                    </button>
-                  )}
-                  {role === "Admin" && (
-                    <button
-                      style={{
-                        padding: "0px",
-                        height: "25px",
-                        width: "25px",
-                        lineHeight: "15px",
-                      }}
-                      className="btn btn-danger"
-                      onClick={() => {
-                        onDelete(params.id);
-                      }}
-                      title="Xóa"
-                    >
-                      <ClearIcon
-                        sx={{
-                          fontSize: "20px",
+                        className="btn btn-warning me-2"
+                        onClick={() => onEdit(params.id)}
+                        title="Sửa"
+                      >
+                        <EditIcon
+                          sx={{
+                            fontSize: "17px",
+                            marginBottom: "2px",
+                          }}
+                        />
+                      </button>
+
+                      <button
+                        style={{
+                          padding: "0px",
+                          height: "25px",
+                          width: "25px",
+                          lineHeight: "15px",
                         }}
-                      />
-                    </button>
+                        className="btn btn-danger"
+                        onClick={() => {
+                          onDelete(params.id);
+                        }}
+                        title="Xóa"
+                      >
+                        <ClearIcon
+                          sx={{
+                            fontSize: "20px",
+                          }}
+                        />
+                      </button>
+                    </>
                   )}
                 </div>
               ),

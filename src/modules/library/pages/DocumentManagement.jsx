@@ -118,7 +118,7 @@ export default function DocumentManagement() {
     <>
       <Container maxWidth="lg" className="mt-4">
         <Toaster position="top-right" />
-        {role === "Admin" && (
+        {role && !role !== "Admin" && (
           <div className="d-flex justify-content-end">
             <button className="btn btn-primary " onClick={handleShow}>
               Thêm tài liệu

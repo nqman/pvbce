@@ -18,7 +18,7 @@ import Loading from "../../../home/components/Loading/Loading";
 
 export default function EquipManagement() {
   const role = Cookies.get("role");
-  console.log("role", role);
+  // console.log("role", typeof role);
   const navigate = useNavigate();
   const handleAdd = () => {
     navigate("/catalogue/create");
@@ -93,16 +93,19 @@ export default function EquipManagement() {
           marginTop: "20px",
         }}
       >
-        {role === "Admin" ? (
+        {/* {console.log(role)}
+        {console.log(role == "Admin")} 
+        ??????
+        */}
+
+        {role && !role !== "Admin" && (
           <button
-            disabled={role === "Admin" ? false : true}
+            disabled={!role === "Admin" ? true : false}
             onClick={() => handleAdd()}
             className="btn btn-primary"
           >
             Thêm thiết bị
           </button>
-        ) : (
-          <></>
         )}
       </div>
       {/* Danh sách thiết bị*/}

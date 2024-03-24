@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 import {
   listProjectsAPI,
@@ -16,7 +17,7 @@ import { listEquipmentsAPI } from "../../../apis/equipmentAPI";
 
 export default function ProjectManagement() {
   const navigate = useNavigate();
-
+  const role = Cookies.get("role");
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -76,24 +77,27 @@ export default function ProjectManagement() {
 
   return (
     <div style={{ position: "relative" }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ marginTop: "20px" }}>
         <Toaster position="top-right" />
         {/* BTN khởi tạo dự án */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: "10px",
-            marginTop: "20px",
-          }}
-        >
-          <button
-            onClick={() => navigate("/report/create-project")}
-            className="btn btn-primary"
+        {role && !role !== "Admin" && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginBottom: "10px",
+              marginTop: "20px",
+            }}
           >
-            Thêm dự án mới
-          </button>
-        </div>
+            <button
+              onClick={() => navigate("/report/create-project")}
+              className="btn btn-primary"
+            >
+              Thêm dự án mới
+            </button>
+          </div>
+        )}
+
         {/* Danh sách dự án*/}
 
         {!isLoading ? (
@@ -101,6 +105,7 @@ export default function ProjectManagement() {
             rows={projects}
             onDelete={handleDeleteProject}
             onEdit={handleEditProject}
+            role={role}
           />
         ) : (
           <Box sx={{ display: "block", textAlign: "center" }}>

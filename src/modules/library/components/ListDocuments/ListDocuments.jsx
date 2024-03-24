@@ -76,7 +76,7 @@ export default function ListDocuments({ onDelete, listDocs, role }) {
                   </button>
                 )}
 
-                {role === "Admin" && (
+                {role && !role !== "Admin" && (
                   <button
                     style={{
                       padding: "0px",
