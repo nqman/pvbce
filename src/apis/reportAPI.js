@@ -332,13 +332,13 @@ export async function addActualCostAPI(actualCosts, idProject) {
         } else if (key === "actualWeek") {
           // EDIT
           if (dataPerWeek.idActualCost > 0) {
-            formData.append("idActualWeek", dataPerWeek.idActualCost);
+            formData.append("idActualCostWeek", dataPerWeek.idActualCost);
           }
           // NEW
           else {
-            formData.append("idActualWeek", 0);
+            formData.append("idActualCostWeek", 0);
           }
-          formData.append("actualWeeks", dataPerWeek[key]);
+          formData.append("actualCostWeeks", dataPerWeek[key]);
         }
       })
     );
