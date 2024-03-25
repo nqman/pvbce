@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const token = Cookies.get("token").replace(/"/g, "");
+const token = Cookies.get("token")?.replace(/"/g, "");
 
 // const createBaseAPI = (token) => {
 //   if (token && token !== null) {
@@ -22,7 +22,7 @@ const createBaseAPI = (token) => {
     return axios.create({
       baseURL: "https://pvbce.io.vn/API/",
       headers: {
-        Authorization: `Bearer ${token.replace(/"/g, "")}`,
+        Authorization: `Bearer ${token?.replace(/"/g, "")}`,
       },
     });
   } else {
