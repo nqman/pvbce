@@ -125,6 +125,7 @@ export async function changePasswordAPI(newPassword, param) {
 export async function getToken(account) {
   try {
     const resp = await baseAPI.post(`authenticate/login`, account);
+    console.log(resp.data);
     return resp.data;
   } catch (error) {
     console.error(error);
