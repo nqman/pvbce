@@ -27,7 +27,7 @@ const createBaseAPI = (token) => {
     });
   } else {
     return axios.create({
-      baseURL: "http://103.82.39.125:8080/",
+      baseURL: "https://pvbce.io.vn/API/",
     });
   }
 };

@@ -9,7 +9,6 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ListLibrary from "../components/ListDocuments/ListDocuments";
 import Modal from "react-bootstrap/Modal";
 import {
   addDocumentAPI,
@@ -20,11 +19,12 @@ import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import Loading from "../../home/components/Loading/Loading";
+import ListDocuments from "../components/ListDocuments";
 
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const role = Cookies.get("role");
-  console.log("role", role);
+  // console.log("role", role);
 
   //MODAL
   const [show, setShow] = useState(false);
@@ -127,7 +127,7 @@ export default function DocumentManagement() {
         )}
 
         {!isLoading ? (
-          <ListLibrary
+          <ListDocuments
             role={role}
             onDelete={handleDelete}
             listDocs={listDocs}
