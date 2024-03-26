@@ -48,7 +48,8 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
                     justifyContent: "flex-end",
                   }}
                 >
-                  {params?.type !== "excel" && (
+                  {console.log(params)}
+                  {params.row?.type !== "excel" && (
                     <button
                       className="btn btn-success"
                       style={{
@@ -67,7 +68,7 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
                       />
                     </button>
                   )}
-                  {params?.type !== "link" && (
+                  {params.row?.type !== "link" && (
                     <button
                       className="btn btn-dark"
                       style={{
@@ -76,7 +77,7 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
                         width: "25px",
                         marginRight: "10px",
                       }}
-                      onClick={() => getPdf(params?.id, "attachment")}
+                      onClick={() => getPdf(params.row?.id, "attachment")}
                     >
                       <FileDownloadIcon
                         sx={{
