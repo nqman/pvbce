@@ -76,14 +76,16 @@ export default function ProfileUser() {
             {user?.roles[0]?.name || "User"}
           </span>
         </div>
-
-        <button
-          onClick={() => navigate(`/forgot-password`)}
-          className="btn btn-primary"
-          style={{ paddingInline: "20px" }}
-        >
-          Change Password
-        </button>
+        {/* {console.log(user?.root)} */}
+        {!user?.root && (
+          <button
+            onClick={() => navigate(`/forgot-password`)}
+            className="btn btn-primary"
+            style={{ paddingInline: "20px" }}
+          >
+            Change Password
+          </button>
+        )}
       </div>
     </div>
   );

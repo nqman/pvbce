@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import "./authentication.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { forgotPasswordAPI } from "../../../apis/authenticationAPI";
 import Swal from "sweetalert2";
+import Loading from "../../home/components/Loading/Loading";
 
 const schema = yup
   .object({
@@ -19,6 +20,8 @@ const schema = yup
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -26,9 +29,14 @@ export default function ForgotPassword() {
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
 
   const handleSendEmail = async (e) => {
+    // debugger;
+
+    setIsLoading(true);
     try {
       console.log(e.email);
       const status = await forgotPasswordAPI(e.email);
+      setIsLoading(false);
+
       if (!status) {
         Swal.fire("Email không tồn tại!");
       } else {
@@ -37,6 +45,9 @@ export default function ForgotPassword() {
       }
     } catch (error) {}
   };
+  if (isLoading) {
+    <Loading />;
+  }
   return (
     <div
       style={{

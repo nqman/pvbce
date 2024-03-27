@@ -6,6 +6,7 @@ import {
   checkEmailAPI,
   deleteUserAPI,
   enableUserAPI,
+  listRolesAPI,
   listUserAPI,
   selectUserAPI,
   updateUserAPI,
@@ -60,6 +61,7 @@ export default function UserManagement() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState([]);
+  const [listRoles, setListRoles] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [valueRole, setValueRole] = useState("");
 
@@ -75,7 +77,7 @@ export default function UserManagement() {
       phone: "",
       email: "",
       password: "",
-      roles: "",
+      roleName: "",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
@@ -94,8 +96,10 @@ export default function UserManagement() {
   const fetchListUser = async () => {
     try {
       const data = await listUserAPI();
-      // console.log(data);
+      const listRoles = await listRolesAPI();
+      console.log(listRoles);
       toast.success("Lấy danh sách tài khoản thành công");
+      setListRoles(listRoles);
       setUsers(data);
       setIsLoading(false);
     } catch (error) {
@@ -104,7 +108,7 @@ export default function UserManagement() {
     }
   };
   //Kích hoạt tài khoản
-  const handleEnable = async (email) => {
+  const handleEnable = async (email, status) => {
     try {
       const result = await Swal.fire({
         title: "Bạn có muốn kích hoạt tài khoản?",
@@ -114,7 +118,7 @@ export default function UserManagement() {
         denyButtonText: `Không`,
       });
       if (result.isConfirmed) {
-        await enableUserAPI(email);
+        await enableUserAPI(email, status);
         Swal.fire("Đã kích hoạt!", "", "success");
         fetchListUser();
       } else if (result.isDenied) {
@@ -161,12 +165,12 @@ export default function UserManagement() {
       setValue("name", data.name);
       setValue("phone", data.phone);
       setValue("email", data.email);
-      setValue("roles", data.roles[0]?.name);
-      setValueRole(data.roles[0]?.name);
       setValue("roleId", data.roles[0]?.id);
+      setValue("roleName", data.roles[0]?.name);
       setValue("roleDescription", data.roles[0]?.description);
       setValue("enable", data.enable);
       setValue("root", data.root);
+      setValueRole(data.roles[0]?.name);
       // setValue("password", data.password);
       // setSelectedUser(data);
       handleShow();
@@ -194,6 +198,18 @@ export default function UserManagement() {
     }
   };
   const handleShow = () => setShow(true);
+  const handleChangeRole = (e) => {
+    // console.log(e.target);
+    const selectedRole = e.target.value;
+    const parts = selectedRole.split(";");
+    const id = parts[0];
+    const name = parts[1];
+    const description = parts[2];
+
+    setValue("roleId", id);
+    setValue("roleName", name);
+    setValue("roleDescription", description);
+  };
 
   return (
     <Container maxWidth="lg">
@@ -247,14 +263,6 @@ export default function UserManagement() {
             </Modal.Header>
             <Modal.Body>
               <div className="mb-3 w-100">
-                {/* <TextField
-                  className="w-100"
-                  size="small"
-                  label="Role"
-                  {...register("roles")}
-                 
-                />
-                <span className="text-danger ">{errors.name?.message}</span> */}
                 <div>
                   <FormLabel id="demo-radio-buttons-group-label">
                     Role
@@ -263,26 +271,17 @@ export default function UserManagement() {
                     aria-labelledby="demo-radio-buttons-group-label"
                     defaultValue={valueRole}
                     name="radio-buttons-group"
-                    onChange={(event) => setValue("roles", event.target.value)}
+                    // onChange={(event) => setValue("roles", event.target.value)}
+                    onChange={handleChangeRole}
                   >
-                    <FormControlLabel
-                      value="Admin"
-                      control={<Radio />}
-                      label="Admin"
-                      // inputRef={register}
-                    />
-                    <FormControlLabel
-                      value="Employee"
-                      control={<Radio />}
-                      label="Employee"
-                      // inputRef={register}
-                    />
-                    <FormControlLabel
-                      value="Customer"
-                      control={<Radio />}
-                      label="Customer"
-                      // inputRef={register}
-                    />
+                    {listRoles.map((role) => (
+                      <FormControlLabel
+                        // name={`${role.id};${role.description}`}
+                        value={`${role.id};${role.name};${role.description}`}
+                        control={<Radio />}
+                        label={`${role.name} - ${role.description}`}
+                      />
+                    ))}
                   </RadioGroup>
                 </div>
               </div>
@@ -310,6 +309,7 @@ export default function UserManagement() {
                   size="small"
                   type="email"
                   label="Email"
+                  disabled={true}
                   {...register("email")}
                   onBlur={handleCheckEmail}
                 />

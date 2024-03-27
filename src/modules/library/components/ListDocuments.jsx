@@ -7,7 +7,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { fetchPdfDoc } from "../../../apis/documentAPI";
-import { FitScreen } from "@mui/icons-material";
+import "./style.css";
 
 export default function ListEquipments({ onDelete, listDocs, role }) {
   const rows = listDocs;
@@ -41,74 +41,70 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
               headerName: "TÙY CHỌN",
               width: 150,
 
-              renderCell: (params) => (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  {console.log(params)}
-                  {params.row?.type !== "excel" && (
-                    <button
-                      className="btn btn-success"
-                      style={{
-                        padding: "0px",
-                        height: "25px",
-                        width: "25px",
-                        marginRight: "10px",
-                      }}
-                      onClick={() => getPdf(params?.id, "view")}
-                    >
-                      <VisibilityIcon
-                        sx={{
-                          fontSize: "17px",
-                          marginBottom: "2px",
+              renderCell: (params) => {
+                return (
+                  <div style={{ textAlign: "center" }}>
+                    {params.row?.type !== "excel" && (
+                      <button
+                        className="btn btn-success"
+                        style={{
+                          padding: "0px",
+                          height: "25px",
+                          width: "25px",
+                          marginRight: "10px",
                         }}
-                      />
-                    </button>
-                  )}
-                  {params.row?.type !== "link" && (
-                    <button
-                      className="btn btn-dark"
-                      style={{
-                        padding: "0px",
-                        height: "25px",
-                        width: "25px",
-                        marginRight: "10px",
-                      }}
-                      onClick={() => getPdf(params.row?.id, "attachment")}
-                    >
-                      <FileDownloadIcon
-                        sx={{
-                          fontSize: "17px",
+                        onClick={() => getPdf(params?.id, "view")}
+                      >
+                        <VisibilityIcon
+                          sx={{
+                            fontSize: "17px",
+                            marginBottom: "2px",
+                          }}
+                        />
+                      </button>
+                    )}
+                    {params.row?.type !== "link" && (
+                      <button
+                        className="btn btn-dark"
+                        style={{
+                          padding: "0px",
+                          height: "25px",
+                          width: "25px",
+                          marginRight: "10px",
                         }}
-                      />
-                    </button>
-                  )}
-
-                  {role && role !== "Admin" && (
-                    <button
-                      style={{
-                        padding: "0px",
-                        height: "25px",
-                        width: "25px",
-                      }}
-                      className="btn btn-danger"
-                      onClick={() => onDelete(params?.id)}
-                    >
-                      <ClearIcon
-                        sx={{
-                          fontSize: "17px",
+                        onClick={() => getPdf(params.row?.id, "attachment")}
+                      >
+                        <FileDownloadIcon
+                          sx={{
+                            fontSize: "17px",
+                          }}
+                        />
+                      </button>
+                    )}
+                    {console.log(typeof role)}
+                    {role !== "null" && role && role !== "Admin" && (
+                      <button
+                        style={{
+                          padding: "0px",
+                          height: "25px",
+                          width: "25px",
                         }}
-                      />
-                    </button>
-                  )}
-                </div>
-              ),
+                        className="btn btn-danger"
+                        onClick={() => onDelete(params?.id)}
+                      >
+                        <ClearIcon
+                          sx={{
+                            fontSize: "17px",
+                          }}
+                        />
+                      </button>
+                    )}
+                  </div>
+                );
+              },
             },
           ]}
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", textAlign: "right" }}
           slots={{
             toolbar: GridToolbar,
           }}
@@ -118,7 +114,8 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
             pagination: { paginationModel: { pageSize: 5 } },
           }}
           pageSizeOptions={[5, 10, 15]}
-          disableSelectionOnClick={true}
+          disableRowSelectionOnClick={true}
+          ignoreDiacritics={true}
         />
       </div>
     </StyledEngineProvider>
