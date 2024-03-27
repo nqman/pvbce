@@ -10,6 +10,16 @@ export async function listUserAPI() {
     throw error;
   }
 }
+export async function listRolesAPI() {
+  try {
+    const resp = await baseAPI.get("users/roles");
+    const data = resp.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 //sign up
 export async function addUserAPI(user) {
   try {
@@ -57,7 +67,7 @@ export async function updateUserAPI(user) {
     formData.append("email", user.email);
     formData.append("password", user.password);
     formData.append("roles[0].id", user.roleId);
-    formData.append("roles[0].name", user.roles);
+    formData.append("roles[0].name", user.roleName);
     formData.append("roles[0].description", user.roleDescription);
     formData.append("enable", user.enable);
     formData.append("root", user.root);
@@ -84,10 +94,10 @@ export async function checkEmailAPI(valueOfEmail) {
   }
 }
 //Enable account
-export async function enableUserAPI(email) {
+export async function enableUserAPI(email, status) {
   try {
     // const code = data.code;
-    const resp = await baseAPI.get(`authenticate/enable/${email}`);
+    const resp = await baseAPI.get(`users/update-enable/${email}/${status}`);
     return resp;
   } catch (error) {}
 }

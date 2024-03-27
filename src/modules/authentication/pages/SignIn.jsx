@@ -48,7 +48,7 @@ export default function SignIn() {
         navigate("/");
       }
     } catch (error) {
-      toast.error(error?.response?.data?.mess);
+      toast.error(error?.response?.data);
       console.log("error", error);
     }
   };

@@ -56,10 +56,13 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
                       <button
                         title="Đã kích hoạt"
                         style={{
-                          pointerEvents: "none",
+                          // pointerEvents: "none",
                           backgroundColor: "transparent",
                           border: "none",
                         }}
+                        onClick={() =>
+                          onEnable(params.row?.email, params.row?.enable)
+                        }
                       >
                         <CheckCircleIcon sx={{ color: "green" }} />
                       </button>
@@ -69,7 +72,9 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
                           border: "none",
                           backgroundColor: "transparent",
                         }}
-                        onClick={() => onEnable(params.row?.email)}
+                        onClick={() =>
+                          onEnable(params.row?.email, params.row?.enable)
+                        }
                         title="Chưa kích hoạt"
                       >
                         <CheckCircleIcon />
