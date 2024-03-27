@@ -18,6 +18,8 @@ import { listEquipmentsAPI } from "../../../apis/equipmentAPI";
 export default function ProjectManagement() {
   const navigate = useNavigate();
   const role = Cookies.get("role");
+  // const role = "Admin";
+
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);

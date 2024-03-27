@@ -42,6 +42,7 @@ const settings = ["Account", "Logout"];
 function Header() {
   const [user, setUser] = useState();
   const role = Cookies.get("role");
+  // const role = "Admin";
 
   useEffect(() => {
     const getUser = {
