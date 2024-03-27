@@ -41,6 +41,7 @@ const settings = ["Account", "Logout"];
 
 function Header() {
   const [user, setUser] = useState();
+  const role = Cookies.get("role");
 
   useEffect(() => {
     const getUser = {
@@ -59,8 +60,6 @@ function Header() {
     };
     setUser(getUser);
   }, []);
-
-  // console.log("user", user);
 
   const _onlogout = () => {
     Cookies.remove("token");
@@ -249,23 +248,6 @@ function Header() {
               >
                 <Typography textAlign="center">GIỚI THIỆU</Typography>
               </MenuItem>
-
-              {/* <MenuItem
-                key={page}
-                onClick={handleCloseNavMenu && (() => handleChangeNavBar(page))}
-                sx={{
-                  my: 1,
-                  color: "#00477b",
-                  fontSize: "18px",
-                  display: "block",
-                  margin: "0 5px 0px 5px",
-                  fontWeight: "800",
-                }}
-              >
-                <Typography textAlign="center">{page}</Typography>
-              </MenuItem> */}
-
-              {/* ))} */}
             </Menu>
           </Box>
 
@@ -298,6 +280,7 @@ function Header() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {/* GIỚI THIỆU */}
+
             <Button
               key={"GIỚI THIỆU"}
               onClick={
@@ -315,72 +298,81 @@ function Header() {
               {"GIỚI THIỆU"}
             </Button>
             {/* BÁO CÁO */}
-            <Button
-              id="demo-customized-button"
-              aria-controls={open ? "demo-customized-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              disableElevation
-              onClick={handleClick}
-              endIcon={<KeyboardArrowDownIcon />}
-              sx={{
-                my: 1,
-                color: "#00477b",
-                fontSize: "18px",
-                margin: "0 5px 0px 5px",
-                fontWeight: "800",
-              }}
-            >
-              BÁO CÁO
-            </Button>
-            <StyledMenu
-              id="demo-customized-menu"
-              MenuListProps={{
-                "aria-labelledby": "demo-customized-button",
-              }}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem
-                onClick={() => handleNavigate("categorylist")}
-                disableRipple
-              >
-                <CategoryIcon />
-                Hạng mục
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleNavigate("costlist")}
-                disableRipple
-              >
-                <CategoryIcon />
-                Chi phí
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleNavigate("listprojects")}
-                disableRipple
-              >
-                <FormatListNumberedIcon />
-                Danh sách dự án
-              </MenuItem>
-              {/* <Divider sx={{ my: 0.5 }} /> */}
-              {/* GẠCH NGĂN CÁCH */}
-              <MenuItem
-                onClick={() => handleNavigate("rp_total")}
-                disableRipple
-              >
-                <AssessmentIcon />
-                Báo cáo tổng
-              </MenuItem>
-              <MenuItem
-                onClick={() => handleNavigate("rp_revenue")}
-                disableRipple
-              >
-                <SummarizeIcon />
-                Báo cáo doanh thu
-              </MenuItem>
-            </StyledMenu>
-            {/* BÁO CÁO */}
+            {/* {console.log(role)} */}
+            {role &&
+            role !== "null" &&
+            (!role !== "Admin" || !role !== "Employee") ? (
+              <>
+                <Button
+                  id="demo-customized-button"
+                  aria-controls={open ? "demo-customized-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  disableElevation
+                  onClick={handleClick}
+                  endIcon={<KeyboardArrowDownIcon />}
+                  sx={{
+                    my: 1,
+                    color: "#00477b",
+                    fontSize: "18px",
+                    margin: "0 5px 0px 5px",
+                    fontWeight: "800",
+                  }}
+                >
+                  BÁO CÁO
+                </Button>
+                <StyledMenu
+                  id="demo-customized-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "demo-customized-button",
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                >
+                  <MenuItem
+                    onClick={() => handleNavigate("categorylist")}
+                    disableRipple
+                  >
+                    <CategoryIcon />
+                    Hạng mục
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleNavigate("costlist")}
+                    disableRipple
+                  >
+                    <CategoryIcon />
+                    Chi phí
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleNavigate("listprojects")}
+                    disableRipple
+                  >
+                    <FormatListNumberedIcon />
+                    Danh sách dự án
+                  </MenuItem>
+                  {/* <Divider sx={{ my: 0.5 }} /> */}
+                  {/* GẠCH NGĂN CÁCH */}
+                  <MenuItem
+                    onClick={() => handleNavigate("rp_total")}
+                    disableRipple
+                  >
+                    <AssessmentIcon />
+                    Báo cáo tổng
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => handleNavigate("rp_revenue")}
+                    disableRipple
+                  >
+                    <SummarizeIcon />
+                    Báo cáo doanh thu
+                  </MenuItem>
+                </StyledMenu>
+              </>
+            ) : (
+              <></>
+            )}
+
             {/* CATALOGUE */}
             <Button
               key={"CATALOGUE"}
@@ -457,7 +449,10 @@ function Header() {
                   Thông tin cá nhân
                 </MenuItem>
                 {user?.role === "Admin" && (
-                  <MenuItem onClick={() => navigate("/admin")} disableRipple>
+                  <MenuItem
+                    onClick={() => navigate("/user-management")}
+                    disableRipple
+                  >
                     <PersonSearch />
                     Quản lý tài khoản
                   </MenuItem>

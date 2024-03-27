@@ -1,4 +1,3 @@
-import axios from "axios";
 import baseAPI from "./baseAPI";
 
 export async function listUserAPI() {
@@ -20,10 +19,7 @@ export async function addUserAPI(user) {
     formData.append("email", user.email);
     formData.append("password", user.password);
     const resp = await baseAPI.post("users/save", formData);
-    // const resp = await axios.post(
-    //   "http://103.82.39.125:8080/users/save",
-    //   formData
-    // );
+
     return resp;
   } catch (error) {
     console.error(error);
@@ -85,9 +81,7 @@ export async function checkEmailAPI(valueOfEmail) {
 export async function verifyUser(data) {
   try {
     const code = data.code;
-    const resp = await baseAPI.get(
-      `http://103.82.39.125:8080/users/verify/${code}`
-    );
+    const resp = await baseAPI.get(`authenticate/verify/${code}`);
     return resp;
   } catch (error) {}
 }
@@ -96,7 +90,7 @@ export async function verifyUser(data) {
 export async function forgotPasswordAPI(valueOfEmail) {
   try {
     const resp = await baseAPI.get(
-      `http://103.82.39.125:8080/users/forgot-password/${valueOfEmail}`
+      `authenticate/forgot-password/${valueOfEmail}`
     );
     return resp.data;
   } catch (error) {
@@ -110,10 +104,7 @@ export async function changePasswordAPI(newPassword, param) {
     const formData = new FormData();
     formData.append("newPassword", newPassword);
     formData.append("verificationCode", param);
-    const resp = await baseAPI.post(
-      "http://103.82.39.125:8080/users/change-password",
-      formData
-    );
+    const resp = await baseAPI.post("authenticate/change-password", formData);
     return resp;
   } catch (error) {
     console.error(error);
@@ -124,7 +115,7 @@ export async function changePasswordAPI(newPassword, param) {
 
 export async function getToken(account) {
   try {
-    const resp = await baseAPI.post(`authenticate/login`, account);
+    const resp = await baseAPI.post(`user/login`, account);
     console.log(resp.data);
     return resp.data;
   } catch (error) {
