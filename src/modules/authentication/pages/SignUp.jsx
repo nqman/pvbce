@@ -58,7 +58,7 @@ export default function SignUp() {
       const res = await checkEmailAPI(user?.email);
       console.log("res", res);
       if (!!res) {
-        console.log("ok");
+        // console.log("ok");
         setIsLoading(true);
         await addUserAPI(user);
         Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");

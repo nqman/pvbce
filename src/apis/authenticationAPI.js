@@ -18,6 +18,7 @@ export async function addUserAPI(user) {
     formData.append("phone", user.phone);
     formData.append("email", user.email);
     formData.append("password", user.password);
+
     const resp = await baseAPI.post("users/save", formData);
 
     return resp;
@@ -47,14 +48,20 @@ export async function selectUserAPI(email) {
   }
 }
 
-export async function editUserAPI(user) {
+export async function updateUserAPI(user) {
   try {
     const formData = new FormData();
     formData.append("id", user.id);
-    formData.append("fullName", user.fullName);
+    formData.append("name", user.name);
     formData.append("phone", user.phone);
     formData.append("email", user.email);
     formData.append("password", user.password);
+    formData.append("roles[0].id", user.roleId);
+    formData.append("roles[0].name", user.roles);
+    formData.append("roles[0].description", user.roleDescription);
+    formData.append("enable", user.enable);
+    formData.append("root", user.root);
+
     const resp = await baseAPI.post("users/save", formData);
     return resp;
   } catch (error) {
@@ -75,6 +82,14 @@ export async function checkEmailAPI(valueOfEmail) {
     console.error(error);
     throw error;
   }
+}
+//Enable account
+export async function enableUserAPI(email) {
+  try {
+    // const code = data.code;
+    const resp = await baseAPI.get(`authenticate/enable/${email}`);
+    return resp;
+  } catch (error) {}
 }
 
 //Verify
@@ -115,7 +130,7 @@ export async function changePasswordAPI(newPassword, param) {
 
 export async function getToken(account) {
   try {
-    const resp = await baseAPI.post(`user/login`, account);
+    const resp = await baseAPI.post(`authenticate/login`, account);
     console.log(resp.data);
     return resp.data;
   } catch (error) {

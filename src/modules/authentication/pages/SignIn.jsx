@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./authentication.css";
 import { useForm } from "react-hook-form";
@@ -9,6 +9,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import { getToken } from "../../../apis/authenticationAPI";
 import Cookies from "js-cookie";
 import toast, { Toaster } from "react-hot-toast";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const schema = yup
   .object({
@@ -25,6 +27,7 @@ export default function SignIn() {
   // const handleSignUp = () => {
   //   navigate("/signup");
   // };
+  const [visible, setVisible] = useState(false);
 
   const {
     register,
@@ -77,14 +80,28 @@ export default function SignIn() {
             <span className="text-danger ">{errors.email?.message}</span>
           </div>
           <div className="mb-3 w-100">
-            <TextField
-              label="Mật khẩu"
-              id="password"
-              type="password"
-              size="small"
-              style={{ width: "100%" }}
-              {...register("password")}
-            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                position: "relative",
+              }}
+            >
+              <TextField
+                className="w-100 "
+                size="small"
+                label="Mật khẩu"
+                type={visible ? "text" : "password"}
+                {...register("password")}
+                // value={selectedUser?.password}
+              />
+              <div
+                onClick={() => setVisible(!visible)}
+                style={{ position: "absolute", right: "10px" }}
+              >
+                {visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </div>
+            </div>
             <span className="text-danger ">{errors.password?.message}</span>
           </div>
           <button className="btn btn-success w-100">Đăng nhập</button>
