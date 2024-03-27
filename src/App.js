@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AdminManagement from "./admin/AdminManagement";
 import ChangePassword from "./modules/authentication/pages/ChangePassword";
 
 import ForgotPassword from "./modules/authentication/pages/ForgotPassword";
@@ -25,6 +24,7 @@ import Report from "./modules/report/pages/Report";
 import CostName from "./modules/report/components/CostName";
 import QuantityRevenues from "./modules/report/components/QuantityRevenues";
 import RpActualCostAndQuantityRevenue from "./modules/report/components/RpActualCostAndQuantityRevenue";
+import UserManagement from "./admin/UserManagement";
 
 function App() {
   return (
@@ -62,6 +62,7 @@ function App() {
 
           {/* Profile */}
           <Route path="/profile" element={<ProfileUser />}></Route>
+          <Route path="/user-management" element={<UserManagement />}></Route>
         </Route>
 
         {/* authentication */}
@@ -75,7 +76,6 @@ function App() {
         ></Route>
 
         {/* ADMIN */}
-        <Route path="/admin" element={<AdminManagement />}></Route>
 
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
