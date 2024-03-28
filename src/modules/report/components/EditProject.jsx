@@ -7,7 +7,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 //API
-import { addProjectAPI, getCategoriesAPI } from "../../../apis/reportAPI";
+import {
+  addProjectAPI,
+  getCategoriesAPI,
+  selectProjectAPI,
+} from "../../../apis/reportAPI";
 
 //Calendar
 import dayjs from "dayjs";
@@ -16,8 +20,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ProjectItem from "./ProjectItem";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../home/components/Loading/Loading";
+import { ClearIcon } from "@mui/x-date-pickers";
 
 const newEmptyProjectDetail = () => {
   return {
@@ -32,7 +37,7 @@ const newEmptyProjectDetail = () => {
   };
 };
 
-export default function CreateProject() {
+export default function EditProject() {
   const emptyValue = {
     name: "",
     rpQuantityAndRevenueDetails: "",
@@ -44,8 +49,34 @@ export default function CreateProject() {
     note: "",
   };
   const navigate = useNavigate();
+  const params = useParams();
+  console.log(params);
+  const idProject = params.code;
   const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState(emptyValue);
+  const getProject = async (idProject) => {
+    // debugger;
+    try {
+      const data = await selectProjectAPI(idProject);
+      setProject(data);
+      setStartDate(data.startDate);
+      setEndDate(data.endDate);
+      setTotalAmount(data.totalAmount);
+      setTimeDiff(data?.totalTime);
+      setProjectItems(data.rpQuantityAndRevenueDetails);
+      setProjectLibraries(data.rpQuantityAndRevenueLibraries);
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching project:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Call the asynchronous function inside the useEffect
+    getProject(idProject);
+  }, [idProject]); // Add idProject as a dependency if needed
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
@@ -82,11 +113,9 @@ export default function CreateProject() {
   const [endDate, setEndDate] = useState(null);
 
   const handlePickStartDate = (date) => {
-    // console.log(typeof date.$d);
-    // debugger;
+    // debugger
     if (date.$y) {
       setStartDate(date);
-      // console.log(date);
       handlePickDate(date, "startDate");
     }
   };
@@ -118,7 +147,13 @@ export default function CreateProject() {
   const [timeDiff, setTimeDiff] = useState(0);
 
   useEffect(() => {
-    if (endDate !== null && startDate !== null) {
+    // debugger;
+    if (
+      typeof endDate !== "string" &&
+      typeof startDate !== "string" &&
+      endDate !== null &&
+      startDate !== null
+    ) {
       let start = new Date(startDate);
       let end = new Date(endDate);
       const timeDiffNew = (end - start) / (1000 * 60 * 60 * 24) + 1;
@@ -177,6 +212,7 @@ export default function CreateProject() {
     async function fetchMyAPI() {
       let response = await getCategoriesAPI();
       setCategories(response);
+      //   console.log(response);
     }
     fetchMyAPI();
   }, []);
@@ -280,6 +316,7 @@ export default function CreateProject() {
                   </div>
                   <div className="calendar d-flex mt-3">
                     <div>
+                      {/* <TextField value={startDate}/> */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           className="me-4"
@@ -303,7 +340,6 @@ export default function CreateProject() {
                           value={`${timeDiff} ngày`}
                           label={"Tổng số ngày"}
                           disabled={true}
-                          size=""
                         />
                       </LocalizationProvider>
                     </div>
@@ -330,7 +366,7 @@ export default function CreateProject() {
                         id="outlined-size-small"
                         value={projectLibrary.name}
                         size="small"
-                        sx={{ marginRight: "20px" }}
+                        sx={{ marginRight: "20px", width: "50%" }}
                         onChange={(e) =>
                           handleInputChange(
                             projectLibrary.id,
@@ -343,10 +379,12 @@ export default function CreateProject() {
                         placeholder="Nội dung"
                         id="outlined-size-small"
                         value={
-                          projectLibrary.value || projectLibrary.file?.name
+                          projectLibrary.value ||
+                          projectLibrary.file?.name ||
+                          projectLibrary?.fileName
                         }
                         size="small"
-                        sx={{ marginRight: "20px" }}
+                        sx={{ marginRight: "20px", width: "50%" }}
                         onChange={(e) =>
                           handleInputChange(
                             projectLibrary.id,

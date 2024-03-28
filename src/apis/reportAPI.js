@@ -189,6 +189,7 @@ export async function addProjectAPI(project) {
 export async function selectProjectAPI(id) {
   try {
     const resp = await baseAPI.get(`projects/${id}`);
+    // console.log(resp.data);
     return resp.data;
   } catch (error) {
     console.error(error);

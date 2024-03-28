@@ -71,7 +71,7 @@ export default function ProjectManagement() {
     try {
       const data = await selectProjectAPI(id);
       setSelectedProject(data);
-      navigate(`/project/edit/${id}`);
+      navigate(`/report/edit-project/${id}`);
     } catch (error) {
       toast.error("Đã có lỗi xảy ra");
     }
