@@ -119,7 +119,7 @@ export default function ProjectItem({
         <TextField
           label="Đơn vị"
           id="outlined-size-small"
-          value={unit}
+          value={unit || detail.unit}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "100px" }}
@@ -137,21 +137,21 @@ export default function ProjectItem({
           // onBlur={handleGetAmount}
         />
         <TextField
-          label="Đơn giá"
+          label="Đơn giá (VND)"
           id="outlined-size-small"
           value={detail.price}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "200px", textAlign: "center" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
           // onBlur={handleGetAmount}
         />
         <TextField
-          label="Thành tiền"
+          label="Thành tiền (VND)"
           id="outlined-size-small"
-          value={`${amount.toLocaleString()} VND`}
+          value={detail.amount?.toLocaleString() || amount.toLocaleString()}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "200px" }}

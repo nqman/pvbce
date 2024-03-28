@@ -25,6 +25,7 @@ import CostName from "./modules/report/components/CostName";
 import QuantityRevenues from "./modules/report/components/QuantityRevenues";
 import RpActualCostAndQuantityRevenue from "./modules/report/components/RpActualCostAndQuantityRevenue";
 import UserManagement from "./admin/UserManagement";
+import EditProject from "./modules/report/components/EditProject";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           {/* REPORT */}
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
+          <Route path="/report/edit-project/:code" element={<EditProject />} />
           <Route path="/report/categorylist" element={<Category />} />
           <Route path="/report/costlist" element={<CostName />} />
           <Route
@@ -79,8 +81,6 @@ function App() {
 
         <Route path="/catalogue/create" element={<CreateEquipment />} />
         <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
-
-        {/* REPORT */}
 
         <Route path="*" element={<NotFound />} />
       </Routes>

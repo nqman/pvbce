@@ -123,26 +123,81 @@ const ProjectDetail = () => {
                 </li>
               </ul>
             </List>
-            <table className="table table-striped table-inverse table-responsive">
+            <table className="table table-striped table-inverse table-responsive table-bordered">
               <thead className="thead-inverse">
                 <tr>
-                  <th style={{ width: "300px" }}>Hạng mục</th>
-                  <th style={{ width: "100px" }}>Đơn vị</th>
-                  <th style={{ width: "200px" }}>Khối lượng</th>
-                  <th style={{ width: "200px" }}>Đơn giá (VNĐ)</th>
-                  <th style={{ width: "200px" }}>Thành tiền (VNĐ)</th>
+                  <th style={{ width: "450px", fontWeight: "bold" }}>
+                    HẠNG MỤC
+                  </th>
+                  <th
+                    style={{
+                      width: "100px",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ĐƠN VỊ
+                  </th>
+                  <th
+                    style={{
+                      width: "150px",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    KHỐI LƯỢNG
+                  </th>
+                  <th
+                    style={{
+                      width: "150px",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ĐƠN GIÁ (VNĐ)
+                  </th>
+                  <th
+                    style={{
+                      width: "150px",
+                      textAlign: "right",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    THÀNH TIỀN (VNĐ)
+                  </th>
                 </tr>
               </thead>
               <tbody>
+                {console.log(rpQuantityAndRevenueDetails)}
                 {rpQuantityAndRevenueDetails.map((detail, index) => (
                   <tr key={index}>
                     <td>{detail?.category}</td>
                     <td style={{ textAlign: "center" }}>{detail?.unit}</td>
-                    <td style={{ textAlign: "right" }}>{detail?.quantity}</td>
-                    <td style={{ textAlign: "right" }}>{detail?.price}</td>
-                    <td style={{ textAlign: "right" }}>{detail?.amount}</td>
+                    <td style={{ textAlign: "right" }}>
+                      {detail?.quantity.toLocaleString()}
+                    </td>
+                    <td style={{ textAlign: "right" }}>
+                      {detail?.price.toLocaleString()}
+                    </td>
+                    <td style={{ textAlign: "right" }}>
+                      {detail?.amount.toLocaleString()}
+                    </td>
                   </tr>
                 ))}
+                <tr>
+                  <td colSpan="4" style={{ fontWeight: "bold" }} align="right">
+                    Tổng cộng
+                  </td>
+                  <td style={{ fontWeight: "bold" }} colSpan="1" align="right">
+                    {(() => {
+                      let totalAmount = 0;
+                      rpQuantityAndRevenueDetails.forEach((item) => {
+                        totalAmount += item.amount;
+                      });
+                      return totalAmount.toLocaleString();
+                    })()}{" "}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </Grid>
