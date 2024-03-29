@@ -15,6 +15,7 @@ export async function listEquipmentsAPI() {
 
 //Thêm thiết bị
 export async function addEquipmentAPI(equipments) {
+  console.log(equipments);
   try {
     const formData = new FormData();
     Object.keys(equipments).map((key) => {
@@ -118,9 +119,6 @@ export async function addEquipmentAPI(equipments) {
       }
     });
 
-    // formData.forEach((a, k) => console.log("data", k, a));
-    // const resp = await axios.post(
-    //   "http://103.82.39.125:8080/products/save",
     const resp = await baseAPI.post("products/save", formData, {
       headers: {
         "Content-Type": "multipart/form-data",

@@ -101,6 +101,7 @@ export async function listProjectsAPI() {
   }
 }
 export async function addProjectAPI(project) {
+  debugger;
   try {
     const formData = new FormData();
     Object.keys(project).map((key) => {
@@ -121,13 +122,13 @@ export async function addProjectAPI(project) {
             formData.append("prices", detail.price);
           });
         }
-      } else if (key === "projectLibraries") {
+      } else if (key === "rpQuantityAndRevenueLibraries") {
         if (Array.isArray(project[key])) {
           project[key].forEach((detail) => {
             //EDIT
             if (detail.id > 0) {
               if (
-                detail.pathFile !== null ||
+                detail.pathLibrary !== null ||
                 (typeof detail.file !== "undefined" &&
                   detail.file instanceof File)
               ) {
@@ -135,19 +136,22 @@ export async function addProjectAPI(project) {
                   typeof detail.file !== "undefined" &&
                   detail.file instanceof File
                 ) {
+                  //new file
                   formData.append("idUpdatePartLibraries", detail.id);
                   formData.append("partNameUpdateLibraries", detail.name);
                   formData.append("partUpdateLibraries", detail.file);
-                } else {
+                }
+                // old file
+                else {
                   formData.append("idUpdatePathLibraries", detail.id);
                   formData.append("pathNameUpdateLibraries", detail.name);
-                  formData.append("pathValueUpdateLibraries", detail.value);
-                  formData.append("pathUpdateLibraries", detail.pathFile);
+                  formData.append("pathValueUpdateLibraries", detail.fileName);
+                  formData.append("pathUpdateLibraries", detail.pathLibrary);
                 }
               } else {
                 formData.append("idLinkLibraries", detail.id);
                 formData.append("linkNameLibraries", detail.name);
-                formData.append("linkLibraries", detail.value);
+                formData.append("linkLibraries", detail.linkLibrary);
               }
             }
             //NEW
@@ -175,7 +179,7 @@ export async function addProjectAPI(project) {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(formData);
+    // console.log(formData);
     return resp;
   } catch (error) {
     console.log(error);

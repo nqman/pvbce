@@ -52,6 +52,7 @@ export default function EditEquipment() {
   // const [error, setError] = useState(null);
 
   const handleImageChange = (event) => {
+    // debugger;
     const files = event.target.files;
     console.log(files);
     const newImages = [...selectedImages];
@@ -64,9 +65,11 @@ export default function EditEquipment() {
   };
   //Xóa ảnh
   const handleRemoveImage = (index) => {
+    // debugger;
     const newImages = [...selectedImages];
     newImages.splice(index, 1);
     setSelectedImages(newImages);
+    setValue({ ...value, productImages: newImages });
   };
 
   //Thông số kỹ thuật
@@ -152,7 +155,7 @@ export default function EditEquipment() {
   // cập nhật thiết bị
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(value);
+    // console.log(value);
     try {
       const response = await addEquipmentAPI(value);
       console.log(response);
