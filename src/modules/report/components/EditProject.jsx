@@ -13,12 +13,6 @@ import {
   selectProjectAPI,
 } from "../../../apis/reportAPI";
 
-import {
-  format
-} from 'date-fns'
-
-
-
 //Calendar
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -115,7 +109,7 @@ export default function EditProject() {
   };
 
   // Thời gian dự án
-  const [startDate, setStartDate] = useState('17-04-2024');
+  const [startDate, setStartDate] = useState("17-04-2024");
   const [endDate, setEndDate] = useState(null);
 
   const handlePickStartDate = (date) => {
@@ -258,22 +252,21 @@ export default function EditProject() {
   };
 
   const formatDate = (date) => {
-    let result = ''
-    if(date) {
-      let parts = date.split('-');
-    let formattedDate = new Date(parts[2], parts[0] - 1, parts[1]);
+    let result = "";
+    if (date) {
+      let parts = date.split("-");
+      let formattedDate = new Date(parts[2], parts[0] - 1, parts[1]);
 
-    // Lấy các thành phần ngày, tháng, năm
-    let year = formattedDate.getFullYear();
-    let month = String(formattedDate.getMonth() + 1).padStart(2, '0');
-    let day = String(formattedDate.getDate()).padStart(2, '0');
+      // Lấy các thành phần ngày, tháng, năm
+      let year = formattedDate.getFullYear();
+      let month = String(formattedDate.getMonth() + 1).padStart(2, "0");
+      let day = String(formattedDate.getDate()).padStart(2, "0");
 
-    // Trả về chuỗi ngày mới định dạng yyyy-mm-dd
-    result =  dayjs(`${year}-${month}-${day}`)
+      // Trả về chuỗi ngày mới định dạng yyyy-mm-dd
+      result = dayjs(`${year}-${month}-${day}`);
     }
-    return result
-    
-  }
+    return result;
+  };
 
   return (
     <div>
