@@ -13,6 +13,12 @@ import {
   selectProjectAPI,
 } from "../../../apis/reportAPI";
 
+import {
+  format
+} from 'date-fns'
+
+
+
 //Calendar
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -109,7 +115,7 @@ export default function EditProject() {
   };
 
   // Thời gian dự án
-  const [startDate, setStartDate] = useState(null);
+  const [startDate, setStartDate] = useState('17-04-2024');
   const [endDate, setEndDate] = useState(null);
 
   const handlePickStartDate = (date) => {
@@ -148,6 +154,12 @@ export default function EditProject() {
 
   useEffect(() => {
     // debugger;
+    // if( typeof startDate === "string") {
+    //   console.log(startDate)
+    //   let start = new Date(startDate);
+    //   console.log(start)
+    //   setStartDate(start)
+    // }
     if (
       typeof endDate !== "string" &&
       typeof startDate !== "string" &&
@@ -245,6 +257,24 @@ export default function EditProject() {
     }
   };
 
+  const formatDate = (date) => {
+    let result = ''
+    if(date) {
+      let parts = date.split('-');
+    let formattedDate = new Date(parts[2], parts[0] - 1, parts[1]);
+
+    // Lấy các thành phần ngày, tháng, năm
+    let year = formattedDate.getFullYear();
+    let month = String(formattedDate.getMonth() + 1).padStart(2, '0');
+    let day = String(formattedDate.getDate()).padStart(2, '0');
+
+    // Trả về chuỗi ngày mới định dạng yyyy-mm-dd
+    result =  dayjs(`${year}-${month}-${day}`)
+    }
+    return result
+    
+  }
+
   return (
     <div>
       {isLoading ? (
@@ -320,9 +350,9 @@ export default function EditProject() {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           className="me-4"
-                          value={startDate}
+                          value={formatDate(startDate)}
                           onChange={handlePickStartDate}
-                          renderInput={(params) => <TextField {...params} />}
+                          // renderInput={(params) => <TextField {...params} />}
                           label="Ngày bắt đầu"
                           format="DD-MM-YYYY"
                         />
@@ -330,7 +360,7 @@ export default function EditProject() {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           className="me-4"
-                          value={endDate}
+                          value={formatDate(endDate)}
                           onChange={handlePickEndDate}
                           renderInput={(params) => <TextField {...params} />}
                           label="Ngày kết thúc"
