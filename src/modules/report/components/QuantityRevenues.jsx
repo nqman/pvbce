@@ -115,7 +115,8 @@ export default function QuantityRevenues() {
   };
 
   const handleSaveQuantityRevenue = async () => {
-    debugger;
+    // debugger;
+    setIsLoading(true);
     const tempData = [];
 
     const tempObject = {};
@@ -129,6 +130,7 @@ export default function QuantityRevenues() {
     }
     try {
       await addActualQuantityAndRevenueAPI(tempData, idProject);
+      setIsLoading(false);
       toast.success("Cập nhật sản lượng thực tế thành công");
     } catch (error) {
       console.error(error);

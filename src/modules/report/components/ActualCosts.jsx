@@ -45,7 +45,7 @@ export default function ActualCosts() {
     // debugger;
     try {
       const oldCosts = await getOldActualCostAPI(idProject);
-      // console.log(oldCosts);
+      console.log(oldCosts);
       const tempCosts = oldCosts?.map((actualCost) => (
         <ActualCostPerWeek
           idActualCost={actualCost.id}
@@ -111,6 +111,8 @@ export default function ActualCosts() {
 
   const handleSaveActualCost = async () => {
     // debugger;
+    // setIsLoading(true);
+
     const tempData = [];
 
     const tempObject = {};
@@ -122,9 +124,11 @@ export default function ActualCosts() {
     for (const key in tempObject) {
       tempData.push(tempObject[key]);
     }
+    // console.log(tempData);
     try {
       await addActualCostAPI(tempData, idProject);
       toast.success("Cập nhật chi phí thực tế thành công");
+      // setIsLoading(false);
     } catch (error) {
       console.error(error);
       toast.error("Cập nhật chi phí thực tế thất bại");

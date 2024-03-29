@@ -191,6 +191,10 @@ export default function EditProject() {
         (productDetail) => productDetail.id !== id
       );
     setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
+    setProject({
+      ...project,
+      rpQuantityAndRevenueLibraries: updatedrpQuantityAndRevenueLibraries,
+    });
   };
 
   const handleInputChange = (id, key, value) => {

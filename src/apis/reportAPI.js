@@ -253,12 +253,12 @@ export async function addActualQuantityAndRevenueAPI(
             dataPerWeek[key].forEach((detail) => {
               //EDIT
               if (detail.id > 0) {
-                formData.append("idActualCostDetails", detail.id);
+                formData.append("idActualDetails", detail.id);
                 formData.append("entryDate", detail.entryDate);
               }
               //NEW
               else {
-                formData.append("idActualCostDetails", 0);
+                formData.append("idActualDetails", 0);
                 formData.append("entryDate", dataPerWeek.actualWeek);
               }
               formData.append("categories", detail.category);
@@ -311,6 +311,8 @@ export async function getOldActualCostAPI(id) {
 }
 
 export async function addActualCostAPI(actualCosts, idProject) {
+  // console.log(actualCosts);
+  debugger;
   try {
     console.log(actualCosts);
     const formData = new FormData();
