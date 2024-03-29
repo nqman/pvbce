@@ -22,7 +22,6 @@ import ProjectItem from "./ProjectItem";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../home/components/Loading/Loading";
-import { ClearIcon } from "@mui/x-date-pickers";
 
 const newEmptyProjectDetail = () => {
   return {
@@ -45,12 +44,11 @@ export default function EditProject() {
     startDate: "",
     endDate: "",
     totalTime: "",
-    projectLibraries: "",
+    rpQuantityAndRevenueLibraries: "",
     note: "",
   };
   const navigate = useNavigate();
   const params = useParams();
-  console.log(params);
   const idProject = params.code;
   const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState(emptyValue);
@@ -64,7 +62,7 @@ export default function EditProject() {
       setTotalAmount(data.totalAmount);
       setTimeDiff(data?.totalTime);
       setProjectItems(data.rpQuantityAndRevenueDetails);
-      setProjectLibraries(data.rpQuantityAndRevenueLibraries);
+      setRpQuantityAndRevenueLibraries(data.rpQuantityAndRevenueLibraries);
       console.log(data);
 
       return data;
@@ -170,9 +168,8 @@ export default function EditProject() {
 
   //Thư viện dự án ---projectDiary
 
-  const [projectLibraries, setProjectLibraries] = useState([
-    { id: -Date.now(), name: "", value: "", file: null },
-  ]);
+  const [rpQuantityAndRevenueLibraries, setRpQuantityAndRevenueLibraries] =
+    useState([{ id: -Date.now(), name: "", value: "", file: null }]);
   const [errorLibary, setErrorLibrary] = useState("");
 
   const createDiv = () => {
@@ -182,34 +179,44 @@ export default function EditProject() {
       value: "",
       file: null,
     };
-    setProjectLibraries([...projectLibraries, newLibraryDetail]);
+    setRpQuantityAndRevenueLibraries([
+      ...rpQuantityAndRevenueLibraries,
+      newLibraryDetail,
+    ]);
   };
 
   const deleteDiv = (id) => {
-    const updatedProjectLibraries = projectLibraries.filter(
-      (productDetail) => productDetail.id !== id
-    );
-    setProjectLibraries(updatedProjectLibraries);
+    const updatedrpQuantityAndRevenueLibraries =
+      rpQuantityAndRevenueLibraries.filter(
+        (productDetail) => productDetail.id !== id
+      );
+    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
   };
 
   const handleInputChange = (id, key, value) => {
-    const updatedProjectLibraries = projectLibraries.map((projectLibrary) =>
-      projectLibrary.id === id
-        ? { ...projectLibrary, [key]: value }
-        : projectLibrary
-    );
-    setProjectLibraries(updatedProjectLibraries);
+    const updatedrpQuantityAndRevenueLibraries =
+      rpQuantityAndRevenueLibraries.map((projectLibrary) =>
+        projectLibrary.id === id
+          ? { ...projectLibrary, [key]: value }
+          : projectLibrary
+      );
+    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
   };
 
   const handleFileChange = (id, file) => {
-    const updatedProjectLibraries = projectLibraries.map((projectLibrary) =>
-      projectLibrary.id === id ? { ...projectLibrary, file } : projectLibrary
-    );
+    debugger;
+    const updatedrpQuantityAndRevenueLibraries =
+      rpQuantityAndRevenueLibraries.map((projectLibrary) =>
+        projectLibrary.id === id ? { ...projectLibrary, file } : projectLibrary
+      );
 
-    setProjectLibraries(updatedProjectLibraries);
+    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
   };
   const handleBlurInput = () => {
-    setProject({ ...project, projectLibraries: projectLibraries });
+    setProject({
+      ...project,
+      rpQuantityAndRevenueLibraries: rpQuantityAndRevenueLibraries,
+    });
   };
 
   // Get category selection
@@ -238,34 +245,38 @@ export default function EditProject() {
     });
   };
   const handleSubmit = async (e) => {
+    debugger;
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
     console.log(project);
     try {
       await addProjectAPI(project);
-      toast.success("Khởi tạo dự án thành công");
+      toast.success("Cập nhật dự án thành công");
       navigate("/report/listprojects");
     } catch (error) {
       console.log(error);
-      toast.error("Khởi tạo dự án thất bại");
+      toast.error("Cập nhật dự án thất bại");
     }
   };
 
   const formatDate = (date) => {
-    let result = "";
-    if (date) {
-      let parts = date.split("-");
-      let formattedDate = new Date(parts[2], parts[0] - 1, parts[1]);
+    // debugger;
+    if (typeof date === "string") {
+      let result = "";
+      if (date) {
+        let parts = date.split("-");
+        let formattedDate = new Date(parts[2], parts[0] - 1, parts[1]);
 
-      // Lấy các thành phần ngày, tháng, năm
-      let year = formattedDate.getFullYear();
-      let month = String(formattedDate.getMonth() + 1).padStart(2, "0");
-      let day = String(formattedDate.getDate()).padStart(2, "0");
+        // Lấy các thành phần ngày, tháng, năm
+        let year = formattedDate.getFullYear();
+        let month = String(formattedDate.getMonth() + 1).padStart(2, "0");
+        let day = String(formattedDate.getDate()).padStart(2, "0");
 
-      // Trả về chuỗi ngày mới định dạng yyyy-mm-dd
-      result = dayjs(`${year}-${month}-${day}`);
+        // Trả về chuỗi ngày mới định dạng yyyy-mm-dd
+        result = dayjs(`${year}-${month}-${day}`);
+      }
+      return result;
     }
-    return result;
   };
 
   return (
@@ -374,7 +385,7 @@ export default function EditProject() {
             <TabPanel value="2">
               <Container className="">
                 <div>
-                  {projectLibraries.map((projectLibrary) => (
+                  {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
                     <div
                       style={{
                         display: "flex",
