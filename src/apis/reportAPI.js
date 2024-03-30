@@ -47,9 +47,9 @@ export async function deleteCategoryAPI(id) {
 }
 
 //Lấy danh sách CHI PHÍ
-export async function getCostsAPI(idProject) {
+export async function getCostsAPI() {
   try {
-    const resp = await baseAPI.get(`costs/${idProject}`);
+    const resp = await baseAPI.get("costs");
     return resp.data;
   } catch (error) {
     console.error(error);
