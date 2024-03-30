@@ -115,7 +115,9 @@ export async function saveEquipmentAPI(equipments) {
           });
         }
       } else {
-        formData.append(key, equipments[key]);
+        if (key) {
+          formData.append(key, equipments[key]);
+        }
       }
     });
 

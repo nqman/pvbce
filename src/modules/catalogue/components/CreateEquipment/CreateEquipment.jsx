@@ -63,6 +63,7 @@ export default function CreateEquipment() {
     const newImages = [...selectedImages];
     newImages.splice(index, 1);
     setSelectedImages(newImages);
+    setValueEquipment({ ...value, productImages: newImages });
   };
 
   //Thông số kỹ thuật

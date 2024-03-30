@@ -167,7 +167,7 @@ export default function UserManagement() {
     // debugger;
     try {
       const data = await selectUserAPI(id);
-      console.log(data);
+      // console.log(data);
       setValue("id", data.id);
       setValue("name", data.name);
       setValue("phone", data.phone);
