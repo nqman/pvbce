@@ -69,6 +69,7 @@ function Header() {
     Cookies.remove("role", { path: "/" });
     setUser({});
     navigate("/");
+    window.location.reload();
   };
 
   const StyledMenu = styled((props) => (

@@ -14,6 +14,7 @@ import { Box, CircularProgress, Container } from "@mui/material";
 import ListProjects from "./ListProjects";
 
 import { listEquipmentsAPI } from "../../../apis/equipmentAPI";
+import Loading from "../../home/components/Loading/Loading";
 
 export default function ProjectManagement() {
   const navigate = useNavigate();
@@ -76,6 +77,9 @@ export default function ProjectManagement() {
       toast.error("Đã có lỗi xảy ra");
     }
   };
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div style={{ position: "relative" }}>
@@ -102,18 +106,12 @@ export default function ProjectManagement() {
 
         {/* Danh sách dự án*/}
 
-        {!isLoading ? (
-          <ListProjects
-            rows={projects}
-            onDelete={handleDeleteProject}
-            onEdit={handleEditProject}
-            role={role}
-          />
-        ) : (
-          <Box sx={{ display: "block", textAlign: "center" }}>
-            <CircularProgress size={"100px"} style={{ marginTop: "10%" }} />
-          </Box>
-        )}
+        <ListProjects
+          rows={projects}
+          onDelete={handleDeleteProject}
+          onEdit={handleEditProject}
+          role={role}
+        />
       </Container>
     </div>
   );

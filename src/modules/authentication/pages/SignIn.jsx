@@ -48,6 +48,7 @@ export default function SignIn() {
         Cookies.set("root", JSON.stringify(res?.root), { path: "/" });
 
         navigate("/");
+        window.location.reload();
       }
     } catch (error) {
       toast.error(error?.response?.data);

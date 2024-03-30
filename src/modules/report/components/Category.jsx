@@ -18,6 +18,7 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Loading from "../../home/components/Loading/Loading";
 const schema = yup
   .object({
     name: yup.string().required("Vui lòng không bỏ trống"),
@@ -41,11 +42,14 @@ export default function Category() {
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchListCategory = async () => {
     try {
       const data = await getCategoriesAPI();
       setCategories(data);
+      setIsLoading(false);
+
       return data;
     } catch (error) {}
   };
@@ -104,6 +108,9 @@ export default function Category() {
       toast.error("Đã có lỗi xảy ra");
     }
   };
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div>

@@ -18,6 +18,7 @@ const token = Cookies.get("token")?.replace(/"/g, "");
 //   }
 // };
 const createBaseAPI = (token) => {
+  debugger;
   if (token && token !== null) {
     return axios.create({
       baseURL: "https://pvbce.io.vn/API/",
@@ -31,16 +32,7 @@ const createBaseAPI = (token) => {
     });
   }
 };
-const updateBaseAPI = () => {
-  const newToken = Cookies.get("token")?.replace(/"/g, "");
-  if (newToken !== token) {
-    token = newToken;
-    baseAPI = createBaseAPI(token);
-  }
-};
 
-// Gọi updateBaseAPI mỗi khi bạn muốn kiểm tra và cập nhật token từ cookie.
-updateBaseAPI();
 const baseAPI = createBaseAPI(token);
 
 export default baseAPI;

@@ -47,8 +47,8 @@ const schema = yup
   })
   .required();
 
+const token = Cookies.get("token");
 const role = Cookies.get("role");
-// console.log(role);
 const root = Cookies.get("root");
 const rootBoolean = root === "true";
 
@@ -73,14 +73,15 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (user) => {
+    debugger;
     try {
       const res = await checkEmailAPI(user?.email);
       console.log("res", res);
       if (!!res) {
         // console.log("ok");
         setIsLoading(true);
-        // console.log(user);
-        await saveUserAPI(user);
+        console.log(user);
+        await saveUserAPI(user, token);
         if (role && !role !== "Admin") {
           Swal.fire("Tạo tài khoản thành công");
           navigate(-1);
@@ -89,6 +90,7 @@ export default function SignUp() {
         Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
         navigate("/signin");
       } else {
+        // setCheckEmail(false);
         toast.error("Email đã tồn tại");
         return false;
       }
@@ -114,11 +116,6 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [checkEmail, setCheckEmail] = useState(true);
-  const handleCheckEmail = async (e) => {
-    try {
-      setCheckEmail(await checkEmailAPI(e.target.value));
-    } catch (error) {}
-  };
 
   const handleChangeRole = (e) => {
     // console.log(e.target);
@@ -163,7 +160,7 @@ export default function SignUp() {
               </div>
               <div className="mb-3 w-100">
                 <TextField
-                  className="w-100 "
+                  className="w-100"
                   size="small"
                   label="Số điện thoại"
                   {...register("phone")}
@@ -174,17 +171,16 @@ export default function SignUp() {
                 <TextField
                   className="w-100"
                   size="small"
-                  type="email"
+                  // type="email"
                   label="Email"
                   {...register("email")}
-                  onBlur={handleCheckEmail}
                 />
                 <span className="text-danger ">{errors.email?.message}</span>
-                {checkEmail ? (
+                {/* {checkEmail ? (
                   ""
                 ) : (
                   <span className="text-danger ">Email đã tồn tại</span>
-                )}
+                )} */}
               </div>
 
               <div className="mb-3 w-100">

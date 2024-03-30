@@ -21,22 +21,39 @@ export async function listRolesAPI() {
   }
 }
 //sign up
-export async function saveUserAPI(user) {
+export async function saveUserAPI(user, token) {
+  debugger;
   try {
     const formData = new FormData();
-    //edit
-    if (user.id) {
-      formData.append("id", user.id);
-    }
     formData.append("name", user.name);
     formData.append("phone", user.phone);
     formData.append("email", user.email);
     formData.append("password", user.password);
-    formData.append("roles[0].id", user.roleId);
-    formData.append("roles[0].name", user.roleName);
-    formData.append("roles[0].description", user.roleDescription);
-    formData.append("enable", user.enable);
-    formData.append("root", user.root);
+    //edit
+    if (user.id) {
+      formData.append("id", user.id);
+      formData.append("roles[0].id", user.roleId);
+      formData.append("roles[0].name", user.roleName);
+      formData.append("roles[0].description", user.roleDescription);
+      formData.append("enable", user.enable);
+      formData.append("root", user.root);
+    }
+    //đã đăng nhập => có token
+    else if (token) {
+      formData.append("roles[0].id", user.roleId);
+      formData.append("roles[0].name", user.roleName);
+      formData.append("roles[0].description", user.roleDescription);
+      formData.append("enable", false);
+      formData.append("root", false);
+    }
+    // chưa đăng nhập => new customer
+    else {
+      formData.append("roles[0].id", 3);
+      formData.append("roles[0].name", "Customer");
+      formData.append("roles[0].description", "Just view");
+      formData.append("enable", false);
+      formData.append("root", false);
+    }
 
     const resp = await baseAPI.post("users/save", formData);
 
@@ -60,6 +77,7 @@ export async function deleteUserAPI(id) {
 export async function selectUserAPI(email) {
   try {
     const resp = await baseAPI.get(`users/${email}`);
+    // console.log(resp.data);
     return resp.data;
   } catch (error) {
     console.error(error);
@@ -67,27 +85,6 @@ export async function selectUserAPI(email) {
   }
 }
 
-// export async function updateUserAPI(user) {
-//   try {
-//     const formData = new FormData();
-//     formData.append("id", user.id);
-//     formData.append("name", user.name);
-//     formData.append("phone", user.phone);
-//     formData.append("email", user.email);
-//     formData.append("password", user.password);
-//     formData.append("roles[0].id", user.roleId);
-//     formData.append("roles[0].name", user.roleName);
-//     formData.append("roles[0].description", user.roleDescription);
-//     formData.append("enable", user.enable);
-//     formData.append("root", user.root);
-
-//     const resp = await baseAPI.post("users/save", formData);
-//     return resp;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
 //check trùng email
 export async function checkEmailAPI(valueOfEmail) {
   try {
