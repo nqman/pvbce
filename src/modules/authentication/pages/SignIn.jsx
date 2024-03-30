@@ -36,6 +36,7 @@ export default function SignIn() {
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
 
   const handleSignIn = async (data) => {
+    debugger;
     try {
       const res = await getToken(data);
       console.log("res", res);
@@ -44,6 +45,7 @@ export default function SignIn() {
         Cookies.set("email", JSON.stringify(res?.email));
         Cookies.set("role", JSON.stringify(res?.role));
         Cookies.set("name", JSON.stringify(res?.name));
+        Cookies.set("root", JSON.stringify(res?.root));
 
         navigate("/");
       }

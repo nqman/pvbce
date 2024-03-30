@@ -6,10 +6,11 @@ import {
   checkEmailAPI,
   deleteUserAPI,
   enableUserAPI,
+  getToken,
   listRolesAPI,
   listUserAPI,
   selectUserAPI,
-  updateUserAPI,
+  saveUserAPI,
 } from "../apis/authenticationAPI";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -53,9 +54,15 @@ const schema = yup
 
 export default function UserManagement() {
   const role = Cookies.get("role");
+  // const root = Cookies.get("root");
+  // const rootBoolean = root === "true";
 
   const navigate = useNavigate();
-  const handleAddUser = () => {
+  const handleAddUser = async () => {
+    // debugger;
+    // console.log(rootBoolean);
+    // const data = await selectUserAPI();
+    // console.log(data);
     navigate("/signup");
   };
 
@@ -97,7 +104,7 @@ export default function UserManagement() {
     try {
       const data = await listUserAPI();
       const listRoles = await listRolesAPI();
-      console.log(listRoles);
+      // console.log(listRoles);
       toast.success("Lấy danh sách tài khoản thành công");
       setListRoles(listRoles);
       setUsers(data);
@@ -184,11 +191,11 @@ export default function UserManagement() {
   const handleClose = () => setShow(false);
   const handleUpdate = async (user) => {
     // debugger;
+    setShow(false);
     setIsLoading(true);
     console.log(user);
     try {
-      await updateUserAPI(user);
-      setShow(false);
+      await saveUserAPI(user);
       setIsLoading(false);
       toast.success("Cập nhật tài khoản thành công");
 
@@ -200,7 +207,7 @@ export default function UserManagement() {
   const handleShow = () => setShow(true);
   const handleChangeRole = (e) => {
     // console.log(e.target);
-    const selectedRole = e.target.value;
+    const selectedRole = e.target.name;
     const parts = selectedRole.split(";");
     const id = parts[0];
     const name = parts[1];
@@ -277,7 +284,8 @@ export default function UserManagement() {
                     {listRoles.map((role) => (
                       <FormControlLabel
                         // name={`${role.id};${role.description}`}
-                        value={`${role.id};${role.name};${role.description}`}
+                        name={`${role.id};${role.name};${role.description}`}
+                        value={role.name}
                         control={<Radio />}
                         label={`${role.name} - ${role.description}`}
                       />

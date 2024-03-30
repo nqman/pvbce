@@ -7,6 +7,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  Link,
 } from "@mui/material";
 
 import "slick-carousel/slick/slick.css";
@@ -15,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { selectProjectAPI, fetchPdfProject } from "../../../apis/reportAPI";
 import "./styles.css";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Loading from "../../home/components/Loading/Loading";
 
 const ProjectDetail = () => {
@@ -58,6 +60,19 @@ const ProjectDetail = () => {
   return (
     <div>
       <Container className="mt-4">
+        <div>
+          <Link
+            sx={{ fontSize: "16px" }}
+            component="button"
+            variant="body2"
+            onClick={() => {
+              navigate("/report/listprojects");
+            }}
+          >
+            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+            Danh sách dự án
+          </Link>
+        </div>
         <div style={{ justifyContent: "end", display: "flex" }}>
           <Button
             variant="contained"

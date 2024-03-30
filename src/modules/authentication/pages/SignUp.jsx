@@ -1,19 +1,30 @@
-import { TextField } from "@mui/material";
-import React, { useState } from "react";
+import {
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import "./authentication.css";
 //Validation
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
-import { addUserAPI, checkEmailAPI } from "../../../apis/authenticationAPI";
+import {
+  saveUserAPI,
+  checkEmailAPI,
+  listRolesAPI,
+} from "../../../apis/authenticationAPI";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Loading from "../../home/components/Loading/Loading";
 import Swal from "sweetalert2";
 import toast, { Toaster } from "react-hot-toast";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Cookies from "js-cookie";
 
 const schema = yup
   .object({
@@ -36,12 +47,19 @@ const schema = yup
   })
   .required();
 
+const role = Cookies.get("role");
+// console.log(role);
+const root = Cookies.get("root");
+const rootBoolean = root === "true";
+
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
+  const [listRoles, setListRoles] = useState([]);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -49,6 +67,7 @@ export default function SignUp() {
       phone: "",
       email: "",
       password: "",
+      roleName: "",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
@@ -60,7 +79,8 @@ export default function SignUp() {
       if (!!res) {
         // console.log("ok");
         setIsLoading(true);
-        await addUserAPI(user);
+        console.log(user);
+        // await saveUserAPI(user);
         Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
         navigate("/signin");
       } else {
@@ -71,6 +91,20 @@ export default function SignUp() {
       throw error;
     }
   };
+  useEffect(() => {
+    // debugger;
+    const fetchListRoles = async () => {
+      try {
+        // Gọi API hoặc các thao tác khác ở đây bằng async/await
+        const response = await listRolesAPI();
+        setListRoles(response);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchListRoles(); // Gọi hàm async trong useEffect
+  }, []); // [] đại diện cho dependencies, bạn có thể thay đổi nếu cần thiết
 
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
@@ -79,6 +113,19 @@ export default function SignUp() {
     try {
       setCheckEmail(await checkEmailAPI(e.target.value));
     } catch (error) {}
+  };
+
+  const handleChangeRole = (e) => {
+    // console.log(e.target);
+    const selectedRole = e.target.name;
+    const parts = selectedRole.split(";");
+    const id = parts[0];
+    const name = parts[1];
+    const description = parts[2];
+
+    setValue("roleId", id);
+    setValue("roleName", name);
+    setValue("roleDescription", description);
   };
   return (
     <>
@@ -159,6 +206,31 @@ export default function SignUp() {
                 </div>
                 <span className="text-danger ">{errors.password?.message}</span>
               </div>
+              {role && !role !== "Admin" && (
+                <div>
+                  <FormLabel id="demo-radio-buttons-group-label">
+                    Role
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    // defaultValue={valueRole}
+                    name="radio-buttons-group"
+                    onChange={handleChangeRole}
+                  >
+                    {listRoles?.map((role) =>
+                      rootBoolean || role.name !== "Admin" ? (
+                        <FormControlLabel
+                          key={role.id}
+                          name={`${role.id};${role.name};${role.description}`}
+                          value={role.name}
+                          control={<Radio />}
+                          label={`${role.name} - ${role.description}`}
+                        />
+                      ) : null
+                    )}
+                  </RadioGroup>
+                </div>
+              )}
               <div
                 style={{
                   display: "flex",
@@ -176,9 +248,9 @@ export default function SignUp() {
                     padding: 0,
                   }}
                   className="btn btn-outline-primary"
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate(-1)}
                 >
-                  <HomeIcon />
+                  <ArrowBackIcon />
                 </button>
 
                 <button
