@@ -31,6 +31,16 @@ const createBaseAPI = (token) => {
     });
   }
 };
+const updateBaseAPI = () => {
+  const newToken = Cookies.get("token")?.replace(/"/g, "");
+  if (newToken !== token) {
+    token = newToken;
+    baseAPI = createBaseAPI(token);
+  }
+};
+
+// Gọi updateBaseAPI mỗi khi bạn muốn kiểm tra và cập nhật token từ cookie.
+updateBaseAPI();
 const baseAPI = createBaseAPI(token);
 
 export default baseAPI;
