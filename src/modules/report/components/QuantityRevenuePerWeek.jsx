@@ -66,11 +66,11 @@ export function QuantityRevenuePerWeek({
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     async function fetchMyAPI() {
-      let response = await getCategoriesAPI();
+      let response = await getCategoriesAPI(idProject);
       setCategories(response);
     }
     fetchMyAPI();
-  }, []);
+  }, [idProject]);
   const handleQuantityRevenueDetailChange = (detail) => {
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       const index = oldQuantityRevenueItems.findIndex(

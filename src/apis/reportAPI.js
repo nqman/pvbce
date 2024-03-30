@@ -1,10 +1,10 @@
 import baseAPI from "./baseAPI";
 
 //Lấy danh sách hạng mục
-export async function getCategoriesAPI() {
+export async function getCategoriesAPI(idProject) {
   // debugger;
   try {
-    const resp = await baseAPI.get("categories");
+    const resp = await baseAPI.get(`categories/${idProject}`);
     return resp.data;
   } catch (error) {
     console.error(error);
@@ -47,9 +47,9 @@ export async function deleteCategoryAPI(id) {
 }
 
 //Lấy danh sách CHI PHÍ
-export async function getCostsAPI() {
+export async function getCostsAPI(idProject) {
   try {
-    const resp = await baseAPI.get("costs");
+    const resp = await baseAPI.get(`costs/${idProject}`);
     return resp.data;
   } catch (error) {
     console.error(error);

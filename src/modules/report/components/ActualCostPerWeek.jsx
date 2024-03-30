@@ -62,11 +62,11 @@ export default function ActualCostPerWeek({
   const [costs, setCosts] = useState([]);
   useEffect(() => {
     async function fetchCostsAPI() {
-      let response = await getCostsAPI();
+      let response = await getCostsAPI(idProject);
       setCosts(response);
     }
     fetchCostsAPI();
-  }, []);
+  }, [idProject]);
   const handleActualCostDetailChange = (detail) => {
     setActualCostItems((oldActualCostItems) => {
       const index = oldActualCostItems.findIndex((el) => el.id === detail.id);
