@@ -253,9 +253,9 @@ export default function EditProject() {
     // setIsLoading(true);
     console.log(project);
     try {
-      // await saveProjectAPI(project);
-      // toast.success("Cập nhật dự án thành công");
-      // navigate("/report/listprojects");
+      await saveProjectAPI(project);
+      toast.success("Cập nhật dự án thành công");
+      navigate("/report/listprojects");
     } catch (error) {
       console.log(error);
       toast.error("Cập nhật dự án thất bại");
