@@ -41,11 +41,11 @@ export default function SignIn() {
       const res = await getToken(data);
       console.log("res", res);
       if (!!res) {
-        Cookies.set("token", JSON.stringify(res?.token));
-        Cookies.set("email", JSON.stringify(res?.email));
-        Cookies.set("role", JSON.stringify(res?.role));
-        Cookies.set("name", JSON.stringify(res?.name));
-        Cookies.set("root", JSON.stringify(res?.root));
+        Cookies.set("token", JSON.stringify(res?.token), { path: "/" });
+        Cookies.set("email", JSON.stringify(res?.email), { path: "/" });
+        Cookies.set("role", JSON.stringify(res?.role), { path: "/" });
+        Cookies.set("name", JSON.stringify(res?.name), { path: "/" });
+        Cookies.set("root", JSON.stringify(res?.root), { path: "/" });
 
         navigate("/");
       }

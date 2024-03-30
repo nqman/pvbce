@@ -10,7 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  addEquipmentAPI,
+  saveEquipmentAPI,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 
@@ -24,8 +24,7 @@ export default function EditEquipment() {
     try {
       const data = await selectEquipmentAPI(idEquip);
       setValue(data);
-      // console.log(data);
-      // console.log(data.productImages);
+
       setProductDetails(data.productDetails); // set them gia tri cho productDetail
       setSelectedImages(data.productImages);
       setProductDiaries(data.productDiaries);
@@ -153,11 +152,11 @@ export default function EditEquipment() {
   };
 
   // cập nhật thiết bị
-  const handleSubmit = async (e) => {
+  const handleSaveEquipment = async (e) => {
     e.preventDefault();
     // console.log(value);
     try {
-      const response = await addEquipmentAPI(value);
+      const response = await saveEquipmentAPI(value);
       console.log(response);
       toast.success("Cập nhật thiết bị thành công");
       navigate("/catalogue");
@@ -187,7 +186,7 @@ export default function EditEquipment() {
       <div>
         <Toaster position="top-right" />
         <h1 className="text-center pt-3">Cập nhật thiết bị</h1>
-        <form noValidate onSubmit={handleSubmit}>
+        <form noValidate onSubmit={handleSaveEquipment}>
           <Box>
             <TabContext value={item}>
               <Box display="flex" justifyContent="center" alignItems="center">
@@ -213,7 +212,7 @@ export default function EditEquipment() {
                       className="form-control"
                       htmlFor="name"
                     >
-                      Tên thiết bị
+                      Tên thiết bị<span className="text-danger fw-bold">*</span>
                     </label>
                     <input
                       id="name"
@@ -237,7 +236,7 @@ export default function EditEquipment() {
                       className="form-control"
                       htmlFor="divideCode"
                     >
-                      Mã thiết bị
+                      Mã thiết bị<span className="text-danger fw-bold">*</span>
                     </label>
                     <input
                       id="divideCode"
@@ -331,7 +330,8 @@ export default function EditEquipment() {
                     }}
                     className="form-control"
                   >
-                    Tải lên hình ảnh :
+                    Tải lên hình ảnh
+                    <span className="text-danger fw-bold">*</span>
                   </label>
                   <div className="d-flex">
                     {selectedImages.map((image, index) => (

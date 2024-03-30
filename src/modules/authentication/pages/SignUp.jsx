@@ -79,8 +79,13 @@ export default function SignUp() {
       if (!!res) {
         // console.log("ok");
         setIsLoading(true);
-        console.log(user);
-        // await saveUserAPI(user);
+        // console.log(user);
+        await saveUserAPI(user);
+        if (role && !role !== "Admin") {
+          Swal.fire("Tạo tài khoản thành công");
+          navigate(-1);
+          return;
+        }
         Swal.fire("Vui lòng xác nhận tài khoản qua email của bạn!");
         navigate("/signin");
       } else {

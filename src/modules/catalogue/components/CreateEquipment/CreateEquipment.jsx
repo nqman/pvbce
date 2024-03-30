@@ -7,7 +7,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import toast, { Toaster } from "react-hot-toast";
 
 // API
-import { addEquipmentAPI } from "../../../../apis/equipmentAPI";
+import { saveEquipmentAPI } from "../../../../apis/equipmentAPI";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../home/components/Loading/Loading";
 
@@ -23,12 +23,12 @@ export default function CreateEquipment() {
     productDiaries: "",
   };
   const navigate = useNavigate();
-  const [value, setValue] = useState(emptyValue);
+  const [value, setValueEquipment] = useState(emptyValue);
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
-    setValue({
+    setValueEquipment({
       ...value,
       productDetails: productDetails,
     });
@@ -40,7 +40,7 @@ export default function CreateEquipment() {
 
   // Thông số chung
   const handleChangeInput = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
+    setValueEquipment({ ...value, [e.target.name]: e.target.value });
   };
   //Chọn ảnh
   const [selectedImages, setSelectedImages] = useState([]);
@@ -55,7 +55,7 @@ export default function CreateEquipment() {
         newImages.push({ id: -Date.now(), imageFile: files[i] });
       }
       setSelectedImages(newImages);
-      setValue({ ...value, productImages: newImages });
+      setValueEquipment({ ...value, productImages: newImages });
     }
   };
   //Xóa ảnh
@@ -137,16 +137,15 @@ export default function CreateEquipment() {
       diary.id === id ? { ...diary, file } : diary
     );
     setProductDiaries(updateDiaries);
-    setValue({ ...value, productDiaries: updateDiaries });
+    setValueEquipment({ ...value, productDiaries: updateDiaries });
   };
 
   // Thêm thiết bị
-  const handleSubmit = async (e) => {
+  const handleSaveEquipment = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
-      await addEquipmentAPI(value);
+      await saveEquipmentAPI(value);
       toast.success("Thêm thiết bị thành công");
       navigate("/catalogue");
     } catch (error) {
@@ -175,7 +174,7 @@ export default function CreateEquipment() {
           <div>
             <Toaster position="top-right" />
             <h1 className="text-center pt-3">Thêm thiết bị</h1>
-            <form noValidate onSubmit={handleSubmit}>
+            <form noValidate onSubmit={handleSaveEquipment}>
               <Box>
                 <TabContext value={item}>
                   <Box
@@ -204,7 +203,8 @@ export default function CreateEquipment() {
                           className="form-control"
                           htmlFor="name"
                         >
-                          Tên thiết bị
+                          Tên thiết bị{" "}
+                          <span className="text-danger fw-bold">*</span>
                         </label>
                         <input
                           id="name"
@@ -229,7 +229,8 @@ export default function CreateEquipment() {
                           className="form-control"
                           htmlFor="divideCode"
                         >
-                          Mã thiết bị
+                          Mã thiết bị{" "}
+                          <span className="text-danger fw-bold">*</span>
                         </label>
                         <input
                           id="divideCode"
@@ -323,7 +324,8 @@ export default function CreateEquipment() {
                         }}
                         className="form-control"
                       >
-                        Tải lên hình ảnh :
+                        Tải lên hình ảnh
+                        <span className="text-danger fw-bold">*</span>
                       </label>
                       <div className="d-flex">
                         {selectedImages.map((image, index) => (

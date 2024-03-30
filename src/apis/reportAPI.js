@@ -2,6 +2,7 @@ import baseAPI from "./baseAPI";
 
 //Lấy danh sách hạng mục
 export async function getCategoriesAPI() {
+  // debugger;
   try {
     const resp = await baseAPI.get("categories");
     return resp.data;
@@ -100,7 +101,7 @@ export async function listProjectsAPI() {
     throw error;
   }
 }
-export async function addProjectAPI(project) {
+export async function saveProjectAPI(project) {
   debugger;
   try {
     const formData = new FormData();

@@ -63,10 +63,10 @@ function Header() {
   }, []);
 
   const _onlogout = () => {
-    Cookies.remove("token");
-    Cookies.remove("email");
-    Cookies.remove("name");
-    Cookies.remove("role");
+    Cookies.remove("token", { path: "/" });
+    Cookies.remove("email", { path: "/" });
+    Cookies.remove("name", { path: "/" });
+    Cookies.remove("role", { path: "/" });
     setUser({});
     navigate("/");
   };

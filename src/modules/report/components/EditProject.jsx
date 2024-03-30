@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 //API
 import {
-  addProjectAPI,
+  saveProjectAPI,
   getCategoriesAPI,
   selectProjectAPI,
 } from "../../../apis/reportAPI";
@@ -127,6 +127,7 @@ export default function EditProject() {
   };
 
   const handlePickDate = (date, label) => {
+    // debugger;
     if (date !== null) {
       const formattedDate = new Intl.DateTimeFormat("en-GB", {
         year: "numeric",
@@ -135,30 +136,34 @@ export default function EditProject() {
       }).format(date);
       const [day, month, year] = formattedDate.split("/");
       const formattedDateString = `${day}-${month}-${year}`;
-      if (label === "startDate") {
-        setProject({ ...project, startDate: formattedDateString });
-      } else if (label === "endDate") {
+      if (label === "endDate") {
         setProject({ ...project, endDate: formattedDateString });
       }
+      // Không thay đổi ngày bắt đầu
+      // else if (label === "startDate") {
+      //   setProject({ ...project, startDate: formattedDateString });
+      // }
     }
   };
 
   const [timeDiff, setTimeDiff] = useState(0);
 
   useEffect(() => {
+    debugger;
     if (
       typeof endDate !== "string" &&
-      typeof startDate !== "string" &&
-      endDate !== null &&
-      startDate !== null
+      endDate !== null
+      // ||
+      // (typeof startDate !== "string" && startDate !== null)
     ) {
-      let start = new Date(startDate);
+      //format startDate
+      let start = formatDate(startDate);
       let end = new Date(endDate);
       const timeDiffNew = (end - start) / (1000 * 60 * 60 * 24) + 1;
       setTimeDiff(timeDiffNew);
       setProject({ ...project, totalTime: timeDiffNew });
     }
-  }, [endDate, startDate]);
+  }, [endDate]);
 
   //Thư viện dự án ---projectDiary
 
@@ -248,9 +253,9 @@ export default function EditProject() {
     // setIsLoading(true);
     console.log(project);
     try {
-      await addProjectAPI(project);
-      toast.success("Cập nhật dự án thành công");
-      navigate("/report/listprojects");
+      // await saveProjectAPI(project);
+      // toast.success("Cập nhật dự án thành công");
+      // navigate("/report/listprojects");
     } catch (error) {
       console.log(error);
       toast.error("Cập nhật dự án thất bại");
@@ -272,9 +277,14 @@ export default function EditProject() {
         // Trả về chuỗi ngày mới định dạng yyyy-mm-dd
         result = dayjs(`${year}-${month}-${day}`);
       }
+      // setEndDate(result);
+
       return result;
     }
+    //trả về định dạng date khi pick từ calendar
+    return date;
   };
+  // setEndDate(formatDate);
 
   return (
     <div>
@@ -373,6 +383,7 @@ export default function EditProject() {
                             // renderInput={(params) => <TextField {...params} />}
                             label="Ngày bắt đầu"
                             format="DD-MM-YYYY"
+                            disabled={true}
                           />
                         </LocalizationProvider>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 //API
-import { addProjectAPI, getCategoriesAPI } from "../../../apis/reportAPI";
+import { saveProjectAPI, getCategoriesAPI } from "../../../apis/reportAPI";
 
 //Calendar
 import dayjs from "dayjs";
@@ -200,7 +200,7 @@ export default function CreateProject() {
     setIsLoading(true);
     console.log(project);
     try {
-      await addProjectAPI(project);
+      await saveProjectAPI(project);
       toast.success("Khởi tạo dự án thành công");
       navigate("/report/listprojects");
     } catch (error) {
