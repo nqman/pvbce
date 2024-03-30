@@ -40,7 +40,7 @@ export default function CreateProject() {
     startDate: "",
     endDate: "",
     totalTime: "",
-    projectLibraries: "",
+    rpQuantityAndRevenueLibraries: "",
     note: "",
   };
   const navigate = useNavigate();
@@ -129,9 +129,8 @@ export default function CreateProject() {
 
   //Thư viện dự án ---projectDiary
 
-  const [projectLibraries, setProjectLibraries] = useState([
-    { id: -Date.now(), name: "", value: "", file: null },
-  ]);
+  const [rpQuantityAndRevenueLibraries, setRpQuantityAndRevenueLibraries] =
+    useState([{ id: -Date.now(), name: "", value: "", file: null }]);
   const [errorLibary, setErrorLibrary] = useState("");
 
   const createDiv = () => {
@@ -141,34 +140,43 @@ export default function CreateProject() {
       value: "",
       file: null,
     };
-    setProjectLibraries([...projectLibraries, newLibraryDetail]);
+    setRpQuantityAndRevenueLibraries([
+      ...rpQuantityAndRevenueLibraries,
+      newLibraryDetail,
+    ]);
   };
 
   const deleteDiv = (id) => {
-    const updatedProjectLibraries = projectLibraries.filter(
-      (productDetail) => productDetail.id !== id
-    );
-    setProjectLibraries(updatedProjectLibraries);
+    const updatedrpQuantityAndRevenueLibraries =
+      rpQuantityAndRevenueLibraries.filter(
+        (productDetail) => productDetail.id !== id
+      );
+    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
   };
 
   const handleInputChange = (id, key, value) => {
-    const updatedProjectLibraries = projectLibraries.map((projectLibrary) =>
-      projectLibrary.id === id
-        ? { ...projectLibrary, [key]: value }
-        : projectLibrary
-    );
-    setProjectLibraries(updatedProjectLibraries);
+    const updatedrpQuantityAndRevenueLibraries =
+      rpQuantityAndRevenueLibraries.map((projectLibrary) =>
+        projectLibrary.id === id
+          ? { ...projectLibrary, [key]: value }
+          : projectLibrary
+      );
+    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
   };
 
   const handleFileChange = (id, file) => {
-    const updatedProjectLibraries = projectLibraries.map((projectLibrary) =>
-      projectLibrary.id === id ? { ...projectLibrary, file } : projectLibrary
-    );
+    const updatedrpQuantityAndRevenueLibraries =
+      rpQuantityAndRevenueLibraries.map((projectLibrary) =>
+        projectLibrary.id === id ? { ...projectLibrary, file } : projectLibrary
+      );
 
-    setProjectLibraries(updatedProjectLibraries);
+    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
   };
   const handleBlurInput = () => {
-    setProject({ ...project, projectLibraries: projectLibraries });
+    setProject({
+      ...project,
+      rpQuantityAndRevenueLibraries: rpQuantityAndRevenueLibraries,
+    });
   };
 
   // Get category selection
@@ -315,7 +323,7 @@ export default function CreateProject() {
             <TabPanel value="2">
               <Container className="">
                 <div>
-                  {projectLibraries.map((projectLibrary) => (
+                  {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
                     <div
                       style={{
                         display: "flex",
