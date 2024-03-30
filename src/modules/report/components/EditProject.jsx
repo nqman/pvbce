@@ -108,7 +108,7 @@ export default function EditProject() {
   };
 
   // Thời gian dự án
-  const [startDate, setStartDate] = useState("17-04-2024");
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
   const handlePickStartDate = (date) => {
@@ -263,12 +263,11 @@ export default function EditProject() {
       let result = "";
       if (date) {
         let parts = date.split("-");
-        let formattedDate = new Date(parts[2], parts[0] - 1, parts[1]);
 
         // Lấy các thành phần ngày, tháng, năm
-        let year = formattedDate.getFullYear();
-        let month = String(formattedDate.getMonth() + 1).padStart(2, "0");
-        let day = String(formattedDate.getDate()).padStart(2, "0");
+        let year = parts[2];
+        let month = parts[1];
+        let day = parts[0];
 
         // Trả về chuỗi ngày mới định dạng yyyy-mm-dd
         result = dayjs(`${year}-${month}-${day}`);

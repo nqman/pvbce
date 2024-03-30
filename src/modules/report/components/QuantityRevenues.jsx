@@ -64,7 +64,7 @@ export default function QuantityRevenues() {
           (oldQuantityRevenuePerWeek) => oldQuantityRevenuePerWeek.week
         );
         getNextModay(actualWeek.pop(), idProject);
-        console.log(actualWeek.pop());
+        // console.log(actualWeek.pop());
       }
       setQuantityRevenues(tempQuantityRevenues);
       setIsLoading(false);
