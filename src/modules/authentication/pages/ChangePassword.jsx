@@ -9,6 +9,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { changePasswordAPI } from "../../../apis/authenticationAPI";
 import Swal from "sweetalert2";
+import Loading from "../../home/components/Loading/Loading";
 
 const schema = yup
   .object({
@@ -36,19 +37,30 @@ export default function ChangePassword() {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onTouched", resolver: yupResolver(schema) });
+  const [isLoading, setIsLoading] = useState(false);
 
   const param = useParams();
   const handleSendPassword = async (e) => {
-    console.log("param", param);
-    // const status = await changePasswordAPI(e.password, param.code);
-    // console.log(status);
-    // if (status) {
-    //   Swal.fire("Thay đổi mật khẩu thành công!");
-    //   navigate("/signin");
-    // }
+    setIsLoading(true);
+    try {
+      // console.log("param", param);
+      const status = await changePasswordAPI(e.password, param.code);
+      setIsLoading(false);
+      // console.log(status);
+      if (status) {
+        Swal.fire("Thay đổi mật khẩu thành công!");
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [visible, setVisible] = useState(false);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <div
       style={{

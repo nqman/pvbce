@@ -46,7 +46,6 @@ export default function SignIn() {
         Cookies.set("role", JSON.stringify(res?.role), { path: "/" });
         Cookies.set("name", JSON.stringify(res?.name), { path: "/" });
         Cookies.set("root", JSON.stringify(res?.root), { path: "/" });
-
         navigate("/");
         window.location.reload();
       }

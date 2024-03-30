@@ -41,7 +41,7 @@ const settings = ["Account", "Logout"];
 
 function Header() {
   const [user, setUser] = useState();
-  const role = Cookies.get("role");
+  const role = Cookies.get("role")?.replace(/"/g, "");
   // const role = "Admin";
 
   useEffect(() => {
@@ -303,7 +303,7 @@ function Header() {
             {/* {console.log(role)} */}
             {role &&
             role !== "null" &&
-            (!role !== "Admin" || !role !== "Employee") ? (
+            (role === "Admin" || role === "Employee") ? (
               <>
                 <Button
                   id="demo-customized-button"

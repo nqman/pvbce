@@ -18,7 +18,7 @@ import Loading from "../../home/components/Loading/Loading";
 
 export default function ProjectManagement() {
   const navigate = useNavigate();
-  const role = Cookies.get("role");
+  const role = Cookies.get("role")?.replace(/"/g, "");
   // const role = "Admin";
 
   const [projects, setProjects] = useState([]);
@@ -86,7 +86,7 @@ export default function ProjectManagement() {
       <Container maxWidth="lg" sx={{ marginTop: "20px" }}>
         <Toaster position="top-right" />
         {/* BTN khởi tạo dự án */}
-        {role && !role !== "Admin" && (
+        {role && role === "Admin" && (
           <div
             style={{
               display: "flex",

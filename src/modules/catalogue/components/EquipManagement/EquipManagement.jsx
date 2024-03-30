@@ -17,8 +17,8 @@ import Cookies from "js-cookie";
 import Loading from "../../../home/components/Loading/Loading";
 
 export default function EquipManagement() {
-  const role = Cookies.get("role");
-  // console.log("role", typeof role);
+  // const role = Cookies.get("role");
+  const role = Cookies.get("role")?.replace(/"/g, "");
   const navigate = useNavigate();
   const handleAdd = () => {
     navigate("/catalogue/create");
@@ -98,7 +98,7 @@ export default function EquipManagement() {
         ??????
         */}
 
-        {role && !role !== "Admin" && (
+        {role && role === "Admin" && (
           <button
             disabled={!role === "Admin" ? true : false}
             onClick={() => handleAdd()}

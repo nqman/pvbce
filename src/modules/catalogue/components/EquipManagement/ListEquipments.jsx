@@ -13,6 +13,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
   const handleRead = (id) => {
     navigate(`/catalogue/${id}`);
   };
+  // console.log(role);
 
   return (
     <StyledEngineProvider injectFirst>
@@ -82,7 +83,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                       }}
                     />
                   </button>
-                  {role && !role !== "Admin" && (
+                  {role === "Admin" && role && (
                     <>
                       <button
                         style={{

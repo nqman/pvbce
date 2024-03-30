@@ -46,7 +46,7 @@ export default function ForgotPassword() {
     } catch (error) {}
   };
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
   return (
     <div
