@@ -23,28 +23,15 @@ export function QuantityRevenuePerWeek({
     };
   };
   const params = useParams();
-  // const [project, setProject] = useState();
-
   const idProject = params.code;
-  // const getProjects = async (idProject) => {
-  //   try {
-  //     const data = await selectProjectAPI(idProject);
-  //     setProject(data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error fetching equipments:", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getProjects(idProject);
-  // }, [idProject]);
+ 
 
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
     actualQuantityAndRevenueDetails
       ? actualQuantityAndRevenueDetails
       : [newEmptyQuantityRevenueDetail()]
   );
-  // const [quantityRevenueItems, setQuantityRevenueItems] = useState([]);
+  
   const addProjectItem = () => {
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       return [...oldQuantityRevenueItems, newEmptyQuantityRevenueDetail()];

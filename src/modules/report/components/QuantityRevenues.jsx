@@ -45,7 +45,7 @@ export default function QuantityRevenues() {
     // debugger;
     try {
       const oldQuantityRevenues = await getOldQuantityRevenueAPI(idProject);
-      console.log(oldQuantityRevenues);
+      // console.log(oldQuantityRevenues);
       const tempQuantityRevenues = oldQuantityRevenues?.map(
         (quantityRevenue) => (
           <QuantityRevenuePerWeek
@@ -130,15 +130,15 @@ export default function QuantityRevenues() {
     }
     try {
       await addActualQuantityAndRevenueAPI(tempData, idProject);
+      getOldQuantityRevenues(idProject);
+      setValueFromChild(tempData);
       setIsLoading(false);
       toast.success("Cập nhật sản lượng thực tế thành công");
     } catch (error) {
       console.error(error);
       toast.error("Cập nhật sản lượng thực tế thất bại");
     }
-    getOldQuantityRevenues(idProject);
-
-    setValueFromChild(tempData);
+    
   };
   if (isLoading) {
     return <Loading />;
