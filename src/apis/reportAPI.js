@@ -4,7 +4,7 @@ import baseAPI from "./baseAPI";
 export async function getCategoriesAPI() {
   // debugger;
   try {
-    const resp = await baseAPI.get("categories/project");
+    const resp = await baseAPI.get("categories");
     return resp.data;
   } catch (error) {
     console.error(error);
