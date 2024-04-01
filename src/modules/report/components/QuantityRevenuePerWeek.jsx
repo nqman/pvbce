@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
-import { getCategoriesAPI, selectProjectAPI } from "../../../apis/reportAPI";
+import { getCategoriesOfProjectAPI, selectProjectAPI } from "../../../apis/reportAPI";
 import { useParams } from "react-router-dom";
 import { Grid, TextField } from "@mui/material";
 import QuantityRevenueItem from "./QuantityRevenueItem";
@@ -66,7 +66,7 @@ export function QuantityRevenuePerWeek({
   const [categories, setCategories] = useState([]);
   useEffect(() => {
     async function fetchMyAPI() {
-      let response = await getCategoriesAPI(idProject);
+      let response = await getCategoriesOfProjectAPI(idProject);
       setCategories(response);
     }
     fetchMyAPI();
