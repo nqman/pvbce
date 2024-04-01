@@ -53,6 +53,8 @@ export default function EditProject() {
   const idProject = params.code;
   const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState(emptyValue);
+  const [categories, setCategories] = useState([]);
+
   const getProject = async (idProject) => {
     // debugger;
     try {
@@ -76,6 +78,16 @@ export default function EditProject() {
     // Call the asynchronous function inside the useEffect
     getProject(idProject);
   }, [idProject]); // Add idProject as a dependency if needed
+
+    // Get category selection
+    useEffect(() => {
+      async function fetchMyAPI() {
+        let response = await getCategoriesAPI(idProject);
+        setCategories(response);
+        //   console.log(response);
+      }
+      fetchMyAPI();
+    }, [idProject]);
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
@@ -222,16 +234,7 @@ export default function EditProject() {
     });
   };
 
-  // Get category selection
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await getCategoriesAPI();
-      setCategories(response);
-      //   console.log(response);
-    }
-    fetchMyAPI();
-  }, [idProject]);
+
 
   const handleProjectDetailChange = (detail) => {
     setProjectItems((oldProjectItems) => {
