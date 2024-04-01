@@ -250,12 +250,13 @@ export default function EditProject() {
     });
   };
   const handleSubmit = async (e) => {
-    debugger;
+    // debugger;
     e.preventDefault();
-    // setIsLoading(true);
+    setIsLoading(true);
     console.log(project);
     try {
       await saveProjectAPI(project);
+      setIsLoading(false);
       toast.success("Cập nhật dự án thành công");
       navigate("/report/listprojects");
     } catch (error) {

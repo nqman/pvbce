@@ -111,7 +111,7 @@ export default function ActualCosts() {
 
   const handleSaveActualCost = async () => {
     // debugger;
-    // setIsLoading(true);
+    setIsLoading(true);
 
     const tempData = [];
 
@@ -127,8 +127,8 @@ export default function ActualCosts() {
     // console.log(tempData);
     try {
       await addActualCostAPI(tempData, idProject);
+      setIsLoading(false);
       toast.success("Cập nhật chi phí thực tế thành công");
-      // setIsLoading(false);
     } catch (error) {
       console.error(error);
       toast.error("Cập nhật chi phí thực tế thất bại");
