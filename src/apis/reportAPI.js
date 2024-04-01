@@ -1,7 +1,18 @@
 import baseAPI from "./baseAPI";
 
 //Lấy danh sách hạng mục
-export async function getCategoriesAPI(idProject) {
+export async function getCategoriesAPI() {
+  // debugger;
+  try {
+    const resp = await baseAPI.get("categories/project");
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+// lấy danh sách hạng mục theo dự án
+export async function getCategoriesOfProjectAPI(idProject) {
   // debugger;
   try {
     const resp = await baseAPI.get(`categories/project/${idProject}`);

@@ -9,7 +9,7 @@ import * as yup from "yup";
 //API
 import {
   saveProjectAPI,
-  getCategoriesAPI,
+  getCategoriesOfProjectAPI,
   selectProjectAPI,
 } from "../../../apis/reportAPI";
 
@@ -82,9 +82,8 @@ export default function EditProject() {
     // Get category selection
     useEffect(() => {
       async function fetchMyAPI() {
-        let response = await getCategoriesAPI(idProject);
+        let response = await getCategoriesOfProjectAPI(idProject);
         setCategories(response);
-        //   console.log(response);
       }
       fetchMyAPI();
     }, [idProject]);
