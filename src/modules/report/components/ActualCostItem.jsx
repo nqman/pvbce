@@ -17,14 +17,14 @@ export default function ActualCostItem({
   onRemove = () => {},
 }) {
   // Hàm để tính tổng tiền
-  debugger;
+  // debugger;
   const [amount, setAmount] = useState(detail?.amount || "");
 
   useEffect(() => {
     updateTotalAmount();
   }, [amount]);
   const handleInputChange = (id, key, value) => {
-    debugger;
+    // debugger;
     if (key === "amount") {
       setAmount(value);
     }

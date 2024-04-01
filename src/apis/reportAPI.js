@@ -381,12 +381,14 @@ export async function addActualCostAPI(actualCosts, idProject) {
 export async function getViewReportQuantityRevenueAndCostAPI(
   idProject,
   typeReport,
-  typeTime
+  startDate,
+  endDate
 ) {
   // debugger;
+  // console.log(idProject, typeReport, startDate, endDate);
   try {
     const resp = await baseAPI.get(
-      `projects/view-report/${idProject}/${typeReport}/${typeTime}`
+      `projects/view-report/${idProject}/${typeReport}/${startDate}/${endDate}`
     );
     return resp.data;
   } catch (error) {

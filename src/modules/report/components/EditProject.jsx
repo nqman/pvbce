@@ -79,14 +79,14 @@ export default function EditProject() {
     getProject(idProject);
   }, [idProject]); // Add idProject as a dependency if needed
 
-    // Get category selection
-    useEffect(() => {
-      async function fetchMyAPI() {
-        let response = await getCategoriesAPI();
-        setCategories(response);
-      }
-      fetchMyAPI();
-    }, [idProject]);
+  // Get category selection
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = await getCategoriesAPI();
+      setCategories(response);
+    }
+    fetchMyAPI();
+  }, [idProject]);
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
@@ -150,17 +150,13 @@ export default function EditProject() {
       if (label === "endDate") {
         setProject({ ...project, endDate: formattedDateString });
       }
-      // Không thay đổi ngày bắt đầu
-      // else if (label === "startDate") {
-      //   setProject({ ...project, startDate: formattedDateString });
-      // }
     }
   };
 
   const [timeDiff, setTimeDiff] = useState(0);
 
   useEffect(() => {
-    debugger;
+    // debugger;
     if (
       typeof endDate !== "string" &&
       endDate !== null
@@ -233,20 +229,29 @@ export default function EditProject() {
     });
   };
 
-
-
   const handleProjectDetailChange = (detail) => {
     setProjectItems((oldProjectItems) => {
       const index = oldProjectItems.findIndex((el) => el.id === detail.id);
       const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
       newProjectItems.splice(index, 1, detail);
+      setProject({
+        ...project,
+        rpQuantityAndRevenueDetails: newProjectItems,
+      });
       return [...newProjectItems];
     });
   };
 
   const handleRemoveProjectDetail = (detail) => {
     setProjectItems((oldProjectItems) => {
-      return [...oldProjectItems.filter((el) => detail.id !== el.id)];
+      const newProjectItems = [
+        ...oldProjectItems.filter((el) => detail.id !== el.id),
+      ];
+      setProject({
+        ...project,
+        rpQuantityAndRevenueDetails: newProjectItems,
+      });
+      return newProjectItems;
     });
   };
   const handleSubmit = async (e) => {

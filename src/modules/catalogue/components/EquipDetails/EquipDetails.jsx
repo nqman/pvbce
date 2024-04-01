@@ -138,7 +138,8 @@ const EquipDetail = () => {
                 {productDetails.map((detail) => (
                   <li className="mb-2">
                     <b>{detail.name}: </b>
-                    {detail.pathFile ? (
+                    {console.log(detail)}
+                    {detail.type && detail.type === "file" ? (
                       <span
                         className="link-primary"
                         style={{
@@ -149,6 +150,17 @@ const EquipDetail = () => {
                       >
                         {detail.value}
                       </span>
+                    ) : detail.type === "link" ? (
+                      <a
+                        style={{
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                        href={detail.value}
+                        target="_blank"
+                      >
+                        {detail.value}
+                      </a>
                     ) : (
                       <span>{detail.value}</span>
                     )}
@@ -166,6 +178,7 @@ const EquipDetail = () => {
                 {productDiaries?.map((diary) => (
                   <li className="mb-2">
                     <b>{diary.name}: </b>
+
                     <span
                       className="link-primary"
                       style={{ textDecoration: "underline", cursor: "pointer" }}

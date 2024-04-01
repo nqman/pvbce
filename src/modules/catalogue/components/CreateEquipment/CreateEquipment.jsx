@@ -491,7 +491,7 @@ export default function CreateEquipment() {
                               type="file"
                               id={`fileInput${diary.id}`}
                               name="filename"
-                              accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                              // accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                               onChange={(e) =>
                                 handleFileChangeDiary(
                                   diary.id,

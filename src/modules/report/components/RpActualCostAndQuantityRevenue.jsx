@@ -6,6 +6,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,18 +14,24 @@ import { getViewReportQuantityRevenueAndCostAPI } from "../../../apis/reportAPI"
 import LineChartQuantity from "./LineChartQuantity";
 import LineChartActualCostAndRevenue from "./LineChartActualCostAndRevenue";
 
+//Calendar
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import ProjectItem from "./ProjectItem";
+import toast, { Toaster } from "react-hot-toast";
+import Loading from "../../home/components/Loading/Loading";
+
 export default function RpActualCostAndQuantityRevenue() {
   // debugger;
   const navigate = useNavigate();
   const params = useParams();
   const idProject = params.code;
   const [viewReports, setViewReports] = useState([]);
-  useState("");
-  // TYPE OF TIME
-  const [typeTime, setTypeTime] = useState("");
-  const handleChangeTypeTime = (e) => {
-    setTypeTime(e.target.value);
-  };
+  // const [detailModel, setDetailModel] = useState([]);
+  // const [detailModelRevenue, setDetailModelRevenue] = useState([]);
+
   // TYPE OF REPORT
   const [typeReport, setTypeReport] = useState("");
 
@@ -32,51 +39,69 @@ export default function RpActualCostAndQuantityRevenue() {
     setTypeReport(e.target.value);
   };
 
-  const [units, setUnits] = useState([]);
-
-  const [unit, setUnit] = useState("");
-  const [detailModel, setDetailModel] = useState([]);
-  const [detailModelRevenue, setDetailModelRevenue] = useState([]);
-  const handleChangeUnit = (e) => {
-    setUnit(e.target.value);
-    const tempDetail = viewReports.filter(
-      (report) => report.unit === e.target.value
-    );
-    setDetailModel(tempDetail[0].listRpQuantityDetailModels);
-    // console.log(tempDetail[0].listRpQuantityDetailModels);
-  };
   const handleExportReport = async () => {
     // debugger;
-    try {
-      const data = await getViewReportQuantityRevenueAndCostAPI(
-        idProject,
-        typeReport,
-        typeTime
-      );
-      setViewReports(data);
-      if (data[0].unit) {
-        const tempUnits = data
-          .map((d) => (d.unit ? d.unit : null))
-          .filter((unit) => unit !== null);
-        setUnits(tempUnits);
-        setUnit(tempUnits[0]);
-        const tempDetail = data.filter(
-          (report) => report.unit === tempUnits[0]
+    if (typeReport && startDate && endDate) {
+      try {
+        const data = await getViewReportQuantityRevenueAndCostAPI(
+          idProject,
+          typeReport,
+          startDate,
+          endDate
         );
-        setDetailModel(tempDetail[0].listRpQuantityDetailModels);
-        setDetailModelRevenue([]);
-        return;
+        setViewReports(data);
+        console.log(data);
+        return data;
+      } catch (error) {}
+    } else if (!typeReport) {
+      toast.error("Vui lòng chọn loại báo cáo!");
+    } else if (!startDate) {
+      toast.error("Vui lòng chọn ngày bắt đầu!");
+    } else if (!endDate) {
+      toast.error("Vui lòng chọn ngày kết thúc!");
+    }
+  };
+  // Thời gian dự án
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const handlePickStartDate = (date) => {
+    if (date.$y) {
+      setStartDate(date);
+      handlePickDate(date, "startDate");
+    }
+    return date;
+  };
+
+  const handlePickEndDate = (date) => {
+    if (date.$y) {
+      setEndDate(date);
+      handlePickDate(date, "endDate");
+    }
+    return date;
+  };
+
+  const handlePickDate = (date, label) => {
+    if (date !== null) {
+      const formattedDate = new Intl.DateTimeFormat("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date);
+      const [day, month, year] = formattedDate.split("/");
+      const formattedDateString = `${day}-${month}-${year}`;
+      if (label === "startDate") {
+        setStartDate(formattedDateString);
+      } else if (label === "endDate") {
+        setEndDate(formattedDateString);
       }
-      setUnits([]);
-      setDetailModelRevenue(data);
-      // console.log(data);
-      return data;
-    } catch (error) {}
+    }
   };
 
   return (
     <div>
       <Container className="mt-4 mb-4">
+        <Toaster position="top-right" />
         <div
           style={{
             display: "flex",
@@ -84,29 +109,32 @@ export default function RpActualCostAndQuantityRevenue() {
             alignItems: "center",
           }}
         >
-          <Box sx={{ width: 200, marginRight: "30px" }}>
-            <FormControl fullWidth>
-              <InputLabel size="small" id="demo-simple-select-label">
-                Đơn vị thời gian
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                onChange={handleChangeTypeTime}
-                value={typeTime}
-                label="Đơn vị thời gian"
-                size="small"
-              >
-                <MenuItem value={"week"}>Tuần</MenuItem>
-                <MenuItem value={"month"}>Tháng</MenuItem>
-                <MenuItem value={"year"}>Năm</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+          <div className="calendar d-flex ">
+            <div>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  className="me-4"
+                  onChange={handlePickStartDate}
+                  renderInput={(params) => <TextField {...params} />}
+                  label="Ngày bắt đầu"
+                  format="DD-MM-YYYY"
+                />
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  className="me-4"
+                  onChange={handlePickEndDate}
+                  renderInput={(params) => <TextField {...params} />}
+                  label="Ngày kết thúc"
+                  format="DD-MM-YYYY"
+                />
+              </LocalizationProvider>
+            </div>
+          </div>
 
           <Box sx={{ width: 200, marginRight: "30px" }}>
             <FormControl fullWidth>
-              <InputLabel size="small" id="demo-simple-select-label">
+              <InputLabel id="demo-simple-select-label">
                 Loại báo cáo
               </InputLabel>
               <Select
@@ -115,86 +143,38 @@ export default function RpActualCostAndQuantityRevenue() {
                 onChange={handleChangeTypeReport}
                 value={typeReport}
                 label="Loại báo cáo"
-                size="small"
               >
                 <MenuItem value={"quantity"}>Báo cáo sản lượng</MenuItem>
                 <MenuItem value={"revenue"}>Báo cáo doanh thu</MenuItem>
               </Select>
             </FormControl>
           </Box>
-
-          <Button
-            sx={{
-              textTransform: "inherit",
-            }}
-            variant="contained"
-            color="warning"
-            onClick={handleExportReport}
-          >
-            Xuất báo cáo
-          </Button>
-        </div>
-        {units?.length > 0 ? (
-          <div style={{ position: "relative" }}>
-            <div
-              style={{
-                // display: "flex",
-                // justifyContent: "end",
-                position: "absolute",
-                right: "20px",
-                zIndex: 100,
-              }}
+          <div>
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={handleExportReport}
             >
-              <Box
-                sx={{
-                  width: 200,
-                  marginTop: "20px",
-                }}
-              >
-                <FormControl fullWidth>
-                  <InputLabel size="small" id="demo-simple-select-label">
-                    Đơn vị
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={handleChangeUnit}
-                    value={unit}
-                    label="Đơn vị"
-                    size="small"
-                  >
-                    {units?.map((unit, index) => (
-                      <MenuItem key={index} value={unit}>
-                        {unit}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            </div>
-            {viewReports.lenght !== 0 &&
-            viewReports.filter((report) => report.unit === unit) ? (
-              <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
-                <LineChartQuantity
-                  typeTime={typeTime}
-                  unit={unit}
-                  detailModel={detailModel}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
+              Xuất báo cáo
+            </Button>
           </div>
-        ) : (
-          ""
-        )}
-        {detailModelRevenue.length > 0 ? (
-          <Box sx={{ p: 2, border: "2px solid grey", mt: 2 }}>
-            <LineChartActualCostAndRevenue
-              typeTime={typeTime}
-              detailModelRevenue={detailModelRevenue}
+        </div>
+        {typeReport === "quantity" ? (
+          <div>
+            <LineChartQuantity
+              startDate={startDate}
+              endDate={endDate}
+              detailModel={viewReports}
             />
-          </Box>
+          </div>
+        ) : typeReport === "revenue" ? (
+          <div>
+            <LineChartActualCostAndRevenue
+              startDate={startDate}
+              endDate={endDate}
+              detailModelRevenue={viewReports}
+            />
+          </div>
         ) : (
           ""
         )}

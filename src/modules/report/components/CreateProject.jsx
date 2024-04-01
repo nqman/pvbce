@@ -82,11 +82,8 @@ export default function CreateProject() {
   const [endDate, setEndDate] = useState(null);
 
   const handlePickStartDate = (date) => {
-    // console.log(typeof date.$d);
-    // debugger;
     if (date.$y) {
       setStartDate(date);
-      // console.log(date);
       handlePickDate(date, "startDate");
     }
   };

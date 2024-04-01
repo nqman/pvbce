@@ -18,7 +18,6 @@ const token = Cookies.get("token")?.replace(/"/g, "");
 //   }
 // };
 const createBaseAPI = (token) => {
-  debugger;
   if (token && token !== null) {
     return axios.create({
       baseURL: "https://pvbce.io.vn/API/",
