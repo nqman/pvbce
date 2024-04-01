@@ -231,7 +231,7 @@ export default function EditProject() {
       //   console.log(response);
     }
     fetchMyAPI();
-  }, []);
+  }, [idProject]);
 
   const handleProjectDetailChange = (detail) => {
     setProjectItems((oldProjectItems) => {
