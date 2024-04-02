@@ -335,7 +335,7 @@ export default function CreateProject() {
                         id="outlined-size-small"
                         value={projectLibrary.name}
                         size="small"
-                        sx={{ marginRight: "20px" }}
+                        sx={{ marginRight: "20px", width: "50%" }}
                         onChange={(e) =>
                           handleInputChange(
                             projectLibrary.id,
@@ -351,7 +351,7 @@ export default function CreateProject() {
                           projectLibrary.value || projectLibrary.file?.name
                         }
                         size="small"
-                        sx={{ marginRight: "20px" }}
+                        sx={{ marginRight: "20px", width: "50%" }}
                         onChange={(e) =>
                           handleInputChange(
                             projectLibrary.id,

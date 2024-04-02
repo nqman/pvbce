@@ -442,16 +442,22 @@ export default function EditProject() {
                             )
                           }
                         />
+                        {console.log(projectLibrary)}
                         <TextField
                           placeholder="Nội dung"
                           id="outlined-size-small"
                           value={
                             projectLibrary.value ||
                             projectLibrary.file?.name ||
-                            projectLibrary?.fileName
+                            projectLibrary?.fileName ||
+                            projectLibrary?.linkLibrary
                           }
                           size="small"
-                          sx={{ marginRight: "20px", width: "50%" }}
+                          sx={{
+                            marginRight: "20px",
+                            width: "50%",
+                            pointerEvents: "none",
+                          }}
                           onChange={(e) =>
                             handleInputChange(
                               projectLibrary.id,

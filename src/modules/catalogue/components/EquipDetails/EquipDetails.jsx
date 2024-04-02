@@ -152,12 +152,15 @@ const EquipDetail = () => {
                       </span>
                     ) : detail.type === "link" ? (
                       <a
-                        style={{
-                          textDecoration: "underline",
-                          cursor: "pointer",
-                        }}
+                        style={
+                          {
+                            // textDecoration: "underline",
+                            // cursor: "pointer",
+                          }
+                        }
                         href={detail.value}
                         target="_blank"
+                        rel="noreferrer"
                       >
                         {detail.value}
                       </a>

@@ -26,7 +26,6 @@ export default function QuantityRevenues() {
     try {
       const nextMonday = await getNextMondayAPI(actualWeek, idProject);
       setActualWeek(nextMonday);
-      // console.log(nextMonday);
     } catch (error) {
       setErrorGetMonday(true);
       console.error("Error fetching actualWeek:", error);
@@ -138,7 +137,6 @@ export default function QuantityRevenues() {
       console.error(error);
       toast.error("Cập nhật sản lượng thực tế thất bại");
     }
-    
   };
   if (isLoading) {
     return <Loading />;
