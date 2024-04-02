@@ -98,13 +98,18 @@ export default function QuantityRevenueItem({
         >
           <FormControl fullWidth>
             <InputLabel size="small" id="demo-simple-select-label">
-              Hạng mục
+              Hạng mục<span style={{ color: "red" }}>*</span>
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={detail?.category}
-              label="Hạng mục"
+              // label="Hạng mục*"
+              label={
+                <span>
+                  Hạng mục<span style={{ color: "red" }}>*</span>
+                </span>
+              }
               onChange={handleSelectCategory}
               size="small"
               sx={{ display: "flex", width: "250px" }}
@@ -129,7 +134,12 @@ export default function QuantityRevenueItem({
           sx={{ marginRight: "20px", width: "100px" }}
         />
         <TextField
-          label="Sản lượng"
+          // label="Sản lượng*"
+          label={
+            <span>
+              Sản lượng<span style={{ color: "red" }}>*</span>
+            </span>
+          }
           id="outlined-size-small"
           value={quantity}
           size="small"
@@ -140,7 +150,12 @@ export default function QuantityRevenueItem({
           }
         />
         <TextField
-          label="Đơn giá"
+          // label="Đơn giá*"
+          label={
+            <span>
+              Đơn giá<span style={{ color: "red" }}>*</span>
+            </span>
+          }
           id="outlined-size-small"
           value={price}
           size="small"

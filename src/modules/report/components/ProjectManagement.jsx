@@ -77,42 +77,43 @@ export default function ProjectManagement() {
       toast.error("Đã có lỗi xảy ra");
     }
   };
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <div style={{ position: "relative" }}>
-      <Container maxWidth="lg" sx={{ marginTop: "20px" }}>
-        <Toaster position="top-right" />
-        {/* BTN khởi tạo dự án */}
-        {role && role === "Admin" && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              marginBottom: "10px",
-              marginTop: "20px",
-            }}
-          >
-            <button
-              onClick={() => navigate("/report/create-project")}
-              className="btn btn-primary"
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Container maxWidth="lg" sx={{ marginTop: "20px" }}>
+          <Toaster position="top-right" />
+          {/* BTN khởi tạo dự án */}
+          {role && role === "Admin" && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginBottom: "10px",
+                marginTop: "20px",
+              }}
             >
-              Thêm dự án mới
-            </button>
-          </div>
-        )}
+              <button
+                onClick={() => navigate("/report/create-project")}
+                className="btn btn-primary"
+              >
+                Thêm dự án mới
+              </button>
+            </div>
+          )}
 
-        {/* Danh sách dự án*/}
+          {/* Danh sách dự án*/}
 
-        <ListProjects
-          rows={projects}
-          onDelete={handleDeleteProject}
-          onEdit={handleEditProject}
-          role={role}
-        />
-      </Container>
+          <ListProjects
+            rows={projects}
+            onDelete={handleDeleteProject}
+            onEdit={handleEditProject}
+            role={role}
+          />
+        </Container>
+      )}
     </div>
   );
 }

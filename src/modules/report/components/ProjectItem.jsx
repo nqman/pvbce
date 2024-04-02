@@ -17,25 +17,33 @@ export default function ProjectItem({
   updateTotalAmount,
 }) {
   // Hàm để tính tổng tiền
-  const [quantity, setQuantity] = useState(0);
-  const [price, setPrice] = useState(0);
-  const amount = quantity * price;
+  const [quantity, setQuantity] = useState(detail.quantity);
+  const [price, setPrice] = useState(detail.price);
+  const [amount, setAmount] = useState(detail.amount);
 
   useEffect(() => {
     updateTotalAmount();
   }, [amount]);
 
   const handleInputChange = (id, key, value) => {
+    // debugger;
     if (key === "quantity") {
       setQuantity(value);
+      setAmount(price * value);
+      onChange({
+        ...detail,
+        quantity: value,
+        amount: price * value,
+      });
     } else if (key === "price") {
       setPrice(value);
+      setAmount(quantity * value);
+      onChange({
+        ...detail,
+        price: value,
+        amount: quantity * value,
+      });
     }
-    onChange({
-      ...detail,
-      unit: unit,
-      [key]: value,
-    });
   };
 
   const [unit, setUnit] = useState("");
@@ -47,11 +55,10 @@ export default function ProjectItem({
     }
     onChange({
       ...detail,
+      unit: selectedCategory.unit,
       category,
     });
   };
-
-  const [errorDetail, setErrorDetail] = useState("");
 
   const deleteDiv = async (id) => {
     try {
@@ -94,13 +101,18 @@ export default function ProjectItem({
         >
           <FormControl fullWidth>
             <InputLabel size="small" id="demo-simple-select-label">
-              Hạng mục
+              Hạng mục<span style={{ color: "red" }}>*</span>
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={detail.category}
-              label="Hạng mục"
+              // label="Hạng mục*"
+              label={
+                <span>
+                  Hạng mục<span style={{ color: "red" }}>*</span>
+                </span>
+              }
               onChange={handleSelectCategory}
               size="small"
               sx={{ display: "flex", width: "250px" }}
@@ -119,13 +131,19 @@ export default function ProjectItem({
         <TextField
           label="Đơn vị"
           id="outlined-size-small"
-          value={unit || detail.unit}
+          // value={unit || detail.unit}
+          value={detail.unit}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "100px" }}
         />
         <TextField
-          label="Sản lượng"
+          // label="Sản lượng*"
+          label={
+            <span>
+              Sản lượng<span style={{ color: "red" }}>*</span>
+            </span>
+          }
           id="outlined-size-small"
           value={detail.quantity}
           size="small"
@@ -137,7 +155,12 @@ export default function ProjectItem({
           // onBlur={handleGetAmount}
         />
         <TextField
-          label="Đơn giá (VND)"
+          // label="Đơn giá (VND)*"
+          label={
+            <span>
+              Đơn giá (VND)<span style={{ color: "red" }}>*</span>
+            </span>
+          }
           id="outlined-size-small"
           value={detail.price}
           size="small"
@@ -151,7 +174,8 @@ export default function ProjectItem({
         <TextField
           label="Thành tiền (VND)"
           id="outlined-size-small"
-          value={detail.amount?.toLocaleString() || amount.toLocaleString()}
+          // value={detail.amount?.toLocaleString() || amount.toLocaleString()}
+          value={amount.toLocaleString()}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "200px" }}
@@ -164,7 +188,6 @@ export default function ProjectItem({
           x
         </button>
       </div>
-      <p className="text-danger">{errorDetail}</p>
     </div>
   );
 }

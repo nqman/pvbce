@@ -1,7 +1,8 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Button, Container, Tab, TextField } from "@mui/material";
+import { Box, Button, Container, Tab, Link, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 //validation
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -200,6 +201,9 @@ export default function CreateProject() {
       return [...oldProjectItems.filter((el) => detail.id !== el.id)];
     });
   };
+  useEffect(() => {
+    updateTotalAmount();
+  }, [projectItems]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -219,193 +223,229 @@ export default function CreateProject() {
       {isLoading ? (
         <Loading />
       ) : (
-        <form noValidate onSubmit={handleSubmit}>
-          <TabContext value={item}>
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <TabList onChange={handleChangeItem}>
-                <Tab label="THÔNG TIN HỢP ĐỒNG" value="1" />
-                <Tab label="THƯ VIỆN" value="2" />
-              </TabList>
-            </Box>
-            {/* Thông tin hợp đồng */}
-            <TabPanel value="1">
-              <Container className="">
-                <div>
-                  <div
-                    className="mb-4 pb-3"
-                    style={{ borderBottom: "2px solid black", display: "flex" }}
-                  >
-                    <TextField
-                      value={project.name}
-                      name="name"
-                      size="small"
-                      className="me-4 w-50"
-                      label={"Tên dự án"}
-                      onChange={handleChangeGeneralInfor}
-                    />
-                    <TextField
-                      value={project.note}
-                      name="note"
-                      size="small"
-                      className="w-50"
-                      label={"Ghi chú"}
-                      onChange={handleChangeGeneralInfor}
-                    />
-                  </div>
-
+        <div className="container mt-2" style={{ position: "relative" }}>
+          <div style={{ position: "absolute", top: "20px", left: "80px" }}>
+            <Link
+              sx={{ fontSize: "16px" }}
+              component="button"
+              variant="body2"
+              onClick={() => {
+                navigate("/report/listprojects");
+              }}
+            >
+              <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+              Danh sách dự án
+            </Link>
+          </div>
+          <form noValidate onSubmit={handleSubmit}>
+            <TabContext value={item}>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <TabList onChange={handleChangeItem}>
+                  <Tab label="THÔNG TIN HỢP ĐỒNG" value="1" />
+                  <Tab label="THƯ VIỆN" value="2" />
+                </TabList>
+              </Box>
+              {/* Thông tin hợp đồng */}
+              <TabPanel value="1">
+                <Container className="">
                   <div>
-                    {projectItems.map((detail) => (
-                      <ProjectItem
-                        key={detail.id}
-                        detail={detail}
-                        categories={categories}
-                        onChange={handleProjectDetailChange}
-                        onRemove={handleRemoveProjectDetail}
-                        updateTotalAmount={updateTotalAmount}
-                      />
-                    ))}
-                    {/* <p className="text-danger">{errorDetail}</p> */}
                     <div
+                      className="mb-4 pb-3"
                       style={{
+                        borderBottom: "2px solid black",
                         display: "flex",
-                        justifyContent: "space-between",
                       }}
                     >
-                      <Button
-                        variant="contained"
-                        style={{ marginTop: "-10px", marginBottom: "20px" }}
-                        onClick={addProjectItem}
+                      <TextField
+                        value={project.name}
+                        name="name"
+                        size="small"
+                        className="me-4 w-50"
+                        label={
+                          <span>
+                            Tên dự án
+                            <span style={{ color: "red" }}>*</span>
+                          </span>
+                        }
+                        onChange={handleChangeGeneralInfor}
+                      />
+                      <TextField
+                        value={project.note}
+                        name="note"
+                        size="small"
+                        className="w-50"
+                        label={"Ghi chú"}
+                        onChange={handleChangeGeneralInfor}
+                      />
+                    </div>
+
+                    <div>
+                      {projectItems.map((detail) => (
+                        <ProjectItem
+                          key={detail.id}
+                          detail={detail}
+                          categories={categories}
+                          onChange={handleProjectDetailChange}
+                          onRemove={handleRemoveProjectDetail}
+                          updateTotalAmount={updateTotalAmount}
+                        />
+                      ))}
+                      {/* <p className="text-danger">{errorDetail}</p> */}
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
                       >
-                        Thêm
-                      </Button>
-                      <b style={{ paddingRight: "120px" }}>
-                        Tổng cộng: {`${totalAmount.toLocaleString()} VND`}
-                      </b>
+                        <Button
+                          variant="contained"
+                          style={{ marginTop: "-10px", marginBottom: "20px" }}
+                          onClick={addProjectItem}
+                        >
+                          Thêm
+                        </Button>
+                        <b style={{ paddingRight: "120px" }}>
+                          Tổng cộng: {`${totalAmount.toLocaleString()} VND`}
+                        </b>
+                      </div>
+                    </div>
+                    <div className="calendar d-flex mt-3">
+                      <div>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            className="me-4"
+                            value={startDate}
+                            onChange={handlePickStartDate}
+                            renderInput={(params) => <TextField {...params} />}
+                            label={
+                              <span>
+                                Ngày bắt đầu
+                                <span style={{ color: "red" }}>*</span>
+                              </span>
+                            }
+                            format="DD-MM-YYYY"
+                          />
+                        </LocalizationProvider>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            className="me-4"
+                            value={endDate}
+                            onChange={handlePickEndDate}
+                            renderInput={(params) => <TextField {...params} />}
+                            label={
+                              <span>
+                                Ngày kết thúc
+                                <span style={{ color: "red" }}>*</span>
+                              </span>
+                            }
+                            format="DD-MM-YYYY"
+                          />
+                          <TextField
+                            value={`${timeDiff} ngày`}
+                            label={"Tổng số ngày"}
+                            disabled={true}
+                            size=""
+                          />
+                        </LocalizationProvider>
+                      </div>
                     </div>
                   </div>
-                  <div className="calendar d-flex mt-3">
-                    <div>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          className="me-4"
-                          value={startDate}
-                          onChange={handlePickStartDate}
-                          renderInput={(params) => <TextField {...params} />}
-                          label="Ngày bắt đầu"
-                          format="DD-MM-YYYY"
-                        />
-                      </LocalizationProvider>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          className="me-4"
-                          value={endDate}
-                          onChange={handlePickEndDate}
-                          renderInput={(params) => <TextField {...params} />}
-                          label="Ngày kết thúc"
-                          format="DD-MM-YYYY"
+                </Container>
+              </TabPanel>
+              {/* Thư viện */}
+              <TabPanel value="2">
+                <Container className="">
+                  <div>
+                    {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                          height: "30px",
+                        }}
+                        key={projectLibrary.id}
+                      >
+                        <TextField
+                          placeholder="Thông số"
+                          id="outlined-size-small"
+                          value={projectLibrary.name}
+                          size="small"
+                          sx={{ marginRight: "20px", width: "50%" }}
+                          onChange={(e) =>
+                            handleInputChange(
+                              projectLibrary.id,
+                              "name",
+                              e.target.value
+                            )
+                          }
                         />
                         <TextField
-                          value={`${timeDiff} ngày`}
-                          label={"Tổng số ngày"}
-                          disabled={true}
-                          size=""
+                          placeholder="Nội dung"
+                          id="outlined-size-small"
+                          value={
+                            projectLibrary.value || projectLibrary.file?.name
+                          }
+                          size="small"
+                          sx={{ marginRight: "20px", width: "50%" }}
+                          onChange={(e) =>
+                            handleInputChange(
+                              projectLibrary.id,
+                              "value",
+                              e.target.value
+                            )
+                          }
+                          onBlur={handleBlurInput}
                         />
-                      </LocalizationProvider>
-                    </div>
-                  </div>
-                </div>
-              </Container>
-            </TabPanel>
-            {/* Thư viện */}
-            <TabPanel value="2">
-              <Container className="">
-                <div>
-                  {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "15px",
-                        height: "30px",
-                      }}
-                      key={projectLibrary.id}
-                    >
-                      <TextField
-                        placeholder="Thông số"
-                        id="outlined-size-small"
-                        value={projectLibrary.name}
-                        size="small"
-                        sx={{ marginRight: "20px", width: "50%" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            projectLibrary.id,
-                            "name",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <TextField
-                        placeholder="Nội dung"
-                        id="outlined-size-small"
-                        value={
-                          projectLibrary.value || projectLibrary.file?.name
-                        }
-                        size="small"
-                        sx={{ marginRight: "20px", width: "50%" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            projectLibrary.id,
-                            "value",
-                            e.target.value
-                          )
-                        }
-                        onBlur={handleBlurInput}
-                      />
-                      <input
-                        type="file"
-                        style={{ width: "130px" }}
-                        className="custom-file-input"
-                        id={`fileInput${projectLibrary.id}`}
-                        name="filename"
-                        onChange={(e) =>
-                          handleFileChange(projectLibrary.id, e.target.files[0])
-                        }
-                        onBlur={handleBlurInput}
-                      />
+                        <input
+                          type="file"
+                          style={{ width: "130px" }}
+                          className="custom-file-input"
+                          id={`fileInput${projectLibrary.id}`}
+                          name="filename"
+                          onChange={(e) =>
+                            handleFileChange(
+                              projectLibrary.id,
+                              e.target.files[0]
+                            )
+                          }
+                          onBlur={handleBlurInput}
+                        />
 
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => deleteDiv(projectLibrary.id)}
-                      >
-                        x
-                      </button>
-                    </div>
-                  ))}
-                  <p className="text-danger">{errorLibary}</p>
-                  <Button variant="contained" onClick={createDiv}>
-                    Thêm
-                  </Button>
-                </div>
-                {/* SUBMIT */}
-                <div
-                  style={{
-                    marginTop: "20px",
-                    textAlign: "end",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="success"
-                    // disabled={isLoading}
-                    type="submit"
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => deleteDiv(projectLibrary.id)}
+                        >
+                          x
+                        </button>
+                      </div>
+                    ))}
+                    <p className="text-danger">{errorLibary}</p>
+                    <Button variant="contained" onClick={createDiv}>
+                      Thêm
+                    </Button>
+                  </div>
+                  {/* SUBMIT */}
+                  <div
+                    style={{
+                      marginTop: "20px",
+                      textAlign: "end",
+                    }}
                   >
-                    Lưu
-                  </Button>
-                </div>
-              </Container>
-            </TabPanel>
-          </TabContext>
-        </form>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      // disabled={isLoading}
+                      type="submit"
+                    >
+                      Lưu
+                    </Button>
+                  </div>
+                </Container>
+              </TabPanel>
+            </TabContext>
+          </form>
+        </div>
       )}
     </div>
   );

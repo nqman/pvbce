@@ -358,6 +358,7 @@ function Header() {
                   <MenuItem
                     onClick={() => handleNavigate("rp_total")}
                     disableRipple
+                    disabled={true}
                   >
                     <AssessmentIcon />
                     Báo cáo tổng
@@ -365,6 +366,7 @@ function Header() {
                   <MenuItem
                     onClick={() => handleNavigate("rp_revenue")}
                     disableRipple
+                    disabled={true}
                   >
                     <SummarizeIcon />
                     Báo cáo doanh thu

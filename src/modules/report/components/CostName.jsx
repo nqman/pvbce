@@ -49,9 +49,11 @@ export default function CostName() {
       const data = await getCostsAPI();
       setCosts(data);
       setIsLoading(false);
-
+      toast.success("Lấy danh sách chi phí thành công");
       return data;
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Lấy danh sách chi phí thất bại");
+    }
   };
   // const handleChange = (e) => {
   //   setcost({ ...cost, [e.target.name]: e.target.value });
@@ -110,135 +112,137 @@ export default function CostName() {
       toast.error("Đã có lỗi xảy ra");
     }
   };
-  if (isLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
       <Toaster position="top-right" />
-      <Container>
-        <div
-          style={{
-            marginTop: "20px",
-          }}
-        >
-          <div>
-            <h3 className="text-center mb-3">Danh sách chi phí</h3>
-            <form
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "20px",
-              }}
-              onSubmit={handleSubmit(handleAddCost)}
-            >
-              <div className=" w-50 me-3" style={{ height: "50px" }}>
-                <TextField
-                  className="w-100"
-                  size="small"
-                  placeholder="Tên chi phí"
-                  {...register("name")}
-                  //   value={cost.name}
-                />
-                <span className="text-danger ">{errors.name?.message}</span>
-              </div>
-
-              <div style={{ height: "50px" }}>
-                <button
-                  className="btn btn-primary"
-                  // disabled={isLoading}
-                  type="submit"
-                >
-                  Thêm
-                </button>
-              </div>
-            </form>
-          </div>
-          <div>
-            <StyledEngineProvider injectFirst>
-              <div
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Container>
+          <div
+            style={{
+              marginTop: "20px",
+            }}
+          >
+            <div>
+              <h3 className="text-center mb-3">Danh sách chi phí</h3>
+              <form
                 style={{
-                  height: 450,
-                  width: "100%",
-                  margin: "auto",
-                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "20px",
                 }}
+                onSubmit={handleSubmit(handleAddCost)}
               >
-                <DataGrid
-                  style={{
-                    padding: 10,
-                  }}
-                  rows={costs.map((row, index) => ({
-                    ...row,
-                    id: row.id,
-                    index: index + 1,
-                  }))}
-                  columns={[
-                    { field: "index", headerName: "STT", width: 50 },
-                    { field: "name", headerName: "TÊN CHI PHÍ", width: 400 },
-                    // {
-                    //   field: "action",
-                    //   headerName: "TÙY CHỌN",
-                    //   width: 120,
+                <div className=" w-50 me-3" style={{ height: "50px" }}>
+                  <TextField
+                    className="w-100"
+                    size="small"
+                    placeholder="Tên chi phí"
+                    {...register("name")}
+                    //   value={cost.name}
+                  />
+                  <span className="text-danger ">{errors.name?.message}</span>
+                </div>
 
-                    //   renderCell: (params) => (
-                    //     <div style={{ display: "flex" }}>
-                    //       <button
-                    //         style={{
-                    //           padding: "0px",
-                    //           height: "25px",
-                    //           width: "25px",
-                    //           marginRight: "10px",
-                    //         }}
-                    //         className="btn btn-warning me-2"
-                    //         onClick={() => handleSelectCost(params.id)}
-                    //         title="Sửa"
-                    //       >
-                    //         <EditIcon
-                    //           sx={{
-                    //             fontSize: "17px",
-                    //             marginBottom: "2px",
-                    //           }}
-                    //         />
-                    //       </button>
-                    //       <button
-                    //         style={{
-                    //           padding: "0px",
-                    //           height: "25px",
-                    //           width: "25px",
-                    //           lineHeight: "15px",
-                    //         }}
-                    //         className="btn btn-danger"
-                    //         onClick={() => {
-                    //           handleDetelecost(params.id);
-                    //         }}
-                    //         title="Xóa"
-                    //       >
-                    //         <ClearIcon
-                    //           sx={{
-                    //             fontSize: "20px",
-                    //           }}
-                    //         />
-                    //       </button>
-                    //     </div>
-                    //   ),
-                    // },
-                  ]}
-                  slots={{
-                    toolbar: GridToolbar,
+                <div style={{ height: "50px" }}>
+                  <button
+                    className="btn btn-primary"
+                    // disabled={isLoading}
+                    type="submit"
+                  >
+                    Thêm
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div>
+              <StyledEngineProvider injectFirst>
+                <div
+                  style={{
+                    height: 450,
+                    width: "100%",
+                    margin: "auto",
+                    overflow: "hidden",
                   }}
-                  {...costs}
-                  initialState={{
-                    ...costs.initialState,
-                    pagination: { paginationModel: { pageSize: 5 } },
-                  }}
-                  pageSizeOptions={[5, 10, 15]}
-                />
-              </div>
-            </StyledEngineProvider>
+                >
+                  <DataGrid
+                    style={{
+                      padding: 10,
+                    }}
+                    rows={costs.map((row, index) => ({
+                      ...row,
+                      id: row.id,
+                      index: index + 1,
+                    }))}
+                    columns={[
+                      { field: "index", headerName: "STT", width: 50 },
+                      { field: "name", headerName: "TÊN CHI PHÍ", width: 400 },
+                      // {
+                      //   field: "action",
+                      //   headerName: "TÙY CHỌN",
+                      //   width: 120,
+
+                      //   renderCell: (params) => (
+                      //     <div style={{ display: "flex" }}>
+                      //       <button
+                      //         style={{
+                      //           padding: "0px",
+                      //           height: "25px",
+                      //           width: "25px",
+                      //           marginRight: "10px",
+                      //         }}
+                      //         className="btn btn-warning me-2"
+                      //         onClick={() => handleSelectCost(params.id)}
+                      //         title="Sửa"
+                      //       >
+                      //         <EditIcon
+                      //           sx={{
+                      //             fontSize: "17px",
+                      //             marginBottom: "2px",
+                      //           }}
+                      //         />
+                      //       </button>
+                      //       <button
+                      //         style={{
+                      //           padding: "0px",
+                      //           height: "25px",
+                      //           width: "25px",
+                      //           lineHeight: "15px",
+                      //         }}
+                      //         className="btn btn-danger"
+                      //         onClick={() => {
+                      //           handleDetelecost(params.id);
+                      //         }}
+                      //         title="Xóa"
+                      //       >
+                      //         <ClearIcon
+                      //           sx={{
+                      //             fontSize: "20px",
+                      //           }}
+                      //         />
+                      //       </button>
+                      //     </div>
+                      //   ),
+                      // },
+                    ]}
+                    slots={{
+                      toolbar: GridToolbar,
+                    }}
+                    {...costs}
+                    initialState={{
+                      ...costs.initialState,
+                      pagination: { paginationModel: { pageSize: 5 } },
+                    }}
+                    pageSizeOptions={[5, 10, 15]}
+                  />
+                </div>
+              </StyledEngineProvider>
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      )}
     </div>
   );
 }

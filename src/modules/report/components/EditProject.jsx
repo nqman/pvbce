@@ -66,7 +66,7 @@ export default function EditProject() {
       setTimeDiff(data?.totalTime);
       setProjectItems(data.rpQuantityAndRevenueDetails);
       setRpQuantityAndRevenueLibraries(data.rpQuantityAndRevenueLibraries);
-      console.log(data);
+      // console.log(data);
 
       return data;
     } catch (error) {
@@ -254,6 +254,9 @@ export default function EditProject() {
       return newProjectItems;
     });
   };
+  useEffect(() => {
+    updateTotalAmount();
+  }, [projectItems]);
   const handleSubmit = async (e) => {
     // debugger;
     e.preventDefault();
@@ -337,7 +340,12 @@ export default function EditProject() {
                         name="name"
                         size="small"
                         className="me-4 w-50"
-                        label={"Tên dự án"}
+                        // label={"Tên dự án"}
+                        label={
+                          <span>
+                            Tên dự án<span style={{ color: "red" }}>*</span>
+                          </span>
+                        }
                         onChange={handleChangeGeneralInfor}
                       />
                       <TextField
@@ -389,7 +397,12 @@ export default function EditProject() {
                             value={formatDate(startDate)}
                             onChange={handlePickStartDate}
                             // renderInput={(params) => <TextField {...params} />}
-                            label="Ngày bắt đầu"
+                            label={
+                              <span>
+                                Ngày bắt đầu
+                                {/* <span style={{ color: "red" }}>*</span> */}
+                              </span>
+                            }
                             format="DD-MM-YYYY"
                             disabled={true}
                           />
@@ -400,7 +413,12 @@ export default function EditProject() {
                             value={formatDate(endDate)}
                             onChange={handlePickEndDate}
                             renderInput={(params) => <TextField {...params} />}
-                            label="Ngày kết thúc"
+                            label={
+                              <span>
+                                Ngày kết thúc
+                                <span style={{ color: "red" }}>*</span>
+                              </span>
+                            }
                             format="DD-MM-YYYY"
                           />
                           <TextField
