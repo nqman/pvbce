@@ -84,6 +84,7 @@ export default function ActualCostPerWeek({
 
   useEffect(() => {
     onValueChange(actualCostItems, week, idActualCost);
+    updateTotalAmount();
   }, [actualCostItems, idActualCost]);
 
   return (

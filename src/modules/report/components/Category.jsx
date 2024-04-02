@@ -122,7 +122,7 @@ export default function Category() {
           }}
         >
           <div>
-            <h3 className="text-center mb-3">Thêm hạng mục</h3>
+            <h3 className="text-center mb-3">Danh sách hạng mục</h3>
             <form
               style={{
                 display: "flex",
@@ -174,9 +174,13 @@ export default function Category() {
                   style={{
                     padding: 10,
                   }}
-                  rows={categories.map((row) => ({ ...row, id: row.id }))}
+                  rows={categories.map((row, index) => ({
+                    ...row,
+                    id: row.id,
+                    index: index + 1,
+                  }))}
                   columns={[
-                    { field: "id", headerName: "STT", width: 50 },
+                    { field: "index", headerName: "STT", width: 50 },
                     { field: "name", headerName: "TÊN HẠNG MỤC", width: 400 },
                     { field: "unit", headerName: "ĐƠN VỊ", width: 100 },
                     // {

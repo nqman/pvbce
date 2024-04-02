@@ -31,9 +31,14 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
       >
         <DataGrid
           style={{ padding: 10 }}
-          rows={rows.map((row) => ({ ...row, id: row.id }))}
+          rows={rows.map((row, index) => ({
+            ...row,
+            id: row.id,
+            index: index + 1,
+          }))}
           columns={[
-            { field: "name", headerName: "TÊN TÀI LIỆU", width: 800 },
+            { field: "index", headerName: "STT", width: 50 },
+            { field: "name", headerName: "TÊN TÀI LIỆU", width: 750 },
             { field: "type", headerName: "LOẠI TÀI LIỆU", width: 200 },
 
             {

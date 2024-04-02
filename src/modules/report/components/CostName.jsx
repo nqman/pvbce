@@ -123,7 +123,7 @@ export default function CostName() {
           }}
         >
           <div>
-            <h3 className="text-center mb-3">Thêm chi phí</h3>
+            <h3 className="text-center mb-3">Danh sách chi phí</h3>
             <form
               style={{
                 display: "flex",
@@ -168,9 +168,13 @@ export default function CostName() {
                   style={{
                     padding: 10,
                   }}
-                  rows={costs.map((row) => ({ ...row, id: row.id }))}
+                  rows={costs.map((row, index) => ({
+                    ...row,
+                    id: row.id,
+                    index: index + 1,
+                  }))}
                   columns={[
-                    { field: "id", headerName: "STT", width: 50 },
+                    { field: "index", headerName: "STT", width: 50 },
                     { field: "name", headerName: "TÊN CHI PHÍ", width: 400 },
                     // {
                     //   field: "action",

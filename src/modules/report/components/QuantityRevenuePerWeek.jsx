@@ -1,6 +1,9 @@
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
-import { getCategoriesOfProjectAPI, selectProjectAPI } from "../../../apis/reportAPI";
+import {
+  getCategoriesOfProjectAPI,
+  selectProjectAPI,
+} from "../../../apis/reportAPI";
 import { useParams } from "react-router-dom";
 import { Grid, TextField } from "@mui/material";
 import QuantityRevenueItem from "./QuantityRevenueItem";
@@ -24,14 +27,13 @@ export function QuantityRevenuePerWeek({
   };
   const params = useParams();
   const idProject = params.code;
- 
 
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
     actualQuantityAndRevenueDetails
       ? actualQuantityAndRevenueDetails
       : [newEmptyQuantityRevenueDetail()]
   );
-  
+
   const addProjectItem = () => {
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       return [...oldQuantityRevenueItems, newEmptyQuantityRevenueDetail()];
@@ -70,6 +72,7 @@ export function QuantityRevenuePerWeek({
   };
 
   const handleRemoveQuantityRevenueDetail = (detail) => {
+    // debugger;
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       return [...oldQuantityRevenueItems.filter((el) => detail.id !== el.id)];
     });
@@ -77,6 +80,7 @@ export function QuantityRevenuePerWeek({
 
   useEffect(() => {
     onValueChange(quantityRevenueItems, week, idQuantityRevenue);
+    updateTotalAmount();
   }, [quantityRevenueItems, idQuantityRevenue]);
 
   return (

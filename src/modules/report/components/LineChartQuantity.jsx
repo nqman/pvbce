@@ -4,7 +4,7 @@ import { Chart } from "react-google-charts";
 
 function LineChartQuantity({ startDate, endDate, detailModel }) {
   const [data, setData] = useState([]);
-  console.log(detailModel);
+  // console.log(detailModel);
 
   useEffect(() => {
     if (detailModel?.length > 0) {
@@ -20,29 +20,21 @@ function LineChartQuantity({ startDate, endDate, detailModel }) {
       item.quantity,
       item.actualQuantity,
     ]);
-    // const dataRows = [
-    //   ["2004/05", 165, 938],
-    //   ["2005/06", 135, 1120],
-    //   ["2006/07", 157, 1167],
-    //   ["2007/08", 139, 1110],
-    //   ["2008/09", 136, 691],
-    // ];
 
     const tableData = [headerRow, ...dataRows];
-    console.log(tableData);
+    // console.log(tableData);
     setData(tableData);
   };
 
   const options = {
-    legend: { position: "bottom" },
-    hAxis: {
-      title: "Thời gian",
-    },
+    legend: { position: "top" },
+    // hAxis: {
+    //   title: "Thời gian",
+    // },
     vAxis: {
       title: "Sản lượng",
     },
     seriesType: "bars",
-    // bar: { groupWidth: "100%" },
   };
 
   return (
@@ -63,7 +55,7 @@ function LineChartQuantity({ startDate, endDate, detailModel }) {
               fontWeight: "bold",
               marginBottom: "-5px",
             }}
-          >{`Biểu đồ sản lượng`}</h3>
+          >{`Biểu đồ sản lượng (${startDate} đến ${endDate})`}</h3>
         </Box>
       ) : (
         ""

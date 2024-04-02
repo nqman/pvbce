@@ -127,60 +127,60 @@ export default function ActualCosts() {
     // console.log(tempData);
     try {
       await addActualCostAPI(tempData, idProject);
+      await getOldCosts(idProject);
       setIsLoading(false);
       toast.success("Cập nhật chi phí thực tế thành công");
     } catch (error) {
       console.error(error);
       toast.error("Cập nhật chi phí thực tế thất bại");
     }
-    getOldCosts(idProject);
-
-    setValueFromChild(tempData);
   };
-  if (isLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
       <Toaster position="top-right" />
-      <Container sx={{ marginTop: "20px" }}>
-        <Link
-          sx={{ fontSize: "16px", marginBottom: "50px" }}
-          component="button"
-          variant="body2"
-          onClick={() => {
-            navigate(`/projects/${idProject}`);
-          }}
-        >
-          <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
-          Quay lại dự án
-        </Link>
-
-        <div>
-          {actualCosts?.map((actualCost, index) => (
-            <div key={index}>{actualCost}</div>
-          ))}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "-30px",
-          }}
-        >
-          <button
-            className="btn btn-warning"
-            onClick={addActualCostPerWeek}
-            disabled={errorGetMonday}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Container sx={{ marginTop: "20px" }}>
+          <Link
+            sx={{ fontSize: "16px", marginBottom: "50px" }}
+            component="button"
+            variant="body2"
+            onClick={() => {
+              navigate(`/projects/${idProject}`);
+            }}
           >
-            Thêm tuần
-          </button>
-          <button className="btn btn-success" onClick={handleSaveActualCost}>
-            Lưu
-          </button>
-        </div>
-      </Container>
+            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+            Quay lại dự án
+          </Link>
+
+          <div>
+            {actualCosts?.map((actualCost, index) => (
+              <div key={index}>{actualCost}</div>
+            ))}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "-30px",
+            }}
+          >
+            <button
+              className="btn btn-warning"
+              onClick={addActualCostPerWeek}
+              disabled={errorGetMonday}
+            >
+              Thêm tuần
+            </button>
+            <button className="btn btn-success" onClick={handleSaveActualCost}>
+              Lưu
+            </button>
+          </div>
+        </Container>
+      )}
     </div>
   );
 }

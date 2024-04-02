@@ -64,7 +64,7 @@ function LineChartActualCostAndRevenue({
               fontWeight: "bold",
             }}
           >
-            {"Biểu đồ doanh thu & chi phí"}
+            {`Biểu đồ doanh thu & chi phí (${startDate} đến ${endDate})`}
           </h3>
         </Box>
       ) : (

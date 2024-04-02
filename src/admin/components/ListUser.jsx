@@ -29,9 +29,13 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
       >
         <DataGrid
           style={{ padding: 10 }}
-          rows={rows.map((row) => ({ ...row, id: row.id }))}
+          rows={rows.map((row, index) => ({
+            ...row,
+            id: row.id,
+            index: index + 1,
+          }))}
           columns={[
-            { field: "id", headerName: "STT", width: 50 },
+            { field: "index", headerName: "STT", width: 50 },
 
             { field: "name", headerName: "HỌ TÊN", width: 200 },
             { field: "email", headerName: "EMAIL", width: 200 },

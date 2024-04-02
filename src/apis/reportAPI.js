@@ -113,7 +113,6 @@ export async function listProjectsAPI() {
   }
 }
 export async function saveProjectAPI(project) {
-  debugger;
   try {
     const formData = new FormData();
     Object.keys(project).map((key) => {

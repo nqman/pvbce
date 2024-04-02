@@ -91,7 +91,6 @@ export default function QuantityRevenues() {
     ]);
   };
   const addQuantityRevenuePerWeek = () => {
-    // debugger;
     setActualWeek(project?.startDate);
     setQuantityRevenues((oldQuantityRevenuePerWeeks) => {
       return [
@@ -114,7 +113,6 @@ export default function QuantityRevenues() {
   };
 
   const handleSaveQuantityRevenue = async () => {
-    // debugger;
     setIsLoading(true);
     const tempData = [];
 
@@ -129,8 +127,7 @@ export default function QuantityRevenues() {
     }
     try {
       await addActualQuantityAndRevenueAPI(tempData, idProject);
-      getOldQuantityRevenues(idProject);
-      setValueFromChild(tempData);
+      await getOldQuantityRevenues(idProject);
       setIsLoading(false);
       toast.success("Cập nhật sản lượng thực tế thành công");
     } catch (error) {
@@ -138,53 +135,55 @@ export default function QuantityRevenues() {
       toast.error("Cập nhật sản lượng thực tế thất bại");
     }
   };
-  if (isLoading) {
-    return <Loading />;
-  }
+
   return (
     <div>
       <Toaster position="top-right" />
-      <Container sx={{ marginTop: "20px" }}>
-        <Link
-          sx={{ fontSize: "16px", marginBottom: "50px" }}
-          component="button"
-          variant="body2"
-          onClick={() => {
-            navigate(`/projects/${idProject}`);
-          }}
-        >
-          <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
-          Quay lại dự án
-        </Link>
-
-        <div>
-          {quantityRevenues?.map((quantityRevenue, index) => (
-            <div key={index}>{quantityRevenue}</div>
-          ))}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "-30px",
-          }}
-        >
-          <button
-            className="btn btn-warning"
-            onClick={addQuantityRevenuePerWeek}
-            disabled={errorGetMonday}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Container sx={{ marginTop: "20px" }}>
+          <Link
+            sx={{ fontSize: "16px", marginBottom: "50px" }}
+            component="button"
+            variant="body2"
+            onClick={() => {
+              navigate(`/projects/${idProject}`);
+            }}
           >
-            Thêm tuần
-          </button>
-          <button
-            className="btn btn-success"
-            onClick={handleSaveQuantityRevenue}
+            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+            Quay lại dự án
+          </Link>
+
+          <div>
+            {quantityRevenues?.map((quantityRevenue, index) => (
+              <div key={index}>{quantityRevenue}</div>
+            ))}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "-30px",
+            }}
           >
-            Lưu
-          </button>
-        </div>
-      </Container>
+            <button
+              className="btn btn-warning"
+              onClick={addQuantityRevenuePerWeek}
+              disabled={errorGetMonday}
+            >
+              Thêm tuần
+            </button>
+            <button
+              className="btn btn-success"
+              onClick={handleSaveQuantityRevenue}
+            >
+              Lưu
+            </button>
+          </div>
+        </Container>
+      )}
     </div>
   );
 }

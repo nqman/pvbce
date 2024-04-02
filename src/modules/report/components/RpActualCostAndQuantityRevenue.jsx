@@ -50,7 +50,7 @@ export default function RpActualCostAndQuantityRevenue() {
           endDate
         );
         setViewReports(data);
-        console.log(data);
+        // console.log(data);
         return data;
       } catch (error) {}
     } else if (!typeReport) {
@@ -159,7 +159,8 @@ export default function RpActualCostAndQuantityRevenue() {
             </Button>
           </div>
         </div>
-        {typeReport === "quantity" ? (
+        {console.log(viewReports)}
+        {viewReports[0]?.category && typeReport === "quantity" ? (
           <div>
             <LineChartQuantity
               startDate={startDate}
@@ -167,7 +168,7 @@ export default function RpActualCostAndQuantityRevenue() {
               detailModel={viewReports}
             />
           </div>
-        ) : typeReport === "revenue" ? (
+        ) : viewReports[0]?.actualRevenue && typeReport === "revenue" ? (
           <div>
             <LineChartActualCostAndRevenue
               startDate={startDate}
@@ -176,7 +177,10 @@ export default function RpActualCostAndQuantityRevenue() {
             />
           </div>
         ) : (
-          ""
+          <Box sx={{ color: "red", marginTop: "10px" }}>
+            Vui lòng chọn ngày bắt đầu, ngày kết thúc, loại báo cáo và nhấn xuất
+            báo cáo!
+          </Box>
         )}
       </Container>
     </div>

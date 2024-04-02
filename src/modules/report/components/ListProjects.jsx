@@ -27,9 +27,13 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
       >
         <DataGrid
           style={{ padding: 10 }}
-          rows={rows?.map((row) => ({ ...row, id: row.id }))}
+          rows={rows?.map((row, index) => ({
+            ...row,
+            id: row.id,
+            index: index + 1,
+          }))}
           columns={[
-            { field: "id", headerName: "STT", width: 50 },
+            { field: "index", headerName: "STT", width: 50 },
 
             { field: "name", headerName: "TÊN DỰ ÁN", width: 400 },
             { field: "startDate", headerName: "NGÀY BẮT ĐẦU", width: 150 },
