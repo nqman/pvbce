@@ -43,72 +43,73 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
               width: 150,
             },
             { field: "note", headerName: "GHI CHÚ", width: 250 },
-            ...(role && !role !== "Admin"
-              ? [
-                  {
-                    field: "action",
-                    headerName: "TÙY CHỌN",
-                    width: 150,
-                    renderCell: (params) => (
-                      <div style={{ display: "flex" }}>
-                        <button
-                          style={{
-                            padding: "0px",
-                            height: "25px",
-                            width: "25px",
-                            marginRight: "10px",
+
+            {
+              field: "action",
+              headerName: "TÙY CHỌN",
+              width: 150,
+              renderCell: (params) => (
+                <div style={{ display: "flex" }}>
+                  <button
+                    style={{
+                      padding: "0px",
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "10px",
+                    }}
+                    className="btn btn-success me-2"
+                    onClick={() => handleRead(params.id)}
+                    title="Xem"
+                  >
+                    <VisibilityIcon
+                      sx={{
+                        fontSize: "17px",
+                        marginBottom: "2px",
+                      }}
+                    />
+                  </button>
+                  {role && role === "Admin" && (
+                    <>
+                      <button
+                        style={{
+                          padding: "0px",
+                          height: "25px",
+                          width: "25px",
+                          marginRight: "10px",
+                        }}
+                        className="btn btn-warning me-2"
+                        onClick={() => onEdit(params.id)}
+                        title="Sửa"
+                      >
+                        <EditIcon
+                          sx={{
+                            fontSize: "17px",
+                            marginBottom: "2px",
                           }}
-                          className="btn btn-success me-2"
-                          onClick={() => handleRead(params.id)}
-                          title="Xem"
-                        >
-                          <VisibilityIcon
-                            sx={{
-                              fontSize: "17px",
-                              marginBottom: "2px",
-                            }}
-                          />
-                        </button>
-                        <button
-                          style={{
-                            padding: "0px",
-                            height: "25px",
-                            width: "25px",
-                            marginRight: "10px",
+                        />
+                      </button>
+                      <button
+                        style={{
+                          padding: "0px",
+                          height: "25px",
+                          width: "25px",
+                          lineHeight: "15px",
+                        }}
+                        className="btn btn-danger"
+                        onClick={() => onDelete(params.id)}
+                        title="Xóa"
+                      >
+                        <ClearIcon
+                          sx={{
+                            fontSize: "20px",
                           }}
-                          className="btn btn-warning me-2"
-                          onClick={() => onEdit(params.id)}
-                          title="Sửa"
-                        >
-                          <EditIcon
-                            sx={{
-                              fontSize: "17px",
-                              marginBottom: "2px",
-                            }}
-                          />
-                        </button>
-                        <button
-                          style={{
-                            padding: "0px",
-                            height: "25px",
-                            width: "25px",
-                            lineHeight: "15px",
-                          }}
-                          className="btn btn-danger"
-                          onClick={() => onDelete(params.id)}
-                          title="Xóa"
-                        >
-                          <ClearIcon
-                            sx={{
-                              fontSize: "20px",
-                            }}
-                          />
-                        </button>
-                      </div>
-                    ),
-                  },
-                ]
-              : []),
+                        />
+                      </button>
+                    </>
+                  )}
+                </div>
+              ),
+            },
           ]}
           slots={{
             toolbar: GridToolbar,

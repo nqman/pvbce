@@ -23,8 +23,7 @@ import ListDocuments from "../components/ListDocuments";
 
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
-  const role = Cookies.get("role");
-  // console.log("role", role);
+  const role = Cookies.get("role")?.replace(/"/g, "");
 
   //MODAL
   const [show, setShow] = useState(false);
@@ -118,7 +117,7 @@ export default function DocumentManagement() {
     <>
       <Container maxWidth="lg" className="mt-4">
         <Toaster position="top-right" />
-        {role && !role !== "Admin" && (
+        {role && role === "Admin" && (
           <div className="d-flex justify-content-end">
             <button className="btn btn-primary " onClick={handleShow}>
               Thêm tài liệu

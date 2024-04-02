@@ -10,32 +10,18 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import CategoryIcon from "@mui/icons-material/Category";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import { useNavigate } from "react-router-dom";
-import {
-  AccountCircle,
-  Logout,
-  ManageAccounts,
-  Person,
-  PersonSearch,
-} from "@mui/icons-material";
+import { Logout, Person, PersonSearch } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
-import EditIcon from "@mui/icons-material/Edit";
-import Divider from "@mui/material/Divider";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
 import { selectUserAPI } from "../../../../apis/authenticationAPI";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import PersonIcon from "@mui/icons-material/Person";
 
 const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];

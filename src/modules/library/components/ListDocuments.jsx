@@ -86,8 +86,7 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
                         />
                       </button>
                     )}
-                    {console.log(typeof role)}
-                    {role !== "null" && role && role !== "Admin" && (
+                    {role !== "null" && role && role === "Admin" && (
                       <button
                         style={{
                           padding: "0px",

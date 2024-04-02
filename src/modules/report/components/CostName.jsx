@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Loading from "../../home/components/Loading/Loading";
+import Cookies from "js-cookie";
 const schema = yup
   .object({
     name: yup.string().required("Vui lòng không bỏ trống"),
@@ -26,6 +27,8 @@ const schema = yup
   .required();
 
 export default function CostName() {
+  const role = Cookies.get("role")?.replace(/"/g, "");
+
   const {
     resetField,
     register,
@@ -127,35 +130,37 @@ export default function CostName() {
           >
             <div>
               <h3 className="text-center mb-3">Danh sách chi phí</h3>
-              <form
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "20px",
-                }}
-                onSubmit={handleSubmit(handleAddCost)}
-              >
-                <div className=" w-50 me-3" style={{ height: "50px" }}>
-                  <TextField
-                    className="w-100"
-                    size="small"
-                    placeholder="Tên chi phí"
-                    {...register("name")}
-                    //   value={cost.name}
-                  />
-                  <span className="text-danger ">{errors.name?.message}</span>
-                </div>
+              {role && role === "Admin" && (
+                <form
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                  }}
+                  onSubmit={handleSubmit(handleAddCost)}
+                >
+                  <div className=" w-50 me-3" style={{ height: "50px" }}>
+                    <TextField
+                      className="w-100"
+                      size="small"
+                      placeholder="Tên chi phí"
+                      {...register("name")}
+                      //   value={cost.name}
+                    />
+                    <span className="text-danger ">{errors.name?.message}</span>
+                  </div>
 
-                <div style={{ height: "50px" }}>
-                  <button
-                    className="btn btn-primary"
-                    // disabled={isLoading}
-                    type="submit"
-                  >
-                    Thêm
-                  </button>
-                </div>
-              </form>
+                  <div style={{ height: "50px" }}>
+                    <button
+                      className="btn btn-primary"
+                      // disabled={isLoading}
+                      type="submit"
+                    >
+                      Thêm
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
             <div>
               <StyledEngineProvider injectFirst>

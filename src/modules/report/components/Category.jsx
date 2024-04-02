@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Loading from "../../home/components/Loading/Loading";
+import Cookies from "js-cookie";
 const schema = yup
   .object({
     name: yup.string().required("Vui lòng không bỏ trống"),
@@ -27,6 +28,8 @@ const schema = yup
   .required();
 
 export default function Category() {
+  const role = Cookies.get("role")?.replace(/"/g, "");
+
   const {
     resetField,
     register,
@@ -125,42 +128,44 @@ export default function Category() {
           >
             <div>
               <h3 className="text-center mb-3">Danh sách hạng mục</h3>
-              <form
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "20px",
-                }}
-                onSubmit={handleSubmit(handleAddCategory)}
-              >
-                <div className=" w-50 me-3" style={{ height: "50px" }}>
-                  <TextField
-                    className="w-100"
-                    size="small"
-                    placeholder="Tên hạng mục"
-                    {...register("name")}
-                  />
-                  <span className="text-danger ">{errors.name?.message}</span>
-                </div>
-                <div className=" w-25 me-3" style={{ height: "50px" }}>
-                  <TextField
-                    className="w-100"
-                    size="small"
-                    placeholder="Đơn vị"
-                    {...register("unit")}
-                  />
-                  <span className="text-danger ">{errors.unit?.message}</span>
-                </div>
-                <div style={{ height: "50px" }}>
-                  <button
-                    className="btn btn-primary"
-                    // disabled={isLoading}
-                    type="submit"
-                  >
-                    Thêm
-                  </button>
-                </div>
-              </form>
+              {role && role === "Admin" && (
+                <form
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "20px",
+                  }}
+                  onSubmit={handleSubmit(handleAddCategory)}
+                >
+                  <div className=" w-50 me-3" style={{ height: "50px" }}>
+                    <TextField
+                      className="w-100"
+                      size="small"
+                      placeholder="Tên hạng mục"
+                      {...register("name")}
+                    />
+                    <span className="text-danger ">{errors.name?.message}</span>
+                  </div>
+                  <div className=" w-25 me-3" style={{ height: "50px" }}>
+                    <TextField
+                      className="w-100"
+                      size="small"
+                      placeholder="Đơn vị"
+                      {...register("unit")}
+                    />
+                    <span className="text-danger ">{errors.unit?.message}</span>
+                  </div>
+                  <div style={{ height: "50px" }}>
+                    <button
+                      className="btn btn-primary"
+                      // disabled={isLoading}
+                      type="submit"
+                    >
+                      Thêm
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
             <div>
               <StyledEngineProvider injectFirst>
