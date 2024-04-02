@@ -34,6 +34,8 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
 import { selectUserAPI } from "../../../../apis/authenticationAPI";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PersonIcon from "@mui/icons-material/Person";
 
 const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
 // const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -470,17 +472,16 @@ function Header() {
           ) : (
             <button
               style={{
-                // backgroundColor: "#3B65B3",
-                // color: "white",
                 fontSize: "14px",
-                // padding: "8px 15px",
-                // border: "none",
-                // borderRadius: "5px",
+
+                textTransform: "inherit",
               }}
-              className="btn btn-outline-primary"
+              className="btn btn-primary "
               onClick={() => handleSignIn()}
+              // variant="outlined"
             >
               Đăng nhập
+              {/* <PersonIcon /> */}
             </button>
           )}
         </Toolbar>

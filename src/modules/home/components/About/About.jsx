@@ -17,7 +17,12 @@ export default function About() {
     <Box mt={4}>
       <Grid container="lg" maxWidth={"lg"} margin={"auto"}>
         <Grid lg={6} sm={12} className={styles.about_left}>
-          <Typography className={styles.h5} variant="h5" fon>
+          <Typography
+            className={styles.h5}
+            variant="h5"
+            fontWeight={"bold"}
+            fon
+          >
             VỀ CHÚNG TÔI
           </Typography>
           <div className={`container ${styles.about_text}`}>

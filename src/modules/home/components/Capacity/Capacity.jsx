@@ -13,8 +13,13 @@ export default function Capacity() {
   };
 
   return (
-    <div className="container" style={{ marginTop: "80px" }}>
-      <h1 className="text-center">NĂNG LỰC</h1>
+    <div className="container" style={{ marginTop: "100px" }}>
+      <h1
+        className="text-center"
+        style={{ fontSize: "30px ", fontWeight: "bold" }}
+      >
+        NĂNG LỰC
+      </h1>
       <Box>
         <TabContext value={value}>
           <Box display="flex" justifyContent="center" alignItems="center">

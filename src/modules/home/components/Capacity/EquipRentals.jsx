@@ -133,26 +133,19 @@ export default function EquipRentals() {
 
   return (
     <Box sx={{ maxWidth: "100%", flexGrow: 1 }}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          height: 50,
-          pl: 2,
-          bgcolor: "background.default",
-        }}
-      >
-        <Typography variant="h6">{steps[activeStep].label}</Typography>
-      </Paper>
-      <Box display={"flex"}>
+      <Box display={"flex"} sx={{ marginTop: "10px" }}>
         <TableContainer component={Paper} sx={{ maxHeight: 450 }}>
           <Table
             sx={{ minWidth: 500, height: "100%" }}
             aria-label="customized table"
           >
-            <TableHead>
+            <TableHead
+              sx={{
+                position: "sticky",
+                top: 0,
+                zIndex: 999,
+              }}
+            >
               <TableRow>
                 <StyledTableCell
                   // className={styles.cell_head}
@@ -207,7 +200,6 @@ export default function EquipRentals() {
                   <StyledTableCell
                     style={{
                       fontSize: "12px",
-                      fontWeight: "400",
                       textAlign: "left",
                       padding: "5px 0",
                       fontWeight: row.no === "" ? "bold" : "400",
