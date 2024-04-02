@@ -155,14 +155,21 @@ export default function EditEquipment() {
   const handleSaveEquipment = async (e) => {
     e.preventDefault();
     // console.log(value);
-    try {
-      const response = await saveEquipmentAPI(value);
-      console.log(response);
-      toast.success("Cập nhật thiết bị thành công");
-      navigate("/catalogue");
-    } catch (error) {
-      console.log(error);
-      toast.error("Cập nhật thiết bị thất bại");
+    if (!value.name) {
+      toast.error("Vui lòng nhập tên thiết bị");
+    } else if (!value.divideCode) {
+      toast.error("Vui lòng nhập mã thiết bị");
+    } else {
+      setIsLoading(true);
+      try {
+        const response = await saveEquipmentAPI(value);
+        console.log(response);
+        toast.success("Cập nhật thiết bị thành công");
+        navigate("/catalogue");
+      } catch (error) {
+        console.log(error);
+        toast.error("Cập nhật thiết bị thất bại");
+      }
     }
   };
 

@@ -41,13 +41,11 @@ export default function QuantityRevenueItem({
 
   const [unit, setUnit] = useState("");
   const handleSelectCategory = async (event) => {
-    // debugger;
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
     if (selectedCategory) {
       setUnit(selectedCategory.unit);
     }
-
     onChange({
       ...detail,
       unit: selectedCategory.unit,

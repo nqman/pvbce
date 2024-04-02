@@ -144,14 +144,20 @@ export default function CreateEquipment() {
   // Thêm thiết bị
   const handleSaveEquipment = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      await saveEquipmentAPI(value);
-      toast.success("Thêm thiết bị thành công");
-      navigate("/catalogue");
-    } catch (error) {
-      console.log(error);
-      toast.error("Thêm thiết bị thất bại");
+    if (!value.name) {
+      toast.error("Vui lòng nhập tên thiết bị");
+    } else if (!value.divideCode) {
+      toast.error("Vui lòng nhập mã thiết bị");
+    } else {
+      setIsLoading(true);
+      try {
+        await saveEquipmentAPI(value);
+        toast.success("Thêm thiết bị thành công");
+        navigate("/catalogue");
+      } catch (error) {
+        console.log(error);
+        toast.error("Thêm thiết bị thất bại");
+      }
     }
   };
 

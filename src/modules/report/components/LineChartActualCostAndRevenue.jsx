@@ -24,9 +24,9 @@ function LineChartActualCostAndRevenue({
 
     const dataRows = detailModelRevenue?.map((item) => [
       item.date,
-      item.actualCost,
-      item.actualRevenue,
       item.expectedRevenue,
+      item.actualRevenue,
+      item.actualCost,
     ]);
 
     const tableData = [headerRow, ...dataRows];

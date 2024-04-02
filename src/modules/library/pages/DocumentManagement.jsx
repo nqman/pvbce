@@ -75,10 +75,14 @@ export default function DocumentManagement() {
     setDocument({ ...document, file: e.target.files[0] });
   };
   const handleSubmit = async () => {
-    console.log(document);
+    // console.log(document);
+    setShow(false);
+    setIsLoading(true);
     try {
       await addDocumentAPI(document);
+      setIsLoading(false);
       toast.success("Thêm tài liệu thành công");
+
       fetchDocuments();
     } catch (error) {
       toast.error("Thêm tài liệu thất bại");

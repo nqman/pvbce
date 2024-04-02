@@ -6,16 +6,21 @@ import {
   ListItem,
   ListItemText,
   Container,
+  Link,
 } from "@mui/material";
 import Slider from "react-slick";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   fetchPdfProduct,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
+
 const EquipDetail = () => {
+  const navigate = useNavigate();
   // READ
   const getPdfDetail = async (id, type) => {
     try {
@@ -62,6 +67,19 @@ const EquipDetail = () => {
   return (
     <div>
       <Container className="mt-4">
+        <div className="mb-2">
+          <Link
+            sx={{ fontSize: "16px" }}
+            component="button"
+            variant="body2"
+            onClick={() => {
+              navigate("/catalogue");
+            }}
+          >
+            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+            Danh sách thiết bị
+          </Link>
+        </div>
         <Grid container spacing={5} style={{ overflow: "hidden" }}>
           <Grid item xs={12} lg={6}>
             <Slider {...carouselSettings}>

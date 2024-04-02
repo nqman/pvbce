@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="footer_left col-lg-4 col-md-4 col-sm-12">
             <div style={{ marginTop: "20px" }}>
               <b>VĂN PHÒNG TẠI HCM:</b>
-              <ul style={{ listStyle: "none" }}>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 <li style={{ margin: "8px 0" }}>
                   <PinDropIcon
                     sx={{
@@ -52,7 +52,7 @@ export default function Footer() {
           <div className="footer_middle col-lg-4 col-md-4 col-sm-12">
             <div style={{ marginTop: "20px" }}>
               <b>XƯỞNG THIẾT BỊ TẠI LONG AN:</b>
-              <ul style={{ listStyle: "none" }}>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 <li style={{ margin: "8px 0" }}>
                   <PinDropIcon
                     sx={{
