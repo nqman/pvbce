@@ -234,6 +234,7 @@ export async function fetchPdfProject(documentId, type) {
 export async function getNextMondayAPI(actualWeek, id) {
   try {
     const resp = await baseAPI.get(`date/get-next-monday/${actualWeek}/${id}`);
+    // console.log(resp.data);
     return resp.data;
   } catch (error) {
     throw error.response.data;

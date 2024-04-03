@@ -17,21 +17,16 @@ export async function addDocumentAPI(document) {
     // debugger;
     const formData = new FormData();
     if (document.file instanceof File) {
-      // console.log(document.file);
       formData.append("documentFileId", 0);
-      formData.append("name", document.name);
       formData.append("documentFile", document.file);
     } else {
       formData.append("documentLinkId", 0);
-      formData.append("name", document.name);
       formData.append("documentLink", document.link);
     }
+    formData.append("name", document.name);
+    formData.append("scope", document.scope);
 
     const resp = await baseAPI.post("documents/save", formData, {
-      // const resp = await axios.post(
-      //   "http://103.82.39.125:8080/documents/save",
-      //   formData,
-      //   {
       headers: {
         "Content-Type": "multipart/form-data",
       },

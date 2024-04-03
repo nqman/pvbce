@@ -38,8 +38,20 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
           }))}
           columns={[
             { field: "index", headerName: "STT", width: 50 },
-            { field: "name", headerName: "TÊN TÀI LIỆU", width: 750 },
-            { field: "type", headerName: "LOẠI TÀI LIỆU", width: 200 },
+            { field: "name", headerName: "TÊN TÀI LIỆU", width: 650 },
+            {
+              field: "visible",
+              headerName: "HIỂN THỊ",
+              width: 150,
+              renderCell: (params) => {
+                return (
+                  <div style={{ textAlign: "center" }}>
+                    <div>{params.row?.scope}</div>
+                  </div>
+                );
+              },
+            },
+            { field: "type", headerName: "LOẠI TÀI LIỆU", width: 150 },
 
             {
               field: "action",
@@ -49,6 +61,8 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
               renderCell: (params) => {
                 return (
                   <div style={{ textAlign: "center" }}>
+                    {console.log(params)}
+
                     {params.row?.type === "pdf" && (
                       <button
                         className="btn btn-success"

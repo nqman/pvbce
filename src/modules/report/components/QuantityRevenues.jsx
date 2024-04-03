@@ -23,6 +23,7 @@ export default function QuantityRevenues() {
   const [actualWeek, setActualWeek] = useState("");
   const idProject = params.code;
   const getNextModay = async (actualWeek, idProject) => {
+    // debugger;
     try {
       const nextMonday = await getNextMondayAPI(actualWeek, idProject);
       setActualWeek(nextMonday);
@@ -32,9 +33,11 @@ export default function QuantityRevenues() {
     }
   };
   const getProjects = async (idProject) => {
+    // debugger;
     try {
       const data = await selectProjectAPI(idProject);
       setProject(data);
+      getNextModay(0, idProject);
       return data;
     } catch (error) {
       console.error("Error fetching project:", error);
@@ -50,6 +53,7 @@ export default function QuantityRevenues() {
           <QuantityRevenuePerWeek
             idQuantityRevenue={quantityRevenue.id}
             week={quantityRevenue.week}
+            fromDateToDate={quantityRevenue.fromDateToDate}
             actualQuantityAndRevenueDetails={
               quantityRevenue.actualQuantityAndRevenueDetails
             }
@@ -63,7 +67,6 @@ export default function QuantityRevenues() {
           (oldQuantityRevenuePerWeek) => oldQuantityRevenuePerWeek.week
         );
         getNextModay(actualWeek.pop(), idProject);
-        // console.log(actualWeek.pop());
       }
       setQuantityRevenues(tempQuantityRevenues);
       setIsLoading(false);
@@ -91,7 +94,8 @@ export default function QuantityRevenues() {
     ]);
   };
   const addQuantityRevenuePerWeek = () => {
-    setActualWeek(project?.startDate);
+    debugger;
+    // setActualWeek(project?.startDate);
     setQuantityRevenues((oldQuantityRevenuePerWeeks) => {
       return [
         ...oldQuantityRevenuePerWeeks,
@@ -99,7 +103,9 @@ export default function QuantityRevenues() {
           // data={project?.rpQuantityAndRevenueDetails}
           // startDate={project?.startDate}
           idQuantityRevenue={-Date.now()}
-          week={actualWeek === "" ? project?.startDate : actualWeek}
+          // week={actualWeek === "" ? project?.startDate : actualWeek.date}
+          week={actualWeek.date}
+          fromDateToDate={actualWeek.fromDateToDate}
           key={Date.now()}
           onValueChange={handleChildValueChange}
         />,
@@ -109,7 +115,7 @@ export default function QuantityRevenues() {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    getNextModay(actualWeek, idProject);
+    getNextModay(actualWeek.date, idProject);
   };
 
   const handleSaveQuantityRevenue = async () => {

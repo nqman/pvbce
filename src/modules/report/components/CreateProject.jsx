@@ -242,7 +242,7 @@ export default function CreateProject() {
               <Box display="flex" justifyContent="center" alignItems="center">
                 <TabList onChange={handleChangeItem}>
                   <Tab label="THÔNG TIN HỢP ĐỒNG" value="1" />
-                  <Tab label="THƯ VIỆN" value="2" />
+                  <Tab label="THƯ VIỆN DỰ ÁN" value="2" />
                 </TabList>
               </Box>
               {/* Thông tin hợp đồng */}

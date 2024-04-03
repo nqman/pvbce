@@ -324,7 +324,7 @@ export default function OtherProjects() {
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
-                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
+                  sx={{ minWidth: 200, padding: "5px 0", fontSize: "11px" }}
                 >
                   PHẠM VI CÔNG VIỆC
                 </StyledTableCell>

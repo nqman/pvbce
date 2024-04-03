@@ -32,16 +32,24 @@ export default function DocumentManagement() {
   };
   const handleShow = () => setShow(true);
 
-  // SELECT
+  // SELECT type
   const [type, setType] = useState("");
 
-  const handleChangeType = (event) => {
-    setType(event.target.value);
+  const handleChangeType = (e) => {
+    setType(e.target.value);
     setDocument(emptyValue);
+  };
+
+  const [scope, setScope] = useState("");
+
+  const handleChangescope = (e) => {
+    setScope(e.target.value);
+    setDocument({ ...document, scope: e.target.value });
   };
 
   // FORM
   const emptyValue = {
+    scope: "",
     name: "",
     link: "",
     file: null,
@@ -75,7 +83,7 @@ export default function DocumentManagement() {
     setDocument({ ...document, file: e.target.files[0] });
   };
   const handleSubmit = async () => {
-    // console.log(document);
+    console.log(document);
     setShow(false);
     setIsLoading(true);
     try {
@@ -147,16 +155,20 @@ export default function DocumentManagement() {
             </Modal.Header>
             <Modal.Body style={{ padding: "10px" }}>
               <div
-                className="d-flex align-items-center"
-                style={{ height: "56px" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "20px",
+                }}
               >
-                <Box sx={{ minWidth: 120 }}>
+                <Box sx={{ marginRight: "20px" }}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
+                    <InputLabel size="small" id="demo-simple-select-label">
                       Định dạng
                     </InputLabel>
 
                     <Select
+                      size="small"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={type}
@@ -169,23 +181,48 @@ export default function DocumentManagement() {
                     </Select>
                   </FormControl>
                 </Box>
+                <Box>
+                  <FormControl size="small" fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Hiển thị
+                    </InputLabel>
 
+                    <Select
+                      size="small"
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={scope}
+                      label="Hiển thị"
+                      onChange={handleChangescope}
+                      sx={{ width: "130px" }}
+                    >
+                      <MenuItem value={"public"}>Công khai</MenuItem>
+                      <MenuItem value={"private"}>Nội bộ</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "50px",
+                }}
+              >
                 <TextField
                   label="Tên tài liệu"
                   id="outlined-size-small"
                   value={document.name}
                   name="name"
-                  sx={{ margin: "20px", width: "250px" }}
+                  size="small"
+                  sx={{ width: "50%", marginRight: "20px" }}
                   onChange={handleInputChange}
                 />
+
                 {type === "file" ? (
-                  <Button component="label">
+                  <Button sx={{ width: "50%" }} component="label">
                     <input
-                      style={{
-                        width: "300px",
-                        padding: "16.5px",
-                        lineHeight: "23px",
-                      }}
+                      style={{}}
                       className="form-control"
                       type="file"
                       id="formFile"
@@ -201,8 +238,9 @@ export default function DocumentManagement() {
                     id="outlined-size-small"
                     value={document.link}
                     name="link"
+                    size="small"
                     sx={{
-                      width: "300px",
+                      width: "50%",
                     }}
                     onChange={handleInputChange}
                   />
@@ -210,6 +248,8 @@ export default function DocumentManagement() {
                   ""
                 )}
               </div>
+
+              {/* </div> */}
             </Modal.Body>
             <Modal.Footer>
               <Button

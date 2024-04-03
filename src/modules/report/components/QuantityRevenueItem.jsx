@@ -18,7 +18,7 @@ export default function QuantityRevenueItem({
 }) {
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(detail?.quantity || "");
-  const [price, setPrice] = useState(detail?.price || "");
+  const [price, setPrice] = useState("");
   const [amount, setAmount] = useState(detail?.amount || quantity * price);
 
   useEffect(() => {
@@ -45,15 +45,15 @@ export default function QuantityRevenueItem({
     const selectedCategory = categories.find((el) => el.name === category);
     if (selectedCategory) {
       setUnit(selectedCategory.unit);
+      setPrice(selectedCategory.price);
     }
     onChange({
       ...detail,
       unit: selectedCategory.unit,
+      price: selectedCategory.price,
       category,
     });
   };
-
-  const [errorDetail, setErrorDetail] = useState("");
 
   const deleteDiv = async (id) => {
     try {
@@ -126,7 +126,7 @@ export default function QuantityRevenueItem({
         <TextField
           label="Đơn vị"
           id="outlined-size-small"
-          value={unit || detail?.unit}
+          value={unit}
           size="small"
           disabled={true}
           sx={{ marginRight: "20px", width: "100px" }}
@@ -148,16 +148,17 @@ export default function QuantityRevenueItem({
           }
         />
         <TextField
-          // label="Đơn giá*"
-          label={
-            <span>
-              Đơn giá<span style={{ color: "red" }}>*</span>
-            </span>
-          }
+          label="Đơn giá*"
+          // label={
+          //   <span>
+          //     Đơn giá<span style={{ color: "red" }}>*</span>
+          //   </span>
+          // }
           id="outlined-size-small"
           value={price}
           size="small"
-          type="number"
+          // type="number"
+          disabled={true}
           sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
@@ -179,8 +180,6 @@ export default function QuantityRevenueItem({
           x
         </button>
       </div>
-
-      <p className="text-danger">{errorDetail}</p>
     </div>
   );
 }

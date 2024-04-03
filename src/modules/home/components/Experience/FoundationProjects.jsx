@@ -492,13 +492,13 @@ export default function FoundationProjects() {
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
-                  sx={{ minWidth: 350, padding: "5px 0", fontSize: "11px" }}
+                  sx={{ minWidth: 250, padding: "5px 0", fontSize: "11px" }}
                 >
                   TÊN DỰ ÁN
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
-                  sx={{ minWidth: 50, padding: "5px 0", fontSize: "11px" }}
+                  sx={{ minWidth: 250, padding: "5px 0", fontSize: "11px" }}
                 >
                   PHẠM VI CÔNG VIỆC
                 </StyledTableCell>

@@ -7,9 +7,11 @@ import {
   ListItemText,
   Container,
   Link,
+  Button,
 } from "@mui/material";
 import Slider from "react-slick";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -18,9 +20,11 @@ import {
   fetchPdfProduct,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
+import Cookies from "js-cookie";
 
 const EquipDetail = () => {
   const navigate = useNavigate();
+  const role = Cookies.get("role")?.replace(/"/g, "");
   // READ
   const getPdfDetail = async (id, type) => {
     try {
@@ -31,10 +35,10 @@ const EquipDetail = () => {
   const carouselSettings = {
     dots: true,
     infinite: true,
-    // speed: 500,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true,
+    autoplay: true,
     // autoplaySpeed: 3000,
   };
   const params = useParams();
@@ -63,6 +67,31 @@ const EquipDetail = () => {
   if (!product) {
     return;
   }
+  //download IMAGE
+  const downloadQRImage = async () => {
+    try {
+      const response = await fetch(product.imageOfQR);
+      const blob = await response.blob();
+
+      // Lấy loại dữ liệu từ phản hồi để xác định định dạng của ảnh
+      const contentType = response.headers.get("content-type");
+
+      // Tạo một URL đến dữ liệu nhận được
+      const url = window.URL.createObjectURL(
+        new Blob([blob], { type: contentType })
+      );
+
+      // Tạo một thẻ <a> để tải xuống
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", product.divideCode); // Đổi định dạng ảnh thành định dạng bạn muốn tải xuống
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading image:", error);
+    }
+  };
 
   return (
     <div>
@@ -140,10 +169,20 @@ const EquipDetail = () => {
             </Typography>
             <div>
               <img
-                style={{ width: "200px", border: "1px solid" }}
+                style={{ width: "250px", border: "1px solid" }}
                 src={product.imageOfQR}
                 alt={product.divideCode}
+                id="qrImage"
               />
+            </div>
+            <div style={{ marginLeft: "55px", marginTop: "5px" }}>
+              <Button sx={{ fontSize: "16px" }} onClick={downloadQRImage}>
+                <span style={{ color: "black", marginRight: "4px" }}>
+                  {" "}
+                  {product.divideCode}{" "}
+                </span>
+                <DownloadForOfflineIcon />
+              </Button>
             </div>
           </Grid>
 
@@ -190,28 +229,34 @@ const EquipDetail = () => {
               </ul>
             </List>
           </Grid>
-          <Grid item xs={12} lg={6}>
-            <Typography variant="h5" gutterBottom>
-              Nhật kí bảo dưỡng
-            </Typography>
-            <List>
-              <ul>
-                {productDiaries?.map((diary) => (
-                  <li className="mb-2">
-                    <b>{diary.name}: </b>
 
-                    <span
-                      className="link-primary"
-                      style={{ textDecoration: "underline", cursor: "pointer" }}
-                      onClick={() => getPdfDetail(diary?.id, "diary")}
-                    >
-                      {diary?.value}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </List>
-          </Grid>
+          {role && (role === "Admin" || role === "Employee") && (
+            <Grid item xs={12} lg={6}>
+              <Typography variant="h5" gutterBottom>
+                Nhật kí bảo dưỡng
+              </Typography>
+              <List>
+                <ul>
+                  {productDiaries?.map((diary) => (
+                    <li className="mb-2">
+                      <b>{diary.name}: </b>
+
+                      <span
+                        className="link-primary"
+                        style={{
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => getPdfDetail(diary?.id, "diary")}
+                      >
+                        {diary?.value}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </List>
+            </Grid>
+          )}
         </Grid>
       </Container>
     </div>

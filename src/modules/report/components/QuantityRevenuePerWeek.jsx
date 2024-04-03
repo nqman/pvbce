@@ -11,6 +11,7 @@ import QuantityRevenueItem from "./QuantityRevenueItem";
 export function QuantityRevenuePerWeek({
   idQuantityRevenue,
   week,
+  fromDateToDate,
   actualQuantityAndRevenueDetails,
   onValueChange = () => {},
 }) {
@@ -110,7 +111,7 @@ export function QuantityRevenuePerWeek({
                 borderRadius: "5px",
               }}
             >
-              {week}
+              {fromDateToDate}
             </span>
           </Grid>
           <Grid item lg={12}>
@@ -176,7 +177,7 @@ export function QuantityRevenuePerWeek({
                 borderRadius: "5px",
               }}
             >
-              {week}
+              {fromDateToDate}
             </span>
           </Grid>
           <Grid item lg={12}>
