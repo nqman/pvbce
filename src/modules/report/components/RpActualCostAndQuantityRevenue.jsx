@@ -4,16 +4,22 @@ import {
   Container,
   FormControl,
   InputLabel,
+  Link,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getViewReportQuantityRevenueAndCostAPI } from "../../../apis/reportAPI";
+import {
+  getCategoriesOfProjectAPI,
+  getViewReportQuantityRevenueAndCostAPI,
+  selectProjectAPI,
+  validateDatePickerAPI,
+} from "../../../apis/reportAPI";
 import LineChartQuantity from "./LineChartQuantity";
 import LineChartActualCostAndRevenue from "./LineChartActualCostAndRevenue";
-
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 //Calendar
 import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -22,6 +28,13 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ProjectItem from "./ProjectItem";
 import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../home/components/Loading/Loading";
+import Checkbox from "@mui/material/Checkbox";
+import Autocomplete from "@mui/material/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 export default function RpActualCostAndQuantityRevenue() {
   // debugger;
@@ -29,59 +42,45 @@ export default function RpActualCostAndQuantityRevenue() {
   const params = useParams();
   const idProject = params.code;
   const [viewReports, setViewReports] = useState([]);
-  // const [detailModel, setDetailModel] = useState([]);
-  // const [detailModelRevenue, setDetailModelRevenue] = useState([]);
-
-  // TYPE OF REPORT
-  const [typeReport, setTypeReport] = useState("");
-
-  const handleChangeTypeReport = (e) => {
-    setTypeReport(e.target.value);
-  };
-
-  const handleExportReport = async () => {
-    // debugger;
-    if (typeReport && startDate && endDate) {
-      try {
-        const data = await getViewReportQuantityRevenueAndCostAPI(
-          idProject,
-          typeReport,
-          startDate,
-          endDate
-        );
-        setViewReports(data);
-        // console.log(data);
-        return data;
-      } catch (error) {}
-    } else if (!typeReport) {
-      toast.error("Vui lòng chọn loại báo cáo!");
-    } else if (!startDate) {
-      toast.error("Vui lòng chọn ngày bắt đầu!");
-    } else if (!endDate) {
-      toast.error("Vui lòng chọn ngày kết thúc!");
+  // Get category selection
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = await getCategoriesOfProjectAPI(idProject);
+      setCategories(response);
     }
+    fetchMyAPI();
+  }, [idProject]);
+  const handleCategoryChange = (event, value) => {
+    setSelectedCategories(value);
+    console.log(value);
   };
+
   // Thời gian dự án
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startPicker, setStartPicker] = useState(null);
+  const [endPicker, setEndPicker] = useState(null);
 
-  const handlePickStartDate = (date) => {
+  const handlePickStartPicker = (date) => {
     if (date.$y) {
-      setStartDate(date);
-      handlePickDate(date, "startDate");
+      // setStartPicker(date);
+      handlePickDate(date, "startPicker");
+      return date;
     }
-    return date;
   };
 
-  const handlePickEndDate = (date) => {
+  const handlePickEndPicker = (date) => {
     if (date.$y) {
-      setEndDate(date);
-      handlePickDate(date, "endDate");
+      // setEndPicker(date);
+      handlePickDate(date, "endPicker");
+      return date;
     }
-    return date;
   };
+  const [errorStartDate, setErrorStartDate] = useState("");
+  const [errorEndDate, setErrorEndDate] = useState("");
+  const handlePickDate = async (date, label) => {
+    // debugger;
 
-  const handlePickDate = (date, label) => {
     if (date !== null) {
       const formattedDate = new Intl.DateTimeFormat("en-GB", {
         year: "numeric",
@@ -90,49 +89,142 @@ export default function RpActualCostAndQuantityRevenue() {
       }).format(date);
       const [day, month, year] = formattedDate.split("/");
       const formattedDateString = `${day}-${month}-${year}`;
-      if (label === "startDate") {
-        setStartDate(formattedDateString);
-      } else if (label === "endDate") {
-        setEndDate(formattedDateString);
+      if (label === "startPicker") {
+        setStartPicker(formattedDateString);
+        try {
+          const checkDate = await validateDatePickerAPI(
+            formattedDateString,
+            idProject
+          );
+          // console.log(checkDate);
+          setErrorStartDate("");
+        } catch (error) {
+          // toast.error(error);
+          setErrorStartDate(error);
+        }
+        console.log(startPicker);
+      } else if (label === "endPicker") {
+        setEndPicker(formattedDateString);
+        try {
+          const checkDate = await validateDatePickerAPI(
+            formattedDateString,
+            idProject
+          );
+          // console.log(checkDate);
+          setErrorEndDate("");
+        } catch (error) {
+          // toast.error(error);
+          setErrorEndDate(error);
+        }
       }
+    }
+  };
+  // TYPE OF REPORT
+  const [typeReport, setTypeReport] = useState("");
+
+  const handleChangeTypeReport = (e) => {
+    setTypeReport(e.target.value);
+  };
+  const handleExportReport = async () => {
+    // debugger;
+    let categories = "";
+    console.log(selectedCategories.length);
+    for (let i = 0; i < selectedCategories.length; i++) {
+      categories = categories + selectedCategories[i].name + ";";
+    }
+    if (categories.length > 0) {
+      categories = categories.substring(0, categories?.length - 1);
+      // console.log(categories);
+    }
+    if (
+      typeReport &&
+      startPicker &&
+      endPicker &&
+      !errorEndDate &&
+      !errorStartDate
+    ) {
+      try {
+        const data = await getViewReportQuantityRevenueAndCostAPI(
+          idProject,
+          typeReport,
+          startPicker,
+          endPicker,
+          categories
+        );
+        setViewReports(data);
+        return data;
+      } catch (error) {}
+    } else if (!typeReport) {
+      toast.error("Vui lòng chọn loại báo cáo!");
+    } else if (!startPicker) {
+      toast.error("Vui lòng chọn ngày bắt đầu!");
+    } else if (!endPicker) {
+      toast.error("Vui lòng chọn ngày kết thúc!");
+    } else if (errorStartDate !== "") {
+      toast.error("Vui lòng chọn lại ngày bắt đầu!");
+    } else if (errorEndDate !== "") {
+      toast.error("Vui lòng chọn lại ngày kết thúc!");
     }
   };
 
   return (
     <div>
-      <Container className="mt-4 mb-4">
+      <Container className="mt-4">
         <Toaster position="top-right" />
+        <div className="mb-3">
+          <Link
+            sx={{ fontSize: "16px" }}
+            component="button"
+            variant="body2"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+            Trở về dự án
+          </Link>
+        </div>
         <div
           style={{
             display: "flex",
             justifyContent: "start",
-            alignItems: "center",
+            alignItems: "start",
+            // marginTop: "100px",
           }}
         >
           <div className="calendar d-flex ">
-            <div>
+            <div
+              style={{ marginRight: "30px", width: "350px", height: "80px" }}
+            >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   className="me-4"
-                  onChange={handlePickStartDate}
+                  onChange={handlePickStartPicker}
                   renderInput={(params) => <TextField {...params} />}
                   label="Ngày bắt đầu"
                   format="DD-MM-YYYY"
                 />
               </LocalizationProvider>
+              <p style={{ marginTop: "5px", color: "red" }}>{errorStartDate}</p>
+            </div>
+
+            <div
+              style={{ marginRight: "30px", width: "350px", height: "80px" }}
+            >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   className="me-4"
-                  onChange={handlePickEndDate}
+                  onChange={handlePickEndPicker}
                   renderInput={(params) => <TextField {...params} />}
                   label="Ngày kết thúc"
                   format="DD-MM-YYYY"
                 />
               </LocalizationProvider>
+              <p style={{ marginTop: "5px", color: "red" }}>{errorEndDate}</p>
             </div>
           </div>
 
-          <Box sx={{ width: 200, marginRight: "30px" }}>
+          <div style={{ width: 200, marginRight: "40px" }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">
                 Loại báo cáo
@@ -148,36 +240,77 @@ export default function RpActualCostAndQuantityRevenue() {
                 <MenuItem value={"revenue"}>Báo cáo doanh thu</MenuItem>
               </Select>
             </FormControl>
-          </Box>
+          </div>
           <div>
             <Button
               variant="contained"
-              color="warning"
+              color="success"
               onClick={handleExportReport}
+              sx={{ height: "54px", width: "150px" }}
             >
               Xuất báo cáo
             </Button>
           </div>
         </div>
-        {console.log(viewReports)}
+        {typeReport === "quantity" && (
+          <div style={{ marginTop: "10px" }}>
+            <Autocomplete
+              multiple
+              id="checkboxes-tags-demo"
+              options={categories}
+              disableCloseOnSelect
+              getOptionLabel={(option) => option.name}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox
+                    icon={icon}
+                    checkedIcon={checkedIcon}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.name}
+                </li>
+              )}
+              style={{ width: "100%" }}
+              value={selectedCategories}
+              onChange={handleCategoryChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Chọn hạng mục"
+                  placeholder="Chọn hạng mục"
+                />
+              )}
+            />
+          </div>
+        )}
         {viewReports[0]?.category && typeReport === "quantity" ? (
-          <div>
+          <div style={{ marginBottom: "35px" }}>
             <LineChartQuantity
-              startDate={startDate}
-              endDate={endDate}
+              startPicker={startPicker}
+              endPicker={endPicker}
               detailModel={viewReports}
             />
           </div>
         ) : viewReports[0]?.actualRevenue && typeReport === "revenue" ? (
-          <div>
+          <div style={{ marginBottom: "35px" }}>
             <LineChartActualCostAndRevenue
-              startDate={startDate}
-              endDate={endDate}
+              startPicker={startPicker}
+              endPicker={endPicker}
               detailModelRevenue={viewReports}
             />
           </div>
         ) : (
-          <Box sx={{ color: "red", marginTop: "10px" }}>
+          <Box
+            sx={{
+              color: "red",
+              marginTop: "10px",
+              textAlign: "center",
+              border: "1px solid red",
+              padding: "5px 0",
+            }}
+          >
+            {" "}
             Vui lòng chọn ngày bắt đầu, ngày kết thúc, loại báo cáo và nhấn xuất
             báo cáo!
           </Box>

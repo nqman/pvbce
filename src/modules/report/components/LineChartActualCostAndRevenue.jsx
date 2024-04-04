@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
 
 function LineChartActualCostAndRevenue({
-  startDate,
-  endDate,
+  startPicker,
+  endPicker,
   detailModelRevenue,
 }) {
   const [data, setData] = useState([]);
@@ -35,9 +35,9 @@ function LineChartActualCostAndRevenue({
 
   const options = {
     legend: { position: "bottom" },
-    hAxis: {
-      title: "Tên chi phí",
-    },
+    // hAxis: {
+    //   title: "Tên chi phí",
+    // },
     vAxis: {
       title: "Chi phí",
     },
@@ -52,7 +52,7 @@ function LineChartActualCostAndRevenue({
           <Chart
             chartType="ComboChart"
             width="100%"
-            height="450px"
+            height="80vh"
             data={data}
             options={options}
           />
@@ -64,7 +64,7 @@ function LineChartActualCostAndRevenue({
               fontWeight: "bold",
             }}
           >
-            {`Biểu đồ doanh thu & chi phí (${startDate} đến ${endDate})`}
+            {`Biểu đồ doanh thu & chi phí (${startPicker} đến ${endPicker})`}
           </h3>
         </Box>
       ) : (

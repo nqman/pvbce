@@ -82,7 +82,7 @@ export default function ActualCostItem({
         <Box
           sx={{
             minWidth: 130,
-            marginRight: "20px",
+            marginRight: "40px",
           }}
         >
           <FormControl fullWidth>
@@ -96,7 +96,7 @@ export default function ActualCostItem({
               label="Loại chi phí"
               onChange={handleSelectcost}
               size="small"
-              sx={{ display: "flex", width: "350px" }}
+              sx={{ display: "flex", width: "750px" }}
             >
               {costs?.map((cost) => (
                 <MenuItem key={cost.id + "_" + cost.value} value={cost.name}>

@@ -17,6 +17,7 @@ const token = Cookies.get("token")?.replace(/"/g, "");
 //     });
 //   }
 // };
+
 const createBaseAPI = (token) => {
   if (token && token !== null) {
     return axios.create({

@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ActualCostPerWeek from "./ActualCostPerWeek";
 import Loading from "../../home/components/Loading/Loading";
+import GoToTop from "../../home/components/GoToTop/GoToTop";
 
 export default function ActualCosts() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +37,7 @@ export default function ActualCosts() {
     try {
       const data = await selectProjectAPI(idProject);
       setProject(data);
+      getNextModay(0, idProject);
       return data;
     } catch (error) {
       console.error("Error fetching project:", error);
@@ -50,6 +52,7 @@ export default function ActualCosts() {
         <ActualCostPerWeek
           idActualCost={actualCost.id}
           week={actualCost.week}
+          fromDateToDate={actualCost.fromDateToDate}
           actualCostDetails={actualCost.actualCostDetails}
           key={actualCost.id}
           onValueChange={handleChildValueChange}
@@ -96,7 +99,9 @@ export default function ActualCosts() {
         ...oldActualCostPerWeeks,
         <ActualCostPerWeek
           idActualCost={-Date.now()}
-          week={actualCostWeek === "" ? project?.startDate : actualCostWeek}
+          // week={actualCostWeek === "" ? project?.startDate : actualCostWeek}
+          week={actualCostWeek.date}
+          fromDateToDate={actualCostWeek.fromDateToDate}
           key={Date.now()}
           onValueChange={handleChildValueChange}
         />,
@@ -106,7 +111,8 @@ export default function ActualCosts() {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    getNextModay(actualCostWeek, idProject);
+    // getNextModay(actualCostWeek, idProject);
+    getNextModay(actualCostWeek.date, idProject);
   };
 
   const handleSaveActualCost = async () => {
@@ -124,7 +130,6 @@ export default function ActualCosts() {
     for (const key in tempObject) {
       tempData.push(tempObject[key]);
     }
-    // console.log(tempData);
     try {
       await addActualCostAPI(tempData, idProject);
       await getOldCosts(idProject);
@@ -142,7 +147,7 @@ export default function ActualCosts() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Container sx={{ marginTop: "20px" }}>
+        <Container sx={{ marginTop: "20px", marginBottom: "30px" }}>
           <Link
             sx={{ fontSize: "16px", marginBottom: "50px" }}
             component="button"
@@ -179,6 +184,7 @@ export default function ActualCosts() {
               Lưu
             </button>
           </div>
+          <GoToTop />
         </Container>
       )}
     </div>

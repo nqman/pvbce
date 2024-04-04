@@ -376,20 +376,41 @@ export async function addActualCostAPI(actualCosts, idProject) {
     throw error.message;
   }
 }
+// EXPORT REPORT
+export async function validateDatePickerAPI(date, idProject) {
+  // debugger;
+  try {
+    const resp = await baseAPI.get(`date/validate/${date}/${idProject}`);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}
 
 // EXPORT REPORT
 export async function getViewReportQuantityRevenueAndCostAPI(
   idProject,
   typeReport,
-  startDate,
-  endDate
+  startPicker,
+  endPicker,
+  categories
 ) {
   // debugger;
-  // console.log(idProject, typeReport, startDate, endDate);
+  // console.log(idProject, typeReport, startPicker, endPicker, categories);
+  const jsonData = {
+    id: idProject,
+    type: typeReport,
+    startPicker: startPicker,
+    endPicker: endPicker,
+    categories: categories,
+  };
+  console.log(jsonData);
   try {
-    const resp = await baseAPI.get(
-      `projects/view-report/${idProject}/${typeReport}/${startDate}/${endDate}`
-    );
+    const resp = await baseAPI.post(`projects/view-report`, jsonData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return resp.data;
   } catch (error) {
     throw error.response.data;

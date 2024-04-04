@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
 
-function LineChartQuantity({ startDate, endDate, detailModel }) {
+function LineChartQuantity({ startPicker, endPicker, detailModel }) {
   const [data, setData] = useState([]);
   // console.log(detailModel);
 
@@ -13,7 +13,7 @@ function LineChartQuantity({ startDate, endDate, detailModel }) {
   }, [detailModel]);
 
   const handleConvertData = () => {
-    const headerRow = ["Hạng mục", "Sản lượng kế hoạch", "Sản lượng thực tế"];
+    const headerRow = ["Hạng mục", "Kế hoạch", "Thực tế"];
 
     const dataRows = detailModel?.map((item) => [
       item.category,
@@ -44,7 +44,7 @@ function LineChartQuantity({ startDate, endDate, detailModel }) {
           <Chart
             chartType="ComboChart"
             width="100%"
-            height="450px"
+            height="80vh"
             data={data}
             options={options}
           />
@@ -55,7 +55,7 @@ function LineChartQuantity({ startDate, endDate, detailModel }) {
               fontWeight: "bold",
               marginBottom: "-5px",
             }}
-          >{`Biểu đồ sản lượng (${startDate} đến ${endDate})`}</h3>
+          >{`Biểu đồ sản lượng (${startPicker} đến ${endPicker})`}</h3>
         </Box>
       ) : (
         ""

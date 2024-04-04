@@ -28,13 +28,11 @@ export function QuantityRevenuePerWeek({
   };
   const params = useParams();
   const idProject = params.code;
-
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
     actualQuantityAndRevenueDetails
       ? actualQuantityAndRevenueDetails
       : [newEmptyQuantityRevenueDetail()]
   );
-
   const addProjectItem = () => {
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       return [...oldQuantityRevenueItems, newEmptyQuantityRevenueDetail()];
@@ -139,12 +137,12 @@ export function QuantityRevenuePerWeek({
                   Thêm
                 </Button>
                 <TextField
-                  label={"Tổng cộng"}
+                  label={"Tổng cộng (VND)"}
                   size="small"
-                  value={`${totalAmount.toLocaleString()} VND`}
+                  value={`${totalAmount.toLocaleString()}`}
                   sx={{
-                    marginRight: "120px",
-                    width: "200px",
+                    marginRight: "80px",
+                    width: "190px",
                     pointerEvents: "none",
                   }}
                 />
@@ -205,12 +203,12 @@ export function QuantityRevenuePerWeek({
                   Thêm
                 </Button>
                 <TextField
-                  label={"Tổng cộng"}
+                  label={"Tổng cộng(VND)"}
                   size="small"
-                  value={`${totalAmount.toLocaleString()} VND`}
+                  value={`${totalAmount.toLocaleString()}`}
                   sx={{
-                    marginRight: "120px",
-                    width: "200px",
+                    marginRight: "80px",
+                    width: "190px",
                     pointerEvents: "none",
                   }}
                 />

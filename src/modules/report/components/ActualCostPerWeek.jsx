@@ -8,7 +8,9 @@ import ActualCostItem from "./ActualCostItem";
 export default function ActualCostPerWeek({
   idActualCost,
   week,
+  fromDateToDate,
   actualCostDetails,
+
   onValueChange = () => {},
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +51,6 @@ export default function ActualCostPerWeek({
   const [totalAmount, setTotalAmount] = useState(0);
 
   const updateTotalAmount = () => {
-    debugger;
     const totalAmountNew = actualCostItems.reduce(
       (accumulator, actualCostItem) => {
         return accumulator + actualCostItem.amount * 1;
@@ -114,7 +115,7 @@ export default function ActualCostPerWeek({
                 borderRadius: "5px",
               }}
             >
-              {week}
+              {fromDateToDate}
             </span>
           </Grid>
           <Grid item lg={12}>
@@ -129,7 +130,6 @@ export default function ActualCostPerWeek({
                   updateTotalAmount={updateTotalAmount}
                 />
               ))}
-              {/* <p className="text-danger">{errorDetail}</p> */}
               <div
                 style={{
                   display: "flex",
@@ -138,18 +138,17 @@ export default function ActualCostPerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button style={{}} onClick={addActualCostItem}>
-                  Thêm
-                </Button>
+                <Button onClick={addActualCostItem}>Thêm</Button>
                 <TextField
                   label={"Tổng cộng"}
                   size="small"
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
-                    marginRight: "120px",
+                    marginRight: "160px",
                     width: "200px",
                     pointerEvents: "none",
                   }}
+                  disabled={true}
                 />
               </div>
             </div>
@@ -180,7 +179,7 @@ export default function ActualCostPerWeek({
                 borderRadius: "5px",
               }}
             >
-              {week}
+              {fromDateToDate}
             </span>
           </Grid>
           <Grid item lg={12}>
@@ -195,28 +194,25 @@ export default function ActualCostPerWeek({
                   updateTotalAmount={updateTotalAmount}
                 />
               ))}
-              {/* <p className="text-danger">{errorDetail}</p> */}
               <div
                 style={{
                   display: "flex",
-                  // justifyContent: "space-between",
+                  justifyContent: "space-between",
                   alignItems: "center",
                   paddingBottom: "10px",
                 }}
               >
-                <Button style={{}} onClick={addActualCostItem}>
-                  Thêm
-                </Button>
+                <Button onClick={addActualCostItem}>Thêm</Button>
                 <TextField
                   label={"Tổng cộng"}
                   size="small"
-                  // disabled={true}
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
-                    marginLeft: "300px",
+                    marginRight: "160px",
                     width: "200px",
                     pointerEvents: "none",
                   }}
+                  disabled={true}
                 />
               </div>
             </div>

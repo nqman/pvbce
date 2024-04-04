@@ -18,7 +18,7 @@ export default function QuantityRevenueItem({
 }) {
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(detail?.quantity || "");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(detail?.price || "");
   const [amount, setAmount] = useState(detail?.amount || quantity * price);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function QuantityRevenueItem({
     });
   };
 
-  const [unit, setUnit] = useState("");
+  const [unit, setUnit] = useState(detail?.unit || "");
   const handleSelectCategory = async (event) => {
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
@@ -110,7 +110,7 @@ export default function QuantityRevenueItem({
               }
               onChange={handleSelectCategory}
               size="small"
-              sx={{ display: "flex", width: "250px" }}
+              sx={{ display: "flex", width: "450px" }}
             >
               {categories?.map((category) => (
                 <MenuItem
@@ -142,35 +142,35 @@ export default function QuantityRevenueItem({
           value={quantity}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "110px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "quantity", e.target.value)
           }
         />
         <TextField
-          label="Đơn giá*"
+          label="Đơn giá(VND)"
           // label={
           //   <span>
           //     Đơn giá<span style={{ color: "red" }}>*</span>
           //   </span>
           // }
           id="outlined-size-small"
-          value={price}
+          value={price.toLocaleString()}
           size="small"
           // type="number"
           disabled={true}
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "140px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
         />
         <TextField
-          label="Thành tiền"
+          label="Thành tiền(VND)"
           id="outlined-size-small"
-          value={`${amount.toLocaleString()} VND`}
+          value={`${amount.toLocaleString()}`}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "190px" }}
         />
         <button
           className="btn btn-danger"

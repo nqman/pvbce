@@ -12,6 +12,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { QuantityRevenuePerWeek } from "./QuantityRevenuePerWeek";
 import Loading from "../../home/components/Loading/Loading";
+import GoToTop from "../../home/components/GoToTop/GoToTop";
 
 export default function QuantityRevenues() {
   const [isLoading, setIsLoading] = useState(true);
@@ -94,7 +95,7 @@ export default function QuantityRevenues() {
     ]);
   };
   const addQuantityRevenuePerWeek = () => {
-    debugger;
+    // debugger;
     // setActualWeek(project?.startDate);
     setQuantityRevenues((oldQuantityRevenuePerWeeks) => {
       return [
@@ -119,6 +120,7 @@ export default function QuantityRevenues() {
   };
 
   const handleSaveQuantityRevenue = async () => {
+    debugger;
     setIsLoading(true);
     const tempData = [];
 
@@ -133,12 +135,14 @@ export default function QuantityRevenues() {
     }
     try {
       await addActualQuantityAndRevenueAPI(tempData, idProject);
+      //sau khi thêm thì lấy lại cái cũ để hiện thị ra giao diện
       await getOldQuantityRevenues(idProject);
       setIsLoading(false);
       toast.success("Cập nhật sản lượng thực tế thành công");
     } catch (error) {
       console.error(error);
       toast.error("Cập nhật sản lượng thực tế thất bại");
+      setIsLoading(false);
     }
   };
 
@@ -148,7 +152,7 @@ export default function QuantityRevenues() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Container sx={{ marginTop: "20px" }}>
+        <Container sx={{ marginTop: "20px", marginBottom: "30px" }}>
           <Link
             sx={{ fontSize: "16px", marginBottom: "50px" }}
             component="button"
@@ -188,6 +192,7 @@ export default function QuantityRevenues() {
               Lưu
             </button>
           </div>
+          <GoToTop />
         </Container>
       )}
     </div>
