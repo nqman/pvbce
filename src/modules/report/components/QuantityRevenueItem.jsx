@@ -12,9 +12,11 @@ import Swal from "sweetalert2";
 export default function QuantityRevenueItem({
   detail,
   categories,
+
   updateTotalAmount = () => {},
   onChange = () => {},
   onRemove = () => {},
+  onCategorySelect,
 }) {
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(detail?.quantity || "");
@@ -46,6 +48,7 @@ export default function QuantityRevenueItem({
     if (selectedCategory) {
       setUnit(selectedCategory.unit);
       setPrice(selectedCategory.price);
+      onCategorySelect(selectedCategory);
     }
     onChange({
       ...detail,

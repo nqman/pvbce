@@ -82,8 +82,30 @@ export function QuantityRevenuePerWeek({
     updateTotalAmount();
   }, [quantityRevenueItems, idQuantityRevenue]);
 
+  const [exitedCategory, setExitedCategory] = useState([]);
+  useEffect(() => {
+    const exitedCategory = actualQuantityAndRevenueDetails?.map(
+      (item) => item.category
+    );
+    setExitedCategory(exitedCategory);
+  }, []);
+  console.log(exitedCategory);
+  // console.log(actualQuantityAndRevenueDetails);
+  const handleCategorySelect = (selectedCategory) => {
+    const tem = exitedCategory.find((el) => el === selectedCategory.name);
+    if (!tem) {
+      // Xử lý giá trị selectedCategory ở đây
+      console.log(tem);
+      setExitedCategory([...exitedCategory, selectedCategory.name]);
+      return;
+    }
+    console.log("bị trùng");
+  };
+  //check trùng hạng mục
+
   return (
     <div style={{ marginBottom: "50px" }}>
+      {/* EDIT */}
       {idQuantityRevenue > 0 ? (
         <Grid
           container
@@ -119,6 +141,7 @@ export function QuantityRevenuePerWeek({
                   key={detail.id}
                   detail={detail}
                   categories={categories}
+                  onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}
                   onRemove={handleRemoveQuantityRevenueDetail}
                   updateTotalAmount={updateTotalAmount}
@@ -151,6 +174,7 @@ export function QuantityRevenuePerWeek({
           </Grid>
         </Grid>
       ) : (
+        // NEW
         <Grid
           container
           spacing={5}
@@ -185,12 +209,12 @@ export function QuantityRevenuePerWeek({
                   key={detail.id}
                   detail={detail}
                   categories={categories}
+                  onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}
                   onRemove={handleRemoveQuantityRevenueDetail}
                   updateTotalAmount={updateTotalAmount}
                 />
               ))}
-              {/* <p className="text-danger">{errorDetail}</p> */}
               <div
                 style={{
                   display: "flex",

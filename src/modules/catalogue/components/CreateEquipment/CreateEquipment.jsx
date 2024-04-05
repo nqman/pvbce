@@ -7,7 +7,10 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import toast, { Toaster } from "react-hot-toast";
 
 // API
-import { saveEquipmentAPI } from "../../../../apis/equipmentAPI";
+import {
+  checkDivideCodeAPI,
+  saveEquipmentAPI,
+} from "../../../../apis/equipmentAPI";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../home/components/Loading/Loading";
 
@@ -144,10 +147,14 @@ export default function CreateEquipment() {
   // Thêm thiết bị
   const handleSaveEquipment = async (e) => {
     e.preventDefault();
+    const res = await checkDivideCodeAPI(value.divideCode);
+    console.log("res", res);
     if (!value.name) {
       toast.error("Vui lòng nhập tên thiết bị");
     } else if (!value.divideCode) {
       toast.error("Vui lòng nhập mã thiết bị");
+    } else if (res) {
+      toast.error("Mã thiết bị đã tồn tại");
     } else {
       setIsLoading(true);
       try {
