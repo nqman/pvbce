@@ -168,7 +168,9 @@ export async function checkDivideCodeAPI(divideCode) {
   try {
     // console.log(valueOfEmail);
 
-    const resp = await baseAPI.get(`authenticate/validate/email/${divideCode}`);
+    const resp = await baseAPI.get(
+      `products/validate/divideCode/${divideCode}`
+    );
     return resp.data;
   } catch (error) {
     console.error(error);

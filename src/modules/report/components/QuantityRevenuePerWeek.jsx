@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import {
+  getCategoriesAndCategoriesOfProjectAPI,
   getCategoriesOfProjectAPI,
   selectProjectAPI,
 } from "../../../apis/reportAPI";
@@ -56,6 +57,7 @@ export function QuantityRevenuePerWeek({
     async function fetchMyAPI() {
       let response = await getCategoriesOfProjectAPI(idProject);
       setCategories(response);
+      console.log(response);
     }
     fetchMyAPI();
   }, [idProject]);
@@ -71,7 +73,6 @@ export function QuantityRevenuePerWeek({
   };
 
   const handleRemoveQuantityRevenueDetail = (detail) => {
-    // debugger;
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       return [...oldQuantityRevenueItems.filter((el) => detail.id !== el.id)];
     });
@@ -83,23 +84,33 @@ export function QuantityRevenuePerWeek({
   }, [quantityRevenueItems, idQuantityRevenue]);
 
   const [exitedCategory, setExitedCategory] = useState([]);
+  // const [validateCategory, setValidateCategory] = useState([]);
   useEffect(() => {
     const exitedCategory = actualQuantityAndRevenueDetails?.map(
       (item) => item.category
     );
     setExitedCategory(exitedCategory);
   }, []);
+  // if (exitedCategory !== null) {
+  //   for (let i = 0; i < exitedCategory.length; i++) {
+  //     if (!validateCategory.includes(exitedCategory[i])) {
+  //       // validateCategory
+  //     }
+  //   }
+  // }
   console.log(exitedCategory);
   // console.log(actualQuantityAndRevenueDetails);
   const handleCategorySelect = (selectedCategory) => {
+    debugger;
     const tem = exitedCategory.find((el) => el === selectedCategory.name);
     if (!tem) {
       // Xử lý giá trị selectedCategory ở đây
-      console.log(tem);
+      // console.log(tem);
       setExitedCategory([...exitedCategory, selectedCategory.name]);
-      return;
+      return selectedCategory.name;
     }
-    console.log("bị trùng");
+    // console.log("bị trùng");
+    return "";
   };
   //check trùng hạng mục
 
@@ -141,6 +152,7 @@ export function QuantityRevenuePerWeek({
                   key={detail.id}
                   detail={detail}
                   categories={categories}
+                  exitedCategory={exitedCategory}
                   onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}
                   onRemove={handleRemoveQuantityRevenueDetail}
@@ -209,6 +221,7 @@ export function QuantityRevenuePerWeek({
                   key={detail.id}
                   detail={detail}
                   categories={categories}
+                  exitedCategory={exitedCategory}
                   onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}
                   onRemove={handleRemoveQuantityRevenueDetail}

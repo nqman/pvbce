@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 export default function QuantityRevenueItem({
   detail,
   categories,
-
+  exitedCategory,
   updateTotalAmount = () => {},
   onChange = () => {},
   onRemove = () => {},
@@ -43,21 +43,31 @@ export default function QuantityRevenueItem({
 
   const [unit, setUnit] = useState(detail?.unit || "");
   const handleSelectCategory = async (event) => {
+    debugger;
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
-    if (selectedCategory) {
+    // console.log(selectedCategory);
+    const validateCategory = onCategorySelect(selectedCategory);
+    if (validateCategory.trim().length > 0) {
       setUnit(selectedCategory.unit);
       setPrice(selectedCategory.price);
-      onCategorySelect(selectedCategory);
+      onChange({
+        ...detail,
+        unit: selectedCategory.unit,
+        price: selectedCategory.price,
+        category,
+      });
+    } else {
+      console.log("Hạng mục đã được chọn");
     }
-    onChange({
-      ...detail,
-      unit: selectedCategory.unit,
-      price: selectedCategory.price,
-      category,
-    });
-  };
 
+    // if (selectedCategory) {
+    //   setUnit(selectedCategory.unit);
+    //   setPrice(selectedCategory.price);
+
+    // }
+  };
+  //xóa item
   const deleteDiv = async (id) => {
     try {
       const result = await Swal.fire({
