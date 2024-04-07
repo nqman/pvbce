@@ -17,6 +17,7 @@ export function QuantityRevenuePerWeek({
   onValueChange = () => {},
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [disableAddItem, setDisableAddItem] = useState(false);
   const newEmptyQuantityRevenueDetail = () => {
     return {
       id: -Date.now(),
@@ -29,6 +30,32 @@ export function QuantityRevenuePerWeek({
   };
   const params = useParams();
   const idProject = params.code;
+  // Get category selection
+  const [categories, setCategories] = useState([]);
+  const [remainingCategories, setRemainingCategories] = useState([]);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let categories = await getCategoriesOfProjectAPI(idProject);
+      setCategories(categories);
+      // console.log(categories);
+      let remaining = [];
+      categories.forEach((item2) => {
+        if (
+          !actualQuantityAndRevenueDetails.some(
+            (item1) => item1.category === item2.name
+          )
+        ) {
+          remaining.push({
+            name: item2.name,
+            unit: item2.unit,
+            price: item2.price,
+          });
+        }
+      });
+      setRemainingCategories(remaining);
+    }
+    fetchMyAPI();
+  }, []);
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
     actualQuantityAndRevenueDetails
       ? actualQuantityAndRevenueDetails
@@ -51,16 +78,7 @@ export function QuantityRevenuePerWeek({
     );
     setTotalAmount(totalAmountNew);
   };
-  // Get category selection
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await getCategoriesOfProjectAPI(idProject);
-      setCategories(response);
-      console.log(response);
-    }
-    fetchMyAPI();
-  }, [idProject]);
+
   const handleQuantityRevenueDetailChange = (detail) => {
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       const index = oldQuantityRevenueItems.findIndex(
@@ -73,6 +91,28 @@ export function QuantityRevenuePerWeek({
   };
 
   const handleRemoveQuantityRevenueDetail = (detail) => {
+    debugger;
+
+    const filteredCategories = detail;
+    if (filteredCategories.category) {
+      let obj3 = [];
+      categories.forEach((item2) => {
+        if (filteredCategories.category === item2.name) {
+          obj3.push({
+            name: item2.name,
+            unit: item2.unit,
+            price: item2.price,
+          });
+        }
+        // console.log(obj3);
+        const newCategories = [...remainingCategories, obj3[0]];
+        setRemainingCategories([...remainingCategories, obj3[0]]);
+        if (newCategories.length > 0) {
+          setDisableAddItem(false);
+        }
+      });
+    }
+
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       return [...oldQuantityRevenueItems.filter((el) => detail.id !== el.id)];
     });
@@ -83,36 +123,27 @@ export function QuantityRevenuePerWeek({
     updateTotalAmount();
   }, [quantityRevenueItems, idQuantityRevenue]);
 
-  const [exitedCategory, setExitedCategory] = useState([]);
-  // const [validateCategory, setValidateCategory] = useState([]);
-  useEffect(() => {
-    const exitedCategory = actualQuantityAndRevenueDetails?.map(
-      (item) => item.category
-    );
-    setExitedCategory(exitedCategory);
-  }, []);
-  // if (exitedCategory !== null) {
-  //   for (let i = 0; i < exitedCategory.length; i++) {
-  //     if (!validateCategory.includes(exitedCategory[i])) {
-  //       // validateCategory
-  //     }
-  //   }
-  // }
-  console.log(exitedCategory);
-  // console.log(actualQuantityAndRevenueDetails);
   const handleCategorySelect = (selectedCategory) => {
-    debugger;
-    const tem = exitedCategory.find((el) => el === selectedCategory.name);
-    if (!tem) {
-      // Xử lý giá trị selectedCategory ở đây
-      // console.log(tem);
-      setExitedCategory([...exitedCategory, selectedCategory.name]);
-      return selectedCategory.name;
+    // debugger;
+    const temCategoryIndex = remainingCategories.findIndex(
+      (el) => el.name === selectedCategory.name
+    );
+    // Nếu tìm thấy phần tử có name giống
+    if (temCategoryIndex !== -1) {
+      // Loại bỏ phần tử đó khỏi mảng remainingCategories
+      const updatedRemainingCategories = [...remainingCategories];
+      updatedRemainingCategories.splice(temCategoryIndex, 1);
+
+      // Cập nhật lại mảng remainingCategories
+      setRemainingCategories(updatedRemainingCategories);
+
+      // Trả về selectedCategory
+      return selectedCategory;
+    } else if (!selectedCategory) {
+      setDisableAddItem(true);
+      return;
     }
-    // console.log("bị trùng");
-    return "";
   };
-  //check trùng hạng mục
 
   return (
     <div style={{ marginBottom: "50px" }}>
@@ -152,7 +183,7 @@ export function QuantityRevenuePerWeek({
                   key={detail.id}
                   detail={detail}
                   categories={categories}
-                  exitedCategory={exitedCategory}
+                  remainingCategories={remainingCategories}
                   onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}
                   onRemove={handleRemoveQuantityRevenueDetail}
@@ -168,7 +199,7 @@ export function QuantityRevenuePerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button style={{}} onClick={addProjectItem}>
+                <Button disabled={disableAddItem} onClick={addProjectItem}>
                   Thêm
                 </Button>
                 <TextField
@@ -219,9 +250,8 @@ export function QuantityRevenuePerWeek({
               {quantityRevenueItems.map((detail) => (
                 <QuantityRevenueItem
                   key={detail.id}
-                  detail={detail}
+                  // detail={detail}
                   categories={categories}
-                  exitedCategory={exitedCategory}
                   onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}
                   onRemove={handleRemoveQuantityRevenueDetail}
@@ -236,7 +266,7 @@ export function QuantityRevenuePerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button style={{}} onClick={addProjectItem}>
+                <Button disabled={disableAddItem} onClick={addProjectItem}>
                   Thêm
                 </Button>
                 <TextField
