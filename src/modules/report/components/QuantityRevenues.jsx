@@ -120,7 +120,7 @@ export default function QuantityRevenues() {
   };
 
   const handleSaveQuantityRevenue = async () => {
-    // debugger;
+    debugger;
     setIsLoading(true);
     const tempData = [];
 

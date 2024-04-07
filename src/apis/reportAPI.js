@@ -11,7 +11,7 @@ export async function getCategoriesAPI() {
     throw error;
   }
 }
-// lấy danh sách hạng mục theo từng dự án
+// lấy danh sách hạng mục theo dự án
 export async function getCategoriesOfProjectAPI(idProject) {
   // debugger;
   try {
@@ -22,19 +22,6 @@ export async function getCategoriesOfProjectAPI(idProject) {
     throw error;
   }
 }
-
-// lấy danh sách hạng mục tổng + hạng mục theo từng dự án
-export async function getCategoriesAndCategoriesOfProjectAPI(idProject) {
-  // debugger;
-  try {
-    const resp = await baseAPI.get(`projects/categories/${idProject}`);
-    return resp.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
 export async function selectCategoryAPI(id) {
   try {
     const resp = await baseAPI.get(`categories/${id}`);
@@ -64,17 +51,6 @@ export async function addCategoryAPI(category) {
 export async function deleteCategoryAPI(id) {
   try {
     const resp = await baseAPI.get(`categories/delete/${id}`);
-    return resp.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-}
-//validate categoryName
-export async function validateCategoryAPI(categoryName) {
-  try {
-    const resp = await baseAPI.get(
-      `categories/validate/category/${categoryName}`
-    );
     return resp.data;
   } catch (error) {
     throw error.response.data;

@@ -61,6 +61,8 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
               renderCell: (params) => {
                 return (
                   <div style={{ textAlign: "center" }}>
+                    {console.log(params)}
+
                     {params.row?.type === "pdf" && (
                       <button
                         className="btn btn-success"
