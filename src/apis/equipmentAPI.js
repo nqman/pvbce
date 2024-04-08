@@ -163,3 +163,17 @@ export async function fetchPdfProduct(id, tab) {
     console.error("Error fetching PDF:", error);
   }
 }
+//check trùng mã thiết bị
+export async function checkDivideCodeAPI(divideCode) {
+  try {
+    // console.log(valueOfEmail);
+
+    const resp = await baseAPI.get(
+      `products/validate/divideCode/${divideCode}`
+    );
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

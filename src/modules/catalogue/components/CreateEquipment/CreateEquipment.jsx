@@ -7,7 +7,10 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import toast, { Toaster } from "react-hot-toast";
 
 // API
-import { saveEquipmentAPI } from "../../../../apis/equipmentAPI";
+import {
+  checkDivideCodeAPI,
+  saveEquipmentAPI,
+} from "../../../../apis/equipmentAPI";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../home/components/Loading/Loading";
 
@@ -41,6 +44,17 @@ export default function CreateEquipment() {
   // Thông số chung
   const handleChangeInput = (e) => {
     setValueEquipment({ ...value, [e.target.name]: e.target.value });
+  };
+  const handleCheckDivideCode = async () => {
+    if (value.divideCode) {
+      const res = await checkDivideCodeAPI(value.divideCode);
+
+      if (!res) {
+        setErrorDivideCode("Mã thiết bị đã tồn tại");
+        return;
+      }
+      setErrorDivideCode("");
+    }
   };
   //Chọn ảnh
   const [selectedImages, setSelectedImages] = useState([]);
@@ -140,22 +154,32 @@ export default function CreateEquipment() {
     setProductDiaries(updateDiaries);
     setValueEquipment({ ...value, productDiaries: updateDiaries });
   };
+  const [errorDivideCode, setErrorDivideCode] = useState("");
 
   // Thêm thiết bị
   const handleSaveEquipment = async (e) => {
     e.preventDefault();
+    // const res = await checkDivideCodeAPI(value?.divideCode);
+    // console.log("res", res);
     if (!value.name) {
       toast.error("Vui lòng nhập tên thiết bị");
     } else if (!value.divideCode) {
       toast.error("Vui lòng nhập mã thiết bị");
-    } else {
+    }
+
+    // else if (res) {
+    //   toast.error("Mã thiết bị đã tồn tại");
+    // }
+    else {
       setIsLoading(true);
       try {
         await saveEquipmentAPI(value);
+        setErrorDivideCode("");
         toast.success("Thêm thiết bị thành công");
         navigate("/catalogue");
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
         toast.error("Thêm thiết bị thất bại");
       }
     }
@@ -225,7 +249,10 @@ export default function CreateEquipment() {
                         />
                       </div>
                       {/* divideCode */}
-                      <div className="form-group d-flex mb-2">
+                      <div
+                        style={{ alignItems: "center" }}
+                        className="form-group d-flex mb-2"
+                      >
                         <label
                           style={{
                             border: "none",
@@ -243,11 +270,13 @@ export default function CreateEquipment() {
                           id="divideCode"
                           name="divideCode"
                           value={value.divideCode}
-                          className=" form-control w-50"
+                          className=" form-control w-50 me-2"
                           type="text"
                           placeholder="Nhập mã thiết bị..."
                           onChange={handleChangeInput}
+                          onBlur={handleCheckDivideCode}
                         />
+                        <span className="text-danger ">{errorDivideCode}</span>
                       </div>
                       {/* constructionProject  */}
                       <div className="form-group d-flex mb-2">

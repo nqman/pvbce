@@ -8,7 +8,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 //API
-import { saveProjectAPI, getCategoriesAPI } from "../../../apis/reportAPI";
+import {
+  saveProjectAPI,
+  getCategoriesAPI,
+  getCategoriesAndCategoriesOfProjectAPI,
+} from "../../../apis/reportAPI";
 
 //Calendar
 import dayjs from "dayjs";
