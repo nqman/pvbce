@@ -13,35 +13,25 @@ export async function listDocumentsAPI() {
   }
 }
 export async function addDocumentAPI(document) {
-  // debugger;
   try {
-    if (
-      (document.file !== null || document.link.trim().length > 0) &&
-      document.name.trim().length > 0
-    ) {
-      const formData = new FormData();
-      if (document.file instanceof File) {
-        formData.append("documentFileId", 0);
-        formData.append("documentFile", document.file);
-      } else {
-        formData.append("documentLinkId", 0);
-        formData.append("documentLink", document.link);
-      }
-      formData.append("name", document.name);
-      if (document.scope === "") {
-        formData.append("scope", "public");
-      } else {
-        formData.append("scope", document.scope);
-      }
-
-      const resp = await baseAPI.post("documents/save", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return resp;
+    // debugger;
+    const formData = new FormData();
+    if (document.file instanceof File) {
+      formData.append("documentFileId", 0);
+      formData.append("documentFile", document.file);
+    } else {
+      formData.append("documentLinkId", 0);
+      formData.append("documentLink", document.link);
     }
-    throw "lỗi rồi";
+    formData.append("name", document.name);
+    formData.append("scope", document.scope);
+
+    const resp = await baseAPI.post("documents/save", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return resp;
   } catch (error) {
     console.error(error);
     throw error;

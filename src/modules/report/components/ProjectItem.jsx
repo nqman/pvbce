@@ -16,7 +16,6 @@ export default function ProjectItem({
   onRemove = () => {},
   updateTotalAmount,
 }) {
-  console.log(detail);
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(detail.quantity);
   const [price, setPrice] = useState(detail.price);
@@ -181,15 +180,13 @@ export default function ProjectItem({
           disabled={true}
           sx={{ marginRight: "20px", width: "200px" }}
         />
-        {!detail.use && (
-          <button
-            className="btn btn-danger"
-            onClick={() => deleteDiv(detail.id)}
-            type="button"
-          >
-            x
-          </button>
-        )}
+        <button
+          className="btn btn-danger"
+          onClick={() => deleteDiv(detail.id)}
+          type="button"
+        >
+          x
+        </button>
       </div>
     </div>
   );

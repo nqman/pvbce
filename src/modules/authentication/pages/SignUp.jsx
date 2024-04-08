@@ -73,8 +73,7 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (user) => {
-    // debugger;
-
+    debugger;
     try {
       const res = await checkEmailAPI(user?.email);
       console.log("res", res);

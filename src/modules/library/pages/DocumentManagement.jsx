@@ -94,7 +94,6 @@ export default function DocumentManagement() {
       fetchDocuments();
     } catch (error) {
       toast.error("Thêm tài liệu thất bại");
-      setIsLoading(false);
     }
     setShow(false);
   };

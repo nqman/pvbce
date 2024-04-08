@@ -9,8 +9,8 @@ import * as yup from "yup";
 //API
 import {
   saveProjectAPI,
+  getCategoriesAPI,
   selectProjectAPI,
-  getCategoriesAndCategoriesOfProjectAPI,
 } from "../../../apis/reportAPI";
 
 //Calendar
@@ -82,7 +82,7 @@ export default function EditProject() {
   // Get category selection
   useEffect(() => {
     async function fetchMyAPI() {
-      let response = await getCategoriesAndCategoriesOfProjectAPI(idProject);
+      let response = await getCategoriesAPI();
       setCategories(response);
     }
     fetchMyAPI();
