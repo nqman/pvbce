@@ -12,10 +12,13 @@ import Swal from "sweetalert2";
 export default function QuantityRevenueItem({
   detail,
   categories,
+  remainingCategories,
   updateTotalAmount = () => {},
   onChange = () => {},
   onRemove = () => {},
+  onCategorySelect,
 }) {
+  // console.log(remainingCategories);
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(detail?.quantity || "");
   const [price, setPrice] = useState(detail?.price || "");
@@ -41,40 +44,56 @@ export default function QuantityRevenueItem({
 
   const [unit, setUnit] = useState(detail?.unit || "");
   const handleSelectCategory = async (event) => {
+    debugger;
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
-    if (selectedCategory) {
+    if (remainingCategories.length <= 1) {
+      onCategorySelect(false);
       setUnit(selectedCategory.unit);
       setPrice(selectedCategory.price);
+      onChange({
+        ...detail,
+        unit: selectedCategory.unit,
+        price: selectedCategory.price,
+        category,
+      });
+      return;
     }
-    onChange({
-      ...detail,
-      unit: selectedCategory.unit,
-      price: selectedCategory.price,
-      category,
-    });
+    const validateCategory = onCategorySelect(selectedCategory);
+    if (validateCategory) {
+      setUnit(selectedCategory.unit);
+      setPrice(selectedCategory.price);
+      onChange({
+        ...detail,
+        unit: selectedCategory.unit,
+        price: selectedCategory.price,
+        category,
+      });
+    }
   };
-
+  //xóa item
   const deleteDiv = async (id) => {
     try {
-      const result = await Swal.fire({
-        title: "Bạn chắc chắn muốn xóa? ",
-        text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Xóa hạng mục",
-        cancelButtonText: "Hủy bỏ",
-      });
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Đã xóa!",
-          text: "Hạng mục đã được xóa thành công.",
-          icon: "success",
-        });
-        onRemove(detail);
-      }
+      // const result = await Swal.fire({
+      //   title: "Bạn chắc chắn muốn xóa? ",
+      //   text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
+      //   icon: "warning",
+      //   showCancelButton: true,
+      //   confirmButtonColor: "#3085d6",
+      //   cancelButtonColor: "#d33",
+      //   confirmButtonText: "Xóa hạng mục",
+      //   cancelButtonText: "Hủy bỏ",
+      // });
+      // if (result.isConfirmed) {
+      //   Swal.fire({
+      //     title: "Đã xóa!",
+      //     text: "Hạng mục đã được xóa thành công.",
+      //     icon: "success",
+      //   });
+      //   onRemove(detail);
+      // }
+      debugger;
+      onRemove(detail);
     } catch (error) {}
   };
 
@@ -102,7 +121,6 @@ export default function QuantityRevenueItem({
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={detail?.category}
-              // label="Hạng mục*"
               label={
                 <span>
                   Hạng mục<span style={{ color: "red" }}>*</span>
@@ -112,12 +130,12 @@ export default function QuantityRevenueItem({
               size="small"
               sx={{ display: "flex", width: "450px" }}
             >
-              {categories?.map((category) => (
+              {remainingCategories?.map((category) => (
                 <MenuItem
                   key={category.id + "_" + category.value}
-                  value={category.name}
+                  value={detail?.category ? detail?.category : category.name}
                 >
-                  {category.name}
+                  {detail?.category ? detail?.category : category.name}
                 </MenuItem>
               ))}
             </Select>
