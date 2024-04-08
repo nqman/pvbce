@@ -158,8 +158,15 @@ function Header() {
   };
   return (
     <AppBar
-      position="static"
-      style={{ backgroundColor: "white", color: "#007cd7" }}
+      // position="static"
+      style={{
+        backgroundColor: "white",
+        color: "#007cd7",
+        position: "fixed",
+        top: 0,
+        height: "65px",
+        width: "100%",
+      }}
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters>

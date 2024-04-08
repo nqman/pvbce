@@ -182,7 +182,7 @@ const ProjectDetail = () => {
                 </tr>
               </thead>
               <tbody>
-                {console.log(rpQuantityAndRevenueDetails)}
+                {/* {console.log(rpQuantityAndRevenueDetails)} */}
                 {rpQuantityAndRevenueDetails.map((detail, index) => (
                   <tr key={index}>
                     <td>{detail?.category}</td>

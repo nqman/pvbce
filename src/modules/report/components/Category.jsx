@@ -5,6 +5,7 @@ import {
   deleteCategoryAPI,
   getCategoriesAPI,
   selectCategoryAPI,
+  validateCategoryAPI,
 } from "../../../apis/reportAPI";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
@@ -60,12 +61,20 @@ export default function Category() {
   };
 
   const handleAddCategory = async (category) => {
+    debugger;
     try {
-      await addCategoryAPI(category);
-      toast.success("Thêm hạng mục thành công");
-      resetField("name");
-      resetField("unit");
-      fetchListCategory();
+      const validate = await validateCategoryAPI(category.name);
+      if (validate) {
+        await addCategoryAPI(category);
+        toast.success("Thêm hạng mục thành công");
+        resetField("name");
+        resetField("unit");
+        fetchListCategory();
+        return;
+      } else {
+        toast.error("Hạng mục đã tồn tại!");
+        return;
+      }
     } catch (error) {}
   };
 
@@ -190,53 +199,53 @@ export default function Category() {
                       { field: "index", headerName: "STT", width: 50 },
                       { field: "name", headerName: "TÊN HẠNG MỤC", width: 400 },
                       { field: "unit", headerName: "ĐƠN VỊ", width: 100 },
-                      // {
-                      //   field: "action",
-                      //   headerName: "TÙY CHỌN",
-                      //   width: 120,
+                      {
+                        field: "action",
+                        headerName: "TÙY CHỌN",
+                        width: 120,
 
-                      //   renderCell: (params) => (
-                      //     <div style={{ display: "flex" }}>
-                      //       <button
-                      //         style={{
-                      //           padding: "0px",
-                      //           height: "25px",
-                      //           width: "25px",
-                      //           marginRight: "10px",
-                      //         }}
-                      //         className="btn btn-warning me-2"
-                      //         onClick={() => handleSelectCategory(params.id)}
-                      //         title="Sửa"
-                      //       >
-                      //         <EditIcon
-                      //           sx={{
-                      //             fontSize: "17px",
-                      //             marginBottom: "2px",
-                      //           }}
-                      //         />
-                      //       </button>
-                      //       <button
-                      //         style={{
-                      //           padding: "0px",
-                      //           height: "25px",
-                      //           width: "25px",
-                      //           lineHeight: "15px",
-                      //         }}
-                      //         className="btn btn-danger"
-                      //         onClick={() => {
-                      //           handleDeteleCategory(params.id);
-                      //         }}
-                      //         title="Xóa"
-                      //       >
-                      //         <ClearIcon
-                      //           sx={{
-                      //             fontSize: "20px",
-                      //           }}
-                      //         />
-                      //       </button>
-                      //     </div>
-                      //   ),
-                      // },
+                        renderCell: (params) => (
+                          <div style={{ display: "flex" }}>
+                            {/* <button
+                              style={{
+                                padding: "0px",
+                                height: "25px",
+                                width: "25px",
+                                marginRight: "10px",
+                              }}
+                              className="btn btn-warning me-2"
+                              onClick={() => handleSelectCategory(params.id)}
+                              title="Sửa"
+                            >
+                              <EditIcon
+                                sx={{
+                                  fontSize: "17px",
+                                  marginBottom: "2px",
+                                }}
+                              />
+                            </button> */}
+                            <button
+                              style={{
+                                padding: "0px",
+                                height: "25px",
+                                width: "25px",
+                                lineHeight: "15px",
+                              }}
+                              className="btn btn-danger"
+                              onClick={() => {
+                                handleDeteleCategory(params.id);
+                              }}
+                              title="Xóa"
+                            >
+                              <ClearIcon
+                                sx={{
+                                  fontSize: "20px",
+                                }}
+                              />
+                            </button>
+                          </div>
+                        ),
+                      },
                     ]}
                     slots={{
                       toolbar: GridToolbar,
