@@ -9,13 +9,13 @@ import GoToTop from "../components/GoToTop/GoToTop";
 
 export default function Home() {
   return (
-    <>
+    <div style={{ marginTop: "100px" }}>
       <About />
       <Capacity />
       <Experience />
       <License />
       <Footer />
       <GoToTop />
-    </>
+    </div>
   );
 }

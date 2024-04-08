@@ -30,7 +30,9 @@ export default function MainLayout() {
   return (
     <div>
       <Header />
-      <Outlet />
+      <div style={{ marginTop: "80px" }}>
+        <Outlet />
+      </div>
     </div>
   );
 }

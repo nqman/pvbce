@@ -44,7 +44,7 @@ export default function QuantityRevenueItem({
 
   const [unit, setUnit] = useState(detail?.unit || "");
   const handleSelectCategory = async (event) => {
-    debugger;
+    // debugger;
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
     if (remainingCategories.length <= 1) {
@@ -74,26 +74,26 @@ export default function QuantityRevenueItem({
   //xóa item
   const deleteDiv = async (id) => {
     try {
-      // const result = await Swal.fire({
-      //   title: "Bạn chắc chắn muốn xóa? ",
-      //   text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
-      //   icon: "warning",
-      //   showCancelButton: true,
-      //   confirmButtonColor: "#3085d6",
-      //   cancelButtonColor: "#d33",
-      //   confirmButtonText: "Xóa hạng mục",
-      //   cancelButtonText: "Hủy bỏ",
-      // });
-      // if (result.isConfirmed) {
-      //   Swal.fire({
-      //     title: "Đã xóa!",
-      //     text: "Hạng mục đã được xóa thành công.",
-      //     icon: "success",
-      //   });
-      //   onRemove(detail);
-      // }
-      debugger;
-      onRemove(detail);
+      const result = await Swal.fire({
+        title: "Bạn chắc chắn muốn xóa? ",
+        text: "Hạng mục này sẽ bị xóa vĩnh viễn!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Xóa hạng mục",
+        cancelButtonText: "Hủy bỏ",
+      });
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Đã xóa!",
+          text: "Hạng mục đã được xóa thành công.",
+          icon: "success",
+        });
+        onRemove(detail);
+      }
+      // debugger;
+      // onRemove(detail);
     } catch (error) {}
   };
 

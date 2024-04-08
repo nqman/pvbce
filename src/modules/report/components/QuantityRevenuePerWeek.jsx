@@ -16,8 +16,13 @@ export function QuantityRevenuePerWeek({
   actualQuantityAndRevenueDetails,
   onValueChange = () => {},
 }) {
+  const params = useParams();
+  const idProject = params.code;
+  // Get category selection
+  const [categories, setCategories] = useState([]);
+  const [remainingCategories, setRemainingCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [disableAddItem, setDisableAddItem] = useState(false);
+
   const newEmptyQuantityRevenueDetail = () => {
     return {
       id: -Date.now(),
@@ -28,16 +33,12 @@ export function QuantityRevenuePerWeek({
       amount: "",
     };
   };
-  const params = useParams();
-  const idProject = params.code;
-  // Get category selection
-  const [categories, setCategories] = useState([]);
-  const [remainingCategories, setRemainingCategories] = useState([]);
+  const [disableAddItem, setDisableAddItem] = useState(false);
+
   useEffect(() => {
     async function fetchMyAPI() {
       let categories = await getCategoriesOfProjectAPI(idProject);
       setCategories(categories);
-      // console.log(categories);
       let remaining = [];
       categories.forEach((item2) => {
         if (
@@ -53,9 +54,13 @@ export function QuantityRevenuePerWeek({
         }
       });
       setRemainingCategories(remaining);
+      if (remaining.length === 0) {
+        setDisableAddItem(true);
+      }
     }
     fetchMyAPI();
   }, []);
+
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
     actualQuantityAndRevenueDetails
       ? actualQuantityAndRevenueDetails
@@ -91,8 +96,7 @@ export function QuantityRevenuePerWeek({
   };
 
   const handleRemoveQuantityRevenueDetail = (detail) => {
-    debugger;
-
+    // debugger;
     const filteredCategories = detail;
     if (filteredCategories.category) {
       let obj3 = [];
@@ -185,7 +189,7 @@ export function QuantityRevenuePerWeek({
                   categories={categories}
                   remainingCategories={[
                     ...remainingCategories,
-                    ...(categories.filter(el => el.name === detail.category))
+                    ...categories.filter((el) => el.name === detail.category),
                   ]}
                   onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}

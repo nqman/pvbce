@@ -152,7 +152,7 @@ export default function QuantityRevenues() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Container sx={{ marginTop: "20px", marginBottom: "30px" }}>
+        <Container sx={{ marginTop: "20px", marginBottom: "40px" }}>
           <Link
             sx={{ fontSize: "16px", marginBottom: "50px" }}
             component="button"
@@ -185,7 +185,18 @@ export default function QuantityRevenues() {
             >
               Thêm tuần
             </button>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              position: "fixed",
+              bottom: "40px",
+              right: "120px",
+            }}
+          >
             <button
+              style={{ width: "70px" }}
               className="btn btn-success"
               onClick={handleSaveQuantityRevenue}
             >
