@@ -141,8 +141,8 @@ export default function QuantityRevenues() {
       toast.success("Cập nhật sản lượng thực tế thành công");
     } catch (error) {
       console.error(error);
-      toast.error("Cập nhật sản lượng thực tế thất bại");
       setIsLoading(false);
+      toast.error("Cập nhật sản lượng thực tế thất bại");
     }
   };
 

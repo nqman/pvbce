@@ -18,7 +18,7 @@ export default function QuantityRevenueItem({
   onRemove = () => {},
   onCategorySelect,
 }) {
-  // console.log(remainingCategories);
+  console.log(detail);
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(detail?.quantity || "");
   const [price, setPrice] = useState(detail?.price || "");
@@ -42,23 +42,23 @@ export default function QuantityRevenueItem({
     });
   };
 
-  const [unit, setUnit] = useState(detail?.unit || "");
+  const [unit, setUnit] = useState(detail?.unit ? detail?.unit : "");
   const handleSelectCategory = async (event) => {
     // debugger;
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
-    if (remainingCategories.length <= 1) {
-      onCategorySelect(false);
-      setUnit(selectedCategory.unit);
-      setPrice(selectedCategory.price);
-      onChange({
-        ...detail,
-        unit: selectedCategory.unit,
-        price: selectedCategory.price,
-        category,
-      });
-      return;
-    }
+    // if (remainingCategories.length <= 1) {
+    //   onCategorySelect(selectedCategory);
+    //   setUnit(selectedCategory.unit);
+    //   setPrice(selectedCategory.price);
+    //   onChange({
+    //     ...detail,
+    //     unit: selectedCategory.unit,
+    //     price: selectedCategory.price,
+    //     category,
+    //   });
+    //   return;
+    // }
     const validateCategory = onCategorySelect(selectedCategory);
     if (validateCategory) {
       setUnit(selectedCategory.unit);
@@ -121,6 +121,7 @@ export default function QuantityRevenueItem({
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={detail?.category}
+              disabled={detail?.category ? true : false}
               label={
                 <span>
                   Hạng mục<span style={{ color: "red" }}>*</span>
