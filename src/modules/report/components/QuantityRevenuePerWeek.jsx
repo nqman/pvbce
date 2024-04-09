@@ -34,15 +34,17 @@ export function QuantityRevenuePerWeek({
     };
   };
   const [disableAddItem, setDisableAddItem] = useState(false);
+  const [countItem, setCountItem] = useState(0);
 
   useEffect(() => {
     async function fetchMyAPI() {
+      // debugger
       let categories = await getCategoriesOfProjectAPI(idProject);
       setCategories(categories);
       let remaining = [];
       categories.forEach((item2) => {
         if (
-          !actualQuantityAndRevenueDetails.some(
+          !actualQuantityAndRevenueDetails?.some(
             (item1) => item1.category === item2.name
           )
         ) {
@@ -54,6 +56,7 @@ export function QuantityRevenuePerWeek({
         }
       });
       setRemainingCategories(remaining);
+      setCountItem(categories?.length - remaining.length);
       if (remaining.length === 0) {
         setDisableAddItem(true);
       }
@@ -61,12 +64,21 @@ export function QuantityRevenuePerWeek({
     fetchMyAPI();
   }, []);
 
+  // const [quantityRevenueItems, setQuantityRevenueItems] = useState(
+  //   actualQuantityAndRevenueDetails
+  //     ? actualQuantityAndRevenueDetails
+  //     : [newEmptyQuantityRevenueDetail()]
+  // );
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
-    actualQuantityAndRevenueDetails
-      ? actualQuantityAndRevenueDetails
-      : [newEmptyQuantityRevenueDetail()]
+    actualQuantityAndRevenueDetails ? actualQuantityAndRevenueDetails : []
   );
   const addProjectItem = () => {
+    // debugger;
+    const tempCount = countItem + 1;
+    setCountItem(tempCount);
+    if (tempCount === categories.length) {
+      setDisableAddItem(true);
+    }
     setQuantityRevenueItems((oldQuantityRevenueItems) => {
       return [...oldQuantityRevenueItems, newEmptyQuantityRevenueDetail()];
     });
@@ -97,6 +109,12 @@ export function QuantityRevenuePerWeek({
 
   const handleRemoveQuantityRevenueDetail = (detail) => {
     // debugger;
+    const tempCount = countItem - 1;
+    setCountItem(tempCount);
+
+    if (tempCount < categories.length) {
+      setDisableAddItem(false);
+    }
     const filteredCategories = detail;
     if (filteredCategories.category) {
       let obj3 = [];
@@ -129,6 +147,7 @@ export function QuantityRevenuePerWeek({
 
   const handleCategorySelect = (selectedCategory) => {
     // debugger;
+
     const temCategoryIndex = remainingCategories.findIndex(
       (el) => el.name === selectedCategory.name
     );
@@ -143,7 +162,7 @@ export function QuantityRevenuePerWeek({
 
       // Trả về selectedCategory
       return selectedCategory;
-    } else if (!selectedCategory) {
+    } else if (remainingCategories.length === 1) {
       setDisableAddItem(true);
       return;
     }
@@ -257,8 +276,12 @@ export function QuantityRevenuePerWeek({
               {quantityRevenueItems.map((detail) => (
                 <QuantityRevenueItem
                   key={detail.id}
-                  // detail={detail}
+                  detail={detail}
                   categories={categories}
+                  remainingCategories={[
+                    ...remainingCategories,
+                    ...categories.filter((el) => el.name === detail.category),
+                  ]}
                   onCategorySelect={handleCategorySelect}
                   onChange={handleQuantityRevenueDetailChange}
                   onRemove={handleRemoveQuantityRevenueDetail}
