@@ -120,8 +120,7 @@ export default function QuantityRevenues() {
   };
 
   const handleSaveQuantityRevenue = async () => {
-    // debugger;
-    setIsLoading(true);
+    debugger;
     const tempData = [];
 
     const tempObject = {};
@@ -134,14 +133,17 @@ export default function QuantityRevenues() {
       tempData.push(tempObject[key]);
     }
     try {
-      await addActualQuantityAndRevenueAPI(tempData, idProject);
+      const data = await addActualQuantityAndRevenueAPI(tempData, idProject);
+      if (data) {
+        setIsLoading(true);
+      }
       //sau khi thêm thì lấy lại cái cũ để hiện thị ra giao diện
       await getOldQuantityRevenues(idProject);
       setIsLoading(false);
       toast.success("Cập nhật sản lượng thực tế thành công");
     } catch (error) {
       console.error(error);
-      setIsLoading(false);
+      // setIsLoading(false);
       toast.error("Cập nhật sản lượng thực tế thất bại");
     }
   };

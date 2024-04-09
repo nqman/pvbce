@@ -20,7 +20,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ProjectItem from "./ProjectItem";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../home/components/Loading/Loading";
 
@@ -210,12 +210,17 @@ export default function CreateProject() {
   }, [projectItems]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    console.log(project);
+    // debugger;
+    // setIsLoading(true);
+    // console.log(project);
     try {
-      await saveProjectAPI(project);
-      toast.success("Khởi tạo dự án thành công");
-      navigate("/report/listprojects");
+      const data = await saveProjectAPI(project);
+      if (data) {
+        setIsLoading(true);
+        toast.success("Khởi tạo dự án thành công");
+        navigate("/report/listprojects");
+      }
+      // setIsLoading(false);
     } catch (error) {
       console.log(error);
       toast.error("Khởi tạo dự án thất bại");
@@ -224,6 +229,7 @@ export default function CreateProject() {
 
   return (
     <div>
+      <Toaster position="top-right" />
       {isLoading ? (
         <Loading />
       ) : (
