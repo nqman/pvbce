@@ -255,7 +255,12 @@ export default function UserManagement() {
           <Loading />
         )}
         {/* MODAL */}
-        <Modal size="md" show={show} onHide={handleClose}>
+        <Modal
+          style={{ marginTop: "80px" }}
+          size="md"
+          show={show}
+          onHide={handleClose}
+        >
           <form
             style={{
               flexDirection: "column",

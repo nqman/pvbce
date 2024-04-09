@@ -150,7 +150,12 @@ export default function DocumentManagement() {
 
         {/* MODAL */}
         <>
-          <Modal size="lg" show={show} onHide={handleClose}>
+          <Modal
+            style={{ marginTop: "100px" }}
+            size="lg"
+            show={show}
+            onHide={handleClose}
+          >
             <Modal.Header closeButton>
               <Modal.Title>Thêm tài liệu</Modal.Title>
             </Modal.Header>
