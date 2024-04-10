@@ -19,7 +19,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ProjectItem from "./ProjectItem";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../home/components/Loading/Loading";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -54,10 +54,30 @@ export default function EditProject() {
   const [isLoading, setIsLoading] = useState(false);
   const [project, setProject] = useState(emptyValue);
   const [categories, setCategories] = useState([]);
+  const [remainingCategories, setRemainingCategories] = useState([]);
+  const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
+  const [disableAddItem, setDisableAddItem] = useState(false);
+  const [countItem, setCountItem] = useState(1);
+  // const getProject = async (idProject) => {
+  //   debugger;
+  //   try {
 
-  const getProject = async (idProject) => {
-    // debugger;
-    try {
+  //     return data;
+  //   } catch (error) {
+  //     console.error("Error fetching project:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   // Call the asynchronous function inside the useEffect
+  //   getProject(idProject);
+  // }, [idProject]); // Add idProject as a dependency if needed
+
+  // Get category selection
+  useEffect(() => {
+    async function fetchMyAPI() {
+      debugger;
+      let categories = await getCategoriesAndCategoriesOfProjectAPI(idProject);
       const data = await selectProjectAPI(idProject);
       setProject(data);
       setStartDate(data.startDate);
@@ -65,25 +85,28 @@ export default function EditProject() {
       setTotalAmount(data.totalAmount);
       setTimeDiff(data?.totalTime);
       setProjectItems(data.rpQuantityAndRevenueDetails);
+      setCountItem(data.rpQuantityAndRevenueDetails?.length);
       setRpQuantityAndRevenueLibraries(data.rpQuantityAndRevenueLibraries);
-      // console.log(data);
+      setCategories(categories);
 
-      return data;
-    } catch (error) {
-      console.error("Error fetching project:", error);
-    }
-  };
-
-  useEffect(() => {
-    // Call the asynchronous function inside the useEffect
-    getProject(idProject);
-  }, [idProject]); // Add idProject as a dependency if needed
-
-  // Get category selection
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await getCategoriesAndCategoriesOfProjectAPI(idProject);
-      setCategories(response);
+      let remaining = [];
+      categories.forEach((item2) => {
+        if (
+          !data.rpQuantityAndRevenueDetails?.some(
+            (item1) => item1.category === item2.name
+          )
+        ) {
+          remaining.push({
+            name: item2.name,
+            unit: item2.unit,
+          });
+        }
+      });
+      setRemainingCategories(remaining);
+      setCountItem(categories?.length - remaining.length);
+      if (remaining.length === 0) {
+        setDisableAddItem(true);
+      }
     }
     fetchMyAPI();
   }, [idProject]);
@@ -97,12 +120,90 @@ export default function EditProject() {
     setProject({ ...project, [e.target.name]: e.target.value });
   };
   //Project Item
-  const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
+
   const addProjectItem = () => {
+    let tempCountItem = countItem + 1;
+    setCountItem(tempCountItem);
+    if (categories.length === tempCountItem) {
+      setDisableAddItem(true);
+    }
     setProjectItems((oldProjectItems) => {
       return [...oldProjectItems, newEmptyProjectDetail()];
     });
   };
+  const handleCategorySelect = (selectedCategory) => {
+    // debugger;
+
+    const temCategoryIndex = remainingCategories.findIndex(
+      (el) => el.name === selectedCategory.name
+    );
+    // Nếu tìm thấy phần tử có name giống
+    if (temCategoryIndex !== -1) {
+      // Loại bỏ phần tử đó khỏi mảng remainingCategories
+      const updatedRemainingCategories = [...remainingCategories];
+      updatedRemainingCategories.splice(temCategoryIndex, 1);
+
+      // Cập nhật lại mảng remainingCategories
+      setRemainingCategories(updatedRemainingCategories);
+
+      // Trả về selectedCategory
+      return selectedCategory;
+    } else if (remainingCategories.length === 1) {
+      setDisableAddItem(true);
+      return;
+    }
+  };
+  const handleProjectDetailChange = (detail) => {
+    setProjectItems((oldProjectItems) => {
+      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
+      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
+      newProjectItems.splice(index, 1, detail);
+      setProject({
+        ...project,
+        rpQuantityAndRevenueDetails: newProjectItems,
+      });
+      return [...newProjectItems];
+    });
+  };
+
+  const handleRemoveProjectDetail = (detail) => {
+    let tempCountItem = countItem - 1;
+    setCountItem(tempCountItem);
+    if (categories.length !== tempCountItem) {
+      setDisableAddItem(false);
+    }
+
+    const filteredCategories = detail;
+    if (filteredCategories.category) {
+      let obj3 = [];
+      categories.forEach((item2) => {
+        if (filteredCategories.category === item2.name) {
+          obj3.push({
+            name: item2.name,
+            unit: item2.unit,
+          });
+        }
+        const newCategories = [...remainingCategories, obj3[0]];
+        setRemainingCategories([...remainingCategories, obj3[0]]);
+        if (newCategories.length > 0) {
+          setDisableAddItem(false);
+        }
+      });
+    }
+    setProjectItems((oldProjectItems) => {
+      const newProjectItems = [
+        ...oldProjectItems.filter((el) => detail.id !== el.id),
+      ];
+      setProject({
+        ...project,
+        rpQuantityAndRevenueDetails: newProjectItems,
+      });
+      return newProjectItems;
+    });
+  };
+  useEffect(() => {
+    updateTotalAmount();
+  }, [projectItems]);
   //Tính tổng tiền
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -229,44 +330,20 @@ export default function EditProject() {
     });
   };
 
-  const handleProjectDetailChange = (detail) => {
-    setProjectItems((oldProjectItems) => {
-      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
-      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
-      newProjectItems.splice(index, 1, detail);
-      setProject({
-        ...project,
-        rpQuantityAndRevenueDetails: newProjectItems,
-      });
-      return [...newProjectItems];
-    });
-  };
-
-  const handleRemoveProjectDetail = (detail) => {
-    setProjectItems((oldProjectItems) => {
-      const newProjectItems = [
-        ...oldProjectItems.filter((el) => detail.id !== el.id),
-      ];
-      setProject({
-        ...project,
-        rpQuantityAndRevenueDetails: newProjectItems,
-      });
-      return newProjectItems;
-    });
-  };
-  useEffect(() => {
-    updateTotalAmount();
-  }, [projectItems]);
   const handleSubmit = async (e) => {
     // debugger;
     e.preventDefault();
-    setIsLoading(true);
-    console.log(project);
+    if (project.name.trim().length === 0) {
+      toast.error("Vui lòng nhập tên dự án");
+      return;
+    }
     try {
-      await saveProjectAPI(project);
-      setIsLoading(false);
-      toast.success("Cập nhật dự án thành công");
-      navigate("/report/listprojects");
+      const data = await saveProjectAPI(project);
+      if (data) {
+        setIsLoading(true);
+        toast.success("Cập nhật dự án thành công");
+        navigate("/report/listprojects");
+      }
     } catch (error) {
       console.log(error);
       toast.error("Cập nhật dự án thất bại");
@@ -299,10 +376,11 @@ export default function EditProject() {
 
   return (
     <div>
+      <Toaster position="top-right" />
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="container mt-2" style={{ position: "relative" }}>
+        <div className="container mt-2 mb-5" style={{ position: "relative" }}>
           <div style={{ position: "absolute", top: "20px", left: "80px" }}>
             <Link
               sx={{ fontSize: "16px" }}
@@ -364,6 +442,13 @@ export default function EditProject() {
                           key={detail.id}
                           detail={detail}
                           categories={categories}
+                          remainingCategories={[
+                            ...remainingCategories,
+                            ...categories.filter(
+                              (el) => el.name === detail.category
+                            ),
+                          ]}
+                          onCategorySelect={handleCategorySelect}
                           onChange={handleProjectDetailChange}
                           onRemove={handleRemoveProjectDetail}
                           updateTotalAmount={updateTotalAmount}
@@ -376,13 +461,15 @@ export default function EditProject() {
                           justifyContent: "space-between",
                         }}
                       >
-                        <Button
-                          variant="contained"
+                        <button
+                          type="button"
+                          className="btn btn-primary"
                           style={{ marginTop: "-10px", marginBottom: "20px" }}
                           onClick={addProjectItem}
+                          disabled={disableAddItem}
                         >
                           Thêm
-                        </Button>
+                        </button>
                         <b style={{ paddingRight: "120px" }}>
                           Tổng cộng: {`${totalAmount.toLocaleString()} VND`}
                         </b>
@@ -513,25 +600,25 @@ export default function EditProject() {
                       Thêm
                     </Button>
                   </div>
-                  {/* SUBMIT */}
-                  <div
-                    style={{
-                      marginTop: "20px",
-                      textAlign: "end",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="success"
-                      // disabled={isLoading}
-                      type="submit"
-                    >
-                      Lưu
-                    </Button>
-                  </div>
                 </Container>
               </TabPanel>
             </TabContext>
+            {/* SUBMIT */}
+            <div
+              style={{
+                marginTop: "20px",
+                textAlign: "end",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="success"
+                // disabled={isLoading}
+                type="submit"
+              >
+                Lưu
+              </Button>
+            </div>
           </form>
         </div>
       )}

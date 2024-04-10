@@ -47,18 +47,7 @@ export default function QuantityRevenueItem({
     // debugger;
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
-    // if (remainingCategories.length <= 1) {
-    //   onCategorySelect(selectedCategory);
-    //   setUnit(selectedCategory.unit);
-    //   setPrice(selectedCategory.price);
-    //   onChange({
-    //     ...detail,
-    //     unit: selectedCategory.unit,
-    //     price: selectedCategory.price,
-    //     category,
-    //   });
-    //   return;
-    // }
+
     const validateCategory = onCategorySelect(selectedCategory);
     if (validateCategory) {
       setUnit(selectedCategory.unit);
@@ -92,8 +81,6 @@ export default function QuantityRevenueItem({
         });
         onRemove(detail);
       }
-      // debugger;
-      // onRemove(detail);
     } catch (error) {}
   };
 
@@ -151,7 +138,6 @@ export default function QuantityRevenueItem({
           sx={{ marginRight: "20px", width: "100px" }}
         />
         <TextField
-          // label="Sản lượng*"
           label={
             <span>
               Sản lượng<span style={{ color: "red" }}>*</span>
@@ -168,11 +154,6 @@ export default function QuantityRevenueItem({
         />
         <TextField
           label="Đơn giá(VND)"
-          // label={
-          //   <span>
-          //     Đơn giá<span style={{ color: "red" }}>*</span>
-          //   </span>
-          // }
           id="outlined-size-small"
           value={price.toLocaleString()}
           size="small"

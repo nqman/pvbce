@@ -62,7 +62,15 @@ export default function CreateProject() {
   };
   //Project Item
   const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
+  const [disableAddItem, setDisableAddItem] = useState(false);
+  const [countItem, setCountItem] = useState(1);
   const addProjectItem = () => {
+    // debugger;
+    let tempCountItem = countItem + 1;
+    setCountItem(tempCountItem);
+    if (categories.length === tempCountItem) {
+      setDisableAddItem(true);
+    }
     setProjectItems((oldProjectItems) => {
       return [...oldProjectItems, newEmptyProjectDetail()];
     });
@@ -182,11 +190,15 @@ export default function CreateProject() {
   };
 
   // Get category selection
+
   const [categories, setCategories] = useState([]);
+  const [remainingCategories, setRemainingCategories] = useState([]);
+
   useEffect(() => {
     async function fetchMyAPI() {
-      let response = await getCategoriesAPI();
-      setCategories(response);
+      let categories = await getCategoriesAPI();
+      setCategories(categories);
+      setRemainingCategories(categories);
     }
     fetchMyAPI();
   }, []);
@@ -201,6 +213,29 @@ export default function CreateProject() {
   };
 
   const handleRemoveProjectDetail = (detail) => {
+    let tempCountItem = countItem - 1;
+    setCountItem(tempCountItem);
+    if (categories.length !== tempCountItem) {
+      setDisableAddItem(false);
+    }
+
+    const filteredCategories = detail;
+    if (filteredCategories.category) {
+      let obj3 = [];
+      categories.forEach((item2) => {
+        if (filteredCategories.category === item2.name) {
+          obj3.push({
+            name: item2.name,
+            unit: item2.unit,
+          });
+        }
+        const newCategories = [...remainingCategories, obj3[0]];
+        setRemainingCategories([...remainingCategories, obj3[0]]);
+        if (newCategories.length > 0) {
+          setDisableAddItem(false);
+        }
+      });
+    }
     setProjectItems((oldProjectItems) => {
       return [...oldProjectItems.filter((el) => detail.id !== el.id)];
     });
@@ -208,11 +243,32 @@ export default function CreateProject() {
   useEffect(() => {
     updateTotalAmount();
   }, [projectItems]);
+  const handleCategorySelect = (selectedCategory) => {
+    // debugger;
+
+    const temCategoryIndex = remainingCategories.findIndex(
+      (el) => el.name === selectedCategory.name
+    );
+    // Nếu tìm thấy phần tử có name giống
+    if (temCategoryIndex !== -1) {
+      // Loại bỏ phần tử đó khỏi mảng remainingCategories
+      const updatedRemainingCategories = [...remainingCategories];
+      updatedRemainingCategories.splice(temCategoryIndex, 1);
+
+      // Cập nhật lại mảng remainingCategories
+      setRemainingCategories(updatedRemainingCategories);
+
+      // Trả về selectedCategory
+      return selectedCategory;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // debugger;
-    // setIsLoading(true);
-    // console.log(project);
+    if (!project.name) {
+      toast.error("Vui lòng nhập tên dự án");
+      return;
+    }
     try {
       const data = await saveProjectAPI(project);
       if (data) {
@@ -220,7 +276,6 @@ export default function CreateProject() {
         toast.success("Khởi tạo dự án thành công");
         navigate("/report/listprojects");
       }
-      // setIsLoading(false);
     } catch (error) {
       console.log(error);
       toast.error("Khởi tạo dự án thất bại");
@@ -233,7 +288,7 @@ export default function CreateProject() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="container mt-2" style={{ position: "relative" }}>
+        <div className="container mt-2 mb-5" style={{ position: "relative" }}>
           <div style={{ position: "absolute", top: "20px", left: "80px" }}>
             <Link
               sx={{ fontSize: "16px" }}
@@ -295,6 +350,13 @@ export default function CreateProject() {
                           key={detail.id}
                           detail={detail}
                           categories={categories}
+                          remainingCategories={[
+                            ...remainingCategories,
+                            ...categories.filter(
+                              (el) => el.name === detail.category
+                            ),
+                          ]}
+                          onCategorySelect={handleCategorySelect}
                           onChange={handleProjectDetailChange}
                           onRemove={handleRemoveProjectDetail}
                           updateTotalAmount={updateTotalAmount}
@@ -307,13 +369,15 @@ export default function CreateProject() {
                           justifyContent: "space-between",
                         }}
                       >
-                        <Button
-                          variant="contained"
+                        <button
+                          className="btn btn-primary"
                           style={{ marginTop: "-10px", marginBottom: "20px" }}
                           onClick={addProjectItem}
+                          type="button"
+                          disabled={disableAddItem}
                         >
                           Thêm
-                        </Button>
+                        </button>
                         <b style={{ paddingRight: "120px" }}>
                           Tổng cộng: {`${totalAmount.toLocaleString()} VND`}
                         </b>
@@ -435,25 +499,24 @@ export default function CreateProject() {
                       Thêm
                     </Button>
                   </div>
-                  {/* SUBMIT */}
-                  <div
-                    style={{
-                      marginTop: "20px",
-                      textAlign: "end",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="success"
-                      // disabled={isLoading}
-                      type="submit"
-                    >
-                      Lưu
-                    </Button>
-                  </div>
                 </Container>
               </TabPanel>
             </TabContext>
+            {/* SUBMIT */}
+            <div
+              style={{
+                marginTop: "20px",
+                textAlign: "end",
+              }}
+            >
+              <button
+                className="btn btn-success"
+                // disabled={isLoading}
+                type="submit"
+              >
+                Lưu
+              </button>
+            </div>
           </form>
         </div>
       )}
