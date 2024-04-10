@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 export default function ProjectItem({
   detail = {},
   categories = [],
+  remainingCategories,
+  onCategorySelect,
   onChange = () => {},
   onRemove = () => {},
   updateTotalAmount,
@@ -51,14 +53,16 @@ export default function ProjectItem({
   const handleSelectCategory = async (event) => {
     const category = event.target.value;
     const selectedCategory = categories.find((el) => el.name === category);
-    if (selectedCategory) {
+
+    const validateCategory = onCategorySelect(selectedCategory);
+    if (validateCategory) {
       setUnit(selectedCategory.unit);
+      onChange({
+        ...detail,
+        unit: selectedCategory.unit,
+        category,
+      });
     }
-    onChange({
-      ...detail,
-      unit: selectedCategory.unit,
-      category,
-    });
   };
 
   const deleteDiv = async (id) => {
@@ -108,7 +112,7 @@ export default function ProjectItem({
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={detail.category}
-              // label="Hạng mục*"
+              disabled={detail?.category ? true : false}
               label={
                 <span>
                   Hạng mục<span style={{ color: "red" }}>*</span>
@@ -118,7 +122,7 @@ export default function ProjectItem({
               size="small"
               sx={{ display: "flex", width: "250px" }}
             >
-              {categories.map((category) => (
+              {remainingCategories.map((category) => (
                 <MenuItem
                   key={category.id + "_" + category.value}
                   value={category.name}
@@ -156,7 +160,6 @@ export default function ProjectItem({
           // onBlur={handleGetAmount}
         />
         <TextField
-          // label="Đơn giá (VND)*"
           label={
             <span>
               Đơn giá (VND)<span style={{ color: "red" }}>*</span>

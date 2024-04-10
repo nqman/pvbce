@@ -41,6 +41,7 @@ export function QuantityRevenuePerWeek({
       // debugger
       let categories = await getCategoriesOfProjectAPI(idProject);
       setCategories(categories);
+
       let remaining = [];
       categories.forEach((item2) => {
         if (
@@ -64,11 +65,6 @@ export function QuantityRevenuePerWeek({
     fetchMyAPI();
   }, []);
 
-  // const [quantityRevenueItems, setQuantityRevenueItems] = useState(
-  //   actualQuantityAndRevenueDetails
-  //     ? actualQuantityAndRevenueDetails
-  //     : [newEmptyQuantityRevenueDetail()]
-  // );
   const [quantityRevenueItems, setQuantityRevenueItems] = useState(
     actualQuantityAndRevenueDetails ? actualQuantityAndRevenueDetails : []
   );

@@ -191,7 +191,7 @@ export default function CostName() {
 
                         renderCell: (params) => (
                           <div style={{ display: "flex" }}>
-                            <button
+                            {/* <button
                               style={{
                                 padding: "0px",
                                 height: "25px",
@@ -208,7 +208,7 @@ export default function CostName() {
                                   marginBottom: "2px",
                                 }}
                               />
-                            </button>
+                            </button> */}
                             <button
                               style={{
                                 padding: "0px",
