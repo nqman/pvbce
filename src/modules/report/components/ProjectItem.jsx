@@ -96,16 +96,22 @@ export default function ProjectItem({
           alignItems: "center",
           marginBottom: "35px",
           height: "30px",
+          width: "100%",
         }}
       >
         <Box
           sx={{
-            minWidth: 130,
+            // minWidth: 130,
             marginRight: "20px",
+            width: "40%",
           }}
         >
           <FormControl fullWidth>
-            <InputLabel size="small" id="demo-simple-select-label">
+            <InputLabel
+              // sx={{ width: "40%" }}
+              size="small"
+              id="demo-simple-select-label"
+            >
               Hạng mục<span style={{ color: "red" }}>*</span>
             </InputLabel>
             <Select
@@ -120,7 +126,7 @@ export default function ProjectItem({
               }
               onChange={handleSelectCategory}
               size="small"
-              sx={{ display: "flex", width: "450px" }}
+              // sx={{ display: "flex", width: "40%" }}
             >
               {remainingCategories.map((category) => (
                 <MenuItem
@@ -140,7 +146,7 @@ export default function ProjectItem({
           value={detail.unit}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "100px" }}
+          sx={{ marginRight: "20px", width: "10%" }}
         />
         <TextField
           label={
@@ -152,7 +158,7 @@ export default function ProjectItem({
           value={detail.quantity}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "110px" }}
+          sx={{ marginRight: "20px", width: "15%" }}
           onChange={(e) =>
             handleInputChange(detail.id, "quantity", e.target.value)
           }
@@ -168,7 +174,7 @@ export default function ProjectItem({
           value={detail.price}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "140px", textAlign: "center" }}
+          sx={{ marginRight: "20px", width: "15%", textAlign: "center" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
@@ -181,7 +187,7 @@ export default function ProjectItem({
           value={amount.toLocaleString()}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "190px" }}
+          sx={{ marginRight: "20px", width: "20%" }}
         />
         {!detail.use && (
           <button
