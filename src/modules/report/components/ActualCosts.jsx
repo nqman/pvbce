@@ -117,10 +117,7 @@ export default function ActualCosts() {
 
   const handleSaveActualCost = async () => {
     // debugger;
-    setIsLoading(true);
-
     const tempData = [];
-
     const tempObject = {};
     valueFromChild.forEach((item) => {
       const week = item.actualCostWeek;
@@ -130,8 +127,12 @@ export default function ActualCosts() {
     for (const key in tempObject) {
       tempData.push(tempObject[key]);
     }
+    console.log(tempData);
     try {
-      await addActualCostAPI(tempData, idProject);
+      const data = await addActualCostAPI(tempData, idProject);
+      if (data) {
+        setIsLoading(true);
+      }
       await getOldCosts(idProject);
       setIsLoading(false);
       toast.success("Cập nhật chi phí thực tế thành công");
@@ -180,7 +181,22 @@ export default function ActualCosts() {
             >
               Thêm tuần
             </button>
-            <button className="btn btn-success" onClick={handleSaveActualCost}>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              position: "fixed",
+              bottom: "40px",
+              right: "120px",
+            }}
+          >
+            <button
+              style={{ width: "70px" }}
+              className="btn btn-success"
+              onClick={handleSaveActualCost}
+            >
               Lưu
             </button>
           </div>

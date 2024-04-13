@@ -233,7 +233,7 @@ const EquipDetail = () => {
           {role && (role === "Admin" || role === "Employee") && (
             <Grid item xs={12} lg={6}>
               <Typography variant="h5" gutterBottom>
-                Nhật kí bảo dưỡng
+                Nhật kí bảo dưỡng:
               </Typography>
               <List>
                 <ul>

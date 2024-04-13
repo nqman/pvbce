@@ -280,7 +280,7 @@ export async function addActualQuantityAndRevenueAPI(
   idProject
 ) {
   try {
-    console.log(actualQuantityAndRevenues);
+    // console.log(actualQuantityAndRevenues);
     const formData = new FormData();
     actualQuantityAndRevenues.map((dataPerWeek) =>
       Object.keys(dataPerWeek).map((key) => {
@@ -328,7 +328,7 @@ export async function addActualQuantityAndRevenueAPI(
     console.log(formData);
     return resp;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.response) {
       throw error.response;
     }
@@ -348,9 +348,9 @@ export async function getOldActualCostAPI(id) {
 
 export async function addActualCostAPI(actualCosts, idProject) {
   // console.log(actualCosts);
-  debugger;
+  // debugger;
   try {
-    console.log(actualCosts);
+    // console.log(actualCosts);
     const formData = new FormData();
     actualCosts.map((dataPerWeek) =>
       Object.keys(dataPerWeek).map((key) => {

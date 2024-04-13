@@ -24,7 +24,6 @@ export default function EditEquipment() {
     try {
       const data = await selectEquipmentAPI(idEquip);
       setValue(data);
-
       setProductDetails(data.productDetails); // set them gia tri cho productDetail
       setSelectedImages(data.productImages);
       setProductDiaries(data.productDiaries);
@@ -45,10 +44,8 @@ export default function EditEquipment() {
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
-    setValue({ ...value, productDetails: productDetails });
   };
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(null);
 
   const handleImageChange = (event) => {
     // debugger;
@@ -91,6 +88,7 @@ export default function EditEquipment() {
       (productDetail) => productDetail.id !== id
     );
     setProductDetails(updatedProductDetails);
+    setValue({ ...value, productDetails: updatedProductDetails });
   };
 
   const handleInputChange = (id, key, value) => {
@@ -100,6 +98,11 @@ export default function EditEquipment() {
         : productDetail
     );
     setProductDetails(updatedProductDetails);
+  };
+  const handleBlurInput = () => {
+    // debugger;
+    console.log(productDetails);
+    setValue({ ...value, productDetails: productDetails });
   };
 
   const handleFileChange = (id, file) => {
@@ -111,6 +114,7 @@ export default function EditEquipment() {
     });
 
     setProductDetails(updatedProductDetails);
+    setValue({ ...value, productDetails: updatedProductDetails });
   };
 
   //nhật ký bảo dưỡng
@@ -128,7 +132,7 @@ export default function EditEquipment() {
 
   const deleteDivDiary = (id) => {
     const updateDiaries = productDiaries.filter((diary) => diary.id !== id);
-    console.log(updateDiaries);
+    // console.log(updateDiaries);
     setProductDiaries(updateDiaries);
     setValue({ ...value, productDiaries: updateDiaries });
   };
@@ -201,7 +205,7 @@ export default function EditEquipment() {
                   <Tab label="THÔNG SỐ CHUNG" value="1" />
                   <Tab label="THÔNG SỐ KỸ THUẬT" value="2" />
                   <Tab label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA" value="3" />
-                  <Tab label="QR" value="4" />
+                  {/* <Tab label="QR" value="4" /> */}
                 </TabList>
               </Box>
               {/* Thông số chung */}
@@ -412,7 +416,7 @@ export default function EditEquipment() {
                         id="outlined-size-small"
                         value={productDetail.name}
                         size="small"
-                        sx={{ marginRight: "20px" }}
+                        sx={{ marginRight: "20px", width: "40%" }}
                         onChange={(e) =>
                           handleInputChange(
                             productDetail.id,
@@ -420,13 +424,25 @@ export default function EditEquipment() {
                             e.target.value
                           )
                         }
+                        onBlur={handleBlurInput}
                       />
                       <TextField
                         placeholder="Nội dung"
                         id="outlined-size-small"
-                        value={productDetail.value || productDetail.file?.name}
+                        disabled={
+                          productDetail.type === "file" ||
+                          productDetail.file?.name
+                            ? true
+                            : false
+                        }
+                        value={
+                          productDetail.file?.name
+                            ? productDetail.file?.name
+                            : productDetail.value
+                        }
+                        // value={productDetail.value || productDetail.file?.name}
                         size="small"
-                        sx={{ marginRight: "20px" }}
+                        sx={{ marginRight: "20px", width: "40%" }}
                         onChange={(e) =>
                           handleInputChange(
                             productDetail.id,
@@ -434,22 +450,31 @@ export default function EditEquipment() {
                             e.target.value
                           )
                         }
+                        onBlur={handleBlurInput}
                       />
-                      <input
-                        type="file"
-                        id={`fileInput${productDetail.id}`}
-                        name="filename"
-                        onChange={(e) =>
-                          handleFileChange(productDetail.id, e.target.files[0])
-                        }
-                      />
+                      <div style={{ width: "20%" }}>
+                        <input
+                          type="file"
+                          style={{ width: "130px" }}
+                          className="custom-file-input"
+                          accept=".pdf, .xlsx, .xls"
+                          id={`fileInput${productDetail.id}`}
+                          name="filename"
+                          onChange={(e) =>
+                            handleFileChange(
+                              productDetail.id,
+                              e.target.files[0]
+                            )
+                          }
+                        />
 
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => deleteDiv(productDetail.id)}
-                      >
-                        x
-                      </button>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => deleteDiv(productDetail.id)}
+                        >
+                          x
+                        </button>
+                      </div>
                     </div>
                   ))}
                   <p className="text-danger">{errorDetail}</p>
@@ -472,11 +497,11 @@ export default function EditEquipment() {
                       key={diary.id}
                     >
                       <TextField
-                        placeholder="Thông số"
+                        placeholder="Nội dung"
                         id="outlined-size-small"
                         value={diary.name}
                         size="small"
-                        sx={{ marginRight: "20px" }}
+                        sx={{ marginRight: "20px", width: "40%" }}
                         onChange={(e) =>
                           handleInputChangeDiary(
                             diary.id,
@@ -485,39 +510,37 @@ export default function EditEquipment() {
                           )
                         }
                       />
-                      {diary?.value ? (
-                        <TextField
-                          value={diary.value}
-                          size="small"
-                          sx={{ marginRight: "20px", width: "250px" }}
-                          disabled={true}
-                          title={diary.value}
-                        />
-                      ) : (
-                        ""
-                      )}
-                      <Button component="label">
+
+                      <TextField
+                        placeholder="Tên tài liệu"
+                        value={diary.value ? diary.value : diary.file?.name}
+                        size="small"
+                        sx={{ marginRight: "20px", width: "40%" }}
+                        disabled={true}
+                        title={diary.value}
+                      />
+
+                      <div style={{ width: "20%" }}>
                         <input
-                          style={{
-                            width: "300px",
-                          }}
-                          className="form-control"
+                          style={{ width: "130px" }}
+                          className="custom-file-input"
                           type="file"
                           id={`fileInput${diary.id}`}
                           name="filename"
-                          accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                          accept=".pdf, .xlsx, .xls"
                           onChange={(e) =>
                             handleFileChangeDiary(diary.id, e.target.files[0])
                           }
                         />
-                      </Button>
 
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => deleteDivDiary(diary.id)}
-                      >
-                        x
-                      </button>
+                        <button
+                          style={{ marginLeft: "-10px" }}
+                          className="btn btn-danger"
+                          onClick={() => deleteDivDiary(diary.id)}
+                        >
+                          x
+                        </button>
+                      </div>
                     </div>
                   ))}
                   <p className="text-danger">{errorDiary}</p>
@@ -525,26 +548,9 @@ export default function EditEquipment() {
                     Thêm
                   </Button>
                 </div>
-                {/* SUBMIT */}
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: "50px",
-                    right: "130px",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="success"
-                    disabled={isLoading}
-                    type="submit"
-                  >
-                    Lưu
-                  </Button>
-                </div>
               </TabPanel>
               {/* Mã QR */}
-              <TabPanel value="4">
+              {/* <TabPanel value="4">
                 <div style={{ textAlign: "center", paddingTop: "50px" }}>
                   <img
                     style={{ width: "200px", height: "200px" }}
@@ -553,8 +559,25 @@ export default function EditEquipment() {
                   />
                   <h3 style={{ marginTop: "20px" }}>{value.divideCode}</h3>
                 </div>
-              </TabPanel>
+              </TabPanel> */}
             </TabContext>
+            {/* SUBMIT */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "50px",
+                right: "130px",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="success"
+                disabled={isLoading}
+                type="submit"
+              >
+                Lưu
+              </Button>
+            </div>
           </Box>
         </form>
       </div>

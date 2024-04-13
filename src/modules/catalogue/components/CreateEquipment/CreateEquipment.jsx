@@ -26,29 +26,21 @@ export default function CreateEquipment() {
     productDiaries: "",
   };
   const navigate = useNavigate();
-  const [value, setValueEquipment] = useState(emptyValue);
+  const [value, setValue] = useState(emptyValue);
 
   const [item, setItem] = useState("1");
   const handleChangeItem = (evt, newValue) => {
     setItem(newValue);
-    setValueEquipment({
-      ...value,
-      productDetails: productDetails,
-    });
-    // console.log(productDetails);
-    // console.log(value);
   };
   const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(null);
 
   // Thông số chung
   const handleChangeInput = (e) => {
-    setValueEquipment({ ...value, [e.target.name]: e.target.value });
+    setValue({ ...value, [e.target.name]: e.target.value });
   };
   const handleCheckDivideCode = async () => {
     if (value.divideCode) {
       const res = await checkDivideCodeAPI(value.divideCode);
-
       if (!res) {
         setErrorDivideCode("Mã thiết bị đã tồn tại");
         return;
@@ -69,7 +61,7 @@ export default function CreateEquipment() {
         newImages.push({ id: -Date.now(), imageFile: files[i] });
       }
       setSelectedImages(newImages);
-      setValueEquipment({ ...value, productImages: newImages });
+      setValue({ ...value, productImages: newImages });
     }
   };
   //Xóa ảnh
@@ -77,7 +69,7 @@ export default function CreateEquipment() {
     const newImages = [...selectedImages];
     newImages.splice(index, 1);
     setSelectedImages(newImages);
-    setValueEquipment({ ...value, productImages: newImages });
+    setValue({ ...value, productImages: newImages });
   };
 
   //Thông số kỹ thuật
@@ -111,6 +103,11 @@ export default function CreateEquipment() {
     );
     setProductDetails(updatedProductDetails);
   };
+  const handleBlurInput = () => {
+    // debugger;
+    console.log(productDetails);
+    setValue({ ...value, productDetails: productDetails });
+  };
 
   const handleFileChange = (id, file) => {
     const updatedProductDetails = productDetails.map((productDetail) =>
@@ -118,6 +115,7 @@ export default function CreateEquipment() {
     );
 
     setProductDetails(updatedProductDetails);
+    setValue({ ...value, productDetails: updatedProductDetails });
   };
 
   //Nhật kí bảo dưỡng- sửa chữa
@@ -152,25 +150,18 @@ export default function CreateEquipment() {
       diary.id === id ? { ...diary, file } : diary
     );
     setProductDiaries(updateDiaries);
-    setValueEquipment({ ...value, productDiaries: updateDiaries });
+    setValue({ ...value, productDiaries: updateDiaries });
   };
   const [errorDivideCode, setErrorDivideCode] = useState("");
 
   // Thêm thiết bị
   const handleSaveEquipment = async (e) => {
     e.preventDefault();
-    // const res = await checkDivideCodeAPI(value?.divideCode);
-    // console.log("res", res);
     if (!value.name) {
       toast.error("Vui lòng nhập tên thiết bị");
     } else if (!value.divideCode) {
       toast.error("Vui lòng nhập mã thiết bị");
-    }
-
-    // else if (res) {
-    //   toast.error("Mã thiết bị đã tồn tại");
-    // }
-    else {
+    } else {
       setIsLoading(true);
       try {
         await saveEquipmentAPI(value);
@@ -436,7 +427,7 @@ export default function CreateEquipment() {
                             id="outlined-size-small"
                             value={productDetail.name}
                             size="small"
-                            sx={{ marginRight: "20px" }}
+                            sx={{ marginRight: "20px", width: "40%" }}
                             onChange={(e) =>
                               handleInputChange(
                                 productDetail.id,
@@ -444,15 +435,19 @@ export default function CreateEquipment() {
                                 e.target.value
                               )
                             }
+                            onBlur={handleBlurInput}
                           />
                           <TextField
                             placeholder="Nội dung"
                             id="outlined-size-small"
+                            disabled={productDetail.file?.name ? true : false}
                             value={
-                              productDetail.value || productDetail.file?.name
+                              productDetail.file?.name
+                                ? productDetail.file?.name
+                                : productDetail.value
                             }
                             size="small"
-                            sx={{ marginRight: "20px" }}
+                            sx={{ marginRight: "20px", width: "40%" }}
                             onChange={(e) =>
                               handleInputChange(
                                 productDetail.id,
@@ -460,27 +455,32 @@ export default function CreateEquipment() {
                                 e.target.value
                               )
                             }
+                            onBlur={handleBlurInput}
                           />
-                          <input
-                            type="file"
-                            style={{ width: "130px" }}
-                            className="custom-file-input"
-                            id={`fileInput${productDetail.id}`}
-                            name="filename"
-                            onChange={(e) =>
-                              handleFileChange(
-                                productDetail.id,
-                                e.target.files[0]
-                              )
-                            }
-                          />
+                          <div style={{ width: "20%" }}>
+                            <input
+                              type="file"
+                              style={{ width: "130px" }}
+                              className="custom-file-input"
+                              id={`fileInput${productDetail.id}`}
+                              name="filename"
+                              accept=".pdf, .xlsx, .xls"
+                              onChange={(e) =>
+                                handleFileChange(
+                                  productDetail.id,
+                                  e.target.files[0]
+                                )
+                              }
+                            />
 
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => deleteDiv(productDetail.id)}
-                          >
-                            x
-                          </button>
+                            <button
+                              style={{ marginLeft: "-10px" }}
+                              className="btn btn-danger"
+                              onClick={() => deleteDiv(productDetail.id)}
+                            >
+                              x
+                            </button>
+                          </div>
                         </div>
                       ))}
                       <p className="text-danger">{errorDetail}</p>
@@ -503,11 +503,11 @@ export default function CreateEquipment() {
                           key={diary.id}
                         >
                           <TextField
-                            placeholder="Thông số"
+                            placeholder="Nội dung"
                             id="outlined-size-small"
                             value={diary.name}
                             size="small"
-                            sx={{ marginRight: "20px" }}
+                            sx={{ marginRight: "20px", width: "40%" }}
                             onChange={(e) =>
                               handleInputChangeDiary(
                                 diary.id,
@@ -516,17 +516,30 @@ export default function CreateEquipment() {
                               )
                             }
                           />
-
-                          <Button component="label">
+                          <TextField
+                            placeholder="Tên tài liệu"
+                            id="outlined-size-small"
+                            // disabled={diary.file?.name ? true : false}
+                            disabled={true}
+                            value={diary.file?.name}
+                            size="small"
+                            sx={{ marginRight: "20px", width: "40%" }}
+                            onChange={(e) =>
+                              handleInputChange(
+                                diary.id,
+                                "value",
+                                e.target.value
+                              )
+                            }
+                          />
+                          <div sx={{ width: "20%" }}>
                             <input
-                              style={{
-                                width: "300px",
-                              }}
-                              className="form-control"
+                              className="custom-file-input"
+                              style={{ width: "130px" }}
                               type="file"
                               id={`fileInput${diary.id}`}
                               name="filename"
-                              // accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                              accept=".pdf, .xlsx, .xls"
                               onChange={(e) =>
                                 handleFileChangeDiary(
                                   diary.id,
@@ -534,13 +547,15 @@ export default function CreateEquipment() {
                                 )
                               }
                             />
-                          </Button>
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => deleteDivDiary(diary.id)}
-                          >
-                            x
-                          </button>
+
+                            <button
+                              style={{ marginLeft: "-10px" }}
+                              className="btn btn-danger"
+                              onClick={() => deleteDivDiary(diary.id)}
+                            >
+                              x
+                            </button>
+                          </div>
                         </div>
                       ))}
                       <p className="text-danger">{errorDiary}</p>
@@ -548,25 +563,25 @@ export default function CreateEquipment() {
                         Thêm
                       </Button>
                     </div>
-                    {/* SUBMIT */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: "50px",
-                        right: "130px",
-                      }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="success"
-                        // disabled={isLoading}
-                        type="submit"
-                      >
-                        Lưu
-                      </Button>
-                    </div>
                   </TabPanel>
                 </TabContext>
+                {/* SUBMIT */}
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "50px",
+                    right: "130px",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="success"
+                    // disabled={isLoading}
+                    type="submit"
+                  >
+                    Lưu
+                  </Button>
+                </div>
               </Box>
             </form>
           </div>

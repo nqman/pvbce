@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
-import { getCostsAPI, selectProjectAPI } from "../../../apis/reportAPI";
+import { getCostsAPI } from "../../../apis/reportAPI";
 import { useParams } from "react-router-dom";
 import { Grid, TextField } from "@mui/material";
 import ActualCostItem from "./ActualCostItem";
@@ -10,7 +10,6 @@ export default function ActualCostPerWeek({
   week,
   fromDateToDate,
   actualCostDetails,
-
   onValueChange = () => {},
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,27 +21,21 @@ export default function ActualCostPerWeek({
     };
   };
   const params = useParams();
-  // const [project, setProject] = useState();
-  // console.log(actualCostDetails);
+  const [disableAddItem, setDisableAddItem] = useState(false);
+  const [countItem, setCountItem] = useState(0);
+  const [remainingCosts, setRemainingCosts] = useState([]);
 
   const idProject = params.code;
-  // const getProjects = async (idProject) => {
-  //   try {
-  //     const data = await selectProjectAPI(idProject);
-  //     setProject(data);
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error fetching equipments:", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getProjects(idProject);
-  // }, [idProject]);
 
   const [actualCostItems, setActualCostItems] = useState(
-    actualCostDetails ? actualCostDetails : [newEmptyActualCostDetail()]
+    actualCostDetails ? actualCostDetails : []
   );
   const addActualCostItem = () => {
+    const tempCount = countItem + 1;
+    setCountItem(tempCount);
+    if (tempCount === costs.length) {
+      setDisableAddItem(true);
+    }
     setActualCostItems((oldActualCostItems) => {
       return [...oldActualCostItems, newEmptyActualCostDetail()];
     });
@@ -62,9 +55,23 @@ export default function ActualCostPerWeek({
   // Get cost selection
   const [costs, setCosts] = useState([]);
   useEffect(() => {
+    // debugger;
     async function fetchCostsAPI() {
-      let response = await getCostsAPI();
-      setCosts(response);
+      let costs = await getCostsAPI();
+      setCosts(costs);
+      let remaining = [];
+      costs.forEach((item2) => {
+        if (!actualCostDetails?.some((item1) => item1.cost === item2.name)) {
+          remaining.push({
+            name: item2.name,
+          });
+        }
+      });
+      setRemainingCosts(remaining);
+      setCountItem(costs?.length - remaining.length);
+      if (remaining.length === 0) {
+        setDisableAddItem(true);
+      }
     }
     fetchCostsAPI();
   }, []);
@@ -78,9 +85,45 @@ export default function ActualCostPerWeek({
   };
 
   const handleRemoveActualCostDetail = (detail) => {
+    const tempCount = countItem - 1;
+    setCountItem(tempCount);
+
+    if (tempCount < costs.length) {
+      setDisableAddItem(false);
+    }
+    const filteredCosts = detail;
+    if (filteredCosts.cost) {
+      let obj3 = [];
+      costs.forEach((item2) => {
+        if (filteredCosts.cost === item2.name) {
+          obj3.push({
+            name: item2.name,
+          });
+        }
+        const newcosts = [...remainingCosts, obj3[0]];
+        setRemainingCosts([...remainingCosts, obj3[0]]);
+        if (newcosts.length > 0) {
+          setDisableAddItem(false);
+        }
+      });
+    }
     setActualCostItems((oldActualCostItems) => {
       return [...oldActualCostItems.filter((el) => detail.id !== el.id)];
     });
+  };
+  const handleCostSelect = (selectedCost) => {
+    const temCostIndex = remainingCosts.findIndex(
+      (el) => el.name === selectedCost.name
+    );
+    if (temCostIndex !== -1) {
+      const updatedremainingCosts = [...remainingCosts];
+      updatedremainingCosts.splice(temCostIndex, 1);
+      setRemainingCosts(updatedremainingCosts);
+      return selectedCost;
+    } else if (remainingCosts.length === 1) {
+      setDisableAddItem(true);
+      return;
+    }
   };
 
   useEffect(() => {
@@ -125,6 +168,11 @@ export default function ActualCostPerWeek({
                   key={detail.id}
                   detail={detail}
                   costs={costs}
+                  remainingCosts={[
+                    ...remainingCosts,
+                    ...costs.filter((el) => el.name === detail.cost),
+                  ]}
+                  onCostSelect={handleCostSelect}
                   onChange={handleActualCostDetailChange}
                   onRemove={handleRemoveActualCostDetail}
                   updateTotalAmount={updateTotalAmount}
@@ -138,7 +186,9 @@ export default function ActualCostPerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button onClick={addActualCostItem}>Thêm</Button>
+                <Button disabled={disableAddItem} onClick={addActualCostItem}>
+                  Thêm
+                </Button>
                 <TextField
                   label={"Tổng cộng"}
                   size="small"
@@ -189,6 +239,11 @@ export default function ActualCostPerWeek({
                   key={detail.id}
                   detail={detail}
                   costs={costs}
+                  remainingCosts={[
+                    ...remainingCosts,
+                    ...costs.filter((el) => el.name === detail.cost),
+                  ]}
+                  onCostSelect={handleCostSelect}
                   onChange={handleActualCostDetailChange}
                   onRemove={handleRemoveActualCostDetail}
                   updateTotalAmount={updateTotalAmount}
@@ -202,7 +257,9 @@ export default function ActualCostPerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button onClick={addActualCostItem}>Thêm</Button>
+                <Button disabled={disableAddItem} onClick={addActualCostItem}>
+                  Thêm
+                </Button>
                 <TextField
                   label={"Tổng cộng"}
                   size="small"

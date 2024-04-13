@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 export default function ActualCostItem({
   detail,
   costs,
+  remainingCosts,
+  onCostSelect,
   updateTotalAmount = () => {},
   onChange = () => {},
   onRemove = () => {},
@@ -34,14 +36,18 @@ export default function ActualCostItem({
     });
   };
 
-  const handleSelectcost = async (event) => {
+  const handleSelectCost = async (event) => {
     // debugger;
     const cost = event.target.value;
+    const selectedCost = costs.find((el) => el.name === cost);
+    const validateCost = onCostSelect(selectedCost);
 
-    onChange({
-      ...detail,
-      cost,
-    });
+    if (validateCost) {
+      onChange({
+        ...detail,
+        cost,
+      });
+    }
   };
 
   const [errorDetail, setErrorDetail] = useState("");
@@ -87,20 +93,28 @@ export default function ActualCostItem({
         >
           <FormControl fullWidth>
             <InputLabel size="small" id="demo-simple-select-label">
-              Loại chi phí
+              Loại chi phí<span style={{ color: "red" }}>*</span>
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={detail?.cost}
-              label="Loại chi phí"
-              onChange={handleSelectcost}
+              disabled={detail?.cost ? true : false}
+              label={
+                <span>
+                  Loại chi phí<span style={{ color: "red" }}>*</span>
+                </span>
+              }
+              onChange={handleSelectCost}
               size="small"
               sx={{ display: "flex", width: "750px" }}
             >
-              {costs?.map((cost) => (
-                <MenuItem key={cost.id + "_" + cost.value} value={cost.name}>
-                  {cost.name}
+              {remainingCosts?.map((cost) => (
+                <MenuItem
+                  key={cost.id + "_" + cost.value}
+                  value={detail?.cost ? detail?.cost : cost.name}
+                >
+                  {detail?.cost ? detail?.cost : cost.name}
                 </MenuItem>
               ))}
             </Select>
@@ -108,7 +122,11 @@ export default function ActualCostItem({
         </Box>
 
         <TextField
-          label="Thành tiền"
+          label={
+            <span>
+              Thành tiền<span style={{ color: "red" }}>*</span>
+            </span>
+          }
           id="outlined-size-small"
           value={amount}
           size="small"

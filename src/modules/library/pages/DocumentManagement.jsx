@@ -83,20 +83,20 @@ export default function DocumentManagement() {
     setDocument({ ...document, file: e.target.files[0] });
   };
   const handleSubmit = async () => {
-    console.log(document);
-    setShow(false);
-    setIsLoading(true);
     try {
-      await addDocumentAPI(document);
-      setIsLoading(false);
-      toast.success("Thêm tài liệu thành công");
-
+      const data = await addDocumentAPI(document);
+      if (data) {
+        setShow(false);
+        // setIsLoading(true);
+        toast.success("Thêm tài liệu thành công");
+      }
+      // setIsLoading(false);
       fetchDocuments();
     } catch (error) {
       toast.error("Thêm tài liệu thất bại");
       setIsLoading(false);
     }
-    setShow(false);
+    // setShow(false);
   };
 
   // xóa tài liệu

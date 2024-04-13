@@ -120,7 +120,7 @@ export default function ProjectItem({
               }
               onChange={handleSelectCategory}
               size="small"
-              sx={{ display: "flex", width: "250px" }}
+              sx={{ display: "flex", width: "450px" }}
             >
               {remainingCategories.map((category) => (
                 <MenuItem
@@ -143,7 +143,6 @@ export default function ProjectItem({
           sx={{ marginRight: "20px", width: "100px" }}
         />
         <TextField
-          // label="Sản lượng*"
           label={
             <span>
               Sản lượng<span style={{ color: "red" }}>*</span>
@@ -153,7 +152,7 @@ export default function ProjectItem({
           value={detail.quantity}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "110px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "quantity", e.target.value)
           }
@@ -169,7 +168,7 @@ export default function ProjectItem({
           value={detail.price}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "200px", textAlign: "center" }}
+          sx={{ marginRight: "20px", width: "140px", textAlign: "center" }}
           onChange={(e) =>
             handleInputChange(detail.id, "price", e.target.value)
           }
@@ -182,7 +181,7 @@ export default function ProjectItem({
           value={amount.toLocaleString()}
           size="small"
           disabled={true}
-          sx={{ marginRight: "20px", width: "200px" }}
+          sx={{ marginRight: "20px", width: "190px" }}
         />
         {!detail.use && (
           <button

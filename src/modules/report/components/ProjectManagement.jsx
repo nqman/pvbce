@@ -41,30 +41,30 @@ export default function ProjectManagement() {
     }
   };
 
-  // Xóa thiết bị
+  // Xóa dự án
   const handleDeleteProject = async (id) => {
     try {
       const result = await Swal.fire({
-        title: "Bạn chắc chắn muốn xóa thiết bị? ",
-        text: "Thiết bị này sẽ bị xóa vĩnh viễn!",
+        title: "Bạn chắc chắn muốn xóa dự án? ",
+        text: "Dự án này sẽ bị xóa vĩnh viễn!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Xóa thiết bị",
+        confirmButtonText: "Xóa dự án",
         cancelButtonText: "Hủy bỏ",
       });
       if (result.isConfirmed) {
         await deleteProjectAPI(id);
         Swal.fire({
           title: "Đã xóa!",
-          text: "Thiết bị đã được xóa thành công.",
+          text: "Dự án đã được xóa thành công.",
           icon: "success",
         });
         fetchProjects();
       }
     } catch (error) {
-      toast.error("Xóa thiết bị thất bại");
+      toast.error("Xóa dự án thất bại");
     }
   };
 

@@ -120,9 +120,8 @@ export default function QuantityRevenues() {
   };
 
   const handleSaveQuantityRevenue = async () => {
-    debugger;
+    // debugger;
     const tempData = [];
-
     const tempObject = {};
     valueFromChild.forEach((item) => {
       const week = item.actualWeek;
@@ -132,6 +131,7 @@ export default function QuantityRevenues() {
     for (const key in tempObject) {
       tempData.push(tempObject[key]);
     }
+    console.log(tempData);
     try {
       const data = await addActualQuantityAndRevenueAPI(tempData, idProject);
       if (data) {
