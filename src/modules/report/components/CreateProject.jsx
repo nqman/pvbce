@@ -75,6 +75,78 @@ export default function CreateProject() {
       return [...oldProjectItems, newEmptyProjectDetail()];
     });
   };
+  // Get category selection
+
+  const [categories, setCategories] = useState([]);
+  const [remainingCategories, setRemainingCategories] = useState([]);
+
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let categories = await getCategoriesAPI();
+      setCategories(categories);
+      setRemainingCategories(categories);
+    }
+    fetchMyAPI();
+  }, []);
+  const handleProjectDetailChange = (detail) => {
+    setProjectItems((oldProjectItems) => {
+      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
+      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
+      newProjectItems.splice(index, 1, detail);
+      return [...newProjectItems];
+    });
+  };
+
+  const handleRemoveProjectDetail = (detail) => {
+    let tempCountItem = countItem - 1;
+    setCountItem(tempCountItem);
+    if (categories.length !== tempCountItem) {
+      setDisableAddItem(false);
+    }
+
+    const filteredCategories = detail;
+    if (filteredCategories.category) {
+      let obj3 = [];
+      categories.forEach((item2) => {
+        if (filteredCategories.category === item2.name) {
+          obj3.push({
+            name: item2.name,
+            unit: item2.unit,
+          });
+        }
+        const newCategories = [...remainingCategories, obj3[0]];
+        setRemainingCategories([...remainingCategories, obj3[0]]);
+        if (newCategories.length > 0) {
+          setDisableAddItem(false);
+        }
+      });
+    }
+    setProjectItems((oldProjectItems) => {
+      return [...oldProjectItems.filter((el) => detail.id !== el.id)];
+    });
+  };
+  useEffect(() => {
+    updateTotalAmount();
+  }, [projectItems]);
+  const handleCategorySelect = (selectedCategory) => {
+    // debugger;
+
+    const temCategoryIndex = remainingCategories.findIndex(
+      (el) => el.name === selectedCategory.name
+    );
+    // Nếu tìm thấy phần tử có name giống
+    if (temCategoryIndex !== -1) {
+      // Loại bỏ phần tử đó khỏi mảng remainingCategories
+      const updatedRemainingCategories = [...remainingCategories];
+      updatedRemainingCategories.splice(temCategoryIndex, 1);
+
+      // Cập nhật lại mảng remainingCategories
+      setRemainingCategories(updatedRemainingCategories);
+
+      // Trả về selectedCategory
+      return selectedCategory;
+    }
+  };
   //Tính tổng tiền
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -138,7 +210,6 @@ export default function CreateProject() {
   }, [endDate, startDate]);
 
   //Thư viện dự án ---projectDiary
-
   const [rpQuantityAndRevenueLibraries, setRpQuantityAndRevenueLibraries] =
     useState([{ id: -Date.now(), name: "", value: "", file: null }]);
   const [errorLibary, setErrorLibrary] = useState("");
@@ -188,80 +259,7 @@ export default function CreateProject() {
       rpQuantityAndRevenueLibraries: rpQuantityAndRevenueLibraries,
     });
   };
-
-  // Get category selection
-
-  const [categories, setCategories] = useState([]);
-  const [remainingCategories, setRemainingCategories] = useState([]);
-
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let categories = await getCategoriesAPI();
-      setCategories(categories);
-      setRemainingCategories(categories);
-    }
-    fetchMyAPI();
-  }, []);
-
-  const handleProjectDetailChange = (detail) => {
-    setProjectItems((oldProjectItems) => {
-      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
-      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
-      newProjectItems.splice(index, 1, detail);
-      return [...newProjectItems];
-    });
-  };
-
-  const handleRemoveProjectDetail = (detail) => {
-    let tempCountItem = countItem - 1;
-    setCountItem(tempCountItem);
-    if (categories.length !== tempCountItem) {
-      setDisableAddItem(false);
-    }
-
-    const filteredCategories = detail;
-    if (filteredCategories.category) {
-      let obj3 = [];
-      categories.forEach((item2) => {
-        if (filteredCategories.category === item2.name) {
-          obj3.push({
-            name: item2.name,
-            unit: item2.unit,
-          });
-        }
-        const newCategories = [...remainingCategories, obj3[0]];
-        setRemainingCategories([...remainingCategories, obj3[0]]);
-        if (newCategories.length > 0) {
-          setDisableAddItem(false);
-        }
-      });
-    }
-    setProjectItems((oldProjectItems) => {
-      return [...oldProjectItems.filter((el) => detail.id !== el.id)];
-    });
-  };
-  useEffect(() => {
-    updateTotalAmount();
-  }, [projectItems]);
-  const handleCategorySelect = (selectedCategory) => {
-    // debugger;
-
-    const temCategoryIndex = remainingCategories.findIndex(
-      (el) => el.name === selectedCategory.name
-    );
-    // Nếu tìm thấy phần tử có name giống
-    if (temCategoryIndex !== -1) {
-      // Loại bỏ phần tử đó khỏi mảng remainingCategories
-      const updatedRemainingCategories = [...remainingCategories];
-      updatedRemainingCategories.splice(temCategoryIndex, 1);
-
-      // Cập nhật lại mảng remainingCategories
-      setRemainingCategories(updatedRemainingCategories);
-
-      // Trả về selectedCategory
-      return selectedCategory;
-    }
-  };
+  //Thư viện dự án ---projectDiary
 
   const handleSubmit = async (e) => {
     e.preventDefault();
