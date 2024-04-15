@@ -58,20 +58,6 @@ export default function EditProject() {
   const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
   const [disableAddItem, setDisableAddItem] = useState(false);
   const [countItem, setCountItem] = useState(1);
-  // const getProject = async (idProject) => {
-  //   debugger;
-  //   try {
-
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Error fetching project:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Call the asynchronous function inside the useEffect
-  //   getProject(idProject);
-  // }, [idProject]); // Add idProject as a dependency if needed
 
   // Get category selection
   useEffect(() => {
@@ -225,14 +211,26 @@ export default function EditProject() {
 
   const handlePickStartDate = (date) => {
     // debugger
-    if (date.$y) {
+    if (
+      date.$y &&
+      1900 <= date.$y &&
+      date.$y <= 2099 &&
+      date.$d instanceof Date &&
+      !isNaN(date.$d)
+    ) {
       setStartDate(date);
       handlePickDate(date, "startDate");
     }
   };
 
   const handlePickEndDate = (date) => {
-    if (date.$y) {
+    if (
+      date.$y &&
+      1900 <= date.$y &&
+      date.$y <= 2099 &&
+      date.$d instanceof Date &&
+      !isNaN(date.$d)
+    ) {
       setEndDate(date);
       handlePickDate(date, "endDate");
     }

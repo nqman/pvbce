@@ -62,7 +62,14 @@ export default function RpActualCostAndQuantityRevenue() {
   const [endPicker, setEndPicker] = useState(null);
 
   const handlePickStartPicker = (date) => {
-    if (date.$y) {
+    debugger;
+    if (
+      date.$y &&
+      1900 <= date.$y &&
+      date.$y <= 2099 &&
+      date.$d instanceof Date &&
+      !isNaN(date.$d)
+    ) {
       // setStartPicker(date);
       handlePickDate(date, "startPicker");
       return date;
@@ -70,7 +77,13 @@ export default function RpActualCostAndQuantityRevenue() {
   };
 
   const handlePickEndPicker = (date) => {
-    if (date.$y) {
+    if (
+      date.$y &&
+      1900 <= date.$y &&
+      date.$y <= 2099 &&
+      date.$d instanceof Date &&
+      !isNaN(date.$d)
+    ) {
       // setEndPicker(date);
       handlePickDate(date, "endPicker");
       return date;
@@ -79,8 +92,6 @@ export default function RpActualCostAndQuantityRevenue() {
   const [errorStartDate, setErrorStartDate] = useState("");
   const [errorEndDate, setErrorEndDate] = useState("");
   const handlePickDate = async (date, label) => {
-    // debugger;
-
     if (date !== null) {
       const formattedDate = new Intl.DateTimeFormat("en-GB", {
         year: "numeric",
