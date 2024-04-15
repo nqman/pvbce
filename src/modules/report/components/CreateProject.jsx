@@ -167,14 +167,27 @@ export default function CreateProject() {
   const [endDate, setEndDate] = useState(null);
 
   const handlePickStartDate = (date) => {
-    if (date.$y) {
+    if (
+      date.$y &&
+      1900 <= date.$y &&
+      date.$y <= 2099 &&
+      date.$d instanceof Date &&
+      !isNaN(date.$d)
+    ) {
       setStartDate(date);
       handlePickDate(date, "startDate");
     }
   };
 
   const handlePickEndDate = (date) => {
-    if (date.$y) {
+    // if (date.$y && 1900 <= date.$y && date.$y <= 2099) {
+    if (
+      date.$y &&
+      1900 <= date.$y &&
+      date.$y <= 2099 &&
+      date.$d instanceof Date &&
+      !isNaN(date.$d)
+    ) {
       setEndDate(date);
       handlePickDate(date, "endDate");
     }
