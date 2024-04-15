@@ -52,7 +52,7 @@ export default function ProjectItem({
 
   const [unit, setUnit] = useState("");
   const handleSelectCategory = async (event,value) => {
-    // debugger;
+    debugger;
     const category = value;
     // console.log(category)
     const selectedCategory = categories.find((el) => el.name === category);
@@ -146,9 +146,9 @@ export default function ProjectItem({
         <Autocomplete
         size="small"
         sx={{width:"40%",marginRight: "20px"}}
-        freeSolo
-        id="free-solo-2-demo"
-        disableClearable
+      
+        disablePortal
+      id="combo-box-demo"
         options={remainingCategories?.map((option) => option.name)}
         defaultValue={detail?.category}
         onChange={handleSelectCategory}
