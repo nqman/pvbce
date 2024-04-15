@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete from "@mui/material/Autocomplete";
 
 export default function ProjectItem({
   detail = {},
@@ -19,7 +19,7 @@ export default function ProjectItem({
   onRemove = () => {},
   updateTotalAmount,
 }) {
-  console.log(detail);
+  // console.log(detail);
   // Hàm để tính tổng tiền
   const [quantity, setQuantity] = useState(detail.quantity);
   const [price, setPrice] = useState(detail.price);
@@ -51,12 +51,11 @@ export default function ProjectItem({
   };
 
   const [unit, setUnit] = useState("");
-  const handleSelectCategory = async (event,value) => {
-    debugger;
+  const handleSelectCategory = async (event, value) => {
+    // debugger;
     const category = value;
-    // console.log(category)
+    console.log(category);
     const selectedCategory = categories.find((el) => el.name === category);
-
     const validateCategory = onCategorySelect(selectedCategory);
     if (validateCategory) {
       setUnit(selectedCategory.unit);
@@ -102,67 +101,20 @@ export default function ProjectItem({
           width: "100%",
         }}
       >
-        {/* <Box
-          sx={{
-            // minWidth: 130,
-            marginRight: "20px",
-            width: "40%",
-          }}
-        >
-          <FormControl fullWidth>
-            <InputLabel
-              // sx={{ width: "40%" }}
-              size="small"
-              id="demo-simple-select-label"
-            >
-              Hạng mục<span style={{ color: "red" }}>*</span>
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={detail.category}
-              disabled={detail?.category ? true : false}
-              label={
-                <span>
-                  Hạng mục<span style={{ color: "red" }}>*</span>
-                </span>
-              }
-              onChange={handleSelectCategory}
-              size="small"
-              // sx={{ display: "flex", width: "40%" }}
-            >
-              {remainingCategories.map((category) => (
-                <MenuItem
-                  key={category.id + "_" + category.value}
-                  value={category.name}
-                >
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box> */}
-        {/* {console.log(remainingCategories)} */}
         <Autocomplete
-        size="small"
-        sx={{width:"40%",marginRight: "20px"}}
-      
-        disablePortal
-      id="combo-box-demo"
-        options={remainingCategories?.map((option) => option.name)}
-        defaultValue={detail?.category}
-        onChange={handleSelectCategory}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Tên hạng mục"
-            InputProps={{
-              ...params.InputProps,
-              type: 'search',
-            }}
-          />
-        )}
-      />
+          size="small"
+          sx={{ width: "40%", marginRight: "20px" }}
+          disablePortal
+          id="combo-box-demo"
+          options={remainingCategories?.map((option) => option.name)}
+          defaultValue={detail?.category}
+          disabled={detail?.category ? true : false}
+          onChange={handleSelectCategory}
+          renderInput={(params) => (
+            <TextField {...params} label="Tên hạng mục" />
+          )}
+        />
+
         <TextField
           label="Đơn vị"
           id="outlined-size-small"
