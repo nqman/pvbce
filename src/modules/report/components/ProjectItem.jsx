@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
+import Autocomplete from '@mui/material/Autocomplete';
 
 export default function ProjectItem({
   detail = {},
@@ -50,8 +51,10 @@ export default function ProjectItem({
   };
 
   const [unit, setUnit] = useState("");
-  const handleSelectCategory = async (event) => {
-    const category = event.target.value;
+  const handleSelectCategory = async (event,value) => {
+    // debugger;
+    const category = value;
+    // console.log(category)
     const selectedCategory = categories.find((el) => el.name === category);
 
     const validateCategory = onCategorySelect(selectedCategory);
@@ -99,7 +102,7 @@ export default function ProjectItem({
           width: "100%",
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             // minWidth: 130,
             marginRight: "20px",
@@ -138,7 +141,28 @@ export default function ProjectItem({
               ))}
             </Select>
           </FormControl>
-        </Box>
+        </Box> */}
+        {/* {console.log(remainingCategories)} */}
+        <Autocomplete
+        size="small"
+        sx={{width:"40%",marginRight: "20px"}}
+        freeSolo
+        id="free-solo-2-demo"
+        disableClearable
+        options={remainingCategories?.map((option) => option.name)}
+        defaultValue={detail?.category}
+        onChange={handleSelectCategory}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Tên hạng mục"
+            InputProps={{
+              ...params.InputProps,
+              type: 'search',
+            }}
+          />
+        )}
+      />
         <TextField
           label="Đơn vị"
           id="outlined-size-small"
