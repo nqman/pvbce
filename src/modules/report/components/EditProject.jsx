@@ -134,8 +134,8 @@ export default function EditProject() {
   const handleCategorySelect = (selectedCategory) => {
     // debugger;
 
-    const temCategoryIndex = remainingCategories.findIndex(
-      (el) => el.name === selectedCategory.name
+    const temCategoryIndex = remainingCategories?.findIndex(
+      (el) => el.name === selectedCategory?.name
     );
     // Nếu tìm thấy phần tử có name giống
     if (temCategoryIndex !== -1) {
@@ -258,12 +258,7 @@ export default function EditProject() {
 
   useEffect(() => {
     // debugger;
-    if (
-      typeof endDate !== "string" &&
-      endDate !== null
-      // ||
-      // (typeof startDate !== "string" && startDate !== null)
-    ) {
+    if (typeof endDate !== "string" && endDate !== null) {
       //format startDate
       let start = formatDate(startDate);
       let end = new Date(endDate);

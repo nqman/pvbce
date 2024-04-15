@@ -112,8 +112,8 @@ export default function ActualCostPerWeek({
     });
   };
   const handleCostSelect = (selectedCost) => {
-    const temCostIndex = remainingCosts.findIndex(
-      (el) => el.name === selectedCost.name
+    const temCostIndex = remainingCosts?.findIndex(
+      (el) => el.name === selectedCost?.name
     );
     if (temCostIndex !== -1) {
       const updatedremainingCosts = [...remainingCosts];

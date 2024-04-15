@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   FormControl,
   InputLabel,
@@ -42,9 +43,9 @@ export default function QuantityRevenueItem({
   };
 
   const [unit, setUnit] = useState(detail?.unit ? detail?.unit : "");
-  const handleSelectCategory = async (event) => {
+  const handleSelectCategory = async (event, value) => {
     // debugger;
-    const category = event.target.value;
+    const category = value;
     const selectedCategory = categories.find((el) => el.name === category);
 
     const validateCategory = onCategorySelect(selectedCategory);
@@ -93,7 +94,7 @@ export default function QuantityRevenueItem({
           height: "30px",
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             minWidth: 130,
             marginRight: "20px",
@@ -127,7 +128,20 @@ export default function QuantityRevenueItem({
               ))}
             </Select>
           </FormControl>
-        </Box>
+        </Box> */}
+        <Autocomplete
+          size="small"
+          sx={{ width: "40%", marginRight: "20px" }}
+          disablePortal
+          id="combo-box-demo"
+          options={remainingCategories?.map((option) => option.name)}
+          defaultValue={detail?.category}
+          disabled={detail?.category ? true : false}
+          onChange={handleSelectCategory}
+          renderInput={(params) => (
+            <TextField {...params} label="Tên hạng mục" />
+          )}
+        />
         <TextField
           label="Đơn vị"
           id="outlined-size-small"

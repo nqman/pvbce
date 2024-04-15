@@ -144,8 +144,8 @@ export function QuantityRevenuePerWeek({
   const handleCategorySelect = (selectedCategory) => {
     // debugger;
 
-    const temCategoryIndex = remainingCategories.findIndex(
-      (el) => el.name === selectedCategory.name
+    const temCategoryIndex = remainingCategories?.findIndex(
+      (el) => el.name === selectedCategory?.name
     );
     // Nếu tìm thấy phần tử có name giống
     if (temCategoryIndex !== -1) {

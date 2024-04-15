@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   FormControl,
   InputLabel,
@@ -36,9 +37,9 @@ export default function ActualCostItem({
     });
   };
 
-  const handleSelectCost = async (event) => {
+  const handleSelectCost = async (event, value) => {
     // debugger;
-    const cost = event.target.value;
+    const cost = value;
     const selectedCost = costs.find((el) => el.name === cost);
     const validateCost = onCostSelect(selectedCost);
 
@@ -85,7 +86,7 @@ export default function ActualCostItem({
           height: "30px",
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             minWidth: 130,
             marginRight: "40px",
@@ -119,7 +120,20 @@ export default function ActualCostItem({
               ))}
             </Select>
           </FormControl>
-        </Box>
+        </Box> */}
+        <Autocomplete
+          size="small"
+          sx={{ width: "40%", marginRight: "20px" }}
+          disablePortal
+          id="combo-box-demo"
+          options={remainingCosts?.map((option) => option.name)}
+          defaultValue={detail?.cost}
+          disabled={detail?.cost ? true : false}
+          onChange={handleSelectCost}
+          renderInput={(params) => (
+            <TextField {...params} label="Tên chi phí" />
+          )}
+        />
 
         <TextField
           label={
