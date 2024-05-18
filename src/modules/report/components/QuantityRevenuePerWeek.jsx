@@ -6,7 +6,7 @@ import {
   selectProjectAPI,
 } from "../../../apis/reportAPI";
 import { useParams } from "react-router-dom";
-import { Grid, TextField } from "@mui/material";
+import { Grid, Paper, TextField } from "@mui/material";
 import QuantityRevenueItem from "./QuantityRevenueItem";
 
 export function QuantityRevenuePerWeek({
@@ -14,6 +14,7 @@ export function QuantityRevenuePerWeek({
   week,
   fromDateToDate,
   actualQuantityAndRevenueDetails,
+  key,
   onValueChange = () => {},
 }) {
   const params = useParams();
@@ -165,22 +166,24 @@ export function QuantityRevenuePerWeek({
   };
 
   return (
-    <div style={{ marginBottom: "50px" }}>
+    <div>
       {/* EDIT */}
       {idQuantityRevenue > 0 ? (
+        // <Paper variant="outlined">
         <Grid
           container
-          spacing={5}
+          // spacing={5}
           style={{
             overflow: "hidden",
             display: "flex",
             alignItems: "start",
-            border: "1px solid",
+            // border: "1px solid",
             borderRadius: "5px",
-            padding: "10px 0",
+            backgroundColor: "#f5f5f5ab",
+            padding: "30px",
           }}
         >
-          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+          {/* <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
             <span
               style={{
                 padding: "5px 10px",
@@ -194,7 +197,7 @@ export function QuantityRevenuePerWeek({
             >
               {fromDateToDate}
             </span>
-          </Grid>
+          </Grid> */}
           <Grid item lg={12}>
             <div>
               {quantityRevenueItems.map((detail) => (
@@ -218,10 +221,13 @@ export function QuantityRevenuePerWeek({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  paddingBottom: "10px",
                 }}
               >
-                <Button disabled={disableAddItem} onClick={addProjectItem}>
+                <Button
+                  style={{ fontSize: "14px" }}
+                  disabled={disableAddItem}
+                  onClick={addProjectItem}
+                >
                   Thêm
                 </Button>
                 <TextField
@@ -229,7 +235,7 @@ export function QuantityRevenuePerWeek({
                   size="small"
                   value={`${totalAmount.toLocaleString()}`}
                   sx={{
-                    marginRight: "80px",
+                    marginRight: "35px",
                     width: "190px",
                     pointerEvents: "none",
                   }}
@@ -239,20 +245,22 @@ export function QuantityRevenuePerWeek({
           </Grid>
         </Grid>
       ) : (
+        // </Paper>
         // NEW
         <Grid
           container
-          spacing={5}
+          // spacing={5}
           style={{
             overflow: "hidden",
             display: "flex",
             alignItems: "start",
-            border: "1px solid",
+            // border: "1px solid",
             borderRadius: "5px",
-            padding: "10px 0",
+            backgroundColor: "#f5f5f5ab",
+            padding: "30px",
           }}
         >
-          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+          {/* <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
             <span
               style={{
                 padding: "5px 10px",
@@ -266,7 +274,7 @@ export function QuantityRevenuePerWeek({
             >
               {fromDateToDate}
             </span>
-          </Grid>
+          </Grid> */}
           <Grid item lg={12}>
             <div>
               {quantityRevenueItems.map((detail) => (

@@ -48,7 +48,7 @@ export default function QuantityRevenues() {
     // debugger;
     try {
       const oldQuantityRevenues = await getOldQuantityRevenueAPI(idProject);
-      // console.log(oldQuantityRevenues);
+      console.log(oldQuantityRevenues);
       const tempQuantityRevenues = oldQuantityRevenues?.map(
         (quantityRevenue) => (
           <QuantityRevenuePerWeek
@@ -131,7 +131,7 @@ export default function QuantityRevenues() {
     for (const key in tempObject) {
       tempData.push(tempObject[key]);
     }
-    console.log(tempData);
+    // console.log(tempData);
     try {
       const data = await addActualQuantityAndRevenueAPI(tempData, idProject);
       if (data) {
