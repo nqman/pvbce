@@ -14,7 +14,7 @@ export function QuantityRevenuePerWeek({
   week,
   fromDateToDate,
   actualQuantityAndRevenueDetails,
-  key,
+  // key,
   onValueChange = () => {},
 }) {
   const params = useParams();
@@ -169,36 +169,18 @@ export function QuantityRevenuePerWeek({
     <div>
       {/* EDIT */}
       {idQuantityRevenue > 0 ? (
-        // <Paper variant="outlined">
         <Grid
           container
-          // spacing={5}
           style={{
             overflow: "hidden",
             display: "flex",
             alignItems: "start",
-            // border: "1px solid",
             borderRadius: "5px",
             backgroundColor: "#f5f5f5ab",
             padding: "30px",
           }}
         >
-          {/* <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
-            <span
-              style={{
-                padding: "5px 10px",
-                border: "1px solid",
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                backgroundColor: "rgb(242, 228, 38)",
-                fontWeight: "bold",
-                color: "black",
-                borderRadius: "5px",
-              }}
-            >
-              {fromDateToDate}
-            </span>
-          </Grid> */}
-          <Grid item lg={12}>
+          <Grid item sm={12}>
             <div>
               {quantityRevenueItems.map((detail) => (
                 <QuantityRevenueItem
@@ -215,7 +197,6 @@ export function QuantityRevenuePerWeek({
                   updateTotalAmount={updateTotalAmount}
                 />
               ))}
-              {/* <p className="text-danger">{errorDetail}</p> */}
               <div
                 style={{
                   display: "flex",
@@ -245,37 +226,18 @@ export function QuantityRevenuePerWeek({
           </Grid>
         </Grid>
       ) : (
-        // </Paper>
-        // NEW
         <Grid
           container
-          // spacing={5}
           style={{
             overflow: "hidden",
             display: "flex",
             alignItems: "start",
-            // border: "1px solid",
             borderRadius: "5px",
             backgroundColor: "#f5f5f5ab",
             padding: "30px",
           }}
         >
-          {/* <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
-            <span
-              style={{
-                padding: "5px 10px",
-                border: "1px solid",
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                backgroundColor: "rgb(242, 228, 38)",
-                fontWeight: "bold",
-                color: "black",
-                borderRadius: "5px",
-              }}
-            >
-              {fromDateToDate}
-            </span>
-          </Grid> */}
-          <Grid item lg={12}>
+          <Grid item sm={12}>
             <div>
               {quantityRevenueItems.map((detail) => (
                 <QuantityRevenueItem
@@ -300,7 +262,11 @@ export function QuantityRevenuePerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button disabled={disableAddItem} onClick={addProjectItem}>
+                <Button
+                  style={{ fontSize: "14px" }}
+                  disabled={disableAddItem}
+                  onClick={addProjectItem}
+                >
                   Thêm
                 </Button>
                 <TextField
@@ -308,7 +274,7 @@ export function QuantityRevenuePerWeek({
                   size="small"
                   value={`${totalAmount.toLocaleString()}`}
                   sx={{
-                    marginRight: "80px",
+                    marginRight: "35px",
                     width: "190px",
                     pointerEvents: "none",
                   }}

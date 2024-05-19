@@ -97,7 +97,7 @@ export default function QuantityRevenueItem({
       >
         <Autocomplete
           size="small"
-          sx={{ width: "40%", marginRight: "20px" }}
+          sx={{ width: "40%", marginRight: "20px", fontSize: "14px" }}
           disablePortal
           id="combo-box-demo"
           options={remainingCategories?.map((option) => option.name)}
@@ -122,7 +122,7 @@ export default function QuantityRevenueItem({
         />
         <TextField
           label={
-            <span>
+            <span style={{ fontSize: "14px" }}>
               Sản lượng<span style={{ color: "red" }}>*</span>
             </span>
           }
