@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Link } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Container,
+  Link,
+  Tab,
+  TextField,
+  tabsClasses,
+} from "@mui/material";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import {
   addActualCostAPI,
   getNextMondayAPI,
@@ -10,6 +21,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./styles.css";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
 import ActualCostPerWeek from "./ActualCostPerWeek";
 import Loading from "../../home/components/Loading/Loading";
 import GoToTop from "../../home/components/GoToTop/GoToTop";
@@ -21,56 +34,85 @@ export default function ActualCosts() {
   const params = useParams();
   const [project, setProject] = useState();
   const [actualCosts, setActualCosts] = useState(); //set = API
+  const [oldCosts, setOldCosts] = useState(); //set = API
+
   const [errorGetMonday, setErrorGetMonday] = useState(false);
-  const [actualCostWeek, setActualCostWeek] = useState("");
+  const [actualWeek, setActualWeek] = useState(0);
+
   const idProject = params.code;
-  const getNextModay = async (actualCostWeek, idProject) => {
+  //tab panel
+  const [value, setValue] = useState("");
+
+  const handleChangeTab = (event, newValue) => {
+    setValue(newValue);
+  };
+  const getNextModay = async (actualWeek, idProject) => {
     try {
-      const nextMonday = await getNextMondayAPI(actualCostWeek, idProject);
-      setActualCostWeek(nextMonday);
+      const nextMonday = await getNextMondayAPI(actualWeek, idProject);
+      setActualWeek(nextMonday);
+      return nextMonday;
     } catch (error) {
       setErrorGetMonday(true);
-      console.error("Error fetching actualCostWeek:", error);
+      console.error("Error fetching actualWeek:", error);
     }
   };
   const getProjects = async (idProject) => {
     try {
       const data = await selectProjectAPI(idProject);
       setProject(data);
-      getNextModay(0, idProject);
       return data;
     } catch (error) {
       console.error("Error fetching project:", error);
     }
   };
   const getOldCosts = async (idProject) => {
-    // debugger;
     try {
       const oldCosts = await getOldActualCostAPI(idProject);
-      console.log(oldCosts);
-      const tempCosts = oldCosts?.map((actualCost) => (
-        <ActualCostPerWeek
-          idActualCost={actualCost.id}
-          week={actualCost.week}
-          fromDateToDate={actualCost.fromDateToDate}
-          actualCostDetails={actualCost.actualCostDetails}
-          key={actualCost.id}
-          onValueChange={handleChildValueChange}
-        />
-      ));
       if (oldCosts.length !== 0) {
-        const actualCostWeek = oldCosts?.map(
-          (oldActualCostPerWeek) => oldActualCostPerWeek.week
+        setOldCosts(oldCosts);
+        setValue(oldCosts[oldCosts.length - 1].week);
+        const tempOldCosts = oldCosts?.map((oldCost) => (
+          <ActualCostPerWeek
+            idActualCost={oldCost.id}
+            week={oldCost.week}
+            fromDateToDate={oldCost.fromDateToDate}
+            actualCostDetails={oldCost.actualCostDetails}
+            key={oldCost.id}
+            onValueChange={handleChildValueChange}
+          />
+        ));
+        setActualCosts(tempOldCosts);
+        const actualWeek = oldCosts?.map(
+          (oldCostPerWeek) => oldCostPerWeek.week
         );
-        getNextModay(actualCostWeek.pop(), idProject);
-        // console.log(actualCostWeek.pop());
+        getNextModay(actualWeek.pop(), idProject);
+      } else if (oldCosts.length === 0) {
+        let startWeek = await getNextModay(0, idProject);
+        setOldCosts([
+          {
+            id: -Date.now(),
+            week: startWeek.date,
+            fromDateToDate: startWeek.fromDateToDate,
+            key: Date.now(),
+            actualCostDetails: [],
+          },
+        ]);
+        setActualCosts([
+          <ActualCostPerWeek
+            idActualCost={-Date.now()}
+            week={startWeek.date}
+            fromDateToDate={startWeek.fromDateToDate}
+            key={Date.now()}
+            onValueChange={handleChildValueChange}
+          />,
+        ]);
+        setValue(startWeek.date);
+        getNextModay(startWeek.date, idProject);
       }
-      setActualCosts(tempCosts);
       setIsLoading(false);
-
       return oldCosts;
     } catch (error) {
-      console.error("Error fetching QuantityAndRevenue:", error);
+      console.error("Error fetching Cost:", error);
     }
   };
 
@@ -93,26 +135,37 @@ export default function ActualCosts() {
   };
   const addActualCostPerWeek = () => {
     // debugger;
-    setActualCostWeek(project?.startDate);
-    setActualCosts((oldActualCostPerWeeks) => {
+    setActualCosts((oldCostPerWeeks) => {
       return [
-        ...oldActualCostPerWeeks,
+        ...oldCostPerWeeks,
         <ActualCostPerWeek
           idActualCost={-Date.now()}
-          // week={actualCostWeek === "" ? project?.startDate : actualCostWeek}
-          week={actualCostWeek.date}
-          fromDateToDate={actualCostWeek.fromDateToDate}
+          week={actualWeek.date}
+          fromDateToDate={actualWeek.fromDateToDate}
           key={Date.now()}
           onValueChange={handleChildValueChange}
         />,
       ];
     });
-    if (actualCostWeek === "") {
+
+    setOldCosts((oldCostPerWeeks) => {
+      return [
+        ...oldCostPerWeeks,
+        {
+          id: -Date.now(),
+          week: actualWeek.date,
+          fromDateToDate: actualWeek.fromDateToDate,
+          key: Date.now(),
+          actualCostDetails: [],
+        },
+      ];
+    });
+
+    if (actualWeek === "") {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    // getNextModay(actualCostWeek, idProject);
-    getNextModay(actualCostWeek.date, idProject);
+    getNextModay(actualWeek.date, idProject);
   };
 
   const handleSaveActualCost = async () => {
@@ -148,9 +201,9 @@ export default function ActualCosts() {
       {isLoading ? (
         <Loading />
       ) : (
-        <Container sx={{ marginTop: "20px", marginBottom: "30px" }}>
+        <Container sx={{ marginTop: "20px", marginBottom: "40px" }}>
           <Link
-            sx={{ fontSize: "16px", marginBottom: "50px" }}
+            sx={{ fontSize: "16px", marginBottom: "5px" }}
             component="button"
             variant="body2"
             onClick={() => {
@@ -161,45 +214,108 @@ export default function ActualCosts() {
             Quay lại dự án
           </Link>
 
-          <div>
+          <TabContext value={value}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <div style={{ maxWidth: "75%" }}>
+                <Box
+                  sx={{
+                    flexGrow: 1,
+                    bgcolor: "background.paper",
+                  }}
+                >
+                  <TabList
+                    onChange={handleChangeTab}
+                    variant="scrollable"
+                    scrollButtons
+                    aria-label="visible arrows tabs example"
+                    sx={{
+                      [`& .${tabsClasses.scrollButtons}`]: {
+                        "&.Mui-disabled": { opacity: 0.3 },
+                      },
+                    }}
+                  >
+                    {oldCosts?.map((oldCost, index) => (
+                      <Tab
+                        key={index}
+                        label={oldCost.fromDateToDate}
+                        value={oldCost.week}
+                      />
+                    ))}
+                  </TabList>
+                </Box>
+              </div>
+              <div style={{ maxWidth: "25%", display: "flex" }}>
+                <Autocomplete
+                  size="small"
+                  sx={{
+                    width: "150px",
+                    marginRight: "15px",
+                    fontSize: "14px",
+                  }}
+                  disablePortal
+                  id="combo-box-demo"
+                  options={oldCosts?.map((option) => option.week)}
+                  defaultValue={actualWeek?.week}
+                  onChange={handleChangeTab}
+                  renderInput={(params) => (
+                    <TextField
+                      sx={{ fontSize: "14px" }}
+                      {...params}
+                      size="small"
+                      variant="standard"
+                      placeholder="Tìm tuần"
+                    />
+                  )}
+                />
+                <button
+                  style={{
+                    padding: "0px",
+                    height: "27px",
+                    width: "27px",
+                    lineHeight: "15px",
+                    marginRight: "15px",
+                  }}
+                  className="btn btn-warning"
+                  onClick={addActualCostPerWeek}
+                  disabled={errorGetMonday}
+                  title="Thêm tuần"
+                >
+                  <AddIcon sx={{ fontSize: "22px" }} />
+                </button>
+
+                <button
+                  style={{
+                    padding: "0px",
+                    height: "27px",
+                    width: "27px",
+                    lineHeight: "15px",
+                  }}
+                  className="btn btn-success"
+                  onClick={handleSaveActualCost}
+                  title="Lưu"
+                >
+                  <SaveIcon sx={{ fontSize: "22px" }} />
+                </button>
+              </div>
+            </div>
+            {/* {console.log(quantityRevenues)} */}
             {actualCosts?.map((actualCost, index) => (
-              <div key={index}>{actualCost}</div>
+              <TabPanel
+                sx={{ padding: 0 }}
+                key={index}
+                value={actualCost.props.week}
+              >
+                {actualCost}
+              </TabPanel>
             ))}
-          </div>
+          </TabContext>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "-30px",
-            }}
-          >
-            <button
-              className="btn btn-warning"
-              onClick={addActualCostPerWeek}
-              disabled={errorGetMonday}
-            >
-              Thêm tuần
-            </button>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              position: "fixed",
-              bottom: "40px",
-              right: "120px",
-            }}
-          >
-            <button
-              style={{ width: "70px" }}
-              className="btn btn-success"
-              onClick={handleSaveActualCost}
-            >
-              Lưu
-            </button>
-          </div>
           <GoToTop />
         </Container>
       )}

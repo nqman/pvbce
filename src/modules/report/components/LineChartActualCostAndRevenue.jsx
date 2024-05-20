@@ -52,7 +52,7 @@ function LineChartActualCostAndRevenue({
           <Chart
             chartType="ComboChart"
             width="100%"
-            height="80vh"
+            height="400px"
             data={data}
             options={options}
           />

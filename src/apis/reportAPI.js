@@ -419,8 +419,6 @@ export async function getViewReportQuantityRevenueAndCostAPI(
   endPicker,
   categories
 ) {
-  // debugger;
-  // console.log(idProject, typeReport, startPicker, endPicker, categories);
   const jsonData = {
     id: idProject,
     type: typeReport,

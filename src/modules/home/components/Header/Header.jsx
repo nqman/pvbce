@@ -351,9 +351,8 @@ function Header() {
                   {/* <Divider sx={{ my: 0.5 }} /> */}
                   {/* GẠCH NGĂN CÁCH */}
                   <MenuItem
-                    onClick={() => handleNavigate("rp_total")}
+                    onClick={() => handleNavigate("rpcosttotal")}
                     disableRipple
-                    disabled={true}
                   >
                     <AssessmentIcon />
                     Báo cáo tổng

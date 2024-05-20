@@ -112,7 +112,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                         />
                       </button>
 
-                      <button
+                      {/* <button
                         style={{
                           padding: "0px",
                           height: "25px",
@@ -130,7 +130,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                             fontSize: "20px",
                           }}
                         />
-                      </button>
+                      </button> */}
                     </>
                   )}
                 </div>

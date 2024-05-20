@@ -26,6 +26,7 @@ import QuantityRevenues from "./modules/report/components/QuantityRevenues";
 import RpActualCostAndQuantityRevenue from "./modules/report/components/RpActualCostAndQuantityRevenue";
 import UserManagement from "./admin/UserManagement";
 import EditProject from "./modules/report/components/EditProject";
+import RpCostTotal from "./modules/report/components/RpCostTotal";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/report/edit-project/:code" element={<EditProject />} />
           <Route path="/report/categorylist" element={<Category />} />
           <Route path="/report/costlist" element={<CostName />} />
+          <Route path="/report/rpcosttotal" element={<RpCostTotal />} />
           <Route
             path="/report/listprojects"
             element={<ProjectManagement />}
@@ -52,6 +54,7 @@ function App() {
             path="/projects/actual-quantity-revenue/:code"
             element={<QuantityRevenues />}
           />
+
           {/* ActualCost */}
           <Route path="/projects/actual-cost/:code" element={<ActualCosts />} />
           <Route
