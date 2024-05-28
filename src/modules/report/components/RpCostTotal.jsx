@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  getViewReportQuantityRevenueAndCostAPI,
+  getViewReportCostTotalAPI,
   validateDatePickerAPI,
 } from "../../../apis/reportAPI";
 import LineChartQuantity from "./LineChartQuantity";
@@ -110,13 +110,7 @@ export default function RpCostTotal() {
     if (startPicker && endPicker && !errorEndDate && !errorStartDate) {
       setIsLoading(true);
       try {
-        const data = await getViewReportQuantityRevenueAndCostAPI(
-          6, //id
-          "revenue", //type
-          startPicker,
-          endPicker,
-          "" //categories
-        );
+        const data = await getViewReportCostTotalAPI(startPicker, endPicker);
         setViewReports(data);
         setIsLoading(false);
         return data;

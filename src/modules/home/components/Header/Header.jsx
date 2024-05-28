@@ -357,14 +357,14 @@ function Header() {
                     <AssessmentIcon />
                     Báo cáo tổng
                   </MenuItem>
-                  <MenuItem
+                  {/* <MenuItem
                     onClick={() => handleNavigate("rp_revenue")}
                     disableRipple
                     disabled={true}
                   >
                     <SummarizeIcon />
                     Báo cáo doanh thu
-                  </MenuItem>
+                  </MenuItem> */}
                 </StyledMenu>
               </>
             ) : (

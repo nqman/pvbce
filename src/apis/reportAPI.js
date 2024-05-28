@@ -438,3 +438,22 @@ export async function getViewReportQuantityRevenueAndCostAPI(
     throw error.response.data;
   }
 }
+
+// EXPORT REPORT
+export async function getViewReportCostTotalAPI(startPicker, endPicker) {
+  const jsonData = {
+    startPicker: startPicker,
+    endPicker: endPicker,
+  };
+  console.log(jsonData);
+  try {
+    const resp = await baseAPI.post(`projects/view-total-report`, jsonData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+}

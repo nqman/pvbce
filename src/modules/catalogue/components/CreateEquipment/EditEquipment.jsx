@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Button, Link, Tab, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Link,
+  Tab,
+  TextField,
+  TextareaAutosize,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -319,9 +326,9 @@ export default function EditEquipment() {
                       className="form-control"
                       htmlFor="note"
                     >
-                      Ghi chú
+                      Lịch sử thi công
                     </label>
-                    <textarea
+                    <TextareaAutosize
                       id="note"
                       name="note"
                       value={value.note}

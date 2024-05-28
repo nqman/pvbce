@@ -24,10 +24,26 @@ export default function Capacity() {
         <TabContext value={value}>
           <Box display="flex" justifyContent="center" alignItems="center">
             <TabList onChange={handleChange}>
-              <Tab label="NĂNG LỰC THIẾT BỊ" value="1" />
-              <Tab label="NĂNG LỰC THI CÔNG" value="2" />
-              <Tab label="NĂNG LỰC CHO THUÊ THIẾT BỊ" value="3" />
-              <Tab label="NĂNG LỰC KHO XƯỞNG" value="4" />
+              <Tab
+                sx={{ fontSize: "16px" }}
+                label="NĂNG LỰC THIẾT BỊ"
+                value="1"
+              />
+              <Tab
+                sx={{ fontSize: "16px" }}
+                label="NĂNG LỰC THI CÔNG"
+                value="2"
+              />
+              <Tab
+                sx={{ fontSize: "16px" }}
+                label="NĂNG LỰC CHO THUÊ THIẾT BỊ"
+                value="3"
+              />
+              <Tab
+                sx={{ fontSize: "16px" }}
+                label="NĂNG LỰC KHO XƯỞNG"
+                value="4"
+              />
             </TabList>
           </Box>
           <TabPanel value="1" style={{ paddingTop: 0 }}>
