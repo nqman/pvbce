@@ -23,8 +23,16 @@ export default function Experience() {
         <TabContext value={value}>
           <Box display="flex" justifyContent="center" alignItems="center">
             <TabList onChange={handleChange}>
-              <Tab label="NHÓM DỰ ÁN NỀN MÓNG" value="1" />
-              <Tab label="NHÓM DỰ ÁN KHÁC" value="2" />
+              <Tab
+                sx={{ fontSize: "16px" }}
+                label="NHÓM DỰ ÁN NỀN MÓNG"
+                value="1"
+              />
+              <Tab
+                sx={{ fontSize: "16px" }}
+                label="NHÓM DỰ ÁN KHÁC"
+                value="2"
+              />
             </TabList>
           </Box>
           <TabPanel value="1">

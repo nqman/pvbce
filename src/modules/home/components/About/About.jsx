@@ -26,22 +26,24 @@ export default function About() {
             VỀ CHÚNG TÔI
           </Typography>
           <div className={`container ${styles.about_text}`}>
-            <p className="mt-3">
+            <p className="mt-3" style={{ fontSize: "16px" }}>
               Công ty{" "}
-              <span style={{ fontWeight: "bold" }}>
+              <span style={{ fontWeight: "bold", fontSize: "16px" }}>
                 Phan Vũ Bình Dương (PVB)
               </span>{" "}
               là một trong các công ty thành viên trực thuộc Tập đoàn Phan Vũ
               (Phan Vũ Group), tên đầy đủ là Công ty TNHH MTV Sản xuất Xây dựng
               Phan Vũ.
             </p>
-            <p>
-              <span style={{ fontWeight: "bold" }}>Phan Vũ Bình Dương</span> là
-              đơn vị đảm nhiệm công tác thi công hầu hết các hạng mục thuộc dự
-              án nền móng bằng công nghệ mới và dự án lắp ghép, hạ tầng - giao
-              thông… của Tập đoàn Phan Vũ. Ngoài ra, Phan Vũ Bình Dương còn cho
-              thuê các loại thiết bị, máy móc chuyên dụng phục vụ công tác xây
-              dựng khác nhau.
+            <p style={{ fontSize: "16px" }}>
+              <span style={{ fontWeight: "bold", fontSize: "16px" }}>
+                Phan Vũ Bình Dương
+              </span>{" "}
+              là đơn vị đảm nhiệm công tác thi công hầu hết các hạng mục thuộc
+              dự án nền móng bằng công nghệ mới và dự án lắp ghép, hạ tầng -
+              giao thông… của Tập đoàn Phan Vũ. Ngoài ra, Phan Vũ Bình Dương còn
+              cho thuê các loại thiết bị, máy móc chuyên dụng phục vụ công tác
+              xây dựng khác nhau.
             </p>
           </div>
           <div className="ps-3">

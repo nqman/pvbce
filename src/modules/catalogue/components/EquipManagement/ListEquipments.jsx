@@ -59,7 +59,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
               width: 180,
             },
             { field: "location", headerName: "NẰM Ở KHO BÃI", width: 180 },
-            { field: "note", headerName: "GHI CHÚ", width: 150 },
+            { field: "note", headerName: "LỊCH SỬ THI CÔNG", width: 150 },
             {
               field: "action",
               headerName: "TÙY CHỌN",
