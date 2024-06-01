@@ -70,8 +70,8 @@ export default function RpCostTotal() {
       return date;
     }
   };
-  const [errorStartDate, setErrorStartDate] = useState("");
-  const [errorEndDate, setErrorEndDate] = useState("");
+  // const [errorStartDate, setErrorStartDate] = useState("");
+  // const [errorEndDate, setErrorEndDate] = useState("");
   const handlePickDate = async (date, label) => {
     if (date !== null) {
       const formattedDate = new Intl.DateTimeFormat("en-GB", {
@@ -83,23 +83,23 @@ export default function RpCostTotal() {
       const formattedDateString = `${day}-${month}-${year}`;
       if (label === "startPicker") {
         setStartPicker(formattedDateString);
-        try {
-          const checkDate = await validateDatePickerAPI(formattedDateString, 6);
-          setErrorStartDate("");
-        } catch (error) {
-          // toast.error(error);
-          setErrorStartDate(error);
-        }
+        // try {
+        //   const checkDate = await validateDatePickerAPI(formattedDateString, 6);
+        //   setErrorStartDate("");
+        // } catch (error) {
+        //   // toast.error(error);
+        //   setErrorStartDate(error);
+        // }
       } else if (label === "endPicker") {
         setEndPicker(formattedDateString);
-        try {
-          const checkDate = await validateDatePickerAPI(formattedDateString, 6);
-          // console.log(checkDate);
-          setErrorEndDate("");
-        } catch (error) {
-          // toast.error(error);
-          setErrorEndDate(error);
-        }
+        // try {
+        //   const checkDate = await validateDatePickerAPI(formattedDateString, 6);
+        //   // console.log(checkDate);
+        //   setErrorEndDate("");
+        // } catch (error) {
+        //   // toast.error(error);
+        //   setErrorEndDate(error);
+        // }
       }
     }
   };
@@ -107,7 +107,7 @@ export default function RpCostTotal() {
   const handleExportReport = async () => {
     // debugger;
 
-    if (startPicker && endPicker && !errorEndDate && !errorStartDate) {
+    if (startPicker && endPicker) {
       setIsLoading(true);
       try {
         const data = await getViewReportCostTotalAPI(startPicker, endPicker);
@@ -119,11 +119,12 @@ export default function RpCostTotal() {
       toast.error("Vui lòng chọn ngày bắt đầu!");
     } else if (!endPicker) {
       toast.error("Vui lòng chọn ngày kết thúc!");
-    } else if (errorStartDate !== "") {
-      toast.error("Vui lòng chọn lại ngày bắt đầu!");
-    } else if (errorEndDate !== "") {
-      toast.error("Vui lòng chọn lại ngày kết thúc!");
     }
+    // else if (errorStartDate !== "") {
+    //   toast.error("Vui lòng chọn lại ngày bắt đầu!");
+    // } else if (errorEndDate !== "") {
+    //   toast.error("Vui lòng chọn lại ngày kết thúc!");
+    // }
   };
 
   return (
@@ -164,7 +165,7 @@ export default function RpCostTotal() {
                   format="DD-MM-YYYY"
                 />
               </LocalizationProvider>
-              <p style={{ marginTop: "5px", color: "red" }}>{errorStartDate}</p>
+              {/* <p style={{ marginTop: "5px", color: "red" }}>{errorStartDate}</p> */}
             </div>
 
             <div
@@ -179,7 +180,7 @@ export default function RpCostTotal() {
                   format="DD-MM-YYYY"
                 />
               </LocalizationProvider>
-              <p style={{ marginTop: "5px", color: "red" }}>{errorEndDate}</p>
+              {/* <p style={{ marginTop: "5px", color: "red" }}>{errorEndDate}</p> */}
             </div>
           </div>
 

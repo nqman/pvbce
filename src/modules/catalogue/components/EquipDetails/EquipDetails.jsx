@@ -158,7 +158,7 @@ const EquipDetail = () => {
                 )}
                 {
                   <li className="mb-2">
-                    <b>Ghi chú: </b>
+                    <b>Lịch sử thi công: </b>
                     {product.note}
                   </li>
                 }

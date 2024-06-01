@@ -279,14 +279,23 @@ export async function addActualQuantityAndRevenueAPI(
   actualQuantityAndRevenues,
   idProject
 ) {
+  debugger;
   try {
-    // console.log(actualQuantityAndRevenues);
+    console.log(actualQuantityAndRevenues);
     const formData = new FormData();
     actualQuantityAndRevenues.map((dataPerWeek) =>
       Object.keys(dataPerWeek).map((key) => {
         if (key === "quantityRevenue") {
           if (Array.isArray(dataPerWeek[key])) {
             dataPerWeek[key].forEach((detail) => {
+              if (
+                detail.category === "" ||
+                detail.unit === "" ||
+                detail.quantity === "" ||
+                detail.price === ""
+              ) {
+                return;
+              }
               //EDIT
               if (detail.id > 0) {
                 formData.append("idActualDetails", detail.id);
@@ -325,7 +334,7 @@ export async function addActualQuantityAndRevenueAPI(
         },
       }
     );
-    console.log(formData);
+    // console.log(formData);
     return resp;
   } catch (error) {
     // console.log(error);

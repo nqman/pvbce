@@ -133,7 +133,7 @@ export default function ActualCosts() {
       tempWeek, // Thêm tempWeek vào mảng prevState
     ]);
   };
-  const addActualCostPerWeek = () => {
+  const addActualCostPerWeek = async () => {
     // debugger;
     setActualCosts((oldCostPerWeeks) => {
       return [
@@ -165,7 +165,11 @@ export default function ActualCosts() {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    getNextModay(actualWeek.date, idProject);
+    setErrorGetMonday(true);
+    let monday = await getNextModay(actualWeek.date, idProject);
+    if (monday) {
+      setErrorGetMonday(false);
+    }
   };
 
   const handleSaveActualCost = async () => {
