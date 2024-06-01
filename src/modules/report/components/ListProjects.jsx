@@ -10,11 +10,11 @@ import "./styles.css";
 export default function ListProjects({ rows, onEdit, onDelete, role }) {
   const navigate = useNavigate();
 
-  //Xem chi tiết thiết bị
+  //Xem chi tiết dự án
   const handleRead = (id) => {
     navigate(`/projects/${id}`);
   };
-
+  console.log(rows);
   return (
     <StyledEngineProvider injectFirst>
       <div
@@ -34,6 +34,19 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
           }))}
           columns={[
             { field: "index", headerName: "STT", width: 50 },
+            {
+              field: "qr",
+              headerName: "MÃ QR",
+              width: 100,
+              // align: "center",
+              renderCell: (params) => (
+                <img
+                  style={{ width: "50px", height: "50px" }}
+                  src={params.row.imageOfQR}
+                  alt={params.row.name}
+                />
+              ),
+            },
 
             { field: "name", headerName: "TÊN DỰ ÁN", width: 400 },
             { field: "startDate", headerName: "NGÀY BẮT ĐẦU", width: 150 },
@@ -42,7 +55,7 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
               headerName: "NGÀY KẾT THÚC",
               width: 150,
             },
-            { field: "note", headerName: "GHI CHÚ", width: 250 },
+            { field: "note", headerName: "GHI CHÚ", width: 150 },
 
             {
               field: "action",

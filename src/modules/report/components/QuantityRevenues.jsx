@@ -69,7 +69,7 @@ export default function QuantityRevenues() {
   const getOldQuantityRevenues = async (idProject) => {
     try {
       const oldQuantityRevenues = await getOldQuantityRevenueAPI(idProject);
-
+      // console.log(oldQuantityRevenues);
       if (oldQuantityRevenues.length !== 0) {
         setOldQuantityRevenues(oldQuantityRevenues);
         setValue(oldQuantityRevenues[oldQuantityRevenues.length - 1].week);
@@ -140,7 +140,7 @@ export default function QuantityRevenues() {
     ]);
   };
 
-  const addQuantityRevenuePerWeek = () => {
+  const addQuantityRevenuePerWeek = async () => {
     // debugger;
     setQuantityRevenues((oldQuantityRevenuePerWeeks) => {
       return [
@@ -172,7 +172,11 @@ export default function QuantityRevenues() {
       getNextModay(project?.startDate, idProject);
       return;
     }
-    getNextModay(actualWeek.date, idProject);
+    setErrorGetMonday(true);
+    let monday = await getNextModay(actualWeek.date, idProject);
+    if (monday) {
+      setErrorGetMonday(false);
+    }
   };
 
   const handleSaveQuantityRevenue = async () => {
