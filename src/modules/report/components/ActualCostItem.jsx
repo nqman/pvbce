@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import ClearIcon from "@mui/icons-material/Clear";
 
 export default function ActualCostItem({
   detail,
@@ -87,9 +86,44 @@ export default function ActualCostItem({
           height: "30px",
         }}
       >
+        {/* <Box
+          sx={{
+            minWidth: 130,
+            marginRight: "40px",
+          }}
+        >
+          <FormControl fullWidth>
+            <InputLabel size="small" id="demo-simple-select-label">
+              Loại chi phí<span style={{ color: "red" }}>*</span>
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={detail?.cost}
+              disabled={detail?.cost ? true : false}
+              label={
+                <span>
+                  Loại chi phí<span style={{ color: "red" }}>*</span>
+                </span>
+              }
+              onChange={handleSelectCost}
+              size="small"
+              sx={{ display: "flex", width: "750px" }}
+            >
+              {remainingCosts?.map((cost) => (
+                <MenuItem
+                  key={cost.id + "_" + cost.value}
+                  value={detail?.cost ? detail?.cost : cost.name}
+                >
+                  {detail?.cost ? detail?.cost : cost.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box> */}
         <Autocomplete
           size="small"
-          sx={{ width: "80%", marginRight: "20px" }}
+          sx={{ width: "40%", marginRight: "20px" }}
           disablePortal
           id="combo-box-demo"
           options={remainingCosts?.map((option) => option.name)}
@@ -103,7 +137,7 @@ export default function ActualCostItem({
 
         <TextField
           label={
-            <span style={{ fontSize: "14px" }}>
+            <span>
               Thành tiền<span style={{ color: "red" }}>*</span>
             </span>
           }
@@ -111,23 +145,19 @@ export default function ActualCostItem({
           value={amount}
           size="small"
           type="number"
-          sx={{ marginRight: "20px", width: "20%" }}
+          sx={{ marginRight: "20px", width: "200px" }}
           onChange={(e) =>
             handleInputChange(detail.id, "amount", e.target.value)
           }
         />
-        <div>
-          <button
-            onClick={() => deleteDiv(detail.id)}
-            style={{
-              border: "none",
-              background: "none",
-              color: "red",
-            }}
-          >
-            <ClearIcon sx={{ fontSize: "20px", fontWeight: "bolder" }} />
-          </button>
-        </div>
+
+        <button
+          className="btn btn-danger"
+          onClick={() => deleteDiv(detail.id)}
+          type="button"
+        >
+          x
+        </button>
       </div>
 
       <p className="text-danger">{errorDetail}</p>

@@ -132,79 +132,36 @@ export default function ActualCostPerWeek({
   }, [actualCostItems, idActualCost]);
 
   return (
-    <div>
-      {/* EDIT */}
+    <div style={{ marginBottom: "50px" }}>
       {idActualCost > 0 ? (
         <Grid
           container
+          spacing={5}
           style={{
             overflow: "hidden",
             display: "flex",
             alignItems: "start",
+            border: "1px solid",
             borderRadius: "5px",
-            backgroundColor: "#f5f5f5ab",
-            padding: "30px",
+            padding: "10px 0",
           }}
         >
-          <Grid item sm={12}>
-            <div>
-              {actualCostItems.map((detail) => (
-                <ActualCostItem
-                  key={detail.id}
-                  detail={detail}
-                  costs={costs}
-                  remainingCosts={[
-                    ...remainingCosts,
-                    ...costs.filter((el) => el.name === detail.cost),
-                  ]}
-                  onCostSelect={handleCostSelect}
-                  onChange={handleActualCostDetailChange}
-                  onRemove={handleRemoveActualCostDetail}
-                  updateTotalAmount={updateTotalAmount}
-                />
-              ))}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  style={{ fontSize: "14px" }}
-                  disabled={disableAddItem}
-                  onClick={addActualCostItem}
-                >
-                  Thêm
-                </Button>
-                <TextField
-                  label={"Tổng cộng"}
-                  size="small"
-                  value={`${totalAmount.toLocaleString()} VND`}
-                  sx={{
-                    marginRight: "40px",
-                    width: "200px",
-                    pointerEvents: "none",
-                  }}
-                  disabled={true}
-                />
-              </div>
-            </div>
+          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+            <span
+              style={{
+                padding: "5px 10px",
+                border: "1px solid",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                backgroundColor: "rgb(242, 228, 38)",
+                fontWeight: "bold",
+                color: "black",
+                borderRadius: "5px",
+              }}
+            >
+              {fromDateToDate}
+            </span>
           </Grid>
-        </Grid>
-      ) : (
-        <Grid
-          container
-          style={{
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "start",
-            borderRadius: "5px",
-            backgroundColor: "#f5f5f5ab",
-            padding: "30px",
-          }}
-        >
-          <Grid item sm={12}>
+          <Grid item lg={12}>
             <div>
               {actualCostItems.map((detail) => (
                 <ActualCostItem
@@ -229,11 +186,7 @@ export default function ActualCostPerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button
-                  style={{ fontSize: "14px" }}
-                  disabled={disableAddItem}
-                  onClick={addActualCostItem}
-                >
+                <Button disabled={disableAddItem} onClick={addActualCostItem}>
                   Thêm
                 </Button>
                 <TextField
@@ -241,7 +194,78 @@ export default function ActualCostPerWeek({
                   size="small"
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
-                    marginRight: "40px",
+                    marginRight: "160px",
+                    width: "200px",
+                    pointerEvents: "none",
+                  }}
+                  disabled={true}
+                />
+              </div>
+            </div>
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid
+          container
+          spacing={5}
+          style={{
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "start",
+            border: "1px solid",
+            borderRadius: "5px",
+            padding: "10px 0",
+          }}
+        >
+          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
+            <span
+              style={{
+                padding: "5px 10px",
+                border: "1px solid",
+                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                backgroundColor: "rgb(242, 228, 38)",
+                fontWeight: "bold",
+                color: "black",
+                borderRadius: "5px",
+              }}
+            >
+              {fromDateToDate}
+            </span>
+          </Grid>
+          <Grid item lg={12}>
+            <div>
+              {actualCostItems.map((detail) => (
+                <ActualCostItem
+                  key={detail.id}
+                  detail={detail}
+                  costs={costs}
+                  remainingCosts={[
+                    ...remainingCosts,
+                    ...costs.filter((el) => el.name === detail.cost),
+                  ]}
+                  onCostSelect={handleCostSelect}
+                  onChange={handleActualCostDetailChange}
+                  onRemove={handleRemoveActualCostDetail}
+                  updateTotalAmount={updateTotalAmount}
+                />
+              ))}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingBottom: "10px",
+                }}
+              >
+                <Button disabled={disableAddItem} onClick={addActualCostItem}>
+                  Thêm
+                </Button>
+                <TextField
+                  label={"Tổng cộng"}
+                  size="small"
+                  value={`${totalAmount.toLocaleString()} VND`}
+                  sx={{
+                    marginRight: "160px",
                     width: "200px",
                     pointerEvents: "none",
                   }}

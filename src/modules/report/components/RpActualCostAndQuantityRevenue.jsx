@@ -44,15 +44,11 @@ export default function RpActualCostAndQuantityRevenue() {
   const [viewReports, setViewReports] = useState([]);
   // Get category selection
   const [categories, setCategories] = useState([]);
-  const [project, setProject] = useState();
   const [selectedCategories, setSelectedCategories] = useState([]);
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await getCategoriesOfProjectAPI(idProject);
       setCategories(response);
-      let project = await selectProjectAPI(idProject);
-      console.log(project);
-      setProject(project);
     }
     fetchMyAPI();
   }, [idProject]);
@@ -208,7 +204,9 @@ export default function RpActualCostAndQuantityRevenue() {
           }}
         >
           <div className="calendar d-flex ">
-            <div style={{ marginRight: "30px", width: "350px" }}>
+            <div
+              style={{ marginRight: "30px", width: "350px", height: "80px" }}
+            >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   className="me-4"
@@ -221,7 +219,9 @@ export default function RpActualCostAndQuantityRevenue() {
               <p style={{ marginTop: "5px", color: "red" }}>{errorStartDate}</p>
             </div>
 
-            <div style={{ marginRight: "30px", width: "350px" }}>
+            <div
+              style={{ marginRight: "30px", width: "350px", height: "80px" }}
+            >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   className="me-4"
@@ -263,14 +263,6 @@ export default function RpActualCostAndQuantityRevenue() {
             </Button>
           </div>
         </div>
-        {project?.startDate ? (
-          <span style={{ color: "red", fontStyle: "italic" }}>
-            {`*Ngày bắt đầu: ${project?.startDate} - Ngày kết thúc: ${project?.endDate}`}
-          </span>
-        ) : (
-          ""
-        )}
-
         {typeReport === "quantity" && (
           <div style={{ marginTop: "10px" }}>
             <Autocomplete

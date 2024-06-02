@@ -1,21 +1,6 @@
-.MuiDataGrid-cellContent,
-.css-19qh8xo-MuiInputBase-input-MuiOutlinedInput-input,
-.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root,
-.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input,
-.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root,
-.css-19qh8xo-MuiInputBase-input-MuiOutlinedInput-input,
-.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root,
-.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root,
-.css-nz481w-MuiInputBase-input-MuiInput-input {
-    font-size: 14px !important;
+.MuiDataGrid-cellContent {
+    font-size: 14px;
 }
-
-
-
-
-
-
-
 
 /* td {
     border: 1px solid black;
