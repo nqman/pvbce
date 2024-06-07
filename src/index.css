@@ -9,9 +9,10 @@ html {
 }
 
 ::-webkit-scrollbar {
-  width: 0;
+
+  /* width: 0; */
   /* Remove scrollbar space */
-  background: transparent;
+  /* background: transparent; */
   /* Optional: just make scrollbar invisible */
 }
 

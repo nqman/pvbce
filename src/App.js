@@ -27,6 +27,7 @@ import RpActualCostAndQuantityRevenue from "./modules/report/components/RpActual
 import UserManagement from "./admin/UserManagement";
 import EditProject from "./modules/report/components/EditProject";
 import RpCostTotal from "./modules/report/components/RpCostTotal";
+import CategoryProject01 from "./modules/report/components/CategoryProject01";
 
 function App() {
   return (
@@ -40,8 +41,13 @@ function App() {
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
           <Route path="/report/edit-project/:code" element={<EditProject />} />
-          <Route path="/report/categorylist" element={<Category />} />
-          <Route path="/report/costlist" element={<CostName />} />
+          <Route path="/setup/categorylist" element={<Category />} />
+          <Route
+            path="/setup/category01-project"
+            element={<CategoryProject01 />}
+          />
+          <Route path="/setup/category02-project" element={<Category />} />
+          <Route path="/setup/costlist" element={<CostName />} />
           <Route path="/report/rpcosttotal" element={<RpCostTotal />} />
           <Route
             path="/report/listprojects"

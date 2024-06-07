@@ -1,5 +1,13 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Button, Container, Tab, Link, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Tab,
+  Link,
+  TextField,
+  Autocomplete,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -223,6 +231,72 @@ export default function CreateProject() {
   }, [endDate, startDate]);
 
   //Thư viện dự án ---projectDiary
+  const [category1, setCategory1] = useState([
+    "Hợp đồng",
+    "Nghiệm thu",
+    "Báo cáo ngày",
+    "Báo cáo tuần",
+    "Phiếu yêu cầu vật tư, nhiên liệu",
+    "Chi phí dự án các đợt",
+  ]);
+  const [category2, setCategory2] = useState([
+    "Nhật kí thi công",
+    "Sản lượng thi công",
+    "Báo cáo ngày",
+    "Chi phí công trình",
+    "Bản chấm công",
+  ]);
+  const [selectedCategory1, setSelectedCategory1] = useState("");
+  const [selectedCategory2, setSelectedCategory2] = useState("");
+
+  const [category, setCategory] = useState([
+    {
+      category1: "Hợp đồng",
+    },
+    {
+      category1: "Nghiệm thu",
+    },
+    {
+      category1: "Báo cáo ngày",
+      category2: [
+        "Nhật kí thi công",
+        "Sản lượng thi công",
+        "Báo cáo ngày",
+        "Chi phí công trình",
+        "Bản chấm công",
+      ],
+    },
+    {
+      category1: "Báo cáo tuần",
+      category2: [
+        "Nhật kí thi công",
+        "Sản lượng thi công",
+        "Báo cáo ngày",
+        "Chi phí công trình",
+        "Bản chấm công",
+      ],
+    },
+    {
+      category1: "Phiếu yêu cầu vật tư, nhiên liệu",
+    },
+    {
+      category1: "Chi phí dự án các đợt",
+    },
+  ]);
+
+  const handleSelectCategory1 = async (event, value) => {
+    // debugger;
+    setSelectedCategory1(value);
+    let category = value;
+    console.log(category);
+  };
+  const handleSelectCategory2 = async (event, value) => {
+    // debugger;
+    setSelectedCategory2(value);
+    let category = value;
+    console.log(category);
+  };
+
   const [rpQuantityAndRevenueLibraries, setRpQuantityAndRevenueLibraries] =
     useState([{ id: -Date.now(), name: "", value: "", file: null }]);
   const [errorLibary, setErrorLibrary] = useState("");
@@ -439,8 +513,8 @@ export default function CreateProject() {
               </TabPanel>
               {/* Thư viện */}
               <TabPanel value="2">
-                <Container className="">
-                  <div>
+                <Container className="w-100">
+                  {/* <div>
                     {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
                       <div
                         style={{
@@ -509,6 +583,50 @@ export default function CreateProject() {
                     <Button variant="contained" onClick={createDiv}>
                       Thêm
                     </Button>
+                  </div> */}
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <Autocomplete
+                      size="small"
+                      sx={{ width: "30%", marginRight: "20px" }}
+                      disablePortal
+                      id="combo-box-demo"
+                      options={category1.map((option) => option)}
+                      // defaultValue={detail?.category}
+                      // disabled={detail?.category ? true : false}
+                      onChange={handleSelectCategory1}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Danh mục 1" />
+                      )}
+                    />
+                    {selectedCategory1 === "Báo cáo ngày" ||
+                    selectedCategory1 === "Báo cáo tuần" ? (
+                      <Autocomplete
+                        size="small"
+                        sx={{ width: "20%", marginRight: "20px" }}
+                        disablePortal
+                        id="combo-box-demo"
+                        options={category2?.map((option) => option)}
+                        // defaultValue={detail?.category}
+                        // disabled={detail?.category ? true : false}
+                        onChange={handleSelectCategory2}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Danh mục 2" />
+                        )}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    <input
+                      type="file"
+                      style={{ width: "130px" }}
+                      className="custom-file-input"
+                      // id={`fileInput${projectLibrary.id}`}
+                      name="filename"
+                      // onChange={(e) =>
+                      //   handleFileChange(projectLibrary.id, e.target.files[0])
+                      // }
+                      onBlur={handleBlurInput}
+                    />
                   </div>
                 </Container>
               </TabPanel>
