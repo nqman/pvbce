@@ -480,7 +480,7 @@ export default function FoundationProjects() {
               sx={{
                 position: "sticky",
                 top: 0,
-                zIndex: 999,
+                zIndex: 10,
               }}
             >
               <TableRow>

@@ -94,41 +94,6 @@ export default function QuantityRevenueItem({
           height: "30px",
         }}
       >
-        {/* <Box
-          sx={{
-            minWidth: 130,
-            marginRight: "20px",
-          }}
-        >
-          <FormControl fullWidth>
-            <InputLabel size="small" id="demo-simple-select-label">
-              Hạng mục<span style={{ color: "red" }}>*</span>
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={detail?.category}
-              disabled={detail?.category ? true : false}
-              label={
-                <span>
-                  Hạng mục<span style={{ color: "red" }}>*</span>
-                </span>
-              }
-              onChange={handleSelectCategory}
-              size="small"
-              sx={{ display: "flex", width: "450px" }}
-            >
-              {remainingCategories?.map((category) => (
-                <MenuItem
-                  key={category.id + "_" + category.value}
-                  value={detail?.category ? detail?.category : category.name}
-                >
-                  {detail?.category ? detail?.category : category.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box> */}
         <Autocomplete
           size="small"
           sx={{ width: "40%", marginRight: "20px" }}

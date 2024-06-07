@@ -7,12 +7,13 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import SummarizeIcon from "@mui/icons-material/Summarize";
 import CategoryIcon from "@mui/icons-material/Category";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { useNavigate } from "react-router-dom";
 import { Logout, Person, PersonSearch } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
@@ -21,16 +22,16 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
-import { selectUserAPI } from "../../../../apis/authenticationAPI";
-
-const pages = ["GIỚI THIỆU", "BÁO CÁO", "CATALOGUE", "THƯ VIỆN"];
-// const settings = ["Profile", "Account", "Dashboard", "Logout"];
-const settings = ["Account", "Logout"];
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+} from "@mui/material";
 
 function Header() {
   const [user, setUser] = useState();
   const role = Cookies.get("role")?.replace(/"/g, "");
-  // const role = "Admin";
 
   useEffect(() => {
     const getUser = {
@@ -89,7 +90,7 @@ function Header() {
       },
       "& .MuiMenuItem-root": {
         "& .MuiSvgIcon-root": {
-          fontSize: 18,
+          fontSize: 17,
           color: theme.palette.text.secondary,
           marginRight: theme.spacing(1.5),
         },
@@ -102,9 +103,10 @@ function Header() {
       },
     },
   }));
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  // const loggedUser = useSelector((state) => state.user.loggedUser);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -115,6 +117,13 @@ function Header() {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+  const handleOpenSubmenu = (event) => {
+    setSubmenuAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseSubmenu = () => {
+    setSubmenuAnchorEl(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -151,53 +160,50 @@ function Header() {
   };
   const handleNavigate = (value) => {
     setAnchorEl(null);
-    navigate(`report/${value}`);
+    navigate(`setup/${value}`);
   };
   const handleClose = (value) => {
     setAnchorEl(null);
   };
+
+  const [anchorElReport, setAnchorElReport] = React.useState(null);
+  const openReport = Boolean(anchorElReport);
+  const handleClickReport = (event) => {
+    setAnchorElReport(event.currentTarget);
+  };
+  const handleNavigateReport = (value) => {
+    setAnchorElReport(null);
+    navigate(`report/${value}`);
+  };
+  const handleCloseReport = (value) => {
+    setAnchorElReport(null);
+  };
   return (
     <AppBar
-      // position="static"
-      style={{
+      position="static"
+      sx={{
         backgroundColor: "white",
-        color: "#007cd7",
         position: "fixed",
-        top: 0,
-        height: "65px",
-        width: "100%",
+        top: "0",
+        zIndex: "999",
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="xl" sx={{ height: "60px" }}>
         <Toolbar disableGutters>
           {/* LOGO */}
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-              marginRight: "100px",
-            }}
-          >
+          <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} href="/">
             <img
               src="https://www.phanvu.vn/Data/Sites/1/media/logo-web4.png"
               alt="logo"
               style={{
-                height: "54px",
-                width: "270px",
+                height: "40px",
+                width: "200px",
                 zIndex: "10",
+                cursor: "pointer",
               }}
               onClick={() => navigate("./")}
             />
-          </Typography>
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -206,7 +212,7 @@ function Header() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="black"
             >
               <MenuIcon />
             </IconButton>
@@ -226,76 +232,271 @@ function Header() {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" },
+                textAlign: "start",
               }}
             >
-              {/* {pages.map((page) => ( */}
               <MenuItem
                 key={"GIỚI THIỆU"}
                 onClick={
                   handleCloseNavMenu && (() => handleChangeNavBar("GIỚI THIỆU"))
                 }
                 sx={{
-                  my: 1,
-                  color: "#00477b",
-                  fontSize: "18px",
-                  display: "block",
-                  margin: "0 5px 0px 5px",
-                  fontWeight: "800",
+                  color: "black",
+                  fontWeight: "bold",
+                  fontSize: "13px",
                 }}
               >
-                <Typography textAlign="center">GIỚI THIỆU</Typography>
+                GIỚI THIỆU
               </MenuItem>
+
+              {role &&
+              role !== "null" &&
+              (role === "Admin" || role === "Employee") ? (
+                <>
+                  <Button
+                    id="demo-customized-button"
+                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    disableElevation
+                    onClick={handleClickReport}
+                    endIcon={<KeyboardArrowDownIcon />}
+                    sx={{
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: "13px",
+                    }}
+                  >
+                    BÁO CÁO
+                  </Button>
+                  <StyledMenu
+                    id="demo-customized-menu"
+                    MenuListProps={{
+                      "aria-labelledby": "demo-customized-button",
+                    }}
+                    anchorEl={anchorElReport}
+                    open={openReport}
+                    onClose={handleCloseReport}
+                  >
+                    <MenuItem
+                      onClick={() => handleNavigateReport("listprojects")}
+                      disableRipple
+                    >
+                      <FormatListNumberedIcon />
+                      Danh sách dự án
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => handleNavigateReport("rpcosttotal")}
+                      disableRipple
+                    >
+                      <AssessmentIcon />
+                      Báo cáo tổng
+                    </MenuItem>
+                  </StyledMenu>
+                </>
+              ) : (
+                <></>
+              )}
+              <Button
+                key={"CATALOGUE"}
+                onClick={
+                  handleCloseNavMenu && (() => handleChangeNavBar("CATALOGUE"))
+                }
+                sx={{
+                  color: "black",
+                  fontWeight: "bold",
+                  fontSize: "13px",
+                  display: "block",
+                }}
+              >
+                CATALOGUE
+              </Button>
+              <Button
+                key={"THƯ VIỆN"}
+                onClick={
+                  handleCloseNavMenu && (() => handleChangeNavBar("THƯ VIỆN"))
+                }
+                sx={{
+                  color: "black",
+                  fontWeight: "bold",
+                  display: "block",
+                  fontSize: "13px",
+                }}
+              >
+                THƯ VIỆN
+              </Button>
+              {role &&
+              role !== "null" &&
+              (role === "Admin" || role === "Employee") ? (
+                <>
+                  <Button
+                    id="demo-customized-button"
+                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    disableElevation
+                    onClick={handleClick}
+                    endIcon={<KeyboardArrowDownIcon />}
+                    sx={{
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: "13px",
+                      display: "block",
+                    }}
+                  >
+                    CÀI ĐẶT
+                  </Button>
+                  <StyledMenu
+                    id="demo-customized-menu"
+                    MenuListProps={{
+                      "aria-labelledby": "demo-customized-button",
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                  >
+                    <MenuItem
+                      onClick={() => handleNavigate("categorylist")}
+                      disableRipple
+                    >
+                      <CategoryIcon />
+                      Hạng mục
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => handleNavigate("costlist")}
+                      disableRipple
+                    >
+                      <CategoryIcon />
+                      Chi phí
+                    </MenuItem>
+                  </StyledMenu>
+                </>
+              ) : (
+                <></>
+              )}
             </Menu>
           </Box>
 
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+          <Box
             sx={{
+              display: { xs: "none", md: "flex" },
               mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+              paddingLeft: "5%",
             }}
+            href="/"
           >
             <img
               src="https://www.phanvu.vn/Data/Sites/1/media/logo-web4.png"
               alt="logo"
               style={{
-                height: "54px",
-                width: "270px",
+                height: "40px",
+                width: "auto",
                 zIndex: "10",
+                cursor: "pointer",
               }}
               onClick={() => navigate("./")}
             />
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {/* GIỚI THIỆU */}
-
+          </Box>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
             <Button
               key={"GIỚI THIỆU"}
-              onClick={
-                handleCloseNavMenu && (() => handleChangeNavBar("GIỚI THIỆU"))
-              }
+              onClick={() => handleChangeNavBar("GIỚI THIỆU")}
               sx={{
-                my: 1,
-                color: "#00477b",
-                fontSize: "18px",
-                display: "block",
-                margin: "0 5px 0px 5px",
-                fontWeight: "800",
+                color: "black",
+                fontWeight: "bold",
+                fontSize: "17px",
+                margin: "10px",
               }}
             >
-              {"GIỚI THIỆU"}
+              GIỚI THIỆU
             </Button>
-            {/* BÁO CÁO */}
-            {/* {console.log(role)} */}
+
+            {role &&
+            role !== "null" &&
+            (role === "Admin" || role === "Employee") ? (
+              <>
+                <Button
+                  id="demo-customized-button"
+                  aria-controls={open ? "demo-customized-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  disableElevation
+                  onClick={handleClickReport}
+                  endIcon={<KeyboardArrowDownIcon />}
+                  sx={{
+                    color: "black",
+                    fontWeight: "bold",
+                    margin: "10px",
+                    fontSize: "17px",
+                  }}
+                >
+                  BÁO CÁO
+                </Button>
+                <StyledMenu
+                  id="demo-customized-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "demo-customized-button",
+                  }}
+                  anchorEl={anchorElReport}
+                  open={openReport}
+                  onClose={handleCloseReport}
+                >
+                  <MenuItem
+                    onClick={() => handleNavigateReport("listprojects")}
+                    disableRipple
+                  >
+                    <FormatListNumberedIcon />
+                    Danh sách dự án
+                  </MenuItem>
+
+                  <MenuItem
+                    onClick={() => handleNavigateReport("rpcosttotal")}
+                    disableRipple
+                  >
+                    <AssessmentIcon />
+                    Báo cáo tổng
+                  </MenuItem>
+                </StyledMenu>
+              </>
+            ) : (
+              <></>
+            )}
+
+            <Button
+              key={"CATALOGUE"}
+              onClick={
+                handleCloseNavMenu && (() => handleChangeNavBar("CATALOGUE"))
+              }
+              sx={{
+                color: "black",
+                fontWeight: "bold",
+                margin: "10px",
+                fontSize: "17px",
+              }}
+            >
+              CATALOGUE
+            </Button>
+            <Button
+              key={"THƯ VIỆN"}
+              onClick={
+                handleCloseNavMenu && (() => handleChangeNavBar("THƯ VIỆN"))
+              }
+              sx={{
+                color: "black",
+                fontWeight: "bold",
+                margin: "10px",
+                fontSize: "17px",
+              }}
+            >
+              THƯ VIỆN
+            </Button>
             {role &&
             role !== "null" &&
             (role === "Admin" || role === "Employee") ? (
@@ -309,14 +510,13 @@ function Header() {
                   onClick={handleClick}
                   endIcon={<KeyboardArrowDownIcon />}
                   sx={{
-                    my: 1,
-                    color: "#00477b",
-                    fontSize: "18px",
-                    margin: "0 5px 0px 5px",
-                    fontWeight: "800",
+                    color: "black",
+                    fontWeight: "bold",
+                    margin: "10px",
+                    fontSize: "17px",
                   }}
                 >
-                  BÁO CÁO
+                  CÀI ĐẶT
                 </Button>
                 <StyledMenu
                   id="demo-customized-menu"
@@ -341,141 +541,130 @@ function Header() {
                     <CategoryIcon />
                     Chi phí
                   </MenuItem>
-                  <MenuItem
-                    onClick={() => handleNavigate("listprojects")}
-                    disableRipple
-                  >
-                    <FormatListNumberedIcon />
-                    Danh sách dự án
-                  </MenuItem>
-                  {/* <Divider sx={{ my: 0.5 }} /> */}
-                  {/* GẠCH NGĂN CÁCH */}
-                  <MenuItem
-                    onClick={() => handleNavigate("rpcosttotal")}
-                    disableRipple
-                  >
-                    <AssessmentIcon />
-                    Báo cáo tổng
-                  </MenuItem>
-                  {/* <MenuItem
-                    onClick={() => handleNavigate("rp_revenue")}
-                    disableRipple
-                    disabled={true}
-                  >
-                    <SummarizeIcon />
-                    Báo cáo doanh thu
-                  </MenuItem> */}
+
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                      <Typography>Danh mục dự án</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box
+                        sx={{ display: "block", mb: 1, cursor: "pointer" }}
+                        variant="outlined"
+                        onClick={() => handleNavigate("category01-project")}
+                      >
+                        <ArrowRightIcon />
+                        Danh mục 1
+                      </Box>
+                      <Box
+                        sx={{ display: "block", cursor: "pointer" }}
+                        variant="outlined"
+                        onClick={() => handleNavigate("category02-project")}
+                      >
+                        <ArrowRightIcon />
+                        Danh mục 2
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
+
+                  <Accordion>
+                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
+                      <Typography>Danh mục thư viện</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Box
+                        sx={{ display: "block", mb: 1, cursor: "pointer" }}
+                        variant="outlined"
+                        onClick={() => handleNavigate("category01-library")}
+                      >
+                        <ArrowRightIcon />
+                        Danh mục 1
+                      </Box>
+                      <Box
+                        sx={{ display: "block", cursor: "pointer" }}
+                        variant="outlined"
+                        onClick={() => handleNavigate("category02-library")}
+                      >
+                        <ArrowRightIcon />
+                        Danh mục 2
+                      </Box>
+                    </AccordionDetails>
+                  </Accordion>
                 </StyledMenu>
               </>
             ) : (
               <></>
             )}
-
-            {/* CATALOGUE */}
-            <Button
-              key={"CATALOGUE"}
-              onClick={
-                handleCloseNavMenu && (() => handleChangeNavBar("CATALOGUE"))
-              }
-              sx={{
-                my: 1,
-                color: "#00477b",
-                fontSize: "18px",
-                display: "block",
-                margin: "0 5px 0px 5px",
-                fontWeight: "800",
-              }}
-            >
-              {"CATALOGUE"}
-            </Button>
-            <Button
-              key={"THƯ VIỆN"}
-              onClick={
-                handleCloseNavMenu && (() => handleChangeNavBar("THƯ VIỆN"))
-              }
-              sx={{
-                my: 1,
-                color: "#00477b",
-                fontSize: "18px",
-                display: "block",
-                margin: "0 5px 0px 5px",
-                fontWeight: "800",
-              }}
-            >
-              {"THƯ VIỆN"}
-            </Button>
           </Box>
-
-          {user?.name ? (
-            <Box>
-              <Button
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-user"
-                aria-haspopup="true"
-                onClick={handleOpenUserMenu}
-                endIcon={<KeyboardArrowDownIcon />}
-                color="inherit"
-                sx={{
-                  my: 1,
-                  color: "#00477b",
-                  fontSize: 15,
-                  margin: "0 5px 0px 5px",
-                  fontWeight: "500",
-                }}
-              >
-                <Person />
-                {user?.name}
-              </Button>
-              <StyledMenu
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem onClick={() => navigate("/profile")} disableRipple>
-                  <PersonSearch />
-                  Thông tin cá nhân
-                </MenuItem>
-                {user?.role === "Admin" && (
-                  <MenuItem
-                    onClick={() => navigate("/user-management")}
-                    disableRipple
-                  >
+          <div style={{ paddingRight: "5%" }}>
+            {user?.name ? (
+              <Box>
+                <Button
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-user"
+                  aria-haspopup="true"
+                  onClick={handleOpenUserMenu}
+                  endIcon={<KeyboardArrowDownIcon />}
+                  color="inherit"
+                  sx={{
+                    my: 1,
+                    // color: "#00477b",
+                    color: "black",
+                    fontSize: 14,
+                    margin: "0 5px 0px 5px",
+                    fontWeight: "500",
+                  }}
+                >
+                  <Person />
+                  {user?.name}
+                </Button>
+                <StyledMenu
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={() => navigate("/profile")} disableRipple>
                     <PersonSearch />
-                    Quản lý tài khoản
+                    Thông tin cá nhân
                   </MenuItem>
-                )}
-                <MenuItem onClick={_onlogout} disableRipple>
-                  <Logout />
-                  Đăng xuất
-                </MenuItem>
-              </StyledMenu>
-            </Box>
-          ) : (
-            <button
-              style={{
-                fontSize: "14px",
-
-                textTransform: "inherit",
-              }}
-              className="btn btn-primary "
-              onClick={() => handleSignIn()}
-              // variant="outlined"
-            >
-              Đăng nhập
-              {/* <PersonIcon /> */}
-            </button>
-          )}
+                  {user?.role === "Admin" && (
+                    <MenuItem
+                      onClick={() => navigate("/user-management")}
+                      disableRipple
+                    >
+                      <PersonSearch />
+                      Quản lý tài khoản
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={_onlogout} disableRipple>
+                    <Logout />
+                    Đăng xuất
+                  </MenuItem>
+                </StyledMenu>
+              </Box>
+            ) : (
+              <button
+                style={{
+                  fontSize: "14px",
+                  textTransform: "inherit",
+                }}
+                className="btn btn-primary "
+                onClick={() => handleSignIn()}
+              >
+                Đăng nhập
+              </button>
+            )}
+          </div>
         </Toolbar>
       </Container>
     </AppBar>
