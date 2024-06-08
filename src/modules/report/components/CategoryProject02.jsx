@@ -195,13 +195,14 @@ export default function CategoryProject02() {
                   }}
                   onSubmit={handleSubmit(handleAddCategory)}
                 >
-                  <div className="w-50" style={{ height: "35px" }}>
+                  <div style={{ width: "300px" }}>
                     <Autocomplete
                       size="small"
                       sx={{
                         marginBottom: "5px",
                         marginRight: "20px",
                         display: "block",
+                        height: "40px",
                       }}
                       disablePortal
                       options={categories.map((option) => option.name)}
@@ -209,19 +210,19 @@ export default function CategoryProject02() {
                       // disabled={detail?.category ? true : false}
                       onChange={handleSelectCategory1}
                       renderInput={(params) => (
-                        <TextField {...params} label="Danh mục 1" />
+                        <TextField {...params} placeholder="Danh mục 1" />
                       )}
                     />
                     <span className="text-danger ">{errors.name?.message}</span>
                   </div>
-                  <div style={{ height: "35px" }}>
+                  <div style={{}}>
                     <TextField
                       size="small"
-                      placeholder="Tên danh mục 2"
+                      placeholder="Danh mục 2"
                       sx={{
                         marginBottom: "5px",
                         marginRight: "20px",
-
+                        height: "40px",
                         display: "block",
                       }}
                       {...register("name")}
@@ -284,7 +285,7 @@ export default function CategoryProject02() {
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{ fontSize: "15px", fontWeight: "bold" }}
+                                sx={{ fontSize: "14px", fontWeight: "bold" }}
                               />
                             </button>
 

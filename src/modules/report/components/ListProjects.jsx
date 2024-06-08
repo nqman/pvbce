@@ -109,57 +109,52 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
                 <div style={{ display: "flex" }}>
                   <button
                     style={{
-                      padding: "0px",
-                      height: "25px",
-                      width: "25px",
+                      border: "1px solid",
+                      borderRadius: "5px",
+                      background: "none",
+                      color: "green",
                       marginRight: "10px",
+                      width: "23px",
+                      lineHeight: "15px",
                     }}
-                    className="btn btn-success me-2"
                     onClick={() => handleRead(params.id)}
                     title="Xem"
                   >
                     <VisibilityIcon
-                      sx={{
-                        fontSize: "17px",
-                        marginBottom: "2px",
-                      }}
+                      sx={{ fontSize: "15px", fontWeight: "bold" }}
                     />
                   </button>
                   {role && role === "Admin" && (
                     <>
                       <button
                         style={{
-                          padding: "0px",
-                          height: "25px",
-                          width: "25px",
+                          border: "1px solid",
+                          borderRadius: "5px",
+                          background: "none",
+                          color: "black",
                           marginRight: "10px",
+                          width: "23px",
+                          lineHeight: "15px",
                         }}
-                        className="btn btn-warning me-2"
                         onClick={() => onEdit(params.id)}
                         title="Sửa"
                       >
                         <EditIcon
-                          sx={{
-                            fontSize: "17px",
-                            marginBottom: "2px",
-                          }}
+                          sx={{ fontSize: "14px", fontWeight: "bold" }}
                         />
                       </button>
                       <button
                         style={{
-                          padding: "0px",
-                          height: "25px",
-                          width: "25px",
-                          lineHeight: "15px",
+                          border: "1px solid",
+                          borderRadius: "5px",
+                          background: "none",
+                          color: "red",
                         }}
-                        className="btn btn-danger"
                         onClick={() => onDelete(params.id)}
                         title="Xóa"
                       >
                         <ClearIcon
-                          sx={{
-                            fontSize: "20px",
-                          }}
+                          sx={{ fontSize: "20px", fontWeight: "bold" }}
                         />
                       </button>
                     </>
