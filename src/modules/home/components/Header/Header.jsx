@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import { useNavigate } from "react-router-dom";
 import { Logout, Person, PersonSearch } from "@mui/icons-material";
 import { styled, alpha } from "@mui/material/styles";
@@ -363,7 +364,7 @@ function Header() {
                       onClick={() => handleNavigate("costlist")}
                       disableRipple
                     >
-                      <CategoryIcon />
+                      <PriceChangeIcon />
                       Chi phí
                     </MenuItem>
                   </StyledMenu>
@@ -534,7 +535,7 @@ function Header() {
                     onClick={() => handleNavigate("costlist")}
                     disableRipple
                   >
-                    <CategoryIcon />
+                    <PriceChangeIcon />
                     Chi phí
                   </MenuItem>
 

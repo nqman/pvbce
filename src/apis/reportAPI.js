@@ -1,9 +1,10 @@
 import baseAPI from "./baseAPI";
 
 //Lấy danh sách hạng mục
-export async function getCategoriesAPI() {
+export async function getCategoriesAPI(type) {
   // debugger;
   try {
+    // const resp = await baseAPI.get(`categories/list_categories/${type}`);
     const resp = await baseAPI.get("categories");
     return resp.data;
   } catch (error) {

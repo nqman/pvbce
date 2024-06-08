@@ -252,7 +252,7 @@ export default function CategoryProject01() {
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{ fontSize: "15px", fontWeight: "bold" }}
+                                sx={{ fontSize: "14px", fontWeight: "bold" }}
                               />
                             </button>
 

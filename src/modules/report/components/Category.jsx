@@ -263,7 +263,7 @@ export default function Category() {
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{ fontSize: "15px", fontWeight: "bold" }}
+                                sx={{ fontSize: "14px", fontWeight: "bold" }}
                               />
                             </button>
 
