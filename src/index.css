@@ -1,19 +1,32 @@
 body {
   font-family: "Mulish", sans-serif;
-  /* overflow: hidden; */
+  /* overflow-y: scroll; */
 }
 
 html {
-  overflow: scroll;
+  /* overflow-y: scroll !important; */
   overflow-x: hidden;
 }
 
+/* width or (height if horizontal scrollbar) */
 ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
 
-  /* width: 0; */
-  /* Remove scrollbar space */
-  /* background: transparent; */
-  /* Optional: just make scrollbar invisible */
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 * {
@@ -23,6 +36,7 @@ html {
   margin: 0;
   padding: 0;
   line-height: normal;
+
 }
 
 /* Hide Arrows From Input Number */
