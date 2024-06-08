@@ -1,4 +1,10 @@
-import { Container, TextField } from "@mui/material";
+import {
+  Box,
+  Container,
+  Pagination,
+  PaginationItem,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   addCategoryAPI,
@@ -7,7 +13,16 @@ import {
   selectCategoryAPI,
   validateCategoryAPI,
 } from "../../../apis/reportAPI";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbar,
+  GridToolbarQuickFilter,
+  gridPageCountSelector,
+  gridPageSelector,
+  useGridApiContext,
+  useGridSelector,
+  viVN,
+} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import { StyledEngineProvider } from "@mui/material";
@@ -122,7 +137,35 @@ export default function Category() {
       toast.error("Đã có lỗi xảy ra");
     }
   };
+  function CustomPagination() {
+    const apiRef = useGridApiContext();
+    const page = useGridSelector(apiRef, gridPageSelector);
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
 
+    return (
+      <Pagination
+        color="primary"
+        variant="outlined"
+        shape="rounded"
+        page={page + 1}
+        count={pageCount}
+        renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
+        onChange={(event, value) => apiRef.current.setPage(value - 1)}
+      />
+    );
+  }
+  function QuickSearchToolbar() {
+    return (
+      <Box
+        sx={{
+          p: 0.5,
+          pb: 0,
+        }}
+      >
+        <GridToolbarQuickFilter />
+      </Box>
+    );
+  }
   return (
     <div>
       <Toaster position="top-right" />
@@ -136,31 +179,31 @@ export default function Category() {
             }}
           >
             <div>
-              <h3 className="text-center mb-3">Danh sách hạng mục</h3>
+              <h3 className="text-center mb-4">DANH SÁCH HẠNG MỤC - DỰ ÁN</h3>
               {role && role === "Admin" && (
                 <form
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    marginBottom: "20px",
+                    marginBottom: "15px",
                   }}
                   onSubmit={handleSubmit(handleAddCategory)}
                 >
                   <div className=" w-50 me-3" style={{ height: "50px" }}>
-                    <TextField
-                      className="w-100"
-                      size="small"
+                    <input
+                      className="w-100 form-control"
+                      style={{ marginBottom: "5px" }}
                       placeholder="Tên hạng mục"
                       {...register("name")}
                     />
                     <span className="text-danger ">{errors.name?.message}</span>
                   </div>
                   <div className=" w-25 me-3" style={{ height: "50px" }}>
-                    <TextField
-                      className="w-100"
-                      size="small"
+                    <input
+                      className="w-100 form-control"
                       placeholder="Đơn vị"
                       {...register("unit")}
+                      style={{ marginBottom: "5px" }}
                     />
                     <span className="text-danger ">{errors.unit?.message}</span>
                   </div>
@@ -196,51 +239,47 @@ export default function Category() {
                       index: index + 1,
                     }))}
                     columns={[
-                      { field: "index", headerName: "STT", width: 50 },
-                      { field: "name", headerName: "TÊN HẠNG MỤC", width: 400 },
-                      { field: "unit", headerName: "ĐƠN VỊ", width: 100 },
+                      { field: "index", headerName: "STT", width: 100 },
+                      { field: "name", headerName: "TÊN HẠNG MỤC", width: 680 },
+                      { field: "unit", headerName: "ĐƠN VỊ", width: 200 },
                       {
                         field: "action",
                         headerName: "TÙY CHỌN",
-                        width: 120,
+                        width: 150,
 
                         renderCell: (params) => (
                           <div style={{ display: "flex" }}>
-                            {/* <button
+                            <button
                               style={{
-                                padding: "0px",
-                                height: "25px",
-                                width: "25px",
+                                border: "1px solid",
+                                borderRadius: "5px",
+                                background: "none",
+                                color: "black",
                                 marginRight: "10px",
+                                width: "23px",
+                                lineHeight: "15px",
                               }}
-                              className="btn btn-warning me-2"
                               onClick={() => handleSelectCategory(params.id)}
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{
-                                  fontSize: "17px",
-                                  marginBottom: "2px",
-                                }}
+                                sx={{ fontSize: "15px", fontWeight: "bold" }}
                               />
-                            </button> */}
+                            </button>
+
                             <button
-                              style={{
-                                padding: "0px",
-                                height: "25px",
-                                width: "25px",
-                                lineHeight: "15px",
-                              }}
-                              className="btn btn-danger"
                               onClick={() => {
                                 handleDeteleCategory(params.id);
                               }}
-                              title="Xóa"
+                              style={{
+                                border: "1px solid",
+                                borderRadius: "5px",
+                                background: "none",
+                                color: "red",
+                              }}
                             >
                               <ClearIcon
-                                sx={{
-                                  fontSize: "20px",
-                                }}
+                                sx={{ fontSize: "20px", fontWeight: "bold" }}
                               />
                             </button>
                           </div>
@@ -248,14 +287,19 @@ export default function Category() {
                       },
                     ]}
                     slots={{
-                      toolbar: GridToolbar,
+                      pagination: CustomPagination,
+                      toolbar: QuickSearchToolbar,
                     }}
+                    localeText={
+                      viVN.components.MuiDataGrid.defaultProps.localeText
+                    }
                     {...categories}
                     initialState={{
                       ...categories.initialState,
                       pagination: { paginationModel: { pageSize: 5 } },
                     }}
                     pageSizeOptions={[5, 10, 15]}
+                    disableRowSelectionOnClick
                   />
                 </div>
               </StyledEngineProvider>

@@ -1,10 +1,24 @@
 import * as React from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbar,
+  GridToolbarQuickFilter,
+  gridPageCountSelector,
+  gridPageSelector,
+  useGridApiContext,
+  useGridSelector,
+  viVN,
+} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useNavigate } from "react-router-dom";
-import { StyledEngineProvider } from "@mui/material";
+import {
+  Box,
+  Pagination,
+  PaginationItem,
+  StyledEngineProvider,
+} from "@mui/material";
 import "./styles.css";
 
 export default function ListEquipments({ rows, onEdit, onDelete, role }) {
@@ -13,7 +27,36 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
   const handleRead = (id) => {
     navigate(`/catalogue/${id}`);
   };
-  // console.log(role);
+  function CustomPagination() {
+    const apiRef = useGridApiContext();
+    const page = useGridSelector(apiRef, gridPageSelector);
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+    return (
+      <Pagination
+        color="primary"
+        variant="outlined"
+        shape="rounded"
+        page={page + 1}
+        count={pageCount}
+        // @ts-expect-error
+        renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
+        onChange={(event, value) => apiRef.current.setPage(value - 1)}
+      />
+    );
+  }
+  function QuickSearchToolbar() {
+    return (
+      <Box
+        sx={{
+          p: 0.5,
+          pb: 0,
+        }}
+      >
+        <GridToolbarQuickFilter />
+      </Box>
+    );
+  }
 
   return (
     <StyledEngineProvider injectFirst>
@@ -138,8 +181,10 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
             },
           ]}
           slots={{
-            toolbar: GridToolbar,
+            pagination: CustomPagination,
+            toolbar: QuickSearchToolbar,
           }}
+          localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
           {...rows}
           initialState={{
             ...rows.initialState,

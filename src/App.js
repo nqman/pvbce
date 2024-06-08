@@ -28,6 +28,7 @@ import UserManagement from "./admin/UserManagement";
 import EditProject from "./modules/report/components/EditProject";
 import RpCostTotal from "./modules/report/components/RpCostTotal";
 import CategoryProject01 from "./modules/report/components/CategoryProject01";
+import CategoryProject02 from "./modules/report/components/CategoryProject02";
 
 function App() {
   return (
@@ -41,13 +42,7 @@ function App() {
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
           <Route path="/report/edit-project/:code" element={<EditProject />} />
-          <Route path="/setup/categorylist" element={<Category />} />
-          <Route
-            path="/setup/category01-project"
-            element={<CategoryProject01 />}
-          />
-          <Route path="/setup/category02-project" element={<Category />} />
-          <Route path="/setup/costlist" element={<CostName />} />
+
           <Route path="/report/rpcosttotal" element={<RpCostTotal />} />
           <Route
             path="/report/listprojects"
@@ -70,6 +65,18 @@ function App() {
 
           {/* LIBRARY */}
           <Route path="/library" element={<DocumentManagement />}></Route>
+
+          {/* INPUT (SETTING) */}
+          <Route path="/setup/categorylist" element={<Category />} />
+          <Route
+            path="/setup/category01-project"
+            element={<CategoryProject01 />}
+          />
+          <Route
+            path="/setup/category02-project"
+            element={<CategoryProject02 />}
+          />
+          <Route path="/setup/costlist" element={<CostName />} />
 
           {/* Profile */}
           <Route path="/profile" element={<ProfileUser />}></Route>

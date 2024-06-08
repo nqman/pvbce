@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Container,
   Pagination,
@@ -42,7 +43,7 @@ const schema = yup
   })
   .required();
 
-export default function CategoryProject01() {
+export default function CategoryProject02() {
   const role = Cookies.get("role")?.replace(/"/g, "");
 
   const {
@@ -60,6 +61,7 @@ export default function CategoryProject01() {
     resolver: yupResolver(schema),
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory1, setSelectedCategory1] = useState("");
 
   const fetchListCategory = async () => {
     try {
@@ -71,6 +73,12 @@ export default function CategoryProject01() {
     } catch (error) {
       toast.error("Lấy danh sách danh mục thất bại");
     }
+  };
+  const handleSelectCategory1 = async (event, value) => {
+    // debugger;
+    setSelectedCategory1(value);
+    let category = value;
+    console.log(category);
   };
 
   const handleAddCategory = async (category) => {
@@ -177,27 +185,51 @@ export default function CategoryProject01() {
             }}
           >
             <div>
-              <h3 className="text-center mb-4">DANH MỤC 1 - DỰ ÁN</h3>
+              <h3 className="text-center mb-4">DANH MỤC 2 - DỰ ÁN</h3>
               {role && role === "Admin" && (
                 <form
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    marginBottom: "10px",
+                    marginBottom: "15px",
                   }}
                   onSubmit={handleSubmit(handleAddCategory)}
                 >
-                  <div className=" w-50 me-3" style={{ height: "50px" }}>
-                    <input
-                      className="w-100 form-control"
-                      placeholder="Tên danh mục 1"
-                      style={{ marginBottom: "5px" }}
+                  <div className="w-50" style={{ height: "35px" }}>
+                    <Autocomplete
+                      size="small"
+                      sx={{
+                        marginBottom: "5px",
+                        marginRight: "20px",
+                        display: "block",
+                      }}
+                      disablePortal
+                      options={categories.map((option) => option.name)}
+                      // defaultValue={detail?.category}
+                      // disabled={detail?.category ? true : false}
+                      onChange={handleSelectCategory1}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Danh mục 1" />
+                      )}
+                    />
+                    <span className="text-danger ">{errors.name?.message}</span>
+                  </div>
+                  <div style={{ height: "35px" }}>
+                    <TextField
+                      size="small"
+                      placeholder="Tên danh mục 2"
+                      sx={{
+                        marginBottom: "5px",
+                        marginRight: "20px",
+
+                        display: "block",
+                      }}
                       {...register("name")}
                     />
                     <span className="text-danger ">{errors.name?.message}</span>
                   </div>
 
-                  <div style={{ height: "50px" }}>
+                  <div>
                     <button
                       className="btn btn-primary"
                       // disabled={isLoading}
