@@ -15,7 +15,7 @@ export async function listEquipmentsAPI() {
 
 //Thêm thiết bị
 export async function saveEquipmentAPI(equipments) {
-  console.log(equipments);
+  // console.log(equipments);
   try {
     const formData = new FormData();
     Object.keys(equipments).map((key) => {

@@ -55,7 +55,7 @@ export default function Categorylibrary02() {
     defaultValues: {
       id: "",
       name: "",
-      type: "Library_ITEM_TWO",
+      type: "LIBRARY_ITEM_TWO",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
@@ -69,7 +69,7 @@ export default function Categorylibrary02() {
 
   const fetchListCategory = async () => {
     try {
-      const data = await getCategoriesAPI("Library_ITEM_TWO");
+      const data = await getCategoriesAPI("LIBRARY_ITEM_TWO");
       let libraryItemOne = await getCategoriesAPI("Library_ITEM_ONE");
       setLibraryItemOne(libraryItemOne);
       setCategories(data);
@@ -94,18 +94,26 @@ export default function Categorylibrary02() {
     // debugger;
     if (errorCategory1 === "") {
       try {
-        const validate = await validateCategoryAPI(category.name);
-        if (validate) {
+        // EDIT
+        if (category.id) {
           await saveCategoryAPI(category);
-          toast.success("Thêm danh mục thành công");
-          resetField("name");
-          resetField("unit");
-          fetchListCategory();
-          return;
-        } else {
-          toast.error("Danh mục đã tồn tại!");
-          return;
+          toast.success("Cập nhật danh mục thành công");
         }
+        // NEW
+        else {
+          const validate = await validateCategoryAPI(category.name);
+          if (validate) {
+            await saveCategoryAPI(category);
+            toast.success("Thêm danh mục thành công");
+          } else {
+            toast.error("Danh mục đã tồn tại!");
+            return;
+          }
+        }
+        setValue("id", "");
+        setValue("name", "");
+        resetField("name");
+        fetchListCategory();
       } catch (error) {}
     } else {
       toast.error("Vui lòng chọn danh mục 1");
@@ -292,19 +300,17 @@ export default function Categorylibrary02() {
                           <div style={{ display: "flex" }}>
                             <button
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "black",
+                                width: "25px",
+                                height: "25px",
+                                padding: "0 0 2px 0",
                                 marginRight: "10px",
-                                width: "23px",
-                                lineHeight: "15px",
                               }}
+                              className="btn btn-dark"
                               onClick={() => handleSelectCategory(params.id)}
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{ fontSize: "14px", fontWeight: "bold" }}
+                                sx={{ fontSize: "15px", fontWeight: "bold" }}
                               />
                             </button>
 
@@ -313,11 +319,12 @@ export default function Categorylibrary02() {
                                 handleDeteleCategory(params.id);
                               }}
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "red",
+                                width: "25px",
+                                height: "25px",
+                                padding: 0,
+                                marginRight: "10px",
                               }}
+                              className="btn btn-danger"
                             >
                               <ClearIcon
                                 sx={{ fontSize: "20px", fontWeight: "bold" }}

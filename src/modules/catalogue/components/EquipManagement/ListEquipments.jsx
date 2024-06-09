@@ -117,15 +117,12 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                 >
                   <button
                     style={{
-                      border: "1px solid",
-                      borderRadius: "5px",
-                      background: "none",
-                      color: "green",
+                      width: "25px",
+                      height: "25px",
+                      padding: "0 0 2px 0",
                       marginRight: "10px",
-                      width: "23px",
-                      lineHeight: "10px",
-                      height: "23px",
                     }}
+                    className="btn btn-success"
                     onClick={() => handleRead(params.id)}
                     title="Xem"
                   >
@@ -137,15 +134,12 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                     <>
                       <button
                         style={{
-                          border: "1px solid",
-                          borderRadius: "5px",
-                          background: "none",
-                          color: "black",
+                          width: "25px",
+                          height: "25px",
+                          padding: "0 0 2px 0",
                           marginRight: "10px",
-                          width: "23px",
-                          lineHeight: "15px",
-                          height: "23px",
                         }}
+                        className="btn btn-dark"
                         onClick={() => onEdit(params.id)}
                         title="Sửa"
                       >

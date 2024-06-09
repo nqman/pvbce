@@ -49,10 +49,13 @@ export default function DocumentManagement() {
 
   // FORM
   const emptyValue = {
+    categoryOne: "",
+    categoryTwo: "",
     scope: "",
     name: "",
     link: "",
     file: null,
+    type: "LIBRARY",
   };
   const [listDocs, setListDocs] = useState([]);
 
@@ -87,7 +90,6 @@ export default function DocumentManagement() {
       const data = await addDocumentAPI(document);
       if (data) {
         setShow(false);
-        // setIsLoading(true);
         toast.success("Thêm tài liệu thành công");
       }
       // setIsLoading(false);
@@ -96,7 +98,6 @@ export default function DocumentManagement() {
       toast.error("Thêm tài liệu thất bại");
       setIsLoading(false);
     }
-    // setShow(false);
   };
 
   // xóa tài liệu

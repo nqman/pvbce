@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 //validation
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import SaveIcon from "@mui/icons-material/Save";
 import * as yup from "yup";
 //API
 import {
@@ -375,24 +376,32 @@ export default function EditProject() {
       ) : (
         <div className="container mt-2 mb-5" style={{ position: "relative" }}>
           <div style={{ position: "absolute", top: "20px", left: "80px" }}>
-            <Link
-              sx={{ fontSize: "16px" }}
-              component="button"
-              variant="body2"
+            <Button
+              sx={{
+                textTransform: "initial",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                fontSize: "13px",
+                fontWeight: "bold",
+              }}
               onClick={() => {
                 navigate("/report/listprojects");
               }}
             >
-              <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+              <ArrowBackIosIcon sx={{ fontSize: "12px" }} />
               Danh sách dự án
-            </Link>
+            </Button>
           </div>
           <form noValidate onSubmit={handleSubmit}>
             <TabContext value={item}>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <TabList onChange={handleChangeItem}>
-                  <Tab label="THÔNG TIN HỢP ĐỒNG" value="1" />
-                  <Tab label="THƯ VIỆN DỰ ÁN" value="2" />
+                  <Tab
+                    sx={{ fontWeight: "bold" }}
+                    label="THÔNG TIN HỢP ĐỒNG"
+                    value="1"
+                  />
+                  {/* <Tab label="THƯ VIỆN DỰ ÁN" value="2" /> */}
                 </TabList>
               </Box>
               {/* Thông tin hợp đồng */}
@@ -513,7 +522,7 @@ export default function EditProject() {
                 </Container>
               </TabPanel>
               {/* Thư viện */}
-              <TabPanel value="2">
+              {/* <TabPanel value="2">
                 <Container className="">
                   <div>
                     {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
@@ -594,23 +603,32 @@ export default function EditProject() {
                     </Button>
                   </div>
                 </Container>
-              </TabPanel>
+              </TabPanel> */}
             </TabContext>
             {/* SUBMIT */}
             <div
               style={{
                 marginTop: "20px",
+                marginRight: "20px",
                 textAlign: "end",
               }}
             >
-              <Button
-                variant="contained"
-                color="success"
-                // disabled={isLoading}
+              <button
+                style={{
+                  width: "45px",
+                  height: "45px",
+                  padding: 0,
+                }}
+                className="btn btn-outline-success"
                 type="submit"
               >
-                Lưu
-              </Button>
+                <SaveIcon
+                  sx={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                  }}
+                />
+              </button>
             </div>
           </form>
         </div>

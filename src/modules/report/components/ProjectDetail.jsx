@@ -5,17 +5,25 @@ import {
   List,
   Container,
   Button,
-  Menu,
-  MenuItem,
-  Link,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import SaveIcon from "@mui/icons-material/Save";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectProjectAPI, fetchPdfProject } from "../../../apis/reportAPI";
+import {
+  selectProjectAPI,
+  fetchPdfProject,
+  getCategoriesAPI,
+} from "../../../apis/reportAPI";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import Loading from "../../home/components/Loading/Loading";
+import { Modal } from "react-bootstrap";
+import toast, { Toaster } from "react-hot-toast";
+import { addDocumentAPI } from "../../../apis/documentAPI";
 
 const ProjectDetail = () => {
   const navigate = useNavigate();
@@ -26,7 +34,7 @@ const ProjectDetail = () => {
       window.open(url, "_blank");
     } catch (error) {}
   };
-
+  const [isLoading, setIsLoading] = useState(true);
   const params = useParams();
   const idProject = params.code;
 
@@ -47,9 +55,94 @@ const ProjectDetail = () => {
       console.error("Error fetching equipments:", error);
     }
   };
+
   useEffect(() => {
-    getProjects(idProject);
+    async function fetchMyAPI() {
+      let project = await getProjects(idProject);
+      let categoryOne = await getCategoriesAPI("Project_ITEM_ONE");
+      let categoryTwo = await getCategoriesAPI("Project_ITEM_TWO");
+      setCategoryOne(categoryOne);
+      setCategoryTwo(categoryTwo);
+    }
+    fetchMyAPI();
   }, [idProject]);
+  // MODAL
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [categoryOne, setCategoryOne] = useState([]);
+  const [categoryTwo, setCategoryTwo] = useState([]);
+  const [selectedCategoryOne, setSelectedCategoryOne] = useState("");
+  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("");
+  const [errorCategoryOne, setErrorCategoryOne] = useState(
+    "Vui lòng không bỏ trống"
+  );
+  const [errorCategoryTwo, setErrorCategoryTwo] = useState(
+    "Vui lòng không bỏ trống"
+  );
+  const [errorFile, setErrorFile] = useState("Vui lòng không bỏ trống");
+  const [errorType, setErrorType] = useState("");
+
+  const handleSelectCategoryOne = async (event, value) => {
+    setDocument({ ...document, categoryOne: value });
+    setSelectedCategoryOne(value);
+    if (value) {
+      setErrorCategoryOne("");
+    } else {
+      setErrorCategoryOne("Vui lòng không bỏ trống");
+    }
+  };
+  const handleSelectCategoryTwo = async (event, value) => {
+    setDocument({ ...document, categoryTwo: value });
+    setSelectedCategoryTwo(value);
+    if (value) {
+      setErrorCategoryTwo("");
+    } else {
+      setErrorCategoryTwo("Vui lòng không bỏ trống");
+    }
+  };
+  // SELECT type
+  const [type, setType] = useState("");
+  const handleChangeType = (e, value) => {
+    setType(value);
+    if (value === "File") {
+      setDocument({ ...document, link: "" });
+    } else if (value === "Link") {
+      setDocument({ ...document, files: [] });
+    }
+  };
+  const emptyValue = {
+    categoryOne: "",
+    categoryTwo: "",
+    link: "",
+    files: [],
+    type: "PROJECT",
+  };
+  const [document, setDocument] = useState(emptyValue);
+  const handleInputChange = (e) => {
+    setDocument({ ...document, [e.target.name]: e.target.value });
+  };
+  const handleFileChange = (e) => {
+    const chosenFiles = [...e.target.files];
+    setDocument({ ...document, files: chosenFiles });
+    if (chosenFiles.length > 0) {
+      setErrorFile("");
+    }
+  };
+  const handleSaveProjectLibrary = async () => {
+    // console.log(document);
+    try {
+      const data = await addDocumentAPI(document);
+      if (data) {
+        setShow(false);
+        toast.success("Thêm tài liệu thành công");
+      }
+      getProjects(idProject);
+    } catch (error) {
+      toast.error("Thêm tài liệu thất bại");
+      setIsLoading(false);
+    }
+  };
 
   if (!project) {
     return <Loading />;
@@ -57,19 +150,24 @@ const ProjectDetail = () => {
 
   return (
     <div>
-      <Container className="mt-4">
+      <Toaster position="top-right" />
+      <Container className="mt-4 mb-4">
         <div>
-          <Link
-            sx={{ fontSize: "16px" }}
-            component="button"
-            variant="body2"
+          <Button
+            sx={{
+              textTransform: "initial",
+              paddingLeft: "5px",
+              paddingRight: "5px",
+              fontSize: "13px",
+              fontWeight: "bold",
+            }}
             onClick={() => {
               navigate("/report/listprojects");
             }}
           >
-            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+            <ArrowBackIosIcon sx={{ fontSize: "12px" }} />
             Danh sách dự án
-          </Link>
+          </Button>
         </div>
         <div style={{ justifyContent: "end", display: "flex" }}>
           <Button
@@ -108,8 +206,8 @@ const ProjectDetail = () => {
         <Grid container spacing={5} style={{ overflow: "hidden" }}>
           {/* Thông tin hợp đồng */}
           <Grid item xs={12} lg={12}>
-            <Typography variant="h5" gutterBottom>
-              Thông tin hợp đồng:
+            <Typography sx={{ fontWeight: "bold" }} variant="h5" gutterBottom>
+              I. THÔNG TIN HỢP ĐỒNG
             </Typography>
             <List>
               <ul>
@@ -136,6 +234,9 @@ const ProjectDetail = () => {
                 </li>
               </ul>
             </List>
+            <Typography sx={{ fontWeight: "bold" }} variant="h5" gutterBottom>
+              II. DANH SÁCH CÁC HẠNG MỤC CỦA DỰ ÁN
+            </Typography>
             <table className="table table-striped table-inverse table-responsive table-bordered">
               <thead className="thead-inverse">
                 <tr>
@@ -213,11 +314,9 @@ const ProjectDetail = () => {
                 </tr>
               </tbody>
             </table>
-          </Grid>
-          {/* Thư viện dự án */}
-          <Grid item xs={12} lg={12}>
-            <Typography variant="h5" gutterBottom>
-              Thư viện dự án:
+            {/* Thư viện dự án */}
+            <Typography sx={{ fontWeight: "bold" }} variant="h5" gutterBottom>
+              III. THƯ VIỆN DỰ ÁN
             </Typography>
             <List>
               <ul>
@@ -251,6 +350,162 @@ const ProjectDetail = () => {
                 ))}
               </ul>
             </List>
+            <>
+              <Button
+                variant="contained"
+                sx={{ textTransform: "initial", marginLeft: "20px" }}
+                onClick={handleShow}
+              >
+                <DriveFolderUploadIcon sx={{ mr: 1 }} />
+                Cập nhật thư viện
+              </Button>
+
+              <Modal
+                show={show}
+                onHide={handleClose}
+                size="lg"
+                style={{ marginTop: "100px" }}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title style={{ fontWeight: "bold" }}>
+                    Tải lên thư viện
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <div
+                      className=" me-4"
+                      style={{ height: "50px", width: "40%" }}
+                    >
+                      <Autocomplete
+                        size="small"
+                        sx={{
+                          marginBottom: "5px",
+                          display: "block",
+                          height: "40px",
+                        }}
+                        disablePortal
+                        options={categoryOne.map((option) => option.name)}
+                        onChange={handleSelectCategoryOne}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Danh mục 1" />
+                        )}
+                      />
+                      <span className="text-danger  ">{errorCategoryOne}</span>
+                    </div>
+                    {selectedCategoryOne === "Báo cáo ngày (1)" ||
+                    selectedCategoryOne === "Báo cáo tuần (1)" ? (
+                      <div
+                        className=" me-4"
+                        style={{ height: "50px", width: "40%" }}
+                      >
+                        <Autocomplete
+                          size="small"
+                          sx={{
+                            marginBottom: "5px",
+                            display: "block",
+                            height: "40px",
+                          }}
+                          disablePortal
+                          options={categoryTwo?.map((option) => option.name)}
+                          onChange={handleSelectCategoryTwo}
+                          renderInput={(params) => (
+                            <TextField {...params} label="Danh mục 2" />
+                          )}
+                        />
+                        <span className="text-danger ">{errorCategoryTwo}</span>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div
+                      // className=" me-4"
+                      style={{ height: "50px", width: "20%" }}
+                    >
+                      <Autocomplete
+                        size="small"
+                        sx={{
+                          marginBottom: "5px",
+                          display: "block",
+                          height: "40px",
+                        }}
+                        disablePortal
+                        options={["File", "Link"]}
+                        onChange={handleChangeType}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Định dạng" />
+                        )}
+                      />
+                      <span className="text-danger ">{errorType}</span>
+                    </div>
+                  </div>
+                  <div style={{ marginTop: "15px" }}>
+                    {type === "File" ? (
+                      <>
+                        <Button
+                          sx={{
+                            width: "100%",
+                            padding: 0,
+                            marginBottom: "5px",
+                          }}
+                          component="label"
+                        >
+                          <input
+                            style={{}}
+                            className="form-control"
+                            type="file"
+                            multiple
+                            id="formFile"
+                            onChange={handleFileChange}
+                          />
+                        </Button>
+                        <span className="text-danger ">{errorFile}</span>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    {type === "Link" ? (
+                      <>
+                        <TextField
+                          label="Đường dẫn tài liệu"
+                          id="outlined-size-small"
+                          value={document.link}
+                          name="link"
+                          size="small"
+                          sx={{
+                            width: "100%",
+                            padding: 0,
+                          }}
+                          onChange={handleInputChange}
+                        />
+                        <span className="text-danger ">{errorFile}</span>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <button
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      padding: 0,
+                    }}
+                    className="btn btn-outline-success"
+                    type="submit"
+                    onClick={handleSaveProjectLibrary}
+                  >
+                    <SaveIcon
+                      sx={{
+                        fontSize: "25px",
+                        fontWeight: "bold",
+                      }}
+                    />
+                  </button>
+                </Modal.Footer>
+              </Modal>
+            </>
           </Grid>
         </Grid>
       </Container>
