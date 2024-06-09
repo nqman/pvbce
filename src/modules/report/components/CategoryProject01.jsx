@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
-  addCategoryAPI,
+  saveCategoryAPI,
   deleteCategoryAPI,
   getCategoriesAPI,
   selectCategoryAPI,
@@ -15,7 +15,6 @@ import {
 } from "../../../apis/reportAPI";
 import {
   DataGrid,
-  GridToolbar,
   GridToolbarQuickFilter,
   gridPageCountSelector,
   gridPageSelector,
@@ -25,8 +24,8 @@ import {
 } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
+import SaveIcon from "@mui/icons-material/Save";
 import { StyledEngineProvider } from "@mui/material";
-import "./styles.css";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
@@ -55,6 +54,7 @@ export default function CategoryProject01() {
     defaultValues: {
       id: "",
       name: "",
+      type: "Project_ITEM_ONE",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
@@ -63,7 +63,7 @@ export default function CategoryProject01() {
 
   const fetchListCategory = async () => {
     try {
-      const data = await getCategoriesAPI();
+      const data = await getCategoriesAPI("Project_ITEM_ONE");
       setCategories(data);
       setIsLoading(false);
       toast.success("Lấy danh sách danh mục thành công");
@@ -75,10 +75,11 @@ export default function CategoryProject01() {
 
   const handleAddCategory = async (category) => {
     debugger;
+    console.log(category);
     try {
       const validate = await validateCategoryAPI(category.name);
       if (validate) {
-        await addCategoryAPI(category);
+        await saveCategoryAPI(category);
         toast.success("Thêm danh mục thành công");
         resetField("name");
         resetField("unit");
@@ -199,11 +200,20 @@ export default function CategoryProject01() {
 
                   <div style={{ height: "50px" }}>
                     <button
-                      className="btn btn-primary"
-                      // disabled={isLoading}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        padding: 0,
+                      }}
+                      className="btn btn-outline-success"
                       type="submit"
                     >
-                      Thêm
+                      <SaveIcon
+                        sx={{
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                        }}
+                      />
                     </button>
                   </div>
                 </form>

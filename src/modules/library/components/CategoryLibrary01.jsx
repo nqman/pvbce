@@ -1,11 +1,4 @@
-import {
-  Autocomplete,
-  Box,
-  Container,
-  Pagination,
-  PaginationItem,
-  TextField,
-} from "@mui/material";
+import { Box, Container, Pagination, PaginationItem } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   saveCategoryAPI,
@@ -42,7 +35,7 @@ const schema = yup
   })
   .required();
 
-export default function CategoryProject02() {
+export default function CategoryLibrary01() {
   const role = Cookies.get("role")?.replace(/"/g, "");
 
   const {
@@ -55,23 +48,16 @@ export default function CategoryProject02() {
     defaultValues: {
       id: "",
       name: "",
-      type: "Project_ITEM_TWO",
+      type: "Library_ITEM_ONE",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCategory1, setSelectedCategory1] = useState("");
-  const [errorCategory1, setErrorCategory1] = useState(
-    "Vui lòng không bỏ trống"
-  );
-  const [projectItemOne, setProjectItemOne] = useState("");
 
   const fetchListCategory = async () => {
     try {
-      const data = await getCategoriesAPI("Project_ITEM_TWO");
-      let projectItemOne = await getCategoriesAPI("Project_ITEM_ONE");
-      setProjectItemOne(projectItemOne);
+      const data = await getCategoriesAPI("Library_ITEM_ONE");
       setCategories(data);
       setIsLoading(false);
       toast.success("Lấy danh sách danh mục thành công");
@@ -80,36 +66,24 @@ export default function CategoryProject02() {
       toast.error("Lấy danh sách danh mục thất bại");
     }
   };
-  const handleSelectCategory1 = async (event, value) => {
-    // debugger;
-    setSelectedCategory1(value);
-    if (value) {
-      setErrorCategory1("");
-    } else {
-      setErrorCategory1("Vui lòng không bỏ trống");
-    }
-  };
 
-  const handleSaveCategory = async (category) => {
-    // debugger;
-    if (errorCategory1 === "") {
-      try {
-        const validate = await validateCategoryAPI(category.name);
-        if (validate) {
-          await saveCategoryAPI(category);
-          toast.success("Thêm danh mục thành công");
-          resetField("name");
-          resetField("unit");
-          fetchListCategory();
-          return;
-        } else {
-          toast.error("Danh mục đã tồn tại!");
-          return;
-        }
-      } catch (error) {}
-    } else {
-      toast.error("Vui lòng chọn danh mục 1");
-    }
+  const handleAddCategory = async (category) => {
+    debugger;
+    console.log(category);
+    try {
+      const validate = await validateCategoryAPI(category.name);
+      if (validate) {
+        await saveCategoryAPI(category);
+        toast.success("Thêm danh mục thành công");
+        resetField("name");
+        resetField("unit");
+        fetchListCategory();
+        return;
+      } else {
+        toast.error("Danh mục đã tồn tại!");
+        return;
+      }
+    } catch (error) {}
   };
 
   const [categories, setCategories] = useState([]);
@@ -198,50 +172,27 @@ export default function CategoryProject02() {
             }}
           >
             <div>
-              <h3 className="text-center mb-4">DANH MỤC 2 - DỰ ÁN</h3>
+              <h3 className="text-center mb-4">DANH MỤC 1 - THƯ VIỆN</h3>
               {role && role === "Admin" && (
                 <form
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    marginBottom: "15px",
+                    marginBottom: "10px",
                   }}
-                  onSubmit={handleSubmit(handleSaveCategory)}
+                  onSubmit={handleSubmit(handleAddCategory)}
                 >
-                  <div className=" w-25 me-4" style={{ height: "50px" }}>
-                    <Autocomplete
-                      size="small"
-                      sx={{
-                        marginBottom: "5px",
-                        display: "block",
-                        height: "40px",
-                      }}
-                      disablePortal
-                      options={projectItemOne.map((option) => option.name)}
-                      // defaultValue={detail?.category}
-                      // disabled={detail?.category ? true : false}
-                      onChange={handleSelectCategory1}
-                      renderInput={(params) => (
-                        <TextField {...params} placeholder="Danh mục 1" />
-                      )}
-                    />
-                    <span className="text-danger ">{errorCategory1}</span>
-                  </div>
-                  <div className=" w-25 me-3" style={{ height: "50px" }}>
-                    <TextField
-                      size="small"
-                      placeholder="Danh mục 2"
-                      sx={{
-                        marginBottom: "5px",
-                        height: "40px",
-                        // display: "block",
-                        width: "100%",
-                      }}
+                  <div className=" w-50 me-3" style={{ height: "50px" }}>
+                    <input
+                      className="w-100 form-control"
+                      placeholder="Tên danh mục 1"
+                      style={{ marginBottom: "5px" }}
                       {...register("name")}
                     />
                     <span className="text-danger ">{errors.name?.message}</span>
                   </div>
-                  <div style={{ height: "50px", paddingTop: "5px" }}>
+
+                  <div style={{ height: "50px" }}>
                     <button
                       style={{
                         width: "30px",

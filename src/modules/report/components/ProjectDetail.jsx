@@ -14,7 +14,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectProjectAPI, fetchPdfProject } from "../../../apis/reportAPI";
-import "./styles.css";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Loading from "../../home/components/Loading/Loading";
 

@@ -7,15 +7,14 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
-  addCategoryAPI,
   deleteCategoryAPI,
   getCategoriesAPI,
+  saveCategoryAPI,
   selectCategoryAPI,
   validateCategoryAPI,
 } from "../../../apis/reportAPI";
 import {
   DataGrid,
-  GridToolbar,
   GridToolbarQuickFilter,
   gridPageCountSelector,
   gridPageSelector,
@@ -25,8 +24,8 @@ import {
 } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
+import SaveIcon from "@mui/icons-material/Save";
 import { StyledEngineProvider } from "@mui/material";
-import "./styles.css";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
@@ -56,6 +55,7 @@ export default function Category() {
     defaultValues: {
       id: "",
       name: "",
+      type: "QUANTITY_ITEM",
       unit: "",
     },
     mode: "onTouched",
@@ -65,7 +65,7 @@ export default function Category() {
 
   const fetchListCategory = async () => {
     try {
-      const data = await getCategoriesAPI();
+      const data = await getCategoriesAPI("QUANTITY_ITEM");
       setCategories(data);
       setIsLoading(false);
       toast.success("Lấy danh sách hạng mục thành công");
@@ -75,12 +75,12 @@ export default function Category() {
     }
   };
 
-  const handleAddCategory = async (category) => {
+  const handleSaveCategory = async (category) => {
     debugger;
     try {
       const validate = await validateCategoryAPI(category.name);
       if (validate) {
-        await addCategoryAPI(category);
+        await saveCategoryAPI(category);
         toast.success("Thêm hạng mục thành công");
         resetField("name");
         resetField("unit");
@@ -187,7 +187,7 @@ export default function Category() {
                     alignItems: "center",
                     marginBottom: "15px",
                   }}
-                  onSubmit={handleSubmit(handleAddCategory)}
+                  onSubmit={handleSubmit(handleSaveCategory)}
                 >
                   <div className=" w-50 me-3" style={{ height: "50px" }}>
                     <input
@@ -209,11 +209,20 @@ export default function Category() {
                   </div>
                   <div style={{ height: "50px" }}>
                     <button
-                      className="btn btn-primary"
-                      // disabled={isLoading}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        padding: 0,
+                      }}
+                      className="btn btn-outline-success"
                       type="submit"
                     >
-                      Thêm
+                      <SaveIcon
+                        sx={{
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                        }}
+                      />
                     </button>
                   </div>
                 </form>
@@ -251,19 +260,20 @@ export default function Category() {
                           <div style={{ display: "flex" }}>
                             <button
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "black",
+                                width: "25px",
+                                height: "25px",
+                                padding: "0 0 2px 0",
                                 marginRight: "10px",
-                                width: "23px",
-                                lineHeight: "15px",
                               }}
                               onClick={() => handleSelectCategory(params.id)}
                               title="Sửa"
+                              className="btn btn-outline-dark"
                             >
                               <EditIcon
-                                sx={{ fontSize: "14px", fontWeight: "bold" }}
+                                sx={{
+                                  fontSize: "15px",
+                                  fontWeight: "bold",
+                                }}
                               />
                             </button>
 
@@ -272,11 +282,12 @@ export default function Category() {
                                 handleDeteleCategory(params.id);
                               }}
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "red",
+                                width: "25px",
+                                height: "25px",
+                                padding: 0,
+                                marginRight: "10px",
                               }}
+                              className="btn btn-outline-danger"
                             >
                               <ClearIcon
                                 sx={{ fontSize: "20px", fontWeight: "bold" }}

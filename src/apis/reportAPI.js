@@ -4,8 +4,8 @@ import baseAPI from "./baseAPI";
 export async function getCategoriesAPI(type) {
   // debugger;
   try {
-    // const resp = await baseAPI.get(`categories/list_categories/${type}`);
-    const resp = await baseAPI.get("categories");
+    const resp = await baseAPI.get(`categories/list_categories/${type}`);
+    // const resp = await baseAPI.get("categories");
     return resp.data;
   } catch (error) {
     console.error(error);
@@ -46,18 +46,30 @@ export async function selectCategoryAPI(id) {
   }
 }
 
-export async function addCategoryAPI(category) {
+export async function saveCategoryAPI(category) {
   try {
     const formData = new FormData();
+    // NEW
     if (category.id === null) {
       formData.append("id", 0);
       formData.append("name", category.name);
-      formData.append("unit", category.unit);
-    } else {
+      formData.append("type", category.type);
+      if (category.unit) {
+        formData.append("unit", category.unit);
+      }
+    }
+    // EDIT
+    else {
       formData.append("id", category.id);
       formData.append("name", category.name);
       formData.append("unit", category.unit);
+      formData.append("type", category.type);
+
+      if (category.unit) {
+        formData.append("unit", category.unit);
+      }
     }
+    // console.log(formData);
     const resp = await baseAPI.post("categories/save", formData);
   } catch (error) {}
 }

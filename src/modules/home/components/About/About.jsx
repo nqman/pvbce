@@ -14,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 export default function About() {
   return (
-    <Box mt={4}>
+    <Box pt={1}>
       <Grid container="lg" maxWidth={"lg"} margin={"auto"}>
         <Grid lg={6} sm={12} className={styles.about_left}>
           <Typography

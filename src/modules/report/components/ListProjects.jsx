@@ -19,7 +19,6 @@ import {
   PaginationItem,
   StyledEngineProvider,
 } from "@mui/material";
-import "./styles.css";
 
 export default function ListProjects({ rows, onEdit, onDelete, role }) {
   const navigate = useNavigate();
