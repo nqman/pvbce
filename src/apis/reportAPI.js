@@ -75,7 +75,7 @@ export async function saveCategoryAPI(category) {
 }
 
 //save hạng mục 2
-export async function saveCategoryTwoAPI(category, idOne) {
+export async function saveCategoryTwoAPI(category, idSelectedCategoryOne) {
   // debugger;
   try {
     const formData = new FormData();
@@ -98,7 +98,10 @@ export async function saveCategoryTwoAPI(category, idOne) {
       }
     }
     // console.log(formData);
-    const resp = await baseAPI.post("categories/save", formData);
+    const resp = await baseAPI.post(
+      `categories/save/${idSelectedCategoryOne}`,
+      formData
+    );
   } catch (error) {}
 }
 

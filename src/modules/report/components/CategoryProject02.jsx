@@ -62,20 +62,20 @@ export default function CategoryProject02() {
     resolver: yupResolver(schema),
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [categoriesOne, setCategoriesOne] = useState([]);
+  const [categoriesTwo, setCategoriesTwo] = useState([]);
   const [selectedCategory1, setSelectedCategory1] = useState("");
+  const [idSelectedCategoryOne, setIdSelectedCategoryOne] = useState();
   const [errorCategory1, setErrorCategory1] = useState(
     "Vui lòng không bỏ trống"
   );
-  const [projectItemOne, setProjectItemOne] = useState("");
+  const [projectItemOne, setProjectItemOne] = useState([]);
 
   const fetchListCategory = async () => {
     try {
       const data = await getCategoriesAPI("PROJECT_ITEM_TWO");
-      let projectItemOne = await getCategoriesAPI("Project_ITEM_ONE");
+      let projectItemOne = await getCategoriesAPI("PROJECT_ITEM_ONE");
       setProjectItemOne(projectItemOne);
-      setCategoriesOne(data);
-      console.log(data);
+      setCategoriesTwo(data);
       setIsLoading(false);
       toast.success("Lấy danh sách danh mục thành công");
       return data;
@@ -83,9 +83,12 @@ export default function CategoryProject02() {
       toast.error("Lấy danh sách danh mục thất bại");
     }
   };
-  const handleSelectCategory1 = async (event, value) => {
-    // debugger;
+  const handleSelectCategoryOne = async (event, value) => {
     setSelectedCategory1(value);
+    let idSelectedCategoryOne = projectItemOne.filter(
+      (item) => item.name === value
+    );
+    setIdSelectedCategoryOne(idSelectedCategoryOne[0]?.id);
     if (value) {
       setErrorCategory1("");
     } else {
@@ -93,20 +96,21 @@ export default function CategoryProject02() {
     }
   };
 
-  const handleSaveCategory = async (category, idOne) => {
+  const handleSaveCategory = async (category, idSelectedCategoryOne) => {
     // debugger;
+    console.log(category, idSelectedCategoryOne);
     if (errorCategory1 === "") {
       try {
         // EDIT
         if (category.id) {
-          await saveCategoryTwoAPI(category, idOne);
+          await saveCategoryTwoAPI(category, idSelectedCategoryOne);
           toast.success("Cập nhật danh mục thành công");
         }
         // NEW
         else {
           const validate = await validateCategoryAPI(category.name);
           if (validate) {
-            await saveCategoryAPI(category);
+            await saveCategoryTwoAPI(category, idSelectedCategoryOne);
             toast.success("Thêm danh mục thành công");
           } else {
             toast.error("Danh mục đã tồn tại!");
@@ -227,10 +231,10 @@ export default function CategoryProject02() {
                         height: "40px",
                       }}
                       disablePortal
-                      options={projectItemOne.map((option) => option.name)}
+                      options={projectItemOne?.map((option) => option.name)}
                       // defaultValue={detail?.category}
                       // disabled={detail?.category ? true : false}
-                      onChange={handleSelectCategory1}
+                      onChange={handleSelectCategoryOne}
                       renderInput={(params) => (
                         <TextField {...params} placeholder="Danh mục 1" />
                       )}
@@ -286,7 +290,7 @@ export default function CategoryProject02() {
                     style={{
                       padding: 10,
                     }}
-                    rows={categoriesOne.map((row, index) => ({
+                    rows={categoriesTwo?.map((row, index) => ({
                       ...row,
                       id: row.id,
                       index: index + 1,
@@ -344,9 +348,9 @@ export default function CategoryProject02() {
                     localeText={
                       viVN.components.MuiDataGrid.defaultProps.localeText
                     }
-                    {...categoriesOne}
+                    {...categoriesTwo}
                     initialState={{
-                      ...categoriesOne.initialState,
+                      ...categoriesTwo.initialState,
                       pagination: { paginationModel: { pageSize: 5 } },
                     }}
                     pageSizeOptions={[5, 10, 15]}
