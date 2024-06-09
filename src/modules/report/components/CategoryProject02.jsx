@@ -13,6 +13,7 @@ import {
   getCategoriesAPI,
   selectCategoryAPI,
   validateCategoryAPI,
+  saveCategoryTwoAPI,
 } from "../../../apis/reportAPI";
 import {
   DataGrid,
@@ -55,12 +56,13 @@ export default function CategoryProject02() {
     defaultValues: {
       id: "",
       name: "",
-      type: "Project_ITEM_TWO",
+      type: "PROJECT_ITEM_TWO",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [categoriesOne, setCategoriesOne] = useState([]);
   const [selectedCategory1, setSelectedCategory1] = useState("");
   const [errorCategory1, setErrorCategory1] = useState(
     "Vui lòng không bỏ trống"
@@ -69,10 +71,11 @@ export default function CategoryProject02() {
 
   const fetchListCategory = async () => {
     try {
-      const data = await getCategoriesAPI("Project_ITEM_TWO");
+      const data = await getCategoriesAPI("PROJECT_ITEM_TWO");
       let projectItemOne = await getCategoriesAPI("Project_ITEM_ONE");
       setProjectItemOne(projectItemOne);
-      setCategories(data);
+      setCategoriesOne(data);
+      console.log(data);
       setIsLoading(false);
       toast.success("Lấy danh sách danh mục thành công");
       return data;
@@ -90,29 +93,36 @@ export default function CategoryProject02() {
     }
   };
 
-  const handleSaveCategory = async (category) => {
+  const handleSaveCategory = async (category, idOne) => {
     // debugger;
     if (errorCategory1 === "") {
       try {
-        const validate = await validateCategoryAPI(category.name);
-        if (validate) {
-          await saveCategoryAPI(category);
-          toast.success("Thêm danh mục thành công");
-          resetField("name");
-          resetField("unit");
-          fetchListCategory();
-          return;
-        } else {
-          toast.error("Danh mục đã tồn tại!");
-          return;
+        // EDIT
+        if (category.id) {
+          await saveCategoryTwoAPI(category, idOne);
+          toast.success("Cập nhật danh mục thành công");
         }
+        // NEW
+        else {
+          const validate = await validateCategoryAPI(category.name);
+          if (validate) {
+            await saveCategoryAPI(category);
+            toast.success("Thêm danh mục thành công");
+          } else {
+            toast.error("Danh mục đã tồn tại!");
+            return;
+          }
+        }
+        setValue("id", "");
+        setValue("name", "");
+        resetField("name");
+        fetchListCategory();
       } catch (error) {}
     } else {
       toast.error("Vui lòng chọn danh mục 1");
     }
   };
 
-  const [categories, setCategories] = useState([]);
   useEffect(() => {
     fetchListCategory();
   }, []);
@@ -276,7 +286,7 @@ export default function CategoryProject02() {
                     style={{
                       padding: 10,
                     }}
-                    rows={categories.map((row, index) => ({
+                    rows={categoriesOne.map((row, index) => ({
                       ...row,
                       id: row.id,
                       index: index + 1,
@@ -293,19 +303,17 @@ export default function CategoryProject02() {
                           <div style={{ display: "flex" }}>
                             <button
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "black",
+                                width: "25px",
+                                height: "25px",
+                                padding: "0 0 2px 0",
                                 marginRight: "10px",
-                                width: "23px",
-                                lineHeight: "15px",
                               }}
+                              className="btn btn-dark"
                               onClick={() => handleSelectCategory(params.id)}
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{ fontSize: "14px", fontWeight: "bold" }}
+                                sx={{ fontSize: "15px", fontWeight: "bold" }}
                               />
                             </button>
 
@@ -314,11 +322,12 @@ export default function CategoryProject02() {
                                 handleDeteleCategory(params.id);
                               }}
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "red",
+                                width: "25px",
+                                height: "25px",
+                                padding: 0,
+                                marginRight: "10px",
                               }}
+                              className="btn btn-danger"
                             >
                               <ClearIcon
                                 sx={{ fontSize: "20px", fontWeight: "bold" }}
@@ -335,9 +344,9 @@ export default function CategoryProject02() {
                     localeText={
                       viVN.components.MuiDataGrid.defaultProps.localeText
                     }
-                    {...categories}
+                    {...categoriesOne}
                     initialState={{
-                      ...categories.initialState,
+                      ...categoriesOne.initialState,
                       pagination: { paginationModel: { pageSize: 5 } },
                     }}
                     pageSizeOptions={[5, 10, 15]}

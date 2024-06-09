@@ -15,33 +15,58 @@ export async function listDocumentsAPI() {
 export async function addDocumentAPI(document) {
   // debugger;
   try {
-    if (
-      (document.file !== null || document.link.trim().length > 0) &&
-      document.name.trim().length > 0
-    ) {
-      const formData = new FormData();
-      if (document.file instanceof File) {
-        formData.append("documentFileId", 0);
-        formData.append("documentFile", document.file);
+    const formData = new FormData();
+    if (document.type === "LIBRARY") {
+      if (
+        (document.file !== null || document.link.trim().length > 0) &&
+        document.name.trim().length > 0
+      ) {
+        formData.append("type", document.type);
+        formData.append("name", document.name);
+        if (document.file instanceof File) {
+          formData.append("documentFileId", 0);
+          formData.append("documentFile", document.file);
+        } else {
+          formData.append("documentLinkId", 0);
+          formData.append("documentLink", document.link);
+        }
+        if (document.scope === "") {
+          formData.append("scope", "public");
+        } else {
+          formData.append("scope", document.scope);
+        }
+        formData.append("categoryOne", document.categoryOne);
+        if (document.categoryTwo === "") {
+          formData.append("categoryTwo", document.categoryOne);
+        } else {
+          formData.append("categoryTwo", document.categoryTwo);
+        }
+      }
+    } else if (document.type === "PROJECT") {
+      formData.append("type", document.type);
+      if (document.files.length > 0) {
+        document.files.forEach((file) => {
+          formData.append("documentFileId", 0);
+          formData.append("documentFile", file);
+        });
       } else {
         formData.append("documentLinkId", 0);
         formData.append("documentLink", document.link);
       }
-      formData.append("name", document.name);
-      if (document.scope === "") {
-        formData.append("scope", "public");
+      formData.append("categoryOne", document.categoryOne);
+      if (document.categoryTwo === "") {
+        formData.append("categoryTwo", document.categoryOne);
       } else {
-        formData.append("scope", document.scope);
+        formData.append("categoryTwo", document.categoryTwo);
       }
-
-      const resp = await baseAPI.post("documents/save", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      return resp;
     }
-    throw "lỗi rồi";
+    console.log(formData);
+    const resp = await baseAPI.post("documents/saves", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return resp;
   } catch (error) {
     console.error(error);
     throw error;

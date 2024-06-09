@@ -48,7 +48,7 @@ export default function CategoryLibrary01() {
     defaultValues: {
       id: "",
       name: "",
-      type: "Library_ITEM_ONE",
+      type: "LIBRARY_ITEM_ONE",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
@@ -57,7 +57,7 @@ export default function CategoryLibrary01() {
 
   const fetchListCategory = async () => {
     try {
-      const data = await getCategoriesAPI("Library_ITEM_ONE");
+      const data = await getCategoriesAPI("LIBRARY_ITEM_ONE");
       setCategories(data);
       setIsLoading(false);
       toast.success("Lấy danh sách danh mục thành công");
@@ -67,22 +67,30 @@ export default function CategoryLibrary01() {
     }
   };
 
-  const handleAddCategory = async (category) => {
-    debugger;
-    console.log(category);
+  const handleSaveCategoryOneLibrary = async (category) => {
+    // debugger;
+    // console.log(category);
     try {
-      const validate = await validateCategoryAPI(category.name);
-      if (validate) {
+      // EDIT
+      if (category.id) {
         await saveCategoryAPI(category);
-        toast.success("Thêm danh mục thành công");
-        resetField("name");
-        resetField("unit");
-        fetchListCategory();
-        return;
-      } else {
-        toast.error("Danh mục đã tồn tại!");
-        return;
+        toast.success("Cập nhật danh mục thành công");
       }
+      // NEW
+      else {
+        const validate = await validateCategoryAPI(category.name);
+        if (validate) {
+          await saveCategoryAPI(category);
+          toast.success("Thêm danh mục thành công");
+        } else {
+          toast.error("Danh mục đã tồn tại!");
+          return;
+        }
+      }
+      setValue("id", "");
+      setValue("name", "");
+      resetField("name");
+      fetchListCategory();
     } catch (error) {}
   };
 
@@ -180,7 +188,7 @@ export default function CategoryLibrary01() {
                     alignItems: "center",
                     marginBottom: "10px",
                   }}
-                  onSubmit={handleSubmit(handleAddCategory)}
+                  onSubmit={handleSubmit(handleSaveCategoryOneLibrary)}
                 >
                   <div className=" w-50 me-3" style={{ height: "50px" }}>
                     <input
@@ -244,19 +252,17 @@ export default function CategoryLibrary01() {
                           <div style={{ display: "flex" }}>
                             <button
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "black",
+                                width: "25px",
+                                height: "25px",
+                                padding: "0 0 2px 0",
                                 marginRight: "10px",
-                                width: "23px",
-                                lineHeight: "15px",
                               }}
+                              className="btn btn-dark"
                               onClick={() => handleSelectCategory(params.id)}
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{ fontSize: "14px", fontWeight: "bold" }}
+                                sx={{ fontSize: "15px", fontWeight: "bold" }}
                               />
                             </button>
 
@@ -265,11 +271,12 @@ export default function CategoryLibrary01() {
                                 handleDeteleCategory(params.id);
                               }}
                               style={{
-                                border: "1px solid",
-                                borderRadius: "5px",
-                                background: "none",
-                                color: "red",
+                                width: "25px",
+                                height: "25px",
+                                padding: 0,
+                                marginRight: "10px",
                               }}
+                              className="btn btn-danger"
                             >
                               <ClearIcon
                                 sx={{ fontSize: "20px", fontWeight: "bold" }}

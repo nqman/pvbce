@@ -3,12 +3,13 @@ import {
   Box,
   Container,
   Tab,
-  Link,
   TextField,
   Autocomplete,
+  Button,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 //validation
 import { useForm } from "react-hook-form";
@@ -90,7 +91,11 @@ export default function CreateProject() {
   useEffect(() => {
     async function fetchMyAPI() {
       let categories = await getCategoriesAPI("QUANTITY_ITEM");
+      let category01 = await getCategoriesAPI("Project_ITEM_ONE");
+      let category02 = await getCategoriesAPI("Project_ITEM_TWO");
       setCategories(categories);
+      setCategory01(category01);
+      setCategory02(category02);
       setRemainingCategories(categories);
     }
     fetchMyAPI();
@@ -230,66 +235,18 @@ export default function CreateProject() {
   }, [endDate, startDate]);
 
   //Thư viện dự án ---projectDiary
-  const [category1, setCategory1] = useState([
-    "Hợp đồng",
-    "Nghiệm thu",
-    "Báo cáo ngày",
-    "Báo cáo tuần",
-    "Phiếu yêu cầu vật tư, nhiên liệu",
-    "Chi phí dự án các đợt",
-  ]);
-  const [category2, setCategory2] = useState([
-    "Nhật kí thi công",
-    "Sản lượng thi công",
-    "Báo cáo ngày",
-    "Chi phí công trình",
-    "Bản chấm công",
-  ]);
+  const [category01, setCategory01] = useState([]);
+  const [category02, setCategory02] = useState([]);
   const [selectedCategory1, setSelectedCategory1] = useState("");
   const [selectedCategory2, setSelectedCategory2] = useState("");
 
-  const [category, setCategory] = useState([
-    {
-      category1: "Hợp đồng",
-    },
-    {
-      category1: "Nghiệm thu",
-    },
-    {
-      category1: "Báo cáo ngày",
-      category2: [
-        "Nhật kí thi công",
-        "Sản lượng thi công",
-        "Báo cáo ngày",
-        "Chi phí công trình",
-        "Bản chấm công",
-      ],
-    },
-    {
-      category1: "Báo cáo tuần",
-      category2: [
-        "Nhật kí thi công",
-        "Sản lượng thi công",
-        "Báo cáo ngày",
-        "Chi phí công trình",
-        "Bản chấm công",
-      ],
-    },
-    {
-      category1: "Phiếu yêu cầu vật tư, nhiên liệu",
-    },
-    {
-      category1: "Chi phí dự án các đợt",
-    },
-  ]);
-
-  const handleSelectCategory1 = async (event, value) => {
+  const handleSelectCategory01 = async (event, value) => {
     // debugger;
     setSelectedCategory1(value);
     let category = value;
     console.log(category);
   };
-  const handleSelectCategory2 = async (event, value) => {
+  const handleSelectCategory02 = async (event, value) => {
     // debugger;
     setSelectedCategory2(value);
     let category = value;
@@ -373,25 +330,37 @@ export default function CreateProject() {
         <Loading />
       ) : (
         <div className="container mt-2 mb-5" style={{ position: "relative" }}>
-          <div style={{ position: "absolute", top: "20px", left: "80px" }}>
-            <Link
-              sx={{ fontSize: "16px" }}
-              component="button"
-              variant="body2"
+          <div style={{ position: "absolute", top: "10px", left: "80px" }}>
+            <Button
+              sx={{
+                textTransform: "initial",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                fontSize: "13px",
+                fontWeight: "bold",
+              }}
               onClick={() => {
                 navigate("/report/listprojects");
               }}
             >
-              <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
+              <ArrowBackIosIcon sx={{ fontSize: "12px" }} />
               Danh sách dự án
-            </Link>
+            </Button>
           </div>
           <form noValidate onSubmit={handleSubmit}>
             <TabContext value={item}>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <TabList onChange={handleChangeItem}>
-                  <Tab label="THÔNG TIN HỢP ĐỒNG" value="1" />
-                  <Tab label="THƯ VIỆN DỰ ÁN" value="2" />
+                  <Tab
+                    sx={{ fontWeight: "bold" }}
+                    label="THÔNG TIN HỢP ĐỒNG"
+                    value="1"
+                  />
+                  {/* <Tab
+                    sx={{ fontWeight: "bold" }}
+                    label="THƯ VIỆN DỰ ÁN"
+                    value="2"
+                  /> */}
                 </TabList>
               </Box>
               {/* Thông tin hợp đồng */}
@@ -511,103 +480,33 @@ export default function CreateProject() {
                 </Container>
               </TabPanel>
               {/* Thư viện */}
-              <TabPanel value="2">
+              {/* <TabPanel value="2">
                 <Container className="w-100">
-                  {/* <div>
-                    {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          marginBottom: "15px",
-                          height: "30px",
-                        }}
-                        key={projectLibrary.id}
-                      >
-                        <TextField
-                          placeholder="Thông số"
-                          id="outlined-size-small"
-                          value={projectLibrary.name}
-                          size="small"
-                          sx={{ marginRight: "20px", width: "50%" }}
-                          onChange={(e) =>
-                            handleInputChange(
-                              projectLibrary.id,
-                              "name",
-                              e.target.value
-                            )
-                          }
-                        />
-                        <TextField
-                          placeholder="Nội dung"
-                          id="outlined-size-small"
-                          value={
-                            projectLibrary.value || projectLibrary.file?.name
-                          }
-                          size="small"
-                          sx={{ marginRight: "20px", width: "50%" }}
-                          onChange={(e) =>
-                            handleInputChange(
-                              projectLibrary.id,
-                              "value",
-                              e.target.value
-                            )
-                          }
-                          onBlur={handleBlurInput}
-                        />
-                        <input
-                          type="file"
-                          style={{ width: "130px" }}
-                          className="custom-file-input"
-                          id={`fileInput${projectLibrary.id}`}
-                          name="filename"
-                          onChange={(e) =>
-                            handleFileChange(
-                              projectLibrary.id,
-                              e.target.files[0]
-                            )
-                          }
-                          onBlur={handleBlurInput}
-                        />
-
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => deleteDiv(projectLibrary.id)}
-                        >
-                          x
-                        </button>
-                      </div>
-                    ))}
-                    <p className="text-danger">{errorLibary}</p>
-                    <Button variant="contained" onClick={createDiv}>
-                      Thêm
-                    </Button>
-                  </div> */}
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <Autocomplete
                       size="small"
                       sx={{ width: "30%", marginRight: "20px" }}
                       disablePortal
                       id="combo-box-demo"
-                      options={category1.map((option) => option)}
-                      // defaultValue={detail?.category}
+                      options={category01.map((option) => option.name)}
+                      defaultValue={category01[0]?.name}
                       // disabled={detail?.category ? true : false}
-                      onChange={handleSelectCategory1}
+                      onChange={handleSelectCategory01}
                       renderInput={(params) => (
                         <TextField {...params} label="Danh mục 1" />
                       )}
                     />
-                    {selectedCategory1 === "Báo cáo ngày" ||
-                    selectedCategory1 === "Báo cáo tuần" ? (
+                    {selectedCategory1 === "Báo cáo ngày (1)" ||
+                    selectedCategory1 === "Báo cáo tuần (1)" ? (
                       <Autocomplete
                         size="small"
                         sx={{ width: "20%", marginRight: "20px" }}
                         disablePortal
                         id="combo-box-demo"
-                        options={category2?.map((option) => option)}
-                        // defaultValue={detail?.category}
+                        options={category02?.map((option) => option.name)}
+                        defaultValue={category02[0]?.name}
                         // disabled={detail?.category ? true : false}
-                        onChange={handleSelectCategory2}
+                        onChange={handleSelectCategory02}
                         renderInput={(params) => (
                           <TextField {...params} label="Danh mục 2" />
                         )}
@@ -617,32 +516,43 @@ export default function CreateProject() {
                     )}
                     <input
                       type="file"
-                      style={{ width: "130px" }}
-                      className="custom-file-input"
+                      // style={{ padding: "10px" }}
+                      // className="custom-file-input"
                       // id={`fileInput${projectLibrary.id}`}
                       name="filename"
                       // onChange={(e) =>
                       //   handleFileChange(projectLibrary.id, e.target.files[0])
                       // }
+                      multiple
                       onBlur={handleBlurInput}
                     />
                   </div>
                 </Container>
-              </TabPanel>
+              </TabPanel> */}
             </TabContext>
             {/* SUBMIT */}
             <div
               style={{
                 marginTop: "20px",
+                marginRight: "20px",
                 textAlign: "end",
               }}
             >
               <button
-                className="btn btn-success"
-                // disabled={isLoading}
+                style={{
+                  width: "45px",
+                  height: "45px",
+                  padding: 0,
+                }}
+                className="btn btn-outline-success"
                 type="submit"
               >
-                Lưu
+                <SaveIcon
+                  sx={{
+                    fontSize: "25px",
+                    fontWeight: "bold",
+                  }}
+                />
               </button>
             </div>
           </form>

@@ -12,6 +12,7 @@ export async function getCategoriesAPI(type) {
     throw error;
   }
 }
+
 // lấy danh sách hạng mục theo từng dự án
 export async function getCategoriesOfProjectAPI(idProject) {
   // debugger;
@@ -47,6 +48,7 @@ export async function selectCategoryAPI(id) {
 }
 
 export async function saveCategoryAPI(category) {
+  // debugger;
   try {
     const formData = new FormData();
     // NEW
@@ -62,9 +64,35 @@ export async function saveCategoryAPI(category) {
     else {
       formData.append("id", category.id);
       formData.append("name", category.name);
-      formData.append("unit", category.unit);
       formData.append("type", category.type);
+      if (category.unit) {
+        formData.append("unit", category.unit);
+      }
+    }
+    // console.log(formData);
+    const resp = await baseAPI.post("categories/save", formData);
+  } catch (error) {}
+}
 
+//save hạng mục 2
+export async function saveCategoryTwoAPI(category, idOne) {
+  // debugger;
+  try {
+    const formData = new FormData();
+    // NEW
+    if (category.id === null) {
+      formData.append("id", 0);
+      formData.append("name", category.name);
+      formData.append("type", category.type);
+      if (category.unit) {
+        formData.append("unit", category.unit);
+      }
+    }
+    // EDIT
+    else {
+      formData.append("id", category.id);
+      formData.append("name", category.name);
+      formData.append("type", category.type);
       if (category.unit) {
         formData.append("unit", category.unit);
       }
@@ -105,7 +133,7 @@ export async function getCostsAPI() {
   }
 }
 
-export async function addCostAPI(cost) {
+export async function saveCostAPI(cost) {
   try {
     const formData = new FormData();
     if (cost.id === null) {
@@ -134,6 +162,15 @@ export async function selectCostAPI(id) {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+}
+//validate categoryName
+export async function validateCostAPI(costName) {
+  try {
+    const resp = await baseAPI.get(`costs/validate/cost/${costName}`);
+    return resp.data;
+  } catch (error) {
+    throw error.response.data;
   }
 }
 

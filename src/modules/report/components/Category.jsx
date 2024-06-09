@@ -76,20 +76,30 @@ export default function Category() {
   };
 
   const handleSaveCategory = async (category) => {
-    debugger;
+    // debugger;
     try {
-      const validate = await validateCategoryAPI(category.name);
-      if (validate) {
+      // EDIT
+      if (category.id) {
         await saveCategoryAPI(category);
-        toast.success("Thêm hạng mục thành công");
-        resetField("name");
-        resetField("unit");
-        fetchListCategory();
-        return;
-      } else {
-        toast.error("Hạng mục đã tồn tại!");
-        return;
+        toast.success("Cập nhật hạng mục thành công");
       }
+      // NEW
+      else {
+        const validate = await validateCategoryAPI(category.name);
+        if (validate) {
+          await saveCategoryAPI(category);
+          toast.success("Thêm hạng mục thành công");
+        } else {
+          toast.error("Hạng mục đã tồn tại!");
+          return;
+        }
+      }
+      setValue("id", "");
+      setValue("unit", "");
+      setValue("name", "");
+      resetField("name");
+      resetField("unit");
+      fetchListCategory();
     } catch (error) {}
   };
 
@@ -267,7 +277,7 @@ export default function Category() {
                               }}
                               onClick={() => handleSelectCategory(params.id)}
                               title="Sửa"
-                              className="btn btn-outline-dark"
+                              className="btn btn-dark"
                             >
                               <EditIcon
                                 sx={{
@@ -287,7 +297,7 @@ export default function Category() {
                                 padding: 0,
                                 marginRight: "10px",
                               }}
-                              className="btn btn-outline-danger"
+                              className="btn btn-danger"
                             >
                               <ClearIcon
                                 sx={{ fontSize: "20px", fontWeight: "bold" }}

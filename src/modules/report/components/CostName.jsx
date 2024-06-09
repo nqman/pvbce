@@ -1,15 +1,32 @@
-import { Container, TextField } from "@mui/material";
+import {
+  Box,
+  Container,
+  Pagination,
+  PaginationItem,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
-  addCostAPI,
+  saveCostAPI,
   deleteCostAPI,
   getCostsAPI,
   selectCostAPI,
+  validateCostAPI,
 } from "../../../apis/reportAPI";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarQuickFilter,
+  gridPageCountSelector,
+  gridPageSelector,
+  useGridApiContext,
+  useGridSelector,
+  viVN,
+} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
+import SaveIcon from "@mui/icons-material/Save";
 import { StyledEngineProvider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 //Validation
@@ -35,14 +52,12 @@ export default function CostName() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
       id: "",
+      name: "",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
   });
-
-  const [cost, setCost] = useState({ name: "" });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchListCost = async () => {
@@ -56,14 +71,27 @@ export default function CostName() {
       toast.error("Lấy danh sách chi phí thất bại");
     }
   };
-  // const handleChange = (e) => {
-  //   setcost({ ...cost, [e.target.name]: e.target.value });
-  // };
-  const handleAddCost = async (cost) => {
-    console.log(cost);
+
+  const handleSaveCost = async (cost) => {
     try {
-      await addCostAPI(cost);
-      toast.success("Thêm chi phí thành công");
+      // EDIT
+      if (cost.id) {
+        await saveCostAPI(cost);
+        toast.success("Cập nhật chi phí thành công");
+      }
+      // NEW
+      else {
+        const validate = await validateCostAPI(cost.name);
+        if (validate) {
+          await saveCostAPI(cost);
+          toast.success("Thêm chi phí thành công");
+        } else {
+          toast.error("Chi phí đã tồn tại!");
+          return;
+        }
+      }
+      setValue("id", "");
+      setValue("name", "");
       resetField("name");
       fetchListCost();
     } catch (error) {}
@@ -74,10 +102,10 @@ export default function CostName() {
     fetchListCost();
   }, []);
 
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Xóa chi phí
-  const handleDetelecost = async (id) => {
+  const handleDeteleCost = async (id) => {
     try {
       const result = await Swal.fire({
         title: "Bạn chắc chắn muốn xóa chi phí? ",
@@ -106,13 +134,41 @@ export default function CostName() {
   const handleSelectCost = async (id) => {
     try {
       const data = await selectCostAPI(id);
-      //   console.log(data);
-      setValue("name", data.name);
       setValue("id", data.id);
+      setValue("name", data.name);
     } catch (error) {
       toast.error("Đã có lỗi xảy ra");
     }
   };
+  function CustomPagination() {
+    const apiRef = useGridApiContext();
+    const page = useGridSelector(apiRef, gridPageSelector);
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+    return (
+      <Pagination
+        color="primary"
+        variant="outlined"
+        shape="rounded"
+        page={page + 1}
+        count={pageCount}
+        renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
+        onChange={(event, value) => apiRef.current.setPage(value - 1)}
+      />
+    );
+  }
+  function QuickSearchToolbar() {
+    return (
+      <Box
+        sx={{
+          p: 0.5,
+          pb: 0,
+        }}
+      >
+        <GridToolbarQuickFilter />
+      </Box>
+    );
+  }
 
   return (
     <div>
@@ -127,34 +183,42 @@ export default function CostName() {
             }}
           >
             <div>
-              <h3 className="text-center mb-3">Danh sách chi phí</h3>
+              <h3 className="text-center mb-4">CHI PHÍ - DỰ ÁN</h3>
               {role && role === "Admin" && (
                 <form
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    marginBottom: "20px",
+                    marginBottom: "10px",
                   }}
-                  onSubmit={handleSubmit(handleAddCost)}
+                  onSubmit={handleSubmit(handleSaveCost)}
                 >
                   <div className=" w-50 me-3" style={{ height: "50px" }}>
-                    <TextField
-                      className="w-100"
-                      size="small"
+                    <input
+                      className="w-100 form-control"
                       placeholder="Tên chi phí"
+                      style={{ marginBottom: "5px" }}
                       {...register("name")}
-                      //   value={cost.name}
                     />
                     <span className="text-danger ">{errors.name?.message}</span>
                   </div>
 
                   <div style={{ height: "50px" }}>
                     <button
-                      className="btn btn-primary"
-                      // disabled={isLoading}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        padding: 0,
+                      }}
+                      className="btn btn-outline-success"
                       type="submit"
                     >
-                      Thêm
+                      <SaveIcon
+                        sx={{
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                        }}
+                      />
                     </button>
                   </div>
                 </form>
@@ -180,50 +244,45 @@ export default function CostName() {
                       index: index + 1,
                     }))}
                     columns={[
-                      { field: "index", headerName: "STT", width: 50 },
-                      { field: "name", headerName: "TÊN CHI PHÍ", width: 400 },
+                      { field: "index", headerName: "STT", width: 100 },
+                      { field: "name", headerName: "TÊN CHI PHÍ", width: 880 },
                       {
                         field: "action",
                         headerName: "TÙY CHỌN",
-                        width: 120,
+                        width: 150,
 
                         renderCell: (params) => (
                           <div style={{ display: "flex" }}>
-                            {/* <button
+                            <button
                               style={{
-                                padding: "0px",
-                                height: "25px",
                                 width: "25px",
+                                height: "25px",
+                                padding: "0 0 2px 0",
                                 marginRight: "10px",
                               }}
-                              className="btn btn-warning me-2"
+                              className="btn btn-dark"
                               onClick={() => handleSelectCost(params.id)}
                               title="Sửa"
                             >
                               <EditIcon
-                                sx={{
-                                  fontSize: "17px",
-                                  marginBottom: "2px",
-                                }}
+                                sx={{ fontSize: "14px", fontWeight: "bold" }}
                               />
-                            </button> */}
+                            </button>
+
                             <button
+                              onClick={() => {
+                                handleDeteleCost(params.id);
+                              }}
                               style={{
-                                padding: "0px",
-                                height: "25px",
                                 width: "25px",
-                                lineHeight: "15px",
+                                height: "25px",
+                                padding: 0,
+                                marginRight: "10px",
                               }}
                               className="btn btn-danger"
-                              onClick={() => {
-                                handleDetelecost(params.id);
-                              }}
-                              title="Xóa"
                             >
                               <ClearIcon
-                                sx={{
-                                  fontSize: "20px",
-                                }}
+                                sx={{ fontSize: "20px", fontWeight: "bold" }}
                               />
                             </button>
                           </div>
@@ -231,14 +290,21 @@ export default function CostName() {
                       },
                     ]}
                     slots={{
-                      toolbar: GridToolbar,
+                      pagination: CustomPagination,
+                      toolbar: QuickSearchToolbar,
                     }}
+                    localeText={
+                      viVN.components.MuiDataGrid.defaultProps.localeText
+                    }
                     {...costs}
                     initialState={{
                       ...costs.initialState,
                       pagination: { paginationModel: { pageSize: 5 } },
                     }}
                     pageSizeOptions={[5, 10, 15]}
+                    disableRowSelectionOnClick
+                    disableColumnFilter
+                    ignoreDiacritics
                   />
                 </div>
               </StyledEngineProvider>
