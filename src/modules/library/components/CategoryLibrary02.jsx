@@ -42,7 +42,7 @@ const schema = yup
   })
   .required();
 
-export default function CategoryProject02() {
+export default function Categorylibrary02() {
   const role = Cookies.get("role")?.replace(/"/g, "");
 
   const {
@@ -55,7 +55,7 @@ export default function CategoryProject02() {
     defaultValues: {
       id: "",
       name: "",
-      type: "Project_ITEM_TWO",
+      type: "Library_ITEM_TWO",
     },
     mode: "onTouched",
     resolver: yupResolver(schema),
@@ -65,13 +65,13 @@ export default function CategoryProject02() {
   const [errorCategory1, setErrorCategory1] = useState(
     "Vui lòng không bỏ trống"
   );
-  const [projectItemOne, setProjectItemOne] = useState("");
+  const [libraryItemOne, setLibraryItemOne] = useState("");
 
   const fetchListCategory = async () => {
     try {
-      const data = await getCategoriesAPI("Project_ITEM_TWO");
-      let projectItemOne = await getCategoriesAPI("Project_ITEM_ONE");
-      setProjectItemOne(projectItemOne);
+      const data = await getCategoriesAPI("Library_ITEM_TWO");
+      let libraryItemOne = await getCategoriesAPI("Library_ITEM_ONE");
+      setLibraryItemOne(libraryItemOne);
       setCategories(data);
       setIsLoading(false);
       toast.success("Lấy danh sách danh mục thành công");
@@ -198,7 +198,7 @@ export default function CategoryProject02() {
             }}
           >
             <div>
-              <h3 className="text-center mb-4">DANH MỤC 2 - DỰ ÁN</h3>
+              <h3 className="text-center mb-4">DANH MỤC 2 - THƯ VIỆN</h3>
               {role && role === "Admin" && (
                 <form
                   style={{
@@ -217,9 +217,8 @@ export default function CategoryProject02() {
                         height: "40px",
                       }}
                       disablePortal
-                      options={projectItemOne.map((option) => option.name)}
+                      options={libraryItemOne.map((option) => option.name)}
                       // defaultValue={detail?.category}
-                      // disabled={detail?.category ? true : false}
                       onChange={handleSelectCategory1}
                       renderInput={(params) => (
                         <TextField {...params} placeholder="Danh mục 1" />

@@ -1,12 +1,5 @@
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
 
@@ -118,7 +111,6 @@ export default function ProjectItem({
         <TextField
           label="Đơn vị"
           id="outlined-size-small"
-          // value={unit || detail.unit}
           value={detail.unit}
           size="small"
           disabled={true}

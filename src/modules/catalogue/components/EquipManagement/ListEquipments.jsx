@@ -112,6 +112,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                 <div
                   style={{
                     display: "flex",
+                    margin: "auto",
                   }}
                 >
                   <button
@@ -122,7 +123,8 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                       color: "green",
                       marginRight: "10px",
                       width: "23px",
-                      lineHeight: "15px",
+                      lineHeight: "10px",
+                      height: "23px",
                     }}
                     onClick={() => handleRead(params.id)}
                     title="Xem"

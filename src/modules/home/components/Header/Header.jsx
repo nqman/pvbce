@@ -444,6 +444,7 @@ function Header() {
                   anchorEl={anchorElReport}
                   open={openReport}
                   onClose={handleCloseReport}
+                  disableScrollLock={true}
                 >
                   <MenuItem
                     onClick={() => handleNavigateReport("listprojects")}
@@ -523,6 +524,7 @@ function Header() {
                   anchorEl={anchorEl}
                   open={open}
                   onClose={handleClose}
+                  disableScrollLock={true}
                 >
                   <MenuItem
                     onClick={() => handleNavigate("categorylist")}

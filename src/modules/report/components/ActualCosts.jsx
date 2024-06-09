@@ -7,7 +7,6 @@ import {
   selectProjectAPI,
 } from "../../../apis/reportAPI";
 import { useNavigate, useParams } from "react-router-dom";
-import "./styles.css";
 import toast, { Toaster } from "react-hot-toast";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ActualCostPerWeek from "./ActualCostPerWeek";

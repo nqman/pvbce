@@ -1,7 +1,6 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
-  Button,
   Container,
   Tab,
   Link,
@@ -90,7 +89,7 @@ export default function CreateProject() {
 
   useEffect(() => {
     async function fetchMyAPI() {
-      let categories = await getCategoriesAPI();
+      let categories = await getCategoriesAPI("QUANTITY_ITEM");
       setCategories(categories);
       setRemainingCategories(categories);
     }
