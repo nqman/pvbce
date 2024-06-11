@@ -20,6 +20,7 @@ import {
 } from "../../../../apis/equipmentAPI";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../home/components/Loading/Loading";
+import NavigationButton from "../../../common/NavigationButton";
 
 export default function CreateEquipment() {
   const emptyValue = {
@@ -188,21 +189,13 @@ export default function CreateEquipment() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="container">
-          <Link
-            sx={{ marginTop: "20px", fontSize: "16px" }}
-            component="button"
-            variant="body2"
-            onClick={() => {
-              navigate("/catalogue");
-            }}
-          >
-            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
-            Danh sách thiết bị
-          </Link>
+        <div className="container mt-2 mb-5" style={{ position: "relative" }}>
+          <div style={{ position: "absolute", top: "20px", left: "80px" }}>
+            <NavigationButton url="/catalogue" name="Danh sách thiết bị" />
+          </div>
           <div>
             <Toaster position="top-right" />
-            <h1 className="text-center pt-3">Thêm thiết bị</h1>
+            <h1 className="text-center pt-3">THÊM THIẾT BỊ</h1>
             <form noValidate onSubmit={handleSaveEquipment}>
               <Box>
                 <TabContext value={item}>

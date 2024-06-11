@@ -31,6 +31,7 @@ import ProjectItem from "./ProjectItem";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../home/components/Loading/Loading";
+import NavigationButton from "../../common/NavigationButton";
 
 const newEmptyProjectDetail = () => {
   return {
@@ -331,21 +332,10 @@ export default function CreateProject() {
       ) : (
         <div className="container mt-2 mb-5" style={{ position: "relative" }}>
           <div style={{ position: "absolute", top: "10px", left: "80px" }}>
-            <Button
-              sx={{
-                textTransform: "initial",
-                paddingLeft: "5px",
-                paddingRight: "5px",
-                fontSize: "13px",
-                fontWeight: "bold",
-              }}
-              onClick={() => {
-                navigate("/report/listprojects");
-              }}
-            >
-              <ArrowBackIosIcon sx={{ fontSize: "12px" }} />
-              Danh sách dự án
-            </Button>
+            <NavigationButton
+              url="/report/listprojects"
+              name="Danh sách dự án"
+            />
           </div>
           <form noValidate onSubmit={handleSubmit}>
             <TabContext value={item}>

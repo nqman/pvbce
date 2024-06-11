@@ -189,10 +189,12 @@ export async function listProjectsAPI() {
     throw error;
   }
 }
+// Lưu dự án
 export async function saveProjectAPI(project) {
   try {
     const formData = new FormData();
     Object.keys(project).map((key) => {
+      // thông tin hợp đồng
       if (key === "rpQuantityAndRevenueDetails") {
         if (Array.isArray(project[key])) {
           project[key].forEach((detail) => {
@@ -210,20 +212,15 @@ export async function saveProjectAPI(project) {
             formData.append("prices", detail.price);
           });
         }
-      } else if (key === "rpQuantityAndRevenueLibraries") {
+      }
+      // thư viện dự án
+      else if (key === "rpQuantityAndRevenueLibraries") {
         if (Array.isArray(project[key])) {
           project[key].forEach((detail) => {
             //EDIT
             if (detail.id > 0) {
-              if (
-                detail.pathLibrary !== null ||
-                (typeof detail.file !== "undefined" &&
-                  detail.file instanceof File)
-              ) {
-                if (
-                  typeof detail.file !== "undefined" &&
-                  detail.file instanceof File
-                ) {
+              if (detail.pathLibrary !== null || detail.files.length > 0) {
+                if (detail.files.length > 0) {
                   //new file
                   formData.append("idUpdatePartLibraries", detail.id);
                   formData.append("partNameUpdateLibraries", detail.name);
@@ -233,7 +230,7 @@ export async function saveProjectAPI(project) {
                 else {
                   formData.append("idUpdatePathLibraries", detail.id);
                   formData.append("pathNameUpdateLibraries", detail.name);
-                  formData.append("pathValueUpdateLibraries", detail.fileName);
+                  formData.append("pathValueUpdateLibraries", detail.fileNames);
                   formData.append("pathUpdateLibraries", detail.pathLibrary);
                 }
               } else {
@@ -244,15 +241,22 @@ export async function saveProjectAPI(project) {
             }
             //NEW
             else {
-              if (detail.file instanceof File) {
-                console.log(detail.file);
-                formData.append("idNewPartLibraries", 0);
-                formData.append("partNameNewLibraries", detail.name);
-                formData.append("partNewLibraries", detail.file);
-              } else {
+              formData.append("categoryOne", detail.categoryOne);
+              formData.append("categoryTwo", detail.categoryTwo);
+              // FILE
+              if (detail.files.length > 0) {
+                // console.log(detail.files);
+                detail.files.forEach((file) => {
+                  formData.append("idNewPartLibraries", 0);
+                  formData.append("partNameNewLibraries", file.name);
+                  formData.append("partNewLibraries", file);
+                });
+              }
+              // LINK
+              else {
                 formData.append("idLinkLibraries", 0);
-                formData.append("linkNameLibraries", detail.name);
-                formData.append("linkLibraries", detail.value);
+                // formData.append("linkNameLibraries", detail.name);
+                formData.append("linkLibraries", detail.linkLibrary);
               }
             }
           });
@@ -262,12 +266,12 @@ export async function saveProjectAPI(project) {
       }
     });
 
-    const resp = await baseAPI.post("projects/save", formData, {
+    const resp = await baseAPI.post("projects/save1", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    // console.log(formData);
+    console.log(formData);
     return resp;
   } catch (error) {
     console.log(error);
@@ -462,7 +466,7 @@ export async function addActualCostAPI(actualCosts, idProject) {
     throw error.message;
   }
 }
-// EXPORT REPORT
+// validateDatePickerAPI
 export async function validateDatePickerAPI(date, idProject) {
   // debugger;
   try {
@@ -501,7 +505,7 @@ export async function getViewReportQuantityRevenueAndCostAPI(
   }
 }
 
-// EXPORT REPORT
+// EXPORT REPORT TOTAL
 export async function getViewReportCostTotalAPI(startPicker, endPicker) {
   const jsonData = {
     startPicker: startPicker,

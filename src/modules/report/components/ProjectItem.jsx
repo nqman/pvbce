@@ -2,6 +2,7 @@ import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function ProjectItem({
   detail = {},
@@ -159,11 +160,17 @@ export default function ProjectItem({
         />
         {!detail.use && (
           <button
+            style={{
+              width: "35px",
+              height: "35px",
+              padding: 0,
+              marginRight: "10px",
+            }}
             className="btn btn-danger"
             onClick={() => deleteDiv(detail.id)}
             type="button"
           >
-            x
+            <ClearIcon sx={{ fontSize: "20px" }} />
           </button>
         )}
       </div>

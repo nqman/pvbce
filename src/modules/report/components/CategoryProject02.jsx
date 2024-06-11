@@ -85,10 +85,8 @@ export default function CategoryProject02() {
   };
   const handleSelectCategoryOne = async (event, value) => {
     setSelectedCategory1(value);
-    let idSelectedCategoryOne = projectItemOne.filter(
-      (item) => item.name === value
-    );
-    setIdSelectedCategoryOne(idSelectedCategoryOne[0]?.id);
+    let idSelected = projectItemOne.filter((item) => item.name === value);
+    setIdSelectedCategoryOne(idSelected[0]?.id);
     if (value) {
       setErrorCategory1("");
     } else {
@@ -96,7 +94,7 @@ export default function CategoryProject02() {
     }
   };
 
-  const handleSaveCategory = async (category, idSelectedCategoryOne) => {
+  const handleSaveCategory = async (category) => {
     // debugger;
     console.log(category, idSelectedCategoryOne);
     if (errorCategory1 === "") {
@@ -248,7 +246,6 @@ export default function CategoryProject02() {
                       sx={{
                         marginBottom: "5px",
                         height: "40px",
-                        // display: "block",
                         width: "100%",
                       }}
                       {...register("name")}

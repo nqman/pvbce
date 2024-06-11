@@ -1,5 +1,12 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Button, Container, Link, Tab, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Container,
+  Tab,
+  TextField,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 //validation
@@ -7,11 +14,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SaveIcon from "@mui/icons-material/Save";
 import * as yup from "yup";
+import ClearIcon from "@mui/icons-material/Clear";
+
 //API
 import {
   saveProjectAPI,
   selectProjectAPI,
   getCategoriesAndCategoriesOfProjectAPI,
+  getCategoriesAPI,
 } from "../../../apis/reportAPI";
 
 //Calendar
@@ -23,7 +33,7 @@ import ProjectItem from "./ProjectItem";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../home/components/Loading/Loading";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import NavigationButton from "../../common/NavigationButton";
 
 const newEmptyProjectDetail = () => {
   return {
@@ -33,7 +43,6 @@ const newEmptyProjectDetail = () => {
     quantity: "",
     price: "",
     amount: "",
-
     // date: "",
   };
 };
@@ -63,10 +72,10 @@ export default function EditProject() {
   // Get category selection
   useEffect(() => {
     async function fetchMyAPI() {
-      debugger;
       let categories = await getCategoriesAndCategoriesOfProjectAPI(idProject);
       const data = await selectProjectAPI(idProject);
       setProject(data);
+      // console.log(data);
       setStartDate(data.startDate);
       setEndDate(data.endDate);
       setTotalAmount(data.totalAmount);
@@ -270,15 +279,43 @@ export default function EditProject() {
   //Thư viện dự án ---projectDiary
 
   const [rpQuantityAndRevenueLibraries, setRpQuantityAndRevenueLibraries] =
-    useState([{ id: -Date.now(), name: "", value: "", file: null }]);
+    useState([
+      {
+        id: -Date.now(),
+        categoryOne: "",
+        categoryTwo: "",
+        linkLibrary: "",
+        files: [],
+      },
+    ]);
+  const [categoryOne, setCategoryOne] = useState([]);
+  const [categoryTwo, setCategoryTwo] = useState([]);
+  const [selectedCategoryOne, setSelectedCategoryOne] = useState({
+    id: 0,
+    name: "",
+  });
+  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState({
+    id: 0,
+    name: "",
+  });
+  const [errorCategoryOne, setErrorCategoryOne] = useState(
+    "Vui lòng không bỏ trống"
+  );
+  const [errorCategoryTwo, setErrorCategoryTwo] = useState(
+    "Vui lòng không bỏ trống"
+  );
+  const [errorFile, setErrorFile] = useState("Vui lòng không bỏ trống");
+  const [errorType, setErrorType] = useState("");
   const [errorLibary, setErrorLibrary] = useState("");
 
   const createDiv = () => {
     const newLibraryDetail = {
       id: -Date.now(),
-      name: "",
-      value: "",
-      file: null,
+      categoryOne: "",
+      categoryTwo: "",
+      linkLibrary: "",
+      files: [],
+      fileNames: [],
     };
     setRpQuantityAndRevenueLibraries([
       ...rpQuantityAndRevenueLibraries,
@@ -287,35 +324,60 @@ export default function EditProject() {
   };
 
   const deleteDiv = (id) => {
-    const updatedrpQuantityAndRevenueLibraries =
+    const updatedRpQuantityAndRevenueLibraries =
       rpQuantityAndRevenueLibraries.filter(
         (productDetail) => productDetail.id !== id
       );
-    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
+    setRpQuantityAndRevenueLibraries(updatedRpQuantityAndRevenueLibraries);
     setProject({
       ...project,
-      rpQuantityAndRevenueLibraries: updatedrpQuantityAndRevenueLibraries,
+      rpQuantityAndRevenueLibraries: updatedRpQuantityAndRevenueLibraries,
     });
   };
 
   const handleInputChange = (id, key, value) => {
-    const updatedrpQuantityAndRevenueLibraries =
+    // debugger;
+    if (key === "categoryOne") {
+      setSelectedCategoryOne({ id: id, name: value });
+    }
+    if (key === "categoryTwo") {
+      setSelectedCategoryTwo({ id: id, name: value });
+    }
+
+    if (value) {
+      setErrorCategoryOne("");
+    } else {
+      setErrorCategoryOne("Vui lòng không bỏ trống");
+    }
+    const updatedRpQuantityAndRevenueLibraries =
       rpQuantityAndRevenueLibraries.map((projectLibrary) =>
         projectLibrary.id === id
           ? { ...projectLibrary, [key]: value }
           : projectLibrary
       );
-    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
+    setRpQuantityAndRevenueLibraries(updatedRpQuantityAndRevenueLibraries);
   };
 
-  const handleFileChange = (id, file) => {
-    debugger;
-    const updatedrpQuantityAndRevenueLibraries =
+  const handleFileChange = (e, id) => {
+    const chosenFiles = [...e.target.files];
+    // const chosenfileNames = [...e.target.files.name];
+
+    let chosenfileNames = chosenFiles.map((file) => file.name);
+    // console.log(fileNames.join(";"));
+    const updatedRpQuantityAndRevenueLibraries =
       rpQuantityAndRevenueLibraries.map((projectLibrary) =>
-        projectLibrary.id === id ? { ...projectLibrary, file } : projectLibrary
+        projectLibrary.id === id
+          ? {
+              ...projectLibrary,
+              files: chosenFiles,
+              fileNames: chosenfileNames.join(";"),
+            }
+          : projectLibrary
       );
 
-    setRpQuantityAndRevenueLibraries(updatedrpQuantityAndRevenueLibraries);
+    setRpQuantityAndRevenueLibraries(updatedRpQuantityAndRevenueLibraries);
+
+    // console.log(updatedRpQuantityAndRevenueLibraries);
   };
   const handleBlurInput = () => {
     setProject({
@@ -323,6 +385,15 @@ export default function EditProject() {
       rpQuantityAndRevenueLibraries: rpQuantityAndRevenueLibraries,
     });
   };
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let categoryOne = await getCategoriesAPI("PROJECT_ITEM_ONE");
+      let categoryTwo = await getCategoriesAPI("PROJECT_ITEM_TWO");
+      setCategoryOne(categoryOne);
+      setCategoryTwo(categoryTwo);
+    }
+    fetchMyAPI();
+  }, [idProject]);
 
   const handleSubmit = async (e) => {
     // debugger;
@@ -331,6 +402,7 @@ export default function EditProject() {
       toast.error("Vui lòng nhập tên dự án");
       return;
     }
+    console.log(project);
     try {
       const data = await saveProjectAPI(project);
       if (data) {
@@ -376,21 +448,10 @@ export default function EditProject() {
       ) : (
         <div className="container mt-2 mb-5" style={{ position: "relative" }}>
           <div style={{ position: "absolute", top: "20px", left: "80px" }}>
-            <Button
-              sx={{
-                textTransform: "initial",
-                paddingLeft: "5px",
-                paddingRight: "5px",
-                fontSize: "13px",
-                fontWeight: "bold",
-              }}
-              onClick={() => {
-                navigate("/report/listprojects");
-              }}
-            >
-              <ArrowBackIosIcon sx={{ fontSize: "12px" }} />
-              Danh sách dự án
-            </Button>
+            <NavigationButton
+              url="/report/listprojects"
+              name="Danh sách dự án"
+            />
           </div>
           <form noValidate onSubmit={handleSubmit}>
             <TabContext value={item}>
@@ -401,7 +462,11 @@ export default function EditProject() {
                     label="THÔNG TIN HỢP ĐỒNG"
                     value="1"
                   />
-                  {/* <Tab label="THƯ VIỆN DỰ ÁN" value="2" /> */}
+                  <Tab
+                    sx={{ fontWeight: "bold" }}
+                    label="THƯ VIỆN DỰ ÁN"
+                    value="2"
+                  />
                 </TabList>
               </Box>
               {/* Thông tin hợp đồng */}
@@ -420,7 +485,6 @@ export default function EditProject() {
                         name="name"
                         size="small"
                         className="me-4 w-50"
-                        // label={"Tên dự án"}
                         label={
                           <span>
                             Tên dự án<span style={{ color: "red" }}>*</span>
@@ -522,20 +586,20 @@ export default function EditProject() {
                 </Container>
               </TabPanel>
               {/* Thư viện */}
-              {/* <TabPanel value="2">
+              <TabPanel value="2">
                 <Container className="">
                   <div>
-                    {rpQuantityAndRevenueLibraries.map((projectLibrary) => (
+                    {rpQuantityAndRevenueLibraries?.map((projectLibrary) => (
                       <div
                         style={{
                           display: "flex",
-                          alignItems: "center",
-                          marginBottom: "15px",
-                          height: "30px",
+                          justifyContent: "start",
+                          marginBottom: "5px",
+                          // height: "30px",
                         }}
                         key={projectLibrary.id}
                       >
-                        <TextField
+                        {/* <TextField
                           placeholder="Thông số"
                           id="outlined-size-small"
                           value={projectLibrary.name}
@@ -548,62 +612,161 @@ export default function EditProject() {
                               e.target.value
                             )
                           }
-                        />
-                        {console.log(projectLibrary)}
-                        <TextField
-                          placeholder="Nội dung"
-                          id="outlined-size-small"
-                          value={
-                            projectLibrary.value ||
-                            projectLibrary.file?.name ||
-                            projectLibrary?.fileName ||
-                            projectLibrary?.linkLibrary
-                          }
-                          size="small"
-                          sx={{
-                            marginRight: "20px",
-                            width: "50%",
-                            pointerEvents: "none",
-                          }}
-                          onChange={(e) =>
-                            handleInputChange(
-                              projectLibrary.id,
-                              "value",
-                              e.target.value
-                            )
-                          }
-                          onBlur={handleBlurInput}
-                        />
-                        <input
-                          type="file"
-                          style={{ width: "130px" }}
-                          className="custom-file-input"
-                          id={`fileInput${projectLibrary.id}`}
-                          name="filename"
-                          onChange={(e) =>
-                            handleFileChange(
-                              projectLibrary.id,
-                              e.target.files[0]
-                            )
-                          }
-                          onBlur={handleBlurInput}
-                        />
+                        /> */}
 
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => deleteDiv(projectLibrary.id)}
+                        <div
+                          className=" me-4"
+                          style={{
+                            height: "50px",
+                            width: "300px",
+                          }}
                         >
-                          x
-                        </button>
+                          <Autocomplete
+                            size="small"
+                            sx={{
+                              display: "block",
+                              height: "40px",
+                            }}
+                            // value={projectLibrary.categoryOne}
+                            options={categoryOne?.map((option) => option.name)}
+                            onChange={(e, value) =>
+                              handleInputChange(
+                                projectLibrary.id,
+                                "categoryOne",
+                                value
+                              )
+                            }
+                            renderInput={(params) => (
+                              <TextField {...params} placeholder="Danh mục 1" />
+                            )}
+                          />
+                          <span className="text-danger  ">
+                            {errorCategoryOne}
+                          </span>
+                        </div>
+                        {(selectedCategoryOne.id === projectLibrary.id &&
+                          selectedCategoryOne.name === "Báo cáo ngày") ||
+                        (selectedCategoryOne.id === projectLibrary.id &&
+                          selectedCategoryOne.name === "Báo cáo tuần") ? (
+                          <div
+                            className=" me-4"
+                            style={{ height: "50px", width: "300px" }}
+                          >
+                            <Autocomplete
+                              size="small"
+                              sx={{
+                                display: "block",
+                                height: "40px",
+                              }}
+                              disablePortal
+                              options={categoryTwo?.map(
+                                (option) => option.name
+                              )}
+                              onChange={(e, value) =>
+                                handleInputChange(
+                                  projectLibrary.id,
+                                  "categoryTwo",
+                                  value
+                                )
+                              }
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  placeholder="Danh mục 2"
+                                />
+                              )}
+                            />
+                            <span className="text-danger ">
+                              {errorCategoryTwo}
+                            </span>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <div
+                          className=" me-4"
+                          style={{ height: "50px", width: "300px" }}
+                        >
+                          <TextField
+                            placeholder="Nội dung"
+                            value={
+                              projectLibrary?.linkLibrary ||
+                              projectLibrary.files?.name ||
+                              projectLibrary?.fileNames
+                            }
+                            title={
+                              projectLibrary?.fileNames ||
+                              projectLibrary?.linkLibrary
+                            }
+                            size="small"
+                            sx={{
+                              height: "40px",
+                              width: "100%",
+                              marginBottom: "5px",
+                            }}
+                            onChange={(e) =>
+                              handleInputChange(
+                                projectLibrary.id,
+                                "linkLibrary",
+                                e.target.value
+                              )
+                            }
+                            onBlur={handleBlurInput}
+                          />
+                          <span className="text-danger ">{}</span>
+                        </div>
+                        <div
+                          style={{
+                            height: "50px",
+                            display: "flex",
+                            paddingTop: "7px",
+                          }}
+                        >
+                          <input
+                            type="file"
+                            style={{ width: "110px" }}
+                            className="custom-file-input "
+                            id={`fileInput${projectLibrary.id}`}
+                            name="filename"
+                            multiple
+                            // onChange={handleFileChange}
+                            onChange={(e) =>
+                              handleFileChange(e, projectLibrary.id)
+                            }
+                            onBlur={handleBlurInput}
+                          />
+
+                          <button
+                            style={{
+                              width: "30px",
+                              height: "30px",
+                              padding: 0,
+                            }}
+                            className="btn btn-danger"
+                            onClick={() => deleteDiv(projectLibrary.id)}
+                          >
+                            <ClearIcon
+                              sx={{ fontSize: "20px", fontWeight: "bold" }}
+                            />
+                          </button>
+                        </div>
                       </div>
                     ))}
                     <p className="text-danger">{errorLibary}</p>
-                    <Button variant="contained" onClick={createDiv}>
+                    {/* <Button variant="contained" onClick={createDiv}>
                       Thêm
-                    </Button>
+                    </Button> */}
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      style={{ marginBottom: "20px" }}
+                      onClick={createDiv}
+                    >
+                      Thêm
+                    </button>
                   </div>
                 </Container>
-              </TabPanel> */}
+              </TabPanel>
             </TabContext>
             {/* SUBMIT */}
             <div

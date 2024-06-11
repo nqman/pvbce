@@ -20,6 +20,7 @@ import {
   saveEquipmentAPI,
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
+import NavigationButton from "../../../common/NavigationButton";
 
 export default function EditEquipment() {
   const [value, setValue] = useState();
@@ -189,29 +190,33 @@ export default function EditEquipment() {
   };
 
   return value ? ( // check value != null truoc khi render
-    <div className="container">
-      <Link
-        sx={{ marginTop: "20px", fontSize: "16px" }}
-        component="button"
-        variant="body2"
-        onClick={() => {
-          navigate("/catalogue");
-        }}
-      >
-        <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
-        Danh sách thiết bị
-      </Link>
+    <div className="container mt-2 mb-5" style={{ position: "relative" }}>
+      <div style={{ position: "absolute", top: "20px", left: "80px" }}>
+        <NavigationButton url="/catalogue" name="Danh sách thiết bị" />
+      </div>
       <div>
         <Toaster position="top-right" />
-        <h1 className="text-center pt-3">Cập nhật thiết bị</h1>
+        <h1 className="text-center pt-3">CẬP NHẬT THIẾT BỊ</h1>
         <form noValidate onSubmit={handleSaveEquipment}>
           <Box>
             <TabContext value={item}>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <TabList onChange={handleChangeItem}>
-                  <Tab label="THÔNG SỐ CHUNG" value="1" />
-                  <Tab label="THÔNG SỐ KỸ THUẬT" value="2" />
-                  <Tab label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA" value="3" />
+                  <Tab
+                    sx={{ fontWeight: "bold" }}
+                    label="THÔNG SỐ CHUNG"
+                    value="1"
+                  />
+                  <Tab
+                    sx={{ fontWeight: "bold" }}
+                    label="THÔNG SỐ KỸ THUẬT"
+                    value="2"
+                  />
+                  <Tab
+                    sx={{ fontWeight: "bold" }}
+                    label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA"
+                    value="3"
+                  />
                   {/* <Tab label="QR" value="4" /> */}
                 </TabList>
               </Box>
