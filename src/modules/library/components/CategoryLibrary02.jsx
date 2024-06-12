@@ -105,7 +105,10 @@ export default function Categorylibrary02() {
         }
         // NEW
         else {
-          const validate = await validateCategoryAPI(category.name);
+          const validate = await validateCategoryAPI(
+            category.name,
+            "LIBRARY_ITEM_TWO"
+          );
           if (validate) {
             await saveCategoryTwoAPI(category, idSelectedCategoryOne);
             toast.success("Thêm danh mục thành công");

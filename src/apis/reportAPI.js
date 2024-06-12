@@ -47,6 +47,16 @@ export async function selectCategoryAPI(id) {
   }
 }
 
+//lấy danh mục 1 và danh mục 2
+export async function getCategoriesOneAndTwoAPI(type) {
+  try {
+    const resp = await baseAPI.get(`categories/list_categories/${type}`);
+    return resp.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 export async function saveCategoryAPI(category) {
   // debugger;
   try {
@@ -114,10 +124,10 @@ export async function deleteCategoryAPI(id) {
   }
 }
 //validate categoryName
-export async function validateCategoryAPI(categoryName) {
+export async function validateCategoryAPI(categoryName, type) {
   try {
     const resp = await baseAPI.get(
-      `categories/validate/category/${categoryName}`
+      `categories/validate/category/${categoryName}/${type}`
     );
     return resp.data;
   } catch (error) {
