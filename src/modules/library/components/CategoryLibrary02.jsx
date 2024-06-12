@@ -13,6 +13,7 @@ import {
   getCategoriesAPI,
   selectCategoryAPI,
   validateCategoryAPI,
+  saveCategoryTwoAPI,
 } from "../../../apis/reportAPI";
 import {
   DataGrid,
@@ -62,6 +63,7 @@ export default function Categorylibrary02() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory1, setSelectedCategory1] = useState("");
+  const [idSelectedCategoryOne, setIdSelectedCategoryOne] = useState();
   const [errorCategory1, setErrorCategory1] = useState(
     "Vui lòng không bỏ trống"
   );
@@ -70,7 +72,7 @@ export default function Categorylibrary02() {
   const fetchListCategory = async () => {
     try {
       const data = await getCategoriesAPI("LIBRARY_ITEM_TWO");
-      let libraryItemOne = await getCategoriesAPI("Library_ITEM_ONE");
+      let libraryItemOne = await getCategoriesAPI("LIBRARY_ITEM_ONE");
       setLibraryItemOne(libraryItemOne);
       setCategories(data);
       setIsLoading(false);
@@ -83,6 +85,8 @@ export default function Categorylibrary02() {
   const handleSelectCategory1 = async (event, value) => {
     // debugger;
     setSelectedCategory1(value);
+    let idSelected = libraryItemOne.filter((item) => item.name === value);
+    setIdSelectedCategoryOne(idSelected[0]?.id);
     if (value) {
       setErrorCategory1("");
     } else {
@@ -96,14 +100,14 @@ export default function Categorylibrary02() {
       try {
         // EDIT
         if (category.id) {
-          await saveCategoryAPI(category);
+          await saveCategoryTwoAPI(category, idSelectedCategoryOne);
           toast.success("Cập nhật danh mục thành công");
         }
         // NEW
         else {
           const validate = await validateCategoryAPI(category.name);
           if (validate) {
-            await saveCategoryAPI(category);
+            await saveCategoryTwoAPI(category, idSelectedCategoryOne);
             toast.success("Thêm danh mục thành công");
           } else {
             toast.error("Danh mục đã tồn tại!");
