@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
-  saveCategoryAPI,
   deleteCategoryAPI,
   getCategoriesAPI,
   selectCategoryAPI,
@@ -96,7 +95,6 @@ export default function CategoryProject02() {
 
   const handleSaveCategory = async (category) => {
     // debugger;
-    console.log(category, idSelectedCategoryOne);
     if (errorCategory1 === "") {
       try {
         // EDIT
