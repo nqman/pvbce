@@ -9,7 +9,6 @@ import VerifyUser from "./modules/authentication/pages/VerifyUser";
 import CreateEquipment from "./modules/catalogue/components/CreateEquipment/CreateEquipment";
 import EditEquipment from "./modules/catalogue/components/CreateEquipment/EditEquipment";
 import EquipDetails from "./modules/catalogue/components/EquipDetails/EquipDetails";
-import Catalogue from "./modules/catalogue/pages/Catalogue";
 import MainLayout from "./modules/home/components/MainLayout";
 import NotFound from "./modules/home/components/NotFound";
 import Home from "./modules/home/pages/Home";
@@ -31,6 +30,7 @@ import CategoryProject01 from "./modules/report/components/CategoryProject01";
 import CategoryProject02 from "./modules/report/components/CategoryProject02";
 import CategoryLibrary01 from "./modules/library/components/CategoryLibrary01";
 import Categorylibrary02 from "./modules/library/components/CategoryLibrary02";
+import Equipments from "./modules/catalogue/pages/Equipments";
 
 function App() {
   return (
@@ -38,8 +38,12 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/catalogue" element={<Catalogue />}></Route>
-          <Route path="/catalogue/:code" element={<EquipDetails />} />
+          <Route path="/catalogue/equipments" element={<Equipments />}></Route>
+          {/* <Route path="/catalogue/employees" element={<Catalogue />}></Route> */}
+          <Route
+            path="/catalogue/equipments/:code"
+            element={<EquipDetails />}
+          />
           {/* REPORT */}
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />

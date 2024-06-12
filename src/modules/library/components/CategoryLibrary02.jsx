@@ -349,6 +349,7 @@ export default function Categorylibrary02() {
                     pageSizeOptions={[5, 10, 15]}
                     disableRowSelectionOnClick
                     disableColumnFilter
+                    ignoreDiacritics
                   />
                 </div>
               </StyledEngineProvider>
