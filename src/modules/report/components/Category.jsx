@@ -85,7 +85,10 @@ export default function Category() {
       }
       // NEW
       else {
-        const validate = await validateCategoryAPI(category.name);
+        const validate = await validateCategoryAPI(
+          category.name,
+          "QUANTITY_ITEM"
+        );
         if (validate) {
           await saveCategoryAPI(category);
           toast.success("Thêm hạng mục thành công");

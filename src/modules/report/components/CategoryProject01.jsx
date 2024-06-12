@@ -82,7 +82,10 @@ export default function CategoryProject01() {
       }
       // NEW
       else {
-        const validate = await validateCategoryAPI(category.name);
+        const validate = await validateCategoryAPI(
+          category.name,
+          "PROJECT_ITEM_ONE"
+        );
         if (validate) {
           await saveCategoryAPI(category);
           toast.success("Thêm danh mục thành công");

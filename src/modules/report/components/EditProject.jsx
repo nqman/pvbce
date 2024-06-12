@@ -22,6 +22,7 @@ import {
   selectProjectAPI,
   getCategoriesAndCategoriesOfProjectAPI,
   getCategoriesAPI,
+  getCategoriesOneAndTwoAPI,
 } from "../../../apis/reportAPI";
 
 //Calendar
@@ -289,6 +290,7 @@ export default function EditProject() {
       },
     ]);
   const [categoryOne, setCategoryOne] = useState([]);
+  const [categoryOneTwo, setCategoryOneTwo] = useState([]);
   const [categoryTwo, setCategoryTwo] = useState([]);
   const [selectedCategoryOne, setSelectedCategoryOne] = useState({
     id: 0,
@@ -339,6 +341,12 @@ export default function EditProject() {
     // debugger;
     if (key === "categoryOne") {
       setSelectedCategoryOne({ id: id, name: value });
+      let selectedCategory = categoryOneTwo.filter(
+        (category) => category.name === value
+      );
+      setCategoryTwo({ id: id, name: selectedCategory[0].categories });
+      console.log(id);
+      console.log(selectedCategory[0].categories);
     }
     if (key === "categoryTwo") {
       setSelectedCategoryTwo({ id: id, name: value });
@@ -388,9 +396,12 @@ export default function EditProject() {
   useEffect(() => {
     async function fetchMyAPI() {
       let categoryOne = await getCategoriesAPI("PROJECT_ITEM_ONE");
-      let categoryTwo = await getCategoriesAPI("PROJECT_ITEM_TWO");
+      let categoryOneTwo = await getCategoriesOneAndTwoAPI("PROJECT_ITEM_ONE");
+      // let categoryTwo = await getCategoriesAPI("PROJECT_ITEM_TWO");
       setCategoryOne(categoryOne);
-      setCategoryTwo(categoryTwo);
+      // setCategoryTwo(categoryTwo);
+      setCategoryOneTwo(categoryOneTwo);
+      console.log(categoryOneTwo);
     }
     fetchMyAPI();
   }, [idProject]);
@@ -599,21 +610,6 @@ export default function EditProject() {
                         }}
                         key={projectLibrary.id}
                       >
-                        {/* <TextField
-                          placeholder="Thông số"
-                          id="outlined-size-small"
-                          value={projectLibrary.name}
-                          size="small"
-                          sx={{ marginRight: "20px", width: "50%" }}
-                          onChange={(e) =>
-                            handleInputChange(
-                              projectLibrary.id,
-                              "name",
-                              e.target.value
-                            )
-                          }
-                        /> */}
-
                         <div
                           className=" me-4"
                           style={{
@@ -628,7 +624,9 @@ export default function EditProject() {
                               height: "40px",
                             }}
                             // value={projectLibrary.categoryOne}
-                            options={categoryOne?.map((option) => option.name)}
+                            options={categoryOneTwo?.map(
+                              (option) => option.name
+                            )}
                             onChange={(e, value) =>
                               handleInputChange(
                                 projectLibrary.id,
@@ -644,10 +642,8 @@ export default function EditProject() {
                             {errorCategoryOne}
                           </span>
                         </div>
-                        {(selectedCategoryOne.id === projectLibrary.id &&
-                          selectedCategoryOne.name === "Báo cáo ngày") ||
-                        (selectedCategoryOne.id === projectLibrary.id &&
-                          selectedCategoryOne.name === "Báo cáo tuần") ? (
+                        {categoryTwo.name?.length > 0 &&
+                        categoryTwo.id === projectLibrary.id ? (
                           <div
                             className=" me-4"
                             style={{ height: "50px", width: "300px" }}
@@ -659,7 +655,7 @@ export default function EditProject() {
                                 height: "40px",
                               }}
                               disablePortal
-                              options={categoryTwo?.map(
+                              options={categoryTwo.name?.map(
                                 (option) => option.name
                               )}
                               onChange={(e, value) =>
