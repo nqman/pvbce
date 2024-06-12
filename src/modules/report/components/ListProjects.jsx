@@ -170,6 +170,7 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
             pagination: { paginationModel: { pageSize: 5 } },
           }}
           pageSizeOptions={[5, 10, 15]}
+          ignoreDiacritics
         />
       </div>
     </StyledEngineProvider>

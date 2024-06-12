@@ -350,7 +350,7 @@ const ProjectDetail = () => {
                 ))}
               </ul>
             </List>
-            <>
+            {/* <>
               <Button
                 variant="contained"
                 sx={{ textTransform: "initial", marginLeft: "20px" }}
@@ -505,7 +505,7 @@ const ProjectDetail = () => {
                   </button>
                 </Modal.Footer>
               </Modal>
-            </>
+            </> */}
           </Grid>
         </Grid>
       </Container>

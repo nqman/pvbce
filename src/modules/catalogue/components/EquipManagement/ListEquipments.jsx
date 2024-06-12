@@ -25,7 +25,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
   const navigate = useNavigate();
   //Xem chi tiết thiết bị
   const handleRead = (id) => {
-    navigate(`/catalogue/${id}`);
+    navigate(`/catalogue/equipments/${id}`);
   };
   function CustomPagination() {
     const apiRef = useGridApiContext();
@@ -181,6 +181,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
             pagination: { paginationModel: { pageSize: 5 } },
           }}
           pageSizeOptions={[5, 10, 15]}
+          ignoreDiacritics
         />
       </div>
     </StyledEngineProvider>

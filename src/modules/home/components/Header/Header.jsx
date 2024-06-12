@@ -13,7 +13,10 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ConstructionIcon from "@mui/icons-material/Construction";
+import GroupsIcon from "@mui/icons-material/Groups";
 import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import { useNavigate } from "react-router-dom";
 import { Logout, Person, PersonSearch } from "@mui/icons-material";
@@ -23,7 +26,12 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+} from "@mui/material";
 import "./style.css";
 
 function Header() {
@@ -83,7 +91,7 @@ function Header() {
       boxShadow:
         "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
       "& .MuiMenu-list": {
-        padding: "4px 0",
+        padding: "0px 0",
       },
       "& .MuiMenuItem-root": {
         "& .MuiSvgIcon-root": {
@@ -100,34 +108,54 @@ function Header() {
       },
     },
   }));
-
+  //RESPONSIVE
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  const handleSignIn = () => {
+    navigate("/signin");
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null);
+  const [subsubmenuAnchorEl, setSubsubmenuAnchorEl] = useState(null);
+
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+    handleCloseSubmenu();
+  };
+
   const handleOpenSubmenu = (event) => {
     setSubmenuAnchorEl(event.currentTarget);
   };
 
   const handleCloseSubmenu = () => {
     setSubmenuAnchorEl(null);
+    handleCloseSubsubmenu();
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleOpenSubsubmenu = (event) => {
+    setSubsubmenuAnchorEl(event.currentTarget);
   };
-  const handleSignIn = () => {
-    navigate("/signin");
+
+  const handleCloseSubsubmenu = () => {
+    setSubsubmenuAnchorEl(null);
   };
 
   const navigate = useNavigate();
@@ -150,19 +178,20 @@ function Header() {
         break;
     }
   };
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  //Menu Setup(cài đặt)
+  const [anchorElSetup, setAnchorElSetup] = React.useState(null);
+  const openSetup = Boolean(anchorElSetup);
+  const handleClickSetup = (event) => {
+    setAnchorElSetup(event.currentTarget);
   };
-  const handleNavigate = (value) => {
-    setAnchorEl(null);
+  const handleNavigateSetup = (value) => {
+    setAnchorElSetup(null);
     navigate(`setup/${value}`);
   };
-  const handleClose = (value) => {
-    setAnchorEl(null);
+  const handleCloseSetup = (value) => {
+    setAnchorElSetup(null);
   };
-
+  // Menu báo cáo, dự án
   const [anchorElReport, setAnchorElReport] = React.useState(null);
   const openReport = Boolean(anchorElReport);
   const handleClickReport = (event) => {
@@ -174,6 +203,19 @@ function Header() {
   };
   const handleCloseReport = (value) => {
     setAnchorElReport(null);
+  };
+  //menu catalogue
+  const [anchorElCatalogue, setAnchorElCatalogue] = React.useState(null);
+  const openCatalogue = Boolean(anchorElCatalogue);
+  const handleClickCatalogue = (event) => {
+    setAnchorElCatalogue(event.currentTarget);
+  };
+  const handleNavigateCatalogue = (value) => {
+    setAnchorElCatalogue(null);
+    navigate(`catalogue/${value}`);
+  };
+  const handleCloseCatalogue = (value) => {
+    setAnchorElCatalogue(null);
   };
   return (
     <AppBar
@@ -252,9 +294,11 @@ function Header() {
                 <>
                   <Button
                     id="demo-customized-button"
-                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-controls={
+                      openReport ? "demo-customized-menu" : undefined
+                    }
                     aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
+                    aria-expanded={openReport ? "true" : undefined}
                     disableElevation
                     onClick={handleClickReport}
                     endIcon={<KeyboardArrowDownIcon />}
@@ -329,11 +373,13 @@ function Header() {
                 <>
                   <Button
                     id="demo-customized-button"
-                    aria-controls={open ? "demo-customized-menu" : undefined}
+                    aria-controls={
+                      openSetup ? "demo-customized-menu" : undefined
+                    }
                     aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
+                    aria-expanded={openSetup ? "true" : undefined}
                     disableElevation
-                    onClick={handleClick}
+                    onClick={handleClickSetup}
                     endIcon={<KeyboardArrowDownIcon />}
                     sx={{
                       color: "black",
@@ -349,19 +395,19 @@ function Header() {
                     MenuListProps={{
                       "aria-labelledby": "demo-customized-button",
                     }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
+                    anchorEl={anchorElSetup}
+                    open={openSetup}
+                    onClose={handleCloseSetup}
                   >
                     <MenuItem
-                      onClick={() => handleNavigate("categorylist")}
+                      onClick={() => handleNavigateSetup("categorylist")}
                       disableRipple
                     >
                       <CategoryIcon />
                       Hạng mục
                     </MenuItem>
                     <MenuItem
-                      onClick={() => handleNavigate("costlist")}
+                      onClick={() => handleNavigateSetup("costlist")}
                       disableRipple
                     >
                       <PriceChangeIcon />
@@ -420,10 +466,11 @@ function Header() {
             (role === "Admin" || role === "Employee") ? (
               <>
                 <Button
-                  id="demo-customized-button"
-                  aria-controls={open ? "demo-customized-menu" : undefined}
+                  aria-controls={
+                    openReport ? "demo-customized-menu" : undefined
+                  }
                   aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
+                  aria-expanded={openReport ? "true" : undefined}
                   disableElevation
                   onClick={handleClickReport}
                   endIcon={<KeyboardArrowDownIcon />}
@@ -453,7 +500,13 @@ function Header() {
                     <FormatListNumberedIcon />
                     Danh sách dự án
                   </MenuItem>
-
+                  <hr
+                    style={{
+                      margin: 0,
+                      border: "none",
+                      borderTop: "1px solid black",
+                    }}
+                  />
                   <MenuItem
                     onClick={() => handleNavigateReport("rpcosttotal")}
                     disableRipple
@@ -468,10 +521,12 @@ function Header() {
             )}
 
             <Button
-              key={"CATALOGUE"}
-              onClick={
-                handleCloseNavMenu && (() => handleChangeNavBar("CATALOGUE"))
-              }
+              aria-controls={openCatalogue ? "demo-customized-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={openCatalogue ? "true" : undefined}
+              disableElevation
+              onClick={handleClickCatalogue}
+              endIcon={<KeyboardArrowDownIcon />}
               sx={{
                 color: "black",
                 fontWeight: "bold",
@@ -481,6 +536,44 @@ function Header() {
             >
               CATALOGUE
             </Button>
+            <StyledMenu
+              id="demo-customized-menu"
+              MenuListProps={{
+                "aria-labelledby": "demo-customized-button",
+              }}
+              anchorEl={anchorElCatalogue}
+              open={openCatalogue}
+              onClose={handleCloseCatalogue}
+              disableScrollLock={true}
+            >
+              <MenuItem
+                onClick={() => handleNavigateCatalogue("equipments")}
+                disableRipple
+              >
+                <ConstructionIcon />
+                Thiết bị
+              </MenuItem>
+              <hr
+                style={{
+                  margin: 0,
+                  border: "none",
+                  borderTop: "1px solid black",
+                }}
+              />
+              {role &&
+              role !== "null" &&
+              (role === "Admin" || role === "Employee") ? (
+                <MenuItem
+                  onClick={() => handleNavigateCatalogue("employeees")}
+                  disableRipple
+                >
+                  <GroupsIcon />
+                  Nhân sự
+                </MenuItem>
+              ) : (
+                ""
+              )}
+            </StyledMenu>
             <Button
               key={"THƯ VIỆN"}
               onClick={
@@ -501,11 +594,11 @@ function Header() {
               <>
                 <Button
                   id="demo-customized-button"
-                  aria-controls={open ? "demo-customized-menu" : undefined}
+                  aria-controls={openSetup ? "demo-customized-menu" : undefined}
                   aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
+                  aria-expanded={openSetup ? "true" : undefined}
                   disableElevation
-                  onClick={handleClick}
+                  onClick={handleClickSetup}
                   endIcon={<KeyboardArrowDownIcon />}
                   sx={{
                     color: "black",
@@ -521,73 +614,112 @@ function Header() {
                   MenuListProps={{
                     "aria-labelledby": "demo-customized-button",
                   }}
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
+                  anchorEl={anchorElSetup}
+                  open={openSetup}
+                  onClose={handleCloseSetup}
                   disableScrollLock={true}
                 >
                   <MenuItem
-                    onClick={() => handleNavigate("categorylist")}
+                    onClick={() => handleNavigateSetup("categorylist")}
                     disableRipple
                   >
                     <CategoryIcon />
                     Hạng mục
                   </MenuItem>
+                  <hr
+                    style={{
+                      margin: 0,
+                      border: "none",
+                      borderTop: "1px solid black",
+                    }}
+                  />
                   <MenuItem
-                    onClick={() => handleNavigate("costlist")}
+                    onClick={() => handleNavigateSetup("costlist")}
                     disableRipple
                   >
                     <PriceChangeIcon />
                     Chi phí
                   </MenuItem>
-
-                  <Accordion>
-                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                      <Typography>Danh mục dự án</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Box
-                        sx={{ display: "block", mb: 1, cursor: "pointer" }}
-                        variant="outlined"
-                        onClick={() => handleNavigate("category01-project")}
+                  <hr
+                    style={{
+                      margin: 0,
+                      border: "none",
+                      borderTop: "1px solid black",
+                    }}
+                  />
+                  <details style={{ padding: "2px 0 1px 13px" }}>
+                    <summary>
+                      {" "}
+                      <ArrowDropDownIcon
+                        sx={{
+                          marginRight: "8px",
+                          fontSize: "25px",
+                          marginBottom: "5px",
+                        }}
+                      />
+                      Danh mục dự án
+                    </summary>
+                    <li>
+                      <MenuItem
+                        onClick={() =>
+                          handleNavigateSetup("category01-project")
+                        }
                       >
-                        <ArrowRightIcon />
-                        Danh mục 1
-                      </Box>
-                      <Box
-                        sx={{ display: "block", cursor: "pointer" }}
-                        variant="outlined"
-                        onClick={() => handleNavigate("category02-project")}
+                        <KeyboardArrowRightIcon />
+                        <span style={{ marginLeft: "-5px" }}>Danh mục 1</span>
+                      </MenuItem>
+                    </li>
+                    <li>
+                      <MenuItem
+                        onClick={() =>
+                          handleNavigateSetup("category02-project")
+                        }
                       >
-                        <ArrowRightIcon />
-                        Danh mục 2
-                      </Box>
-                    </AccordionDetails>
-                  </Accordion>
-
-                  <Accordion>
-                    <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
-                      <Typography>Danh mục thư viện</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Box
-                        sx={{ display: "block", mb: 1, cursor: "pointer" }}
-                        variant="outlined"
-                        onClick={() => handleNavigate("category01-library")}
+                        <KeyboardArrowRightIcon />
+                        <span style={{ marginLeft: "-5px" }}>Danh mục 2</span>
+                      </MenuItem>
+                    </li>
+                  </details>
+                  <hr
+                    style={{
+                      margin: 0,
+                      border: "none",
+                      borderTop: "1px solid black",
+                    }}
+                  />
+                  <details style={{ padding: "2px 0 1px 13px" }}>
+                    <summary>
+                      {" "}
+                      <ArrowDropDownIcon
+                        sx={{
+                          marginRight: "8px",
+                          fontSize: "25px",
+                          marginBottom: "5px",
+                        }}
+                      />
+                      Danh mục thư viện
+                    </summary>
+                    <li>
+                      <MenuItem
+                        onClick={() =>
+                          handleNavigateSetup("category01-library")
+                        }
                       >
-                        <ArrowRightIcon />
-                        Danh mục 1
-                      </Box>
-                      <Box
-                        sx={{ display: "block", cursor: "pointer" }}
-                        variant="outlined"
-                        onClick={() => handleNavigate("category02-library")}
+                        <KeyboardArrowRightIcon />
+                        <span style={{ marginLeft: "-5px" }}>Danh mục 1</span>
+                      </MenuItem>
+                    </li>
+                    <li>
+                      <MenuItem
+                        onClick={() =>
+                          handleNavigateSetup("category02-library")
+                        }
                       >
-                        <ArrowRightIcon />
-                        Danh mục 2
-                      </Box>
-                    </AccordionDetails>
-                  </Accordion>
+                        <KeyboardArrowRightIcon />
+                        <span style={{ marginLeft: "-5px" }}>Danh mục 2</span>
+                      </MenuItem>
+                    </li>
+                  </details>
                 </StyledMenu>
               </>
             ) : (
@@ -618,6 +750,7 @@ function Header() {
                   {user?.name}
                 </Button>
                 <StyledMenu
+                  disableScrollLock={true}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
@@ -636,14 +769,30 @@ function Header() {
                     <PersonSearch />
                     Thông tin cá nhân
                   </MenuItem>
+                  <hr
+                    style={{
+                      margin: 0,
+                      border: "none",
+                      borderTop: "1px solid black",
+                    }}
+                  />
                   {user?.role === "Admin" && (
-                    <MenuItem
-                      onClick={() => navigate("/user-management")}
-                      disableRipple
-                    >
-                      <PersonSearch />
-                      Quản lý tài khoản
-                    </MenuItem>
+                    <>
+                      <MenuItem
+                        onClick={() => navigate("/user-management")}
+                        disableRipple
+                      >
+                        <PersonSearch />
+                        Quản lý tài khoản
+                      </MenuItem>
+                      <hr
+                        style={{
+                          margin: 0,
+                          border: "none",
+                          borderTop: "1px solid black",
+                        }}
+                      />
+                    </>
                   )}
                   <MenuItem onClick={_onlogout} disableRipple>
                     <Logout />
