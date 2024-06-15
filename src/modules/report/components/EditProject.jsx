@@ -35,6 +35,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../home/components/Loading/Loading";
 import NavigationButton from "../../common/NavigationButton";
+import ProjectLibraryItem from "./ProjectLibraryItem";
 
 const newEmptyProjectDetail = () => {
   return {
@@ -44,7 +45,16 @@ const newEmptyProjectDetail = () => {
     quantity: "",
     price: "",
     amount: "",
-    // date: "",
+  };
+};
+const newEmptyProjectLibrary = () => {
+  return {
+    id: -Date.now(),
+    categoryOne: "",
+    categoryTwo: "",
+    linkLibrary: "",
+    files: [],
+    fileNames: "",
   };
 };
 
@@ -67,6 +77,9 @@ export default function EditProject() {
   const [categories, setCategories] = useState([]);
   const [remainingCategories, setRemainingCategories] = useState([]);
   const [projectItems, setProjectItems] = useState([newEmptyProjectDetail()]);
+  const [projectLibraryItems, setProjectLibraryItems] = useState([
+    newEmptyProjectLibrary(),
+  ]);
   const [disableAddItem, setDisableAddItem] = useState(false);
   const [countItem, setCountItem] = useState(1);
 
@@ -83,7 +96,8 @@ export default function EditProject() {
       setTimeDiff(data?.totalTime);
       setProjectItems(data.rpQuantityAndRevenueDetails);
       setCountItem(data.rpQuantityAndRevenueDetails?.length);
-      setRpQuantityAndRevenueLibraries(data.rpQuantityAndRevenueLibraries);
+      setProjectLibraryItems(data.rpQuantityAndRevenueLibraries);
+      // setRpQuantityAndRevenueLibraries(data.rpQuantityAndRevenueLibraries);
       setCategories(categories);
 
       let remaining = [];
@@ -128,6 +142,16 @@ export default function EditProject() {
       return [...oldProjectItems, newEmptyProjectDetail()];
     });
   };
+  const addProjectLibraryItem = () => {
+    // let tempCountItem = countItem + 1;
+    // setCountItem(tempCountItem);
+    // if (categories.length === tempCountItem) {
+    //   setDisableAddItem(true);
+    // }
+    setProjectLibraryItems((oldProjectLibrartItems) => {
+      return [...oldProjectLibrartItems, newEmptyProjectLibrary()];
+    });
+  };
   const handleCategorySelect = (selectedCategory) => {
     // debugger;
 
@@ -162,7 +186,19 @@ export default function EditProject() {
       return [...newProjectItems];
     });
   };
-
+  const handleProjectLibraryChange = (detail) => {
+    // debugger;
+    setProjectLibraryItems((oldProjectItems) => {
+      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
+      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
+      newProjectItems.splice(index, 1, detail);
+      setProject({
+        ...project,
+        rpQuantityAndRevenueLibraries: newProjectItems,
+      });
+      return [...newProjectItems];
+    });
+  };
   const handleRemoveProjectDetail = (detail) => {
     let tempCountItem = countItem - 1;
     setCountItem(tempCountItem);
@@ -194,6 +230,24 @@ export default function EditProject() {
       setProject({
         ...project,
         rpQuantityAndRevenueDetails: newProjectItems,
+      });
+      return newProjectItems;
+    });
+  };
+  const handleRemoveProjectLibrary = (detail) => {
+    // let tempCountItem = countItem - 1;
+    // setCountItem(tempCountItem);
+    // if (categories.length !== tempCountItem) {
+    //   setDisableAddItem(false);
+    // }
+
+    setProjectItems((oldProjectItems) => {
+      const newProjectItems = [
+        ...oldProjectItems.filter((el) => detail.id !== el.id),
+      ];
+      setProject({
+        ...project,
+        rpQuantityAndRevenueLibraries: newProjectItems,
       });
       return newProjectItems;
     });
@@ -278,130 +332,12 @@ export default function EditProject() {
   }, [endDate]);
 
   //Thư viện dự án ---projectDiary
-
-  const [rpQuantityAndRevenueLibraries, setRpQuantityAndRevenueLibraries] =
-    useState([
-      {
-        id: -Date.now(),
-        categoryOne: "",
-        categoryTwo: "",
-        linkLibrary: "",
-        files: [],
-      },
-    ]);
-  const [categoryOne, setCategoryOne] = useState([]);
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
-  const [categoryTwo, setCategoryTwo] = useState([]);
-  const [selectedCategoryOne, setSelectedCategoryOne] = useState({
-    id: 0,
-    name: "",
-  });
-  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState({
-    id: 0,
-    name: "",
-  });
-  const [errorCategoryOne, setErrorCategoryOne] = useState(
-    "Vui lòng không bỏ trống"
-  );
-  const [errorCategoryTwo, setErrorCategoryTwo] = useState(
-    "Vui lòng không bỏ trống"
-  );
-  const [errorFile, setErrorFile] = useState("Vui lòng không bỏ trống");
-  const [errorType, setErrorType] = useState("");
-  const [errorLibary, setErrorLibrary] = useState("");
-
-  const createDiv = () => {
-    const newLibraryDetail = {
-      id: -Date.now(),
-      categoryOne: "",
-      categoryTwo: "",
-      linkLibrary: "",
-      files: [],
-      fileNames: [],
-    };
-    setRpQuantityAndRevenueLibraries([
-      ...rpQuantityAndRevenueLibraries,
-      newLibraryDetail,
-    ]);
-  };
-
-  const deleteDiv = (id) => {
-    const updatedRpQuantityAndRevenueLibraries =
-      rpQuantityAndRevenueLibraries.filter(
-        (productDetail) => productDetail.id !== id
-      );
-    setRpQuantityAndRevenueLibraries(updatedRpQuantityAndRevenueLibraries);
-    setProject({
-      ...project,
-      rpQuantityAndRevenueLibraries: updatedRpQuantityAndRevenueLibraries,
-    });
-  };
-
-  const handleInputChange = (id, key, value) => {
-    // debugger;
-    if (key === "categoryOne") {
-      setSelectedCategoryOne({ id: id, name: value });
-      let selectedCategory = categoryOneTwo.filter(
-        (category) => category.name === value
-      );
-      setCategoryTwo({ id: id, name: selectedCategory[0].categories });
-      console.log(id);
-      console.log(selectedCategory[0].categories);
-    }
-    if (key === "categoryTwo") {
-      setSelectedCategoryTwo({ id: id, name: value });
-    }
-
-    if (value) {
-      setErrorCategoryOne("");
-    } else {
-      setErrorCategoryOne("Vui lòng không bỏ trống");
-    }
-    const updatedRpQuantityAndRevenueLibraries =
-      rpQuantityAndRevenueLibraries.map((projectLibrary) =>
-        projectLibrary.id === id
-          ? { ...projectLibrary, [key]: value }
-          : projectLibrary
-      );
-    setRpQuantityAndRevenueLibraries(updatedRpQuantityAndRevenueLibraries);
-  };
-
-  const handleFileChange = (e, id) => {
-    const chosenFiles = [...e.target.files];
-    // const chosenfileNames = [...e.target.files.name];
-
-    let chosenfileNames = chosenFiles.map((file) => file.name);
-    // console.log(fileNames.join(";"));
-    const updatedRpQuantityAndRevenueLibraries =
-      rpQuantityAndRevenueLibraries.map((projectLibrary) =>
-        projectLibrary.id === id
-          ? {
-              ...projectLibrary,
-              files: chosenFiles,
-              fileNames: chosenfileNames.join(";"),
-            }
-          : projectLibrary
-      );
-
-    setRpQuantityAndRevenueLibraries(updatedRpQuantityAndRevenueLibraries);
-
-    // console.log(updatedRpQuantityAndRevenueLibraries);
-  };
-  const handleBlurInput = () => {
-    setProject({
-      ...project,
-      rpQuantityAndRevenueLibraries: rpQuantityAndRevenueLibraries,
-    });
-  };
   useEffect(() => {
     async function fetchMyAPI() {
-      let categoryOne = await getCategoriesAPI("PROJECT_ITEM_ONE");
       let categoryOneTwo = await getCategoriesOneAndTwoAPI("PROJECT_ITEM_ONE");
-      // let categoryTwo = await getCategoriesAPI("PROJECT_ITEM_TWO");
-      setCategoryOne(categoryOne);
-      // setCategoryTwo(categoryTwo);
       setCategoryOneTwo(categoryOneTwo);
-      console.log(categoryOneTwo);
+      // console.log(categoryOneTwo);
     }
     fetchMyAPI();
   }, [idProject]);
@@ -413,13 +349,13 @@ export default function EditProject() {
       toast.error("Vui lòng nhập tên dự án");
       return;
     }
-    console.log(project);
+    // console.log(project);
     try {
       const data = await saveProjectAPI(project);
       if (data) {
         setIsLoading(true);
         toast.success("Cập nhật dự án thành công");
-        navigate("/report/listprojects");
+        // navigate("/report/listprojects");
       }
     } catch (error) {
       console.log(error);
@@ -600,163 +536,21 @@ export default function EditProject() {
               <TabPanel value="2">
                 <Container className="">
                   <div>
-                    {rpQuantityAndRevenueLibraries?.map((projectLibrary) => (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "start",
-                          marginBottom: "5px",
-                          // height: "30px",
-                        }}
-                        key={projectLibrary.id}
-                      >
-                        <div
-                          className=" me-4"
-                          style={{
-                            height: "50px",
-                            width: "300px",
-                          }}
-                        >
-                          <Autocomplete
-                            size="small"
-                            sx={{
-                              display: "block",
-                              height: "40px",
-                            }}
-                            // value={projectLibrary.categoryOne}
-                            options={categoryOneTwo?.map(
-                              (option) => option.name
-                            )}
-                            onChange={(e, value) =>
-                              handleInputChange(
-                                projectLibrary.id,
-                                "categoryOne",
-                                value
-                              )
-                            }
-                            renderInput={(params) => (
-                              <TextField {...params} placeholder="Danh mục 1" />
-                            )}
-                          />
-                          <span className="text-danger  ">
-                            {errorCategoryOne}
-                          </span>
-                        </div>
-                        {categoryTwo.name?.length > 0 &&
-                        categoryTwo.id === projectLibrary.id ? (
-                          <div
-                            className=" me-4"
-                            style={{ height: "50px", width: "300px" }}
-                          >
-                            <Autocomplete
-                              size="small"
-                              sx={{
-                                display: "block",
-                                height: "40px",
-                              }}
-                              disablePortal
-                              options={categoryTwo.name?.map(
-                                (option) => option.name
-                              )}
-                              onChange={(e, value) =>
-                                handleInputChange(
-                                  projectLibrary.id,
-                                  "categoryTwo",
-                                  value
-                                )
-                              }
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  placeholder="Danh mục 2"
-                                />
-                              )}
-                            />
-                            <span className="text-danger ">
-                              {errorCategoryTwo}
-                            </span>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                        <div
-                          className=" me-4"
-                          style={{ height: "50px", width: "300px" }}
-                        >
-                          <TextField
-                            placeholder="Nội dung"
-                            value={
-                              projectLibrary?.linkLibrary ||
-                              projectLibrary.files?.name ||
-                              projectLibrary?.fileNames
-                            }
-                            title={
-                              projectLibrary?.fileNames ||
-                              projectLibrary?.linkLibrary
-                            }
-                            size="small"
-                            sx={{
-                              height: "40px",
-                              width: "100%",
-                              marginBottom: "5px",
-                            }}
-                            onChange={(e) =>
-                              handleInputChange(
-                                projectLibrary.id,
-                                "linkLibrary",
-                                e.target.value
-                              )
-                            }
-                            onBlur={handleBlurInput}
-                          />
-                          <span className="text-danger ">{}</span>
-                        </div>
-                        <div
-                          style={{
-                            height: "50px",
-                            display: "flex",
-                            paddingTop: "7px",
-                          }}
-                        >
-                          <input
-                            type="file"
-                            style={{ width: "110px" }}
-                            className="custom-file-input "
-                            id={`fileInput${projectLibrary.id}`}
-                            name="filename"
-                            multiple
-                            // onChange={handleFileChange}
-                            onChange={(e) =>
-                              handleFileChange(e, projectLibrary.id)
-                            }
-                            onBlur={handleBlurInput}
-                          />
-
-                          <button
-                            style={{
-                              width: "30px",
-                              height: "30px",
-                              padding: 0,
-                            }}
-                            className="btn btn-danger"
-                            onClick={() => deleteDiv(projectLibrary.id)}
-                          >
-                            <ClearIcon
-                              sx={{ fontSize: "20px", fontWeight: "bold" }}
-                            />
-                          </button>
-                        </div>
-                      </div>
+                    {projectLibraryItems.map((detail) => (
+                      <ProjectLibraryItem
+                        key={detail.id}
+                        detail={detail}
+                        categoryOneTwo={categoryOneTwo}
+                        onChange={handleProjectLibraryChange}
+                        onRemove={handleRemoveProjectLibrary}
+                      />
                     ))}
-                    <p className="text-danger">{errorLibary}</p>
-                    {/* <Button variant="contained" onClick={createDiv}>
-                      Thêm
-                    </Button> */}
+
                     <button
                       type="button"
                       className="btn btn-primary"
                       style={{ marginBottom: "20px" }}
-                      onClick={createDiv}
+                      onClick={addProjectLibraryItem}
                     >
                       Thêm
                     </button>

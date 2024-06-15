@@ -67,7 +67,7 @@ export default function CategoryLibrary01() {
     }
   };
 
-  const handleSaveCategoryOneLibrary = async (category) => {
+  const handleSaveCategory = async (category) => {
     // debugger;
     // console.log(category);
     try {
@@ -191,7 +191,7 @@ export default function CategoryLibrary01() {
                     alignItems: "center",
                     marginBottom: "10px",
                   }}
-                  onSubmit={handleSubmit(handleSaveCategoryOneLibrary)}
+                  onSubmit={handleSubmit(handleSaveCategory)}
                 >
                   <div className=" w-50 me-3" style={{ height: "50px" }}>
                     <input
