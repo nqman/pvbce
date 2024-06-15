@@ -62,14 +62,16 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
     <StyledEngineProvider injectFirst>
       <div
         style={{
-          height: 500,
+          // height: 500,
           width: "100%",
           margin: "auto",
           overflow: "hidden",
         }}
       >
         <DataGrid
-          style={{ padding: 10 }}
+          style={{
+            paddingTop: "10px",
+          }}
           rows={rows.map((row, index) => ({
             ...row,
             id: row.id,
@@ -94,7 +96,7 @@ export default function ListEquipments({ rows, onEdit, onDelete, role }) {
                 />
               ),
             },
-            { field: "name", headerName: "TÊN THIẾT BỊ", width: 200 },
+            { field: "name", headerName: "TÊN THIẾT BỊ", width: 220 },
             { field: "divideCode", headerName: "MÃ THIẾT BỊ", width: 150 },
             {
               field: "constructionProject",

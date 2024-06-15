@@ -245,16 +245,13 @@ export default function Category() {
               <StyledEngineProvider injectFirst>
                 <div
                   style={{
-                    height: 450,
+                    // height: 450,
                     width: "100%",
                     margin: "auto",
                     overflow: "hidden",
                   }}
                 >
                   <DataGrid
-                    style={{
-                      padding: 10,
-                    }}
                     rows={categories.map((row, index) => ({
                       ...row,
                       id: row.id,
@@ -262,7 +259,7 @@ export default function Category() {
                     }))}
                     columns={[
                       { field: "index", headerName: "STT", width: 100 },
-                      { field: "name", headerName: "TÊN HẠNG MỤC", width: 680 },
+                      { field: "name", headerName: "TÊN HẠNG MỤC", width: 700 },
                       { field: "unit", headerName: "ĐƠN VỊ", width: 200 },
                       {
                         field: "action",
@@ -324,6 +321,7 @@ export default function Category() {
                     }}
                     pageSizeOptions={[5, 10, 15]}
                     disableRowSelectionOnClick
+                    ignoreDiacritics
                   />
                 </div>
               </StyledEngineProvider>
