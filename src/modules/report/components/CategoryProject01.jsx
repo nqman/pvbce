@@ -232,16 +232,13 @@ export default function CategoryProject01() {
               <StyledEngineProvider injectFirst>
                 <div
                   style={{
-                    height: 450,
+                    // height: 450,
                     width: "100%",
                     margin: "auto",
                     overflow: "hidden",
                   }}
                 >
                   <DataGrid
-                    style={{
-                      padding: 10,
-                    }}
                     rows={categories.map((row, index) => ({
                       ...row,
                       id: row.id,
@@ -249,7 +246,7 @@ export default function CategoryProject01() {
                     }))}
                     columns={[
                       { field: "index", headerName: "STT", width: 100 },
-                      { field: "name", headerName: "TÊN DANH MỤC", width: 880 },
+                      { field: "name", headerName: "TÊN DANH MỤC", width: 900 },
                       {
                         field: "action",
                         headerName: "TÙY CHỌN",

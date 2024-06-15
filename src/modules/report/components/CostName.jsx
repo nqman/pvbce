@@ -228,16 +228,13 @@ export default function CostName() {
               <StyledEngineProvider injectFirst>
                 <div
                   style={{
-                    height: 450,
+                    // height: 450,
                     width: "100%",
                     margin: "auto",
                     overflow: "hidden",
                   }}
                 >
                   <DataGrid
-                    style={{
-                      padding: 10,
-                    }}
                     rows={costs.map((row, index) => ({
                       ...row,
                       id: row.id,
@@ -245,7 +242,7 @@ export default function CostName() {
                     }))}
                     columns={[
                       { field: "index", headerName: "STT", width: 100 },
-                      { field: "name", headerName: "TÊN CHI PHÍ", width: 880 },
+                      { field: "name", headerName: "TÊN CHI PHÍ", width: 900 },
                       {
                         field: "action",
                         headerName: "TÙY CHỌN",

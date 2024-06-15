@@ -21,7 +21,13 @@ import { useNavigate } from "react-router-dom";
 import { Box, Pagination, PaginationItem } from "@mui/material";
 import "./style.css";
 
-export default function ListEquipments({ onDelete, listDocs, role }) {
+export default function ListEquipments({
+  onDelete,
+  listDocs,
+  role,
+  selectedCategoryOne,
+  selectedCategoryTwo,
+}) {
   const rows = listDocs;
   const getPdf = async (id, type) => {
     try {
@@ -41,7 +47,6 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
         shape="rounded"
         page={page + 1}
         count={pageCount}
-        // @ts-expect-error
         renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
         onChange={(event, value) => apiRef.current.setPage(value - 1)}
       />
@@ -64,22 +69,30 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
     <StyledEngineProvider injectFirst>
       <div
         style={{
-          height: 500,
+          // height: "",
           width: "100%",
           margin: "auto",
           overflow: "hidden",
         }}
       >
         <DataGrid
-          style={{ padding: 10, borderTop: 0, borderRadius: "0 0 5px 5px" }}
+          style={{
+            paddingTop: "10px",
+            borderTop: 0,
+            borderRadius: "0 0 5px 5px",
+          }}
           rows={rows.map((row, index) => ({
             ...row,
             id: row.id,
             index: index + 1,
           }))}
           columns={[
-            { field: "index", headerName: "STT", width: 50 },
-            { field: "name", headerName: "TÊN TÀI LIỆU", width: 650 },
+            // { field: "index", headerName: "STT", width: 50 },
+            {
+              field: "name",
+              headerName: "TÊN TÀI LIỆU",
+              width: 900,
+            },
             {
               field: "visible",
               headerName: "HIỂN THỊ",
@@ -168,7 +181,6 @@ export default function ListEquipments({ onDelete, listDocs, role }) {
               },
             },
           ]}
-          // sx={{ width: "100%", textAlign: "right" }}
           slots={{
             pagination: CustomPagination,
             toolbar: QuickSearchToolbar,

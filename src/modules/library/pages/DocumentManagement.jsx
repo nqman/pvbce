@@ -35,6 +35,8 @@ export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
   const [categoryTwo, setCategoryTwo] = useState();
+  const [selectedCategoryOne, setSelectedCategoryOne] = useState("All");
+  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("All");
   const role = Cookies.get("role")?.replace(/"/g, "");
 
   //MODAL
@@ -54,7 +56,7 @@ export default function DocumentManagement() {
 
   const [scope, setScope] = useState("");
 
-  const handleChangescope = (e) => {
+  const handleChangeScope = (e) => {
     setScope(e.target.value);
     setDocument({ ...document, scope: e.target.value });
   };
@@ -150,18 +152,22 @@ export default function DocumentManagement() {
       (category) => category.id === value
     );
     setCategoryTwo(selectedCategory[0]?.categories);
+    setSelectedCategoryOne(value);
+    setSelectedCategoryOne(event.target.innerText);
 
     setValue(value);
   };
   const [valueTwo, setValueTwo] = useState("1");
 
   const handleSelectCategoryTwo = (event, value) => {
-    debugger;
+    // debugger;
     let selectedCategoryTwo = categoryTwo.filter(
       (category) => category.id === value
     );
     // setCategoryTwo(selectedCategory[0]?.categories);
     setValueTwo(value);
+    // console.log(event.target.innerText);
+    setSelectedCategoryTwo(event.target.innerText);
   };
 
   return (
@@ -184,12 +190,7 @@ export default function DocumentManagement() {
           }}
         >
           <TabContext value={value}>
-            <Box
-              sx={{
-                borderBottom: 1,
-                borderColor: "divider",
-              }}
-            >
+            <Box>
               <TabList
                 variant="scrollable"
                 scrollButtons="auto"
@@ -210,11 +211,14 @@ export default function DocumentManagement() {
                 <Tab
                   sx={{
                     color: "black",
-                    // fontWeight: "bold",
                     backgroundColor: "#F5F5F5",
                     textTransform: "capitalize",
                     padding: "0px 8px",
-                    marginRight: "2px",
+                    // marginRight: "2px",
+                    borderTopLeftRadius: "5px",
+
+                    borderRight: 1,
+                    borderColor: "divider",
                   }}
                   label="All"
                   value="1"
@@ -227,7 +231,9 @@ export default function DocumentManagement() {
                       // fontWeight: "bold",
                       textTransform: "capitalize",
                       padding: "0px 8px",
-                      marginRight: "2px",
+                      // marginRight: "2px",
+                      borderRight: 1,
+                      borderColor: "divider",
                       backgroundColor: "#F5F5F5",
                     }}
                     label={category.name}
@@ -239,11 +245,18 @@ export default function DocumentManagement() {
             {categoryTwo?.length > 0 ? (
               categoryOneTwo.map((category) => (
                 <TabPanel
-                  sx={{ padding: 0, display: "flex" }}
+                  sx={{
+                    padding: 0,
+                    display: "flex",
+                    borderTop: 1,
+                    borderColor: "divider",
+                  }}
                   value={category.id}
                 >
                   <Tabs
                     value={valueTwo}
+                    variant="scrollable"
+                    scrollButtons="auto"
                     onChange={handleSelectCategoryTwo}
                     sx={{
                       [`& .${tabsClasses.scrollButtons}`]: {
@@ -265,7 +278,10 @@ export default function DocumentManagement() {
                         backgroundColor: "#F5F5F5",
                         textTransform: "capitalize",
                         padding: "0px 8px",
-                        marginRight: "2px",
+                        // borderLeft: 1,
+                        borderRight: 1,
+                        borderColor: "divider",
+                        // marginRight: "2px",
                       }}
                       label="All"
                       value="1"
@@ -278,7 +294,9 @@ export default function DocumentManagement() {
                           // fontWeight: "bold",
                           textTransform: "capitalize",
                           padding: "0px 8px",
-                          marginRight: "2px",
+                          // marginRight: "2px",
+                          borderRight: 1,
+                          borderColor: "divider",
                           backgroundColor: "#F5F5F5",
                         }}
                         label={item.name}
@@ -298,6 +316,8 @@ export default function DocumentManagement() {
             role={role}
             onDelete={handleDelete}
             listDocs={listDocs}
+            selectedCategoryOne={selectedCategoryOne}
+            selectedCategoryTwo={selectedCategoryTwo}
           />
         ) : (
           <Loading />
@@ -354,7 +374,7 @@ export default function DocumentManagement() {
                       id="demo-simple-select"
                       value={scope}
                       label="Hiển thị"
-                      onChange={handleChangescope}
+                      onChange={handleChangeScope}
                       sx={{ width: "130px" }}
                     >
                       <MenuItem value={"public"}>Công khai</MenuItem>

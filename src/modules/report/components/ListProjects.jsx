@@ -62,14 +62,13 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
     <StyledEngineProvider injectFirst>
       <div
         style={{
-          height: 500,
+          // height: 500,
           width: "100%",
           margin: "auto",
           overflow: "hidden",
         }}
       >
         <DataGrid
-          style={{ padding: 10 }}
           rows={rows?.map((row, index) => ({
             ...row,
             id: row.id,
@@ -91,7 +90,7 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
               ),
             },
 
-            { field: "name", headerName: "TÊN DỰ ÁN", width: 380 },
+            { field: "name", headerName: "TÊN DỰ ÁN", width: 400 },
             { field: "startDate", headerName: "NGÀY BẮT ĐẦU", width: 150 },
             {
               field: "endDate",

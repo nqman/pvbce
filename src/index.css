@@ -35,6 +35,7 @@ html {
   background: #555;
 }
 
+
 * {
   font-size: 14px;
   font-family: "Mulish", sans-serif !important;
@@ -89,3 +90,28 @@ input::-webkit-inner-spin-button {
 .custom-file-input:active::before {
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
+
+/* Custom Library MUI
+ */
+.MuiDataGrid-columnHeaderTitleContainer .MuiDataGrid-columnHeaderTitle {
+  font-weight: bold !important;
+
+
+}
+
+.MuiDataGrid-columnHeaders .MuiDataGrid-withBorderColor {
+  background-color: #F5F5F5 !important;
+
+}
+
+.MuiDataGrid-footerContainer {
+  border-top: 0;
+}
+
+/* .MuiDataGrid-cell {
+  border: 1px solid;
+}
+
+.MuiDataGrid-columnHeader {
+  border: 1px solid;
+} */
