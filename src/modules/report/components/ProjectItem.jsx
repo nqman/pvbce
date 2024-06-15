@@ -152,7 +152,6 @@ export default function ProjectItem({
         <TextField
           label="Thành tiền (VND)"
           id="outlined-size-small"
-          // value={detail.amount?.toLocaleString() || amount.toLocaleString()}
           value={amount.toLocaleString()}
           size="small"
           disabled={true}
