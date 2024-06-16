@@ -225,6 +225,9 @@ function Header() {
         position: "fixed",
         top: "0",
         zIndex: "999",
+        boxShadow: "none",
+        borderBottom: 1,
+        borderColor: "divider",
       }}
     >
       <Container maxWidth="xl" sx={{ height: "60px" }}>

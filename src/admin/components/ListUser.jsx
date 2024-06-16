@@ -1,11 +1,23 @@
 import * as React from "react";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbar,
+  GridToolbarQuickFilter,
+  gridPageCountSelector,
+  gridPageSelector,
+  useGridApiContext,
+  useGridSelector,
+  viVN,
+} from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useNavigate } from "react-router-dom";
 import {
+  Box,
   FormControlLabel,
   FormLabel,
+  Pagination,
+  PaginationItem,
   Radio,
   RadioGroup,
   StyledEngineProvider,
@@ -15,20 +27,48 @@ import Swal from "sweetalert2";
 
 export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
   const navigate = useNavigate();
-  //Xem chi tiết thiết bị
+  function CustomPagination() {
+    const apiRef = useGridApiContext();
+    const page = useGridSelector(apiRef, gridPageSelector);
+    const pageCount = useGridSelector(apiRef, gridPageCountSelector);
+
+    return (
+      <Pagination
+        color="primary"
+        variant="outlined"
+        shape="rounded"
+        page={page + 1}
+        count={pageCount}
+        // @ts-expect-error
+        renderItem={(props2) => <PaginationItem {...props2} disableRipple />}
+        onChange={(event, value) => apiRef.current.setPage(value - 1)}
+      />
+    );
+  }
+  function QuickSearchToolbar() {
+    return (
+      <Box
+        sx={{
+          p: 0.5,
+          pb: 0,
+        }}
+      >
+        <GridToolbarQuickFilter />
+      </Box>
+    );
+  }
 
   return (
     <StyledEngineProvider injectFirst>
       <div
         style={{
-          height: 500,
+          // height: 500,
           width: "100%",
           margin: "auto",
           overflow: "hidden",
         }}
       >
         <DataGrid
-          style={{ padding: 10 }}
           rows={rows.map((row, index) => ({
             ...row,
             id: row.id,
@@ -37,8 +77,8 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
           columns={[
             { field: "index", headerName: "STT", width: 50 },
 
-            { field: "name", headerName: "HỌ TÊN", width: 200 },
-            { field: "email", headerName: "EMAIL", width: 200 },
+            { field: "name", headerName: "HỌ TÊN", width: 250 },
+            { field: "email", headerName: "EMAIL", width: 300 },
             { field: "phone", headerName: "SỐ ĐIỆN THOẠI", width: 200 },
             {
               field: "role",
@@ -52,10 +92,10 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
             {
               field: "enable",
               headerName: "KÍCH HOẠT",
-              width: 200,
+              width: 100,
               renderCell: (params) => {
                 return (
-                  <div style={{ textAlign: "center" }}>
+                  <div>
                     {params.value ? (
                       <button
                         title="Đã kích hoạt"
@@ -92,15 +132,15 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
             {
               field: "action",
               headerName: "TÙY CHỌN",
-              width: 120,
+              width: 150,
 
               renderCell: (params) => (
                 <div
-                  style={{
-                    display: "flex",
-                    width: "100%",
-                    justifyContent: "center",
-                  }}
+                // style={{
+                //   display: "flex",
+                //   width: "100%",
+                //   justifyContent: "center",
+                // }}
                 >
                   {/* {console.log(params)} */}
 
@@ -147,7 +187,8 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
             },
           ]}
           slots={{
-            toolbar: GridToolbar,
+            pagination: CustomPagination,
+            toolbar: QuickSearchToolbar,
           }}
           {...rows}
           initialState={{
@@ -155,6 +196,9 @@ export default function ListUser({ rows, onEdit, onDelete, role, onEnable }) {
             pagination: { paginationModel: { pageSize: 5 } },
           }}
           pageSizeOptions={[5, 10, 15]}
+          localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
+          ignoreDiacritics
+          disableRowSelectionOnClick
         />
       </div>
     </StyledEngineProvider>

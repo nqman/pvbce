@@ -46,6 +46,10 @@ html {
 
 }
 
+image {
+  overflow: hidden;
+}
+
 /* Hide Arrows From Input Number */
 
 input::-webkit-outer-spin-button,
@@ -107,11 +111,3 @@ input::-webkit-inner-spin-button {
 .MuiDataGrid-footerContainer {
   border-top: 0;
 }
-
-/* .MuiDataGrid-cell {
-  border: 1px solid;
-}
-
-.MuiDataGrid-columnHeader {
-  border: 1px solid;
-} */

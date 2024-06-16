@@ -14,17 +14,31 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 export default function About() {
   return (
-    <Box pt={1}>
+    <Box sx={{ height: "100vh" }} pt={2}>
       <Grid container="lg" maxWidth={"lg"} margin={"auto"}>
         <Grid lg={6} sm={12} className={styles.about_left}>
-          <Typography
-            className={styles.h5}
-            variant="h5"
-            fontWeight={"bold"}
-            fon
+          {/* <Typography className={styles.h5} variant="h4" fontWeight={""}> */}
+          <span
+            style={{
+              fontWeight: "bold",
+              fontSize: "25px",
+              borderLeft: "5px solid #404490",
+              paddingLeft: "10px",
+            }}
           >
-            VỀ CHÚNG TÔI
-          </Typography>
+            Giới thiệu Phan Vũ Bình Dương
+          </span>
+          {/* <p
+            style={{
+              fontWeight: "bold",
+              fontSize: "20px",
+              borderLeft: "5px solid blue",
+              paddingLeft: "10px",
+            }}
+          >
+            Uy tín - Chất lượng - Hiệu quả
+          </p> */}
+          {/* </Typography> */}
           <div className={`container ${styles.about_text}`}>
             <p className="mt-3" style={{ fontSize: "16px" }}>
               Công ty{" "}
@@ -48,6 +62,7 @@ export default function About() {
           </div>
           <div className="ps-3">
             <ReactPlayer
+              style={{ overflow: "hidden" }}
               // config={{ file: { attributes: { controlsList: "nodownload" } } }}
               url="https://youtu.be/nLKIUTwDLEY?si=rfsg4fid3X63XKZ4"
               width="550px"
@@ -70,6 +85,7 @@ export default function About() {
             src="./image/about.png"
             alt="about"
             style={{ height: "550px" }}
+            loading="lazy"
           />
         </Grid>
       </Grid>

@@ -7,13 +7,25 @@ import { Box } from "@mui/material";
 export default function Footer() {
   return (
     <Box
-      sx={{ borderTop: "1px solid grey", boxShadow: 3, marginTop: "8px" }}
+      sx={{
+        borderTop: 1,
+        borderColor: "divider",
+        marginTop: "8px",
+      }}
       id="footer"
     >
       <div className="container  pt-3 pb-2">
         <div className="row">
-          <div className="footer_left col-lg-4 col-md-4 col-sm-12">
-            <div style={{ marginTop: "20px" }}>
+          <div
+            className="footer_left col-lg-4 col-md-4 col-sm-12"
+            style={{ borderRight: "1px solid " }}
+          >
+            <div
+              style={{
+                marginTop: "20px",
+                // borderRight: "1px solid",
+              }}
+            >
               <b>VĂN PHÒNG TẠI HCM:</b>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 <li style={{ margin: "8px 0" }}>
@@ -49,7 +61,10 @@ export default function Footer() {
               </ul>
             </div>
           </div>
-          <div className="footer_middle col-lg-4 col-md-4 col-sm-12">
+          <div
+            className="footer_middle col-lg-4 col-md-4 col-sm-12"
+            style={{ borderRight: "1px solid " }}
+          >
             <div style={{ marginTop: "20px" }}>
               <b>XƯỞNG THIẾT BỊ TẠI LONG AN:</b>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
@@ -87,7 +102,7 @@ export default function Footer() {
             </div>
           </div>
           <div
-            className="footer__right col-lg-4 col-md-4 col-sm-12"
+            className="footer__right col-lg-4 col-md-4 col-sm-12 "
             style={{ marginTop: "65px" }}
           >
             <div className="footer_logo">
@@ -101,7 +116,7 @@ export default function Footer() {
                 }}
               />
             </div>
-            <div className="footer_social mt-2">
+            {/* <div className="footer_social mt-2">
               <a href="https://www.facebook.com/wanman26">
                 <i className="fab fa-facebook-f"></i>
               </a>
@@ -117,7 +132,7 @@ export default function Footer() {
               <a href="https://github.com/wanman26">
                 <i className="fab fa-github"></i>
               </a>
-            </div>
+            </div> */}
             <p>© 2024 PhanVuBinhDuong. All rights reserved.</p>
           </div>
         </div>

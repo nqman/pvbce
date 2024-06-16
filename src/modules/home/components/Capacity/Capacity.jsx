@@ -13,10 +13,10 @@ export default function Capacity() {
   };
 
   return (
-    <div className="container" style={{ marginTop: "100px" }}>
+    <div className="container">
       <h1
         className="text-center"
-        style={{ fontSize: "30px ", fontWeight: "bold" }}
+        style={{ fontSize: "30px ", fontWeight: "bold", marginTop: "-80px" }}
       >
         NĂNG LỰC
       </h1>
