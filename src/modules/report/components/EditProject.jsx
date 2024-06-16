@@ -89,7 +89,7 @@ export default function EditProject() {
       let categories = await getCategoriesAndCategoriesOfProjectAPI(idProject);
       const data = await selectProjectAPI(idProject);
       setProject(data);
-      // console.log(data);
+      console.log(data);
       setStartDate(data.startDate);
       setEndDate(data.endDate);
       setTotalAmount(data.totalAmount);
@@ -356,6 +356,7 @@ export default function EditProject() {
         setIsLoading(true);
         toast.success("Cập nhật dự án thành công");
         // navigate("/report/listprojects");
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);

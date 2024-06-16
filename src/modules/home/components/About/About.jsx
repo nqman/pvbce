@@ -28,16 +28,7 @@ export default function About() {
           >
             Giới thiệu Phan Vũ Bình Dương
           </span>
-          {/* <p
-            style={{
-              fontWeight: "bold",
-              fontSize: "20px",
-              borderLeft: "5px solid blue",
-              paddingLeft: "10px",
-            }}
-          >
-            Uy tín - Chất lượng - Hiệu quả
-          </p> */}
+
           {/* </Typography> */}
           <div className={`container ${styles.about_text}`}>
             <p className="mt-3" style={{ fontSize: "16px" }}>

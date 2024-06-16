@@ -170,6 +170,7 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
           }}
           pageSizeOptions={[5, 10, 15]}
           ignoreDiacritics
+          disableRowSelectionOnClick
         />
       </div>
     </StyledEngineProvider>

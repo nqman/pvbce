@@ -38,17 +38,10 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/catalogue/equipments" element={<Equipments />}></Route>
-          {/* <Route path="/catalogue/employees" element={<Catalogue />}></Route> */}
-          <Route
-            path="/catalogue/equipments/:code"
-            element={<EquipDetails />}
-          />
           {/* REPORT */}
           <Route path="/report" element={<Report />}></Route>
           <Route path="/report/create-project" element={<CreateProject />} />
           <Route path="/report/edit-project/:code" element={<EditProject />} />
-
           <Route path="/report/rpcosttotal" element={<RpCostTotal />} />
           <Route
             path="/report/listprojects"
@@ -68,6 +61,15 @@ function App() {
             path="/projects/report-cost-quantity-revenue/:code"
             element={<RpActualCostAndQuantityRevenue />}
           />
+          {/* EQUIPMENT */}
+          <Route path="/catalogue/equipments" element={<Equipments />}></Route>
+          {/* <Route path="/catalogue/employees" element={<Catalogue />}></Route> */}
+          <Route
+            path="/catalogue/equipments/:code"
+            element={<EquipDetails />}
+          />
+          <Route path="/catalogue/create" element={<CreateEquipment />} />
+          <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
 
           {/* LIBRARY */}
           <Route path="/library" element={<DocumentManagement />}></Route>
@@ -108,9 +110,6 @@ function App() {
         ></Route>
 
         {/* ADMIN */}
-
-        <Route path="/catalogue/create" element={<CreateEquipment />} />
-        <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
