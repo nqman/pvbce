@@ -276,14 +276,14 @@ export async function saveProjectAPI(project) {
             else {
               // FILE
               if (detail.files.length > 0) {
-                formData.append("idNewPartLibraries", 0);
-                formData.append("categoriesOneNew", detail.categoryOne);
-                if (detail.categoryTwo === "") {
-                  formData.append("categoriesTwoNew", detail.categoryOne);
-                } else {
-                  formData.append("categoriesTwoNew", detail.categoryTwo);
-                }
                 detail.files.forEach((file) => {
+                  formData.append("idNewPartLibraries", 0);
+                  formData.append("categoriesOneNew", detail.categoryOne);
+                  if (detail.categoryTwo === "") {
+                    formData.append("categoriesTwoNew", detail.categoryOne);
+                  } else {
+                    formData.append("categoriesTwoNew", detail.categoryTwo);
+                  }
                   formData.append("partNameNewLibraries", file.name);
                   formData.append("partNewLibraries", file);
                 });

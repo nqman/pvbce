@@ -11,6 +11,8 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ClearIcon from "@mui/icons-material/Clear";
+import SaveIcon from "@mui/icons-material/Save";
 import toast, { Toaster } from "react-hot-toast";
 
 // API
@@ -192,405 +194,420 @@ export default function EditEquipment() {
   return value ? ( // check value != null truoc khi render
     <div className="container mt-2 mb-5" style={{ position: "relative" }}>
       <div style={{ position: "absolute", top: "20px", left: "80px" }}>
-        <NavigationButton url="/catalogue" name="Danh sách thiết bị" />
+        <NavigationButton
+          url="/catalogue/equipments"
+          name="Danh sách thiết bị"
+        />
       </div>
       <div>
         <Toaster position="top-right" />
         <h1 className="text-center pt-3">CẬP NHẬT THIẾT BỊ</h1>
         <form noValidate onSubmit={handleSaveEquipment}>
-          <Box>
-            <TabContext value={item}>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <TabList onChange={handleChangeItem}>
-                  <Tab
-                    sx={{ fontWeight: "bold" }}
-                    label="THÔNG SỐ CHUNG"
-                    value="1"
-                  />
-                  <Tab
-                    sx={{ fontWeight: "bold" }}
-                    label="THÔNG SỐ KỸ THUẬT"
-                    value="2"
-                  />
-                  <Tab
-                    sx={{ fontWeight: "bold" }}
-                    label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA"
-                    value="3"
-                  />
-                  {/* <Tab label="QR" value="4" /> */}
-                </TabList>
-              </Box>
-              {/* Thông số chung */}
-              <TabPanel value="1">
-                <div className="ps-5 pe-5">
-                  {/* name */}
-                  <div className="form-group d-flex mb-2">
-                    <label
-                      style={{
-                        border: "none",
-                        backgroundColor: "transparent",
-                        width: "170px",
-                        marginRight: "20px",
-                      }}
-                      className="form-control"
-                      htmlFor="name"
-                    >
-                      Tên thiết bị<span className="text-danger fw-bold">*</span>
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      value={value.name}
-                      className=" form-control w-50"
-                      type="text"
-                      placeholder="Nhập tên thiết bị..."
-                      onChange={handleChangeInput}
-                    />
-                  </div>
-                  {/* divideCode */}
-                  <div className="form-group d-flex mb-2">
-                    <label
-                      style={{
-                        border: "none",
-                        backgroundColor: "transparent",
-                        width: "170px",
-                        marginRight: "20px",
-                      }}
-                      className="form-control"
-                      htmlFor="divideCode"
-                    >
-                      Mã thiết bị<span className="text-danger fw-bold">*</span>
-                    </label>
-                    <input
-                      id="divideCode"
-                      name="divideCode"
-                      value={value.divideCode}
-                      className=" form-control w-50"
-                      type="text"
-                      placeholder="Nhập mã thiết bị..."
-                      onChange={handleChangeInput}
-                    />
-                  </div>
-                  {/* constructionProject  */}
-                  <div className="form-group d-flex mb-2">
-                    <label
-                      style={{
-                        border: "none",
-                        backgroundColor: "transparent",
-                        width: "170px",
-                        marginRight: "20px",
-                      }}
-                      className="form-control"
-                      htmlFor="constructionProject"
-                    >
-                      Thi công dự án
-                    </label>
-                    <input
-                      id="constructionProject"
-                      name="constructionProject"
-                      value={value.constructionProject}
-                      className=" form-control w-50"
-                      type="text"
-                      placeholder="Nhập vị trí dự án..."
-                      onChange={handleChangeInput}
-                    />
-                  </div>
-                  {/* location*/}
-                  <div className="form-group d-flex mb-2">
-                    <label
-                      style={{
-                        border: "none",
-                        backgroundColor: "transparent",
-                        width: "170px",
-                        marginRight: "20px",
-                      }}
-                      className="form-control"
-                      htmlFor="location"
-                    >
-                      Đang ở kho bãi
-                    </label>
-                    <input
-                      id="location"
-                      name="location"
-                      value={value.location}
-                      className=" form-control w-50"
-                      type="text"
-                      placeholder="Nhập vị trí kho bãi..."
-                      onChange={handleChangeInput}
-                    />
-                  </div>
-                  {/* note*/}
-                  <div className="form-group d-flex mb-2">
-                    <label
-                      style={{
-                        border: "none",
-                        backgroundColor: "transparent",
-                        width: "170px",
-                        marginRight: "20px",
-                      }}
-                      className="form-control"
-                      htmlFor="note"
-                    >
-                      Lịch sử thi công
-                    </label>
-                    <TextareaAutosize
-                      id="note"
-                      name="note"
-                      value={value.note}
-                      className=" form-control w-50"
-                      type="text"
-                      placeholder="Nhập chú thích..."
-                      onChange={handleChangeInput}
-                    />
-                  </div>
-                </div>
-                {/* upload ảnh */}
-                <div className=" ps-5">
+          <TabContext value={item}>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <TabList onChange={handleChangeItem}>
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="THÔNG SỐ CHUNG"
+                  value="1"
+                />
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="THÔNG SỐ KỸ THUẬT"
+                  value="2"
+                />
+                <Tab
+                  sx={{ fontWeight: "bold" }}
+                  label="NHẬT KÝ BẢO DƯỠNG - SỬA CHỮA"
+                  value="3"
+                />
+                {/* <Tab label="QR" value="4" /> */}
+              </TabList>
+            </Box>
+            {/* Thông số chung */}
+            <TabPanel value="1">
+              <div className="ps-5 pe-5">
+                {/* name */}
+                <div className="form-group d-flex mb-2">
                   <label
                     style={{
                       border: "none",
                       backgroundColor: "transparent",
+                      width: "170px",
+                      marginRight: "20px",
                     }}
                     className="form-control"
+                    htmlFor="name"
                   >
-                    Tải lên hình ảnh
-                    <span className="text-danger fw-bold">*</span>
+                    Tên thiết bị<span className="text-danger fw-bold">*</span>
                   </label>
-                  <div className="d-flex">
-                    {selectedImages.map((image, index) => (
-                      <div
-                        key={index}
-                        style={{ overflow: "hidden" }}
-                        className="me-2"
-                      >
-                        <img
-                          alt={`Image ${index + 1}`}
-                          height={"100px"}
-                          src={
-                            image.imageOfProduct ||
-                            URL.createObjectURL(image.imageFile)
-                          }
-                        />
-                        <div className="text-center mt-1 ">
-                          <Button
-                            sx={{
-                              padding: "0px",
-                              fontSize: "12px",
-                              marginBottom: "10px",
-                            }}
-                            variant=""
-                            size="small"
-                            color="error"
-                            onClick={() => handleRemoveImage(index)}
-                          >
-                            <HighlightOffIcon />
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <Button className="ms-2" variant="outlined" size="small">
-                    <label
-                      htmlFor="uploadImage"
-                      style={{ fontSize: "13px", textTransform: "initial" }}
-                    >
-                      <CloudUploadIcon sx={{ marginRight: "5px" }} /> Upload
-                      File
-                    </label>
-                  </Button>
-
                   <input
-                    className="ps-5 d-none"
-                    id="uploadImage"
-                    type="file"
-                    accept="image/*"
-                    name="myImages"
-                    onChange={handleImageChange}
-                    multiple
+                    id="name"
+                    name="name"
+                    value={value.name}
+                    className=" form-control w-50"
+                    type="text"
+                    placeholder="Nhập tên thiết bị..."
+                    onChange={handleChangeInput}
                   />
                 </div>
-              </TabPanel>
-              {/* Thông số kỹ thuật */}
-              <TabPanel style={{ marginLeft: "80px" }} value="2">
-                <div>
-                  {productDetails.map((productDetail) => (
+                {/* divideCode */}
+                <div className="form-group d-flex mb-2">
+                  <label
+                    style={{
+                      border: "none",
+                      backgroundColor: "transparent",
+                      width: "170px",
+                      marginRight: "20px",
+                    }}
+                    className="form-control"
+                    htmlFor="divideCode"
+                  >
+                    Mã thiết bị<span className="text-danger fw-bold">*</span>
+                  </label>
+                  <input
+                    id="divideCode"
+                    name="divideCode"
+                    value={value.divideCode}
+                    className=" form-control w-50"
+                    type="text"
+                    placeholder="Nhập mã thiết bị..."
+                    onChange={handleChangeInput}
+                  />
+                </div>
+                {/* constructionProject  */}
+                <div className="form-group d-flex mb-2">
+                  <label
+                    style={{
+                      border: "none",
+                      backgroundColor: "transparent",
+                      width: "170px",
+                      marginRight: "20px",
+                    }}
+                    className="form-control"
+                    htmlFor="constructionProject"
+                  >
+                    Thi công dự án
+                  </label>
+                  <input
+                    id="constructionProject"
+                    name="constructionProject"
+                    value={value.constructionProject}
+                    className=" form-control w-50"
+                    type="text"
+                    placeholder="Nhập vị trí dự án..."
+                    onChange={handleChangeInput}
+                  />
+                </div>
+                {/* location*/}
+                <div className="form-group d-flex mb-2">
+                  <label
+                    style={{
+                      border: "none",
+                      backgroundColor: "transparent",
+                      width: "170px",
+                      marginRight: "20px",
+                    }}
+                    className="form-control"
+                    htmlFor="location"
+                  >
+                    Đang ở kho bãi
+                  </label>
+                  <input
+                    id="location"
+                    name="location"
+                    value={value.location}
+                    className=" form-control w-50"
+                    type="text"
+                    placeholder="Nhập vị trí kho bãi..."
+                    onChange={handleChangeInput}
+                  />
+                </div>
+                {/* note*/}
+                <div className="form-group d-flex mb-2">
+                  <label
+                    style={{
+                      border: "none",
+                      backgroundColor: "transparent",
+                      width: "170px",
+                      marginRight: "20px",
+                    }}
+                    className="form-control"
+                    htmlFor="note"
+                  >
+                    Lịch sử thi công
+                  </label>
+                  <TextareaAutosize
+                    id="note"
+                    name="note"
+                    value={value.note}
+                    className=" form-control w-50"
+                    type="text"
+                    placeholder="Nhập chú thích..."
+                    onChange={handleChangeInput}
+                  />
+                </div>
+              </div>
+              {/* upload ảnh */}
+              <div className=" ps-5">
+                <label
+                  style={{
+                    border: "none",
+                    backgroundColor: "transparent",
+                  }}
+                  className="form-control"
+                >
+                  Tải lên hình ảnh
+                  <span className="text-danger fw-bold">*</span>
+                </label>
+                <div className="d-flex">
+                  {selectedImages.map((image, index) => (
                     <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: "15px",
-                        height: "30px",
-                      }}
-                      key={productDetail.id || ""}
+                      key={index}
+                      style={{ overflow: "hidden" }}
+                      className="me-2"
                     >
-                      <TextField
-                        placeholder="Thông số"
-                        id="outlined-size-small"
-                        value={productDetail.name}
-                        size="small"
-                        sx={{ marginRight: "20px", width: "40%" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            productDetail.id,
-                            "name",
-                            e.target.value
-                          )
+                      <img
+                        alt={`Image ${index + 1}`}
+                        height={"100px"}
+                        src={
+                          image.imageOfProduct ||
+                          URL.createObjectURL(image.imageFile)
                         }
-                        onBlur={handleBlurInput}
                       />
-                      <TextField
-                        placeholder="Nội dung"
-                        id="outlined-size-small"
-                        disabled={
-                          productDetail.type === "file" ||
-                          productDetail.file?.name
-                            ? true
-                            : false
-                        }
-                        value={
-                          productDetail.file?.name
-                            ? productDetail.file?.name
-                            : productDetail.value
-                        }
-                        // value={productDetail.value || productDetail.file?.name}
-                        size="small"
-                        sx={{ marginRight: "20px", width: "40%" }}
-                        onChange={(e) =>
-                          handleInputChange(
-                            productDetail.id,
-                            "value",
-                            e.target.value
-                          )
-                        }
-                        onBlur={handleBlurInput}
-                      />
-                      <div style={{ width: "20%" }}>
-                        <input
-                          type="file"
-                          style={{ width: "130px" }}
-                          className="custom-file-input"
-                          accept=".pdf, .xlsx, .xls"
-                          id={`fileInput${productDetail.id}`}
-                          name="filename"
-                          onChange={(e) =>
-                            handleFileChange(
-                              productDetail.id,
-                              e.target.files[0]
-                            )
-                          }
-                        />
-
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => deleteDiv(productDetail.id)}
+                      <div className="text-center mt-1 ">
+                        <Button
+                          sx={{
+                            padding: "0px",
+                            fontSize: "12px",
+                            marginBottom: "10px",
+                          }}
+                          variant=""
+                          size="small"
+                          color="error"
+                          onClick={() => handleRemoveImage(index)}
                         >
-                          x
-                        </button>
+                          <HighlightOffIcon />
+                        </Button>
                       </div>
                     </div>
                   ))}
-                  <p className="text-danger">{errorDetail}</p>
-                  <Button variant="contained" onClick={createDiv}>
-                    Thêm
-                  </Button>
                 </div>
-              </TabPanel>
-              {/* Bảo dưỡng sửa chữa */}
-              <TabPanel value="3" style={{ marginLeft: "80px" }}>
-                <div>
-                  {productDiaries.map((diary) => (
+                <Button className="ms-2" variant="outlined" size="small">
+                  <label
+                    htmlFor="uploadImage"
+                    style={{ fontSize: "13px", textTransform: "initial" }}
+                  >
+                    <CloudUploadIcon sx={{ marginRight: "5px" }} /> Upload File
+                  </label>
+                </Button>
+
+                <input
+                  className="ps-5 d-none"
+                  id="uploadImage"
+                  type="file"
+                  accept="image/*"
+                  name="myImages"
+                  onChange={handleImageChange}
+                  multiple
+                />
+              </div>
+            </TabPanel>
+            {/* Thông số kỹ thuật */}
+            <TabPanel style={{ marginLeft: "80px" }} value="2">
+              <div>
+                {productDetails.map((productDetail) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "15px",
+                      height: "30px",
+                    }}
+                    key={productDetail.id || ""}
+                  >
+                    <TextField
+                      placeholder="Thông số"
+                      id="outlined-size-small"
+                      value={productDetail.name}
+                      size="small"
+                      sx={{ marginRight: "20px", width: "40%" }}
+                      onChange={(e) =>
+                        handleInputChange(
+                          productDetail.id,
+                          "name",
+                          e.target.value
+                        )
+                      }
+                      onBlur={handleBlurInput}
+                    />
+                    <TextField
+                      placeholder="Nội dung"
+                      id="outlined-size-small"
+                      disabled={
+                        productDetail.type === "file" ||
+                        productDetail.file?.name
+                          ? true
+                          : false
+                      }
+                      value={
+                        productDetail.file?.name
+                          ? productDetail.file?.name
+                          : productDetail.value
+                      }
+                      // value={productDetail.value || productDetail.file?.name}
+                      size="small"
+                      sx={{ marginRight: "20px", width: "40%" }}
+                      onChange={(e) =>
+                        handleInputChange(
+                          productDetail.id,
+                          "value",
+                          e.target.value
+                        )
+                      }
+                      onBlur={handleBlurInput}
+                    />
                     <div
                       style={{
+                        width: "20%",
                         display: "flex",
                         alignItems: "center",
-                        marginBottom: "15px",
-                        height: "30px",
                       }}
-                      key={diary.id}
                     >
-                      <TextField
-                        placeholder="Nội dung"
-                        id="outlined-size-small"
-                        value={diary.name}
-                        size="small"
-                        sx={{ marginRight: "20px", width: "40%" }}
+                      <input
+                        type="file"
+                        style={{ width: "120px" }}
+                        className="custom-file-input"
+                        accept=".pdf, .xlsx, .xls"
+                        id={`fileInput${productDetail.id}`}
+                        name="filename"
                         onChange={(e) =>
-                          handleInputChangeDiary(
-                            diary.id,
-                            "name",
-                            e.target.value
-                          )
+                          handleFileChange(productDetail.id, e.target.files[0])
                         }
                       />
 
-                      <TextField
-                        placeholder="Tên tài liệu"
-                        value={diary.value ? diary.value : diary.file?.name}
-                        size="small"
-                        sx={{ marginRight: "20px", width: "40%" }}
-                        disabled={true}
-                        title={diary.value}
+                      <button
+                        style={{
+                          width: "28px",
+                          height: "28px",
+                          padding: 0,
+                        }}
+                        className="btn btn-danger"
+                        onClick={() => deleteDiv(productDetail.id)}
+                      >
+                        <ClearIcon
+                          sx={{ fontSize: "20px", fontWeight: "bold" }}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <p className="text-danger">{errorDetail}</p>
+                <button className="btn btn-primary" onClick={createDiv}>
+                  Thêm
+                </button>
+              </div>
+            </TabPanel>
+            {/* Bảo dưỡng sửa chữa */}
+            <TabPanel value="3" style={{ marginLeft: "80px" }}>
+              <div>
+                {productDiaries.map((diary) => (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "15px",
+                      height: "30px",
+                    }}
+                    key={diary.id}
+                  >
+                    <TextField
+                      placeholder="Nội dung"
+                      id="outlined-size-small"
+                      value={diary.name}
+                      size="small"
+                      sx={{ marginRight: "20px", width: "40%" }}
+                      onChange={(e) =>
+                        handleInputChangeDiary(diary.id, "name", e.target.value)
+                      }
+                    />
+
+                    <TextField
+                      placeholder="Tên tài liệu"
+                      value={diary.value ? diary.value : diary.file?.name}
+                      size="small"
+                      sx={{ marginRight: "20px", width: "40%" }}
+                      disabled={true}
+                      title={diary.value}
+                    />
+
+                    <div
+                      style={{
+                        width: "20%",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <input
+                        style={{ width: "120px" }}
+                        className="custom-file-input"
+                        type="file"
+                        id={`fileInput${diary.id}`}
+                        name="filename"
+                        accept=".pdf, .xlsx, .xls"
+                        onChange={(e) =>
+                          handleFileChangeDiary(diary.id, e.target.files[0])
+                        }
                       />
 
-                      <div style={{ width: "20%" }}>
-                        <input
-                          style={{ width: "130px" }}
-                          className="custom-file-input"
-                          type="file"
-                          id={`fileInput${diary.id}`}
-                          name="filename"
-                          accept=".pdf, .xlsx, .xls"
-                          onChange={(e) =>
-                            handleFileChangeDiary(diary.id, e.target.files[0])
-                          }
+                      <button
+                        style={{
+                          width: "28px",
+                          height: "28px",
+                          padding: 0,
+                        }}
+                        className="btn btn-danger"
+                        onClick={() => deleteDivDiary(diary.id)}
+                      >
+                        <ClearIcon
+                          sx={{ fontSize: "20px", fontWeight: "bold" }}
                         />
-
-                        <button
-                          style={{ marginLeft: "-10px" }}
-                          className="btn btn-danger"
-                          onClick={() => deleteDivDiary(diary.id)}
-                        >
-                          x
-                        </button>
-                      </div>
+                      </button>
                     </div>
-                  ))}
-                  <p className="text-danger">{errorDiary}</p>
-                  <Button variant="contained" onClick={createDivDiary}>
-                    Thêm
-                  </Button>
-                </div>
-              </TabPanel>
-              {/* Mã QR */}
-              {/* <TabPanel value="4">
-                <div style={{ textAlign: "center", paddingTop: "50px" }}>
-                  <img
-                    style={{ width: "200px", height: "200px" }}
-                    src={`${value.imageOfQR}`}
-                    alt=""
-                  />
-                  <h3 style={{ marginTop: "20px" }}>{value.divideCode}</h3>
-                </div>
-              </TabPanel> */}
-            </TabContext>
-            {/* SUBMIT */}
-            <div
+                  </div>
+                ))}
+                <p className="text-danger">{errorDiary}</p>
+                <button className="btn btn-primary" onClick={createDivDiary}>
+                  Thêm
+                </button>
+              </div>
+            </TabPanel>
+          </TabContext>
+          {/* SUBMIT */}
+          <div
+            style={{
+              marginTop: "20px",
+              marginRight: "20px",
+              textAlign: "end",
+            }}
+          >
+            <button
               style={{
-                position: "absolute",
-                bottom: "50px",
-                right: "130px",
+                width: "45px",
+                height: "45px",
+                padding: 0,
               }}
+              className="btn btn-outline-success"
+              type="submit"
             >
-              <Button
-                variant="contained"
-                color="success"
-                disabled={isLoading}
-                type="submit"
-              >
-                Lưu
-              </Button>
-            </div>
-          </Box>
+              <SaveIcon
+                sx={{
+                  fontSize: "25px",
+                  fontWeight: "bold",
+                }}
+              />
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -470,55 +470,6 @@ export default function CreateProject() {
                 </Container>
               </TabPanel>
               {/* Thư viện */}
-              {/* <TabPanel value="2">
-                <Container className="w-100">
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <Autocomplete
-                      size="small"
-                      sx={{ width: "30%", marginRight: "20px" }}
-                      disablePortal
-                      id="combo-box-demo"
-                      options={category01.map((option) => option.name)}
-                      defaultValue={category01[0]?.name}
-                      // disabled={detail?.category ? true : false}
-                      onChange={handleSelectCategory01}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Danh mục 1" />
-                      )}
-                    />
-                    {selectedCategory1 === "Báo cáo ngày (1)" ||
-                    selectedCategory1 === "Báo cáo tuần (1)" ? (
-                      <Autocomplete
-                        size="small"
-                        sx={{ width: "20%", marginRight: "20px" }}
-                        disablePortal
-                        id="combo-box-demo"
-                        options={category02?.map((option) => option.name)}
-                        defaultValue={category02[0]?.name}
-                        // disabled={detail?.category ? true : false}
-                        onChange={handleSelectCategory02}
-                        renderInput={(params) => (
-                          <TextField {...params} label="Danh mục 2" />
-                        )}
-                      />
-                    ) : (
-                      ""
-                    )}
-                    <input
-                      type="file"
-                      // style={{ padding: "10px" }}
-                      // className="custom-file-input"
-                      // id={`fileInput${projectLibrary.id}`}
-                      name="filename"
-                      // onChange={(e) =>
-                      //   handleFileChange(projectLibrary.id, e.target.files[0])
-                      // }
-                      multiple
-                      onBlur={handleBlurInput}
-                    />
-                  </div>
-                </Container>
-              </TabPanel> */}
             </TabContext>
             {/* SUBMIT */}
             <div

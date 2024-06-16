@@ -37,8 +37,8 @@ export default function DocumentManagement() {
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
   const [categoryTwo, setCategoryTwo] = useState();
   const [categoryTwoModal, setCategoryTwoModal] = useState([]);
-  const [selectedCategoryOne, setSelectedCategoryOne] = useState("All");
-  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("All");
+  const [selectedCategoryOne, setSelectedCategoryOne] = useState("Tất cả");
+  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("Tất cả");
   const [errorCategoryOne, setErrorCategoryOne] = useState(
     "Vui lòng không bỏ trống"
   );
@@ -95,13 +95,13 @@ export default function DocumentManagement() {
 
   const fetchDocuments = async () => {
     try {
-      let categoryOneTwo = await getCategoriesOneAndTwoAPI("LIBRARY_ITEM_ONE");
       const data = await listDocumentsAPI();
       // console.log(categoryOneTwo);
-      toast.success("Lấy danh sách thư viện thành công");
+      // toast.success("Lấy danh sách thư viện thành công");
       setListDocs(data);
-      setIsLoading(false);
+      let categoryOneTwo = await getCategoriesOneAndTwoAPI("LIBRARY_ITEM_ONE");
       setCategoryOneTwo(categoryOneTwo);
+      setIsLoading(false);
       // setValue(categoryOneTwo[0].id);
     } catch (error) {
       console.log(error);
@@ -221,6 +221,9 @@ export default function DocumentManagement() {
       setIsLoading(false);
     }
   };
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <>
       <Container maxWidth="lg" className="mt-4">
@@ -271,7 +274,7 @@ export default function DocumentManagement() {
                     borderRight: 1,
                     borderColor: "divider",
                   }}
-                  label="All"
+                  label="Tất cả"
                   value="1"
                 />
                 {categoryOneTwo.map((category, index) => (
@@ -334,7 +337,7 @@ export default function DocumentManagement() {
                         borderColor: "divider",
                         // marginRight: "2px",
                       }}
-                      label="All"
+                      label="Tất cả"
                       value="1"
                     />
                     {categoryTwo?.map((item, index) => (
@@ -362,17 +365,14 @@ export default function DocumentManagement() {
             )}
           </TabContext>
         </Box>
-        {!isLoading ? (
-          <ListDocuments
-            role={role}
-            onDelete={handleDelete}
-            listDocs={listDocs}
-            selectedCategoryOne={selectedCategoryOne}
-            selectedCategoryTwo={selectedCategoryTwo}
-          />
-        ) : (
-          <Loading />
-        )}
+
+        <ListDocuments
+          role={role}
+          onDelete={handleDelete}
+          listDocs={listDocs}
+          selectedCategoryOne={selectedCategoryOne}
+          selectedCategoryTwo={selectedCategoryTwo}
+        />
 
         {/* MODAL */}
         <>
