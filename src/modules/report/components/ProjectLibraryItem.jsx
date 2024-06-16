@@ -46,24 +46,24 @@ export default function ProjectLibraryItem({
   };
   const handleInputChange = (id, key, value) => {
     // debugger;
-    if (value) {
-      if (key === "categoryTwo") {
+    if (key === "categoryTwo") {
+      if (value) {
         setErrorCategoryTwo("");
         setSelectedCategoryTwo(value);
         onChange({
           ...detail,
           categoryTwo: value,
         });
-      } else if (key === "linkLibrary") {
-        setErrorLibrary("");
-        setLinkLibrary(value);
-        onChange({
-          ...detail,
-          linkLibrary: value,
-        });
+      } else {
+        setErrorCategoryTwo("Vui lòng không bỏ trống");
       }
-    } else {
-      setErrorCategoryOne("Vui lòng không bỏ trống");
+    } else if (key === "linkLibrary") {
+      setErrorLibrary("");
+      setLinkLibrary(value);
+      onChange({
+        ...detail,
+        linkLibrary: value,
+      });
     }
   };
 
@@ -135,7 +135,7 @@ export default function ProjectLibraryItem({
           />
           <span className="text-danger  ">{errorCategoryOne}</span>
         </div>
-        {categoryTwo.length > 0 ? (
+        {categoryTwo?.length > 0 ? (
           <div className=" me-4" style={{ height: "50px", width: "300px" }}>
             <Autocomplete
               size="small"

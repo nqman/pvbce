@@ -22,7 +22,7 @@ export default function MainLayout() {
   }, []);
   if (isLoading) {
     return (
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "100%", height: "10px" }}>
         <LinearProgress />
       </Box>
     );

@@ -6,6 +6,7 @@ import Capacity from "../components/Capacity";
 import Experience from "../components/Experience";
 import License from "../components/License";
 import GoToTop from "../components/GoToTop/GoToTop";
+import { Divider } from "@mui/material";
 
 export default function Home() {
   return (

@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Container,
@@ -35,12 +36,25 @@ export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
   const [categoryTwo, setCategoryTwo] = useState();
+  const [categoryTwoModal, setCategoryTwoModal] = useState([]);
   const [selectedCategoryOne, setSelectedCategoryOne] = useState("All");
   const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("All");
+  const [errorCategoryOne, setErrorCategoryOne] = useState(
+    "Vui lòng không bỏ trống"
+  );
+  const [errorName, setErrorName] = useState("Vui lòng không bỏ trống");
+  const [errorLink, setErrorLink] = useState("Vui lòng không bỏ trống");
+  const [errorCategoryTwo, setErrorCategoryTwo] = useState(
+    "Vui lòng không bỏ trống"
+  );
+  const [linkLibrary, setLinkLibrary] = useState([]);
+  const [errorLibary, setErrorLibrary] = useState("");
+
   const role = Cookies.get("role")?.replace(/"/g, "");
 
   //MODAL
   const [show, setShow] = useState(false);
+
   const handleClose = () => {
     setShow(false);
   };
@@ -51,7 +65,6 @@ export default function DocumentManagement() {
 
   const handleChangeType = (e) => {
     setType(e.target.value);
-    setDocument(emptyValue);
   };
 
   const [scope, setScope] = useState("");
@@ -97,25 +110,9 @@ export default function DocumentManagement() {
   };
 
   const [document, setDocument] = useState(emptyValue);
-  const handleInputChange = (e) => {
-    setDocument({ ...document, [e.target.name]: e.target.value });
-  };
+
   const handleFileChange = (e) => {
     setDocument({ ...document, file: e.target.files[0] });
-  };
-  const handleSubmit = async () => {
-    try {
-      const data = await addDocumentAPI(document);
-      if (data) {
-        setShow(false);
-        toast.success("Thêm tài liệu thành công");
-      }
-      // setIsLoading(false);
-      fetchDocuments();
-    } catch (error) {
-      toast.error("Thêm tài liệu thất bại");
-      setIsLoading(false);
-    }
   };
 
   // xóa tài liệu
@@ -170,6 +167,60 @@ export default function DocumentManagement() {
     setSelectedCategoryTwo(event.target.innerText);
   };
 
+  const handleSelectCategoryOneModal = (key, value) => {
+    // debugger;
+    if (value) {
+      setErrorCategoryOne("");
+      setSelectedCategoryOne(value);
+      let selectedCategory = categoryOneTwo.filter(
+        (category) => category.name === value
+      );
+      setCategoryTwoModal(selectedCategory[0].categories);
+      setDocument({ ...document, [key]: value });
+    } else {
+      setErrorCategoryOne("Vui lòng không bỏ trống");
+    }
+  };
+  const handleInputChange = (key, value) => {
+    // debugger;
+    if (key === "categoryTwo") {
+      if (value) {
+        setErrorCategoryTwo("");
+        setSelectedCategoryTwo(value);
+      } else {
+        setErrorCategoryOne("Vui lòng không bỏ trống");
+      }
+    } else if (key === "name") {
+      if (value) {
+        setErrorName("");
+      } else {
+        setErrorName("Vui lòng không bỏ trống");
+      }
+    } else if (key === "link") {
+      if (value) {
+        setErrorLink("");
+      } else {
+        setErrorLink("Vui lòng không bỏ trống");
+      }
+    }
+    setDocument({ ...document, [key]: value });
+  };
+  const handleSubmit = async () => {
+    console.log(document);
+    try {
+      const data = await addDocumentAPI(document);
+      if (data) {
+        setShow(false);
+        toast.success("Thêm tài liệu thành công");
+        setDocument(emptyValue);
+      }
+      // setIsLoading(false);
+      fetchDocuments();
+    } catch (error) {
+      toast.error("Thêm tài liệu thất bại");
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <Container maxWidth="lg" className="mt-4">
@@ -334,7 +385,62 @@ export default function DocumentManagement() {
             <Modal.Header closeButton>
               <Modal.Title>Thêm tài liệu</Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{ padding: "10px" }}>
+            <Modal.Body style={{ padding: "20px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "start",
+                  marginBottom: "5px",
+                }}
+              >
+                <div
+                  className=" mb-2"
+                  style={{
+                    height: "50px",
+                    width: "50%",
+                    marginRight: "20px",
+                  }}
+                >
+                  <Autocomplete
+                    size="small"
+                    sx={{
+                      display: "block",
+                      height: "40px",
+                    }}
+                    // value={projectLibrary.categoryOne}
+                    options={categoryOneTwo?.map((option) => option.name)}
+                    onChange={(e, value) =>
+                      handleSelectCategoryOneModal("categoryOne", value)
+                    }
+                    renderInput={(params) => (
+                      <TextField {...params} label="Danh mục 1" />
+                    )}
+                  />
+                  <span className="text-danger  ">{errorCategoryOne}</span>
+                </div>
+                {categoryTwoModal?.length > 0 ? (
+                  <div style={{ height: "50px", width: "50%" }}>
+                    <Autocomplete
+                      size="small"
+                      sx={{
+                        display: "block",
+                        height: "40px",
+                      }}
+                      disablePortal
+                      options={categoryTwoModal?.map((option) => option.name)}
+                      onChange={(e, value) =>
+                        handleInputChange("categoryTwo", value)
+                      }
+                      renderInput={(params) => (
+                        <TextField {...params} label="Danh mục 2" />
+                      )}
+                    />
+                    <span className="text-danger ">{errorCategoryTwo}</span>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
               <div
                 style={{
                   display: "flex",
@@ -342,7 +448,7 @@ export default function DocumentManagement() {
                   marginBottom: "20px",
                 }}
               >
-                <Box sx={{ marginRight: "20px" }}>
+                <Box sx={{ marginRight: "20px", marginTop: "10px" }}>
                   <FormControl fullWidth>
                     <InputLabel size="small" id="demo-simple-select-label">
                       Định dạng
@@ -362,7 +468,7 @@ export default function DocumentManagement() {
                     </Select>
                   </FormControl>
                 </Box>
-                <Box>
+                <Box sx={{ marginTop: "10px" }}>
                   <FormControl size="small" fullWidth>
                     <InputLabel id="demo-simple-select-label">
                       Hiển thị
@@ -386,45 +492,58 @@ export default function DocumentManagement() {
               <div
                 style={{
                   display: "flex",
-                  alignItems: "center",
-                  height: "50px",
+                  alignItems: "start",
+                  height: "60px",
                 }}
               >
-                <TextField
-                  label="Tên tài liệu"
-                  id="outlined-size-small"
-                  value={document.name}
-                  name="name"
-                  size="small"
-                  sx={{ width: "50%", marginRight: "20px" }}
-                  onChange={handleInputChange}
-                />
-
+                <div style={{ width: "50%", marginRight: "20px" }}>
+                  <TextField
+                    label="Tên tài liệu"
+                    id="outlined-size-small"
+                    value={document.name}
+                    name="name"
+                    size="small"
+                    sx={{ width: "100%" }}
+                    onChange={(e, value) =>
+                      handleInputChange("name", e.target.value)
+                    }
+                  />
+                  <span className="text-danger d-block  ">{errorName}</span>
+                </div>
                 {type === "file" ? (
-                  <Button sx={{ width: "50%" }} component="label">
+                  <div style={{ width: "50%" }}>
                     <input
-                      style={{}}
                       className="form-control"
                       type="file"
                       id="formFile"
                       onChange={handleFileChange}
                     />
-                  </Button>
+                  </div>
                 ) : (
                   ""
                 )}
                 {type === "link" ? (
-                  <TextField
-                    label="Đường dẫn tài liệu"
-                    id="outlined-size-small"
-                    value={document.link}
-                    name="link"
-                    size="small"
-                    sx={{
+                  <div
+                    style={{
                       width: "50%",
+                      height: "60px",
                     }}
-                    onChange={handleInputChange}
-                  />
+                  >
+                    <TextField
+                      label="Đường dẫn tài liệu"
+                      id="outlined-size-small"
+                      value={document.link}
+                      name="link"
+                      size="small"
+                      sx={{
+                        width: "100%",
+                      }}
+                      onChange={(e, value) =>
+                        handleInputChange("link", e.target.value)
+                      }
+                    />
+                    <p className="text-danger  ">{errorLink}</p>
+                  </div>
                 ) : (
                   ""
                 )}
