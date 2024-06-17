@@ -229,46 +229,47 @@ export async function saveProjectAPI(project) {
           project[key].forEach((detail) => {
             //EDIT
             if (detail.id > 0) {
-              //UPDATE
-              if (detail.linkLibrary !== null || detail.files.length > 0) {
+              //UPDATE FILE
+              if (detail?.files) {
                 // FILE
-                if (detail.files.length > 0) {
-                  formData.append("idUpdatePartLibraries", detail.id);
-                  formData.append("categoriesOneUpdate", detail.categoryOne);
-                  if (detail.categoryTwo === "") {
-                    formData.append("categoriesTwoUpdate", detail.categoryOne);
-                  } else {
-                    formData.append("categoriesTwoUpdate", detail.categoryTwo);
-                  }
-                  detail.files.forEach((file) => {
-                    formData.append("partNameUpdateLibraries", file.name);
-                    formData.append("partUpdateLibraries", file);
-                  });
+                formData.append("idUpdatePartLibraries", detail.id);
+                formData.append("categoriesOneUpdate", detail.categoryOne);
+                if (detail.categoryTwo === "") {
+                  formData.append("categoriesTwoUpdate", detail.categoryOne);
+                } else {
+                  formData.append("categoriesTwoUpdate", detail.categoryTwo);
                 }
-                // LINK
-                else {
-                  formData.append("idUpdatePathLibraries", 0);
-                  formData.append(
-                    "categoriesOneUpdatePath",
-                    detail.categoryOne
-                  );
-                  if (detail.categoryTwo === "") {
-                    formData.append(
-                      "categoriesTwoUpdatePath",
-                      detail.categoryOne
-                    );
-                  } else {
-                    formData.append(
-                      "categoriesTwoUpdatePath",
-                      detail.categoryTwo
-                    );
-                  }
-                  formData.append("pathUpdateLibraries", detail.linkLibrary);
-                }
+                detail.files.forEach((file) => {
+                  formData.append("partNameUpdateLibraries", file.name);
+                  formData.append("partUpdateLibraries", file);
+                });
               }
-              //NO-UPDATE
+              //UPDATE LINK
+              else if (detail.linkLibrary) {
+                formData.append("idLinkLibraries", detail.id);
+                formData.append("categoriesOneLink", detail.categoryOne);
+                if (detail.categoryTwo === "") {
+                  formData.append("categoriesTwoLink", detail.categoryOne);
+                } else {
+                  formData.append("categoriesTwoLink", detail.categoryTwo);
+                }
+                formData.append("linkLibraries", detail.linkLibrary);
+              }
+              //NO-UPDATE FILE || UPDATE PATH
               else {
                 formData.append("idUpdatePathLibraries", detail.id);
+                formData.append("categoriesOneUpdatePath", detail.categoryOne);
+                if (detail.categoryTwo === "") {
+                  formData.append(
+                    "categoriesTwoUpdatePath",
+                    detail.categoryOne
+                  );
+                } else {
+                  formData.append(
+                    "categoriesTwoUpdatePath",
+                    detail.categoryTwo
+                  );
+                }
                 formData.append("pathUpdateLibraries", detail.pathLibrary);
               }
             }

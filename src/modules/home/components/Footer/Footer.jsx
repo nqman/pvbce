@@ -14,18 +14,13 @@ export default function Footer() {
       }}
       id="footer"
     >
-      <div className="container  pt-3 pb-2">
+      <div className="container  pt-3 pb-1">
         <div className="row">
           <div
             className="footer_left col-lg-4 col-md-4 col-sm-12"
-            style={{ borderRight: "1px solid " }}
+            style={{ borderLeft: "3px solid " }}
           >
-            <div
-              style={{
-                marginTop: "20px",
-                // borderRight: "1px solid",
-              }}
-            >
+            <div>
               <b>VĂN PHÒNG TẠI HCM:</b>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 <li style={{ margin: "8px 0" }}>
@@ -63,9 +58,9 @@ export default function Footer() {
           </div>
           <div
             className="footer_middle col-lg-4 col-md-4 col-sm-12"
-            style={{ borderRight: "1px solid " }}
+            style={{ borderLeft: "3px solid " }}
           >
-            <div style={{ marginTop: "20px" }}>
+            <div>
               <b>XƯỞNG THIẾT BỊ TẠI LONG AN:</b>
               <ul style={{ listStyle: "none", paddingLeft: 0 }}>
                 <li style={{ margin: "8px 0" }}>
@@ -103,7 +98,12 @@ export default function Footer() {
           </div>
           <div
             className="footer__right col-lg-4 col-md-4 col-sm-12 "
-            style={{ marginTop: "65px" }}
+            style={{
+              borderLeft: "3px solid ",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+            }}
           >
             <div className="footer_logo">
               <img
@@ -111,29 +111,14 @@ export default function Footer() {
                 alt="logo"
                 style={{
                   // height: "54px",
-                  width: "150px",
+                  width: "250px",
                   zIndex: "10",
                 }}
               />
+              <p style={{ marginBottom: 0 }}>
+                © 2024 PhanVuBinhDuong. All rights reserved.
+              </p>
             </div>
-            {/* <div className="footer_social mt-2">
-              <a href="https://www.facebook.com/wanman26">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="https://www.linkedin.com/">
-                <i className="fab fa-linkedin-in"></i>
-              </a>
-              <a href="https://twitter.com/?lang=en">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="https://www.google.com.vn/">
-                <i className="fab fa-google-plus-g"></i>
-              </a>
-              <a href="https://github.com/wanman26">
-                <i className="fab fa-github"></i>
-              </a>
-            </div> */}
-            <p>© 2024 PhanVuBinhDuong. All rights reserved.</p>
           </div>
         </div>
       </div>

@@ -54,7 +54,7 @@ const newEmptyProjectLibrary = () => {
     categoryTwo: "",
     linkLibrary: "",
     files: [],
-    fileNames: "",
+    fileName: "",
   };
 };
 
@@ -186,19 +186,7 @@ export default function EditProject() {
       return [...newProjectItems];
     });
   };
-  const handleProjectLibraryChange = (detail) => {
-    // debugger;
-    setProjectLibraryItems((oldProjectItems) => {
-      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
-      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
-      newProjectItems.splice(index, 1, detail);
-      setProject({
-        ...project,
-        rpQuantityAndRevenueLibraries: newProjectItems,
-      });
-      return [...newProjectItems];
-    });
-  };
+
   const handleRemoveProjectDetail = (detail) => {
     let tempCountItem = countItem - 1;
     setCountItem(tempCountItem);
@@ -234,24 +222,7 @@ export default function EditProject() {
       return newProjectItems;
     });
   };
-  const handleRemoveProjectLibrary = (detail) => {
-    // let tempCountItem = countItem - 1;
-    // setCountItem(tempCountItem);
-    // if (categories.length !== tempCountItem) {
-    //   setDisableAddItem(false);
-    // }
 
-    setProjectItems((oldProjectItems) => {
-      const newProjectItems = [
-        ...oldProjectItems.filter((el) => detail.id !== el.id),
-      ];
-      setProject({
-        ...project,
-        rpQuantityAndRevenueLibraries: newProjectItems,
-      });
-      return newProjectItems;
-    });
-  };
   useEffect(() => {
     updateTotalAmount();
   }, [projectItems]);
@@ -341,9 +312,41 @@ export default function EditProject() {
     }
     fetchMyAPI();
   }, [idProject]);
+  const handleRemoveProjectLibrary = (detail) => {
+    debugger;
+    // let tempCountItem = countItem - 1;
+    // setCountItem(tempCountItem);
+    // if (categories.length !== tempCountItem) {
+    //   setDisableAddItem(false);
+    // }
+
+    setProjectLibraryItems((oldProjectItems) => {
+      const newProjectItems = [
+        ...oldProjectItems.filter((el) => detail.id !== el.id),
+      ];
+      setProject({
+        ...project,
+        rpQuantityAndRevenueLibraries: newProjectItems,
+      });
+      return newProjectItems;
+    });
+  };
+  const handleProjectLibraryChange = (detail) => {
+    debugger;
+    setProjectLibraryItems((oldProjectItems) => {
+      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
+      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
+      newProjectItems.splice(index, 1, detail);
+      setProject({
+        ...project,
+        rpQuantityAndRevenueLibraries: newProjectItems,
+      });
+      return [...newProjectItems];
+    });
+  };
 
   const handleSubmit = async (e) => {
-    // debugger;
+    debugger;
     e.preventDefault();
     if (project.name.trim().length === 0) {
       toast.error("Vui lòng nhập tên dự án");

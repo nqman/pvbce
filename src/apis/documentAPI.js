@@ -2,9 +2,11 @@ import axios from "axios";
 import baseAPI from "./baseAPI";
 
 //Lấy danh sách tài liệu
-export async function listDocumentsAPI() {
+export async function listDocumentsAPI(categoryOne, categoryTwo) {
   try {
-    const resp = await baseAPI.get("documents");
+    const resp = await baseAPI.get(
+      `documents/get_list_document/${categoryOne}/${categoryTwo}`
+    );
     const data = resp.data;
     return data;
   } catch (error) {
@@ -61,7 +63,7 @@ export async function addDocumentAPI(document) {
       }
     }
     console.log(formData);
-    const resp = await baseAPI.post("documents/saves", formData, {
+    const resp = await baseAPI.post("documents/save", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
