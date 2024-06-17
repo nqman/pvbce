@@ -27,6 +27,15 @@ export default function ProjectLibraryItem({
   );
   const [errorLibary, setErrorLibrary] = useState("");
 
+  useEffect(() => {
+    if (detail.categoryOne) {
+      setErrorCategoryOne("");
+    }
+    if (detail.categoryTwo) {
+      setErrorCategoryTwo("");
+    }
+  }, [detail]);
+
   const handleSelectCategoryOne = (id, key, value) => {
     // debugger;
     if (value) {
@@ -70,16 +79,17 @@ export default function ProjectLibraryItem({
   const handleFileChange = (e, id) => {
     const chosenFiles = [...e.target.files];
 
-    let chosenfileNames = chosenFiles.map((file) => file.name);
-    // console.log(fileNames.join(";"));
+    let chosenfileName = chosenFiles.map((file) => file.name);
+    // console.log(fileName.join(";"));
     onChange({
       ...detail,
       files: chosenFiles,
-      fileNames: chosenfileNames.join(";"),
+      fileName: chosenfileName.join(";"),
     });
   };
 
   const deleteDiv = async (id) => {
+    debugger;
     try {
       const result = await Swal.fire({
         title: "Bạn chắc chắn muốn xóa? ",
@@ -124,7 +134,7 @@ export default function ProjectLibraryItem({
               display: "block",
               height: "40px",
             }}
-            // value={projectLibrary.categoryOne}
+            value={detail.categoryOne}
             options={categoryOneTwo?.map((option) => option.name)}
             onChange={(e, value) =>
               handleSelectCategoryOne(detail.id, "categoryOne", value)
@@ -135,7 +145,7 @@ export default function ProjectLibraryItem({
           />
           <span className="text-danger  ">{errorCategoryOne}</span>
         </div>
-        {categoryTwo?.length > 0 ? (
+        {categoryTwo?.length > 0 || detail?.categoryTwo ? (
           <div className=" me-4" style={{ height: "50px", width: "300px" }}>
             <Autocomplete
               size="small"
@@ -144,6 +154,7 @@ export default function ProjectLibraryItem({
                 height: "40px",
               }}
               disablePortal
+              value={detail?.categoryTwo}
               options={categoryTwo?.map((option) => option.name)}
               onChange={(e, value) =>
                 handleInputChange(detail.id, "categoryTwo", value)
@@ -160,10 +171,8 @@ export default function ProjectLibraryItem({
         <div className=" me-4" style={{ height: "50px", width: "300px" }}>
           <TextField
             placeholder="Nội dung"
-            value={
-              detail?.linkLibrary || detail.files?.name || detail?.fileNames
-            }
-            title={detail?.fileNames || detail?.linkLibrary}
+            value={detail?.linkLibrary || detail?.fileName}
+            title={detail?.fileName || detail?.linkLibrary}
             size="small"
             sx={{
               height: "40px",
@@ -199,6 +208,7 @@ export default function ProjectLibraryItem({
               height: "30px",
               padding: 0,
             }}
+            type="button"
             className="btn btn-danger"
             onClick={() => deleteDiv(detail.id)}
           >

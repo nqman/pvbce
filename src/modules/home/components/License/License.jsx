@@ -35,8 +35,8 @@ export default function License() {
   return (
     <div className="container" style={{ marginTop: "50px" }}>
       <h1
-        className="text-center mb-3"
-        style={{ fontSize: "30px ", fontWeight: "bold" }}
+        className="text-center "
+        style={{ fontSize: "30px ", fontWeight: "bold", marginBottom: "30px" }}
       >
         GIẤY PHÉP ĐĂNG KÝ KINH DOANH
       </h1>

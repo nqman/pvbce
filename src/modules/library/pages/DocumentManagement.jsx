@@ -34,6 +34,7 @@ import {
 
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
+  // const [isLoadingList, setIsLoadingList] = useState(true);
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
   const [categoryTwo, setCategoryTwo] = useState();
   const [categoryTwoModal, setCategoryTwoModal] = useState([]);
@@ -91,21 +92,23 @@ export default function DocumentManagement() {
       fetchDocuments();
     };
     asyncFn();
-  }, []);
+  }, [selectedCategoryOne, selectedCategoryTwo]);
 
   const fetchDocuments = async () => {
     try {
-      const data = await listDocumentsAPI();
-      // console.log(categoryOneTwo);
-      // toast.success("Lấy danh sách thư viện thành công");
+      const data = await listDocumentsAPI(
+        selectedCategoryOne,
+        selectedCategoryTwo
+      );
       setListDocs(data);
       let categoryOneTwo = await getCategoriesOneAndTwoAPI("LIBRARY_ITEM_ONE");
       setCategoryOneTwo(categoryOneTwo);
+      // toast.success("Lấy danh sách thư viện thành công");
       setIsLoading(false);
       // setValue(categoryOneTwo[0].id);
     } catch (error) {
       console.log(error);
-      toast.error("Lấy danh sách thư viện thất bại");
+      toast.error("Đã có lỗi xảy ra!");
     }
   };
 
@@ -142,17 +145,21 @@ export default function DocumentManagement() {
     }
   };
 
-  const [value, setValue] = useState("1");
+  const [valueOne, setValueOne] = useState("1");
 
   const handleSelectCategoryOne = (event, value) => {
-    let selectedCategory = categoryOneTwo.filter(
+    let selectedCategoryOne = categoryOneTwo.filter(
       (category) => category.id === value
     );
-    setCategoryTwo(selectedCategory[0]?.categories);
+    setCategoryTwo(selectedCategoryOne[0]?.categories);
+    // if (selectedCategoryOne[0]?.categories.length === 0) {
+    setSelectedCategoryTwo("Tất cả");
+    // }
+    setValueTwo("1");
     setSelectedCategoryOne(value);
     setSelectedCategoryOne(event.target.innerText);
 
-    setValue(value);
+    setValueOne(value);
   };
   const [valueTwo, setValueTwo] = useState("1");
 
@@ -206,7 +213,6 @@ export default function DocumentManagement() {
     setDocument({ ...document, [key]: value });
   };
   const handleSubmit = async () => {
-    console.log(document);
     try {
       const data = await addDocumentAPI(document);
       if (data) {
@@ -243,7 +249,7 @@ export default function DocumentManagement() {
             borderRadius: " 5px 5px 0 0",
           }}
         >
-          <TabContext value={value}>
+          <TabContext value={valueOne}>
             <Box>
               <TabList
                 variant="scrollable"
@@ -266,7 +272,8 @@ export default function DocumentManagement() {
                   sx={{
                     color: "black",
                     backgroundColor: "#F5F5F5",
-                    textTransform: "capitalize",
+                    textTransform: "inherit",
+
                     padding: "0px 8px",
                     // marginRight: "2px",
                     borderTopLeftRadius: "5px",
@@ -283,7 +290,7 @@ export default function DocumentManagement() {
                     sx={{
                       color: "black",
                       // fontWeight: "bold",
-                      textTransform: "capitalize",
+                      textTransform: "inherit",
                       padding: "0px 8px",
                       // marginRight: "2px",
                       borderRight: 1,
@@ -330,7 +337,7 @@ export default function DocumentManagement() {
                         color: "black",
                         // fontWeight: "bold",
                         backgroundColor: "#F5F5F5",
-                        textTransform: "capitalize",
+                        textTransform: "inherit",
                         padding: "0px 8px",
                         // borderLeft: 1,
                         borderRight: 1,
@@ -346,7 +353,7 @@ export default function DocumentManagement() {
                         sx={{
                           color: "black",
                           // fontWeight: "bold",
-                          textTransform: "capitalize",
+                          textTransform: "inherit",
                           padding: "0px 8px",
                           // marginRight: "2px",
                           borderRight: 1,

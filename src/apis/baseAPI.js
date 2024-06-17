@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 
 const token = Cookies.get("token")?.replace(/"/g, "");
 
+//LOCAL
 // const createBaseAPI = (token) => {
 //   if (token && token !== null) {
 //     return axios.create({
@@ -17,7 +18,7 @@ const token = Cookies.get("token")?.replace(/"/g, "");
 //     });
 //   }
 // };
-
+//SERVER
 const createBaseAPI = (token) => {
   if (token && token !== null) {
     return axios.create({

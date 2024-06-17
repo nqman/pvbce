@@ -35,7 +35,7 @@ export default function EquipManagement() {
   const fetchEquips = async () => {
     try {
       const data = await listEquipmentsAPI();
-      toast.success("Lấy danh sách thiết bị thành công");
+      // toast.success("Lấy danh sách thiết bị thành công");
       setEquips(data);
       setIsLoading(false);
     } catch (error) {
