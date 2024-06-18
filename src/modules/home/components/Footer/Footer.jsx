@@ -14,7 +14,7 @@ export default function Footer() {
       }}
       id="footer"
     >
-      <div className="container  pt-3 pb-1">
+      <div className="container  pt-3 pb-3">
         <div className="row">
           <div
             className="footer_left col-lg-4 col-md-4 col-sm-12"
@@ -115,7 +115,7 @@ export default function Footer() {
                   zIndex: "10",
                 }}
               />
-              <p style={{ marginBottom: 0 }}>
+              <p style={{ marginBottom: "15px" }}>
                 © 2024 PhanVuBinhDuong. All rights reserved.
               </p>
             </div>
