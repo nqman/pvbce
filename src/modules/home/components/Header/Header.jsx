@@ -567,7 +567,7 @@ function Header() {
               role !== "null" &&
               (role === "Admin" || role === "Employee") ? (
                 <MenuItem
-                  onClick={() => handleNavigateCatalogue("employeees")}
+                  onClick={() => handleNavigateCatalogue("employees")}
                   disableRipple
                 >
                   <GroupsIcon />

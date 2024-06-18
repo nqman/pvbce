@@ -34,57 +34,15 @@ import {
 
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
-  // const [isLoadingList, setIsLoadingList] = useState(true);
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
   const [categoryTwo, setCategoryTwo] = useState();
-  const [categoryTwoModal, setCategoryTwoModal] = useState([]);
   const [selectedCategoryOne, setSelectedCategoryOne] = useState("Tất cả");
   const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("Tất cả");
-  const [errorCategoryOne, setErrorCategoryOne] = useState(
-    "Vui lòng không bỏ trống"
-  );
-  const [errorName, setErrorName] = useState("Vui lòng không bỏ trống");
-  const [errorLink, setErrorLink] = useState("Vui lòng không bỏ trống");
-  const [errorCategoryTwo, setErrorCategoryTwo] = useState(
-    "Vui lòng không bỏ trống"
-  );
-  const [linkLibrary, setLinkLibrary] = useState([]);
-  const [errorLibary, setErrorLibrary] = useState("");
+
+  // const [linkLibrary, setLinkLibrary] = useState([]);
+  // const [errorLibary, setErrorLibrary] = useState("");
 
   const role = Cookies.get("role")?.replace(/"/g, "");
-
-  //MODAL
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => setShow(true);
-
-  // SELECT type
-  const [type, setType] = useState("");
-
-  const handleChangeType = (e) => {
-    setType(e.target.value);
-  };
-
-  const [scope, setScope] = useState("");
-
-  const handleChangeScope = (e) => {
-    setScope(e.target.value);
-    setDocument({ ...document, scope: e.target.value });
-  };
-
-  // FORM
-  const emptyValue = {
-    categoryOne: "",
-    categoryTwo: "",
-    scope: "",
-    name: "",
-    link: "",
-    file: null,
-    type: "LIBRARY",
-  };
   const [listDocs, setListDocs] = useState([]);
 
   useEffect(() => {
@@ -103,22 +61,33 @@ export default function DocumentManagement() {
       setListDocs(data);
       let categoryOneTwo = await getCategoriesOneAndTwoAPI("LIBRARY_ITEM_ONE");
       setCategoryOneTwo(categoryOneTwo);
-      // toast.success("Lấy danh sách thư viện thành công");
       setIsLoading(false);
-      // setValue(categoryOneTwo[0].id);
     } catch (error) {
       console.log(error);
       toast.error("Đã có lỗi xảy ra!");
     }
   };
 
-  const [document, setDocument] = useState(emptyValue);
+  const [valueOne, setValueOne] = useState("1");
+  const [valueTwo, setValueTwo] = useState("1");
 
-  const handleFileChange = (e) => {
-    setDocument({ ...document, file: e.target.files[0] });
+  const handleSelectCategoryOne = (event, value) => {
+    let selectedCategoryOne = categoryOneTwo.filter(
+      (category) => category.id === value
+    );
+    setCategoryTwo(selectedCategoryOne[0]?.categories);
+    setSelectedCategoryTwo("Tất cả");
+    setValueTwo("1");
+    setSelectedCategoryOne(value);
+    setSelectedCategoryOne(event.target.innerText);
+
+    setValueOne(value);
   };
 
-  // xóa tài liệu
+  const handleSelectCategoryTwo = (event, value) => {
+    setValueTwo(value);
+    setSelectedCategoryTwo(event.target.innerText);
+  };
   const handleDelete = async (id) => {
     try {
       const result = await Swal.fire({
@@ -145,57 +114,53 @@ export default function DocumentManagement() {
     }
   };
 
-  const [valueOne, setValueOne] = useState("1");
-
-  const handleSelectCategoryOne = (event, value) => {
-    let selectedCategoryOne = categoryOneTwo.filter(
-      (category) => category.id === value
-    );
-    setCategoryTwo(selectedCategoryOne[0]?.categories);
-    // if (selectedCategoryOne[0]?.categories.length === 0) {
-    setSelectedCategoryTwo("Tất cả");
-    // }
-    setValueTwo("1");
-    setSelectedCategoryOne(value);
-    setSelectedCategoryOne(event.target.innerText);
-
-    setValueOne(value);
+  //MODAL
+  // FORM
+  const emptyValue = {
+    categoryOne: "",
+    categoryTwo: "",
+    scope: "",
+    name: "",
+    link: "",
+    file: null,
+    type: "LIBRARY",
   };
-  const [valueTwo, setValueTwo] = useState("1");
-
-  const handleSelectCategoryTwo = (event, value) => {
-    // debugger;
-    let selectedCategoryTwo = categoryTwo.filter(
-      (category) => category.id === value
-    );
-    // setCategoryTwo(selectedCategory[0]?.categories);
-    setValueTwo(value);
-    // console.log(event.target.innerText);
-    setSelectedCategoryTwo(event.target.innerText);
-  };
-
+  const [show, setShow] = useState(false);
+  const [document, setDocument] = useState(emptyValue);
+  const [type, setType] = useState("");
+  const [scope, setScope] = useState("");
+  const [categoryTwoModal, setCategoryTwoModal] = useState([]);
+  const [selectedCategoryOneModal, setSelectedCategoryOneModal] = useState();
+  const [errorCategoryOneModal, setErrorCategoryOneModal] = useState(
+    "Vui lòng không bỏ trống"
+  );
+  const [errorName, setErrorName] = useState("Vui lòng không bỏ trống");
+  const [errorLink, setErrorLink] = useState("Vui lòng không bỏ trống");
+  const [errorCategoryTwoModal, setErrorCategoryTwoModal] = useState(
+    "Vui lòng không bỏ trống"
+  );
   const handleSelectCategoryOneModal = (key, value) => {
     // debugger;
     if (value) {
-      setErrorCategoryOne("");
-      setSelectedCategoryOne(value);
+      setErrorCategoryOneModal("");
+      setSelectedCategoryOneModal(value);
       let selectedCategory = categoryOneTwo.filter(
         (category) => category.name === value
       );
       setCategoryTwoModal(selectedCategory[0].categories);
       setDocument({ ...document, [key]: value });
     } else {
-      setErrorCategoryOne("Vui lòng không bỏ trống");
+      setErrorCategoryOneModal("Vui lòng không bỏ trống");
     }
   };
   const handleInputChange = (key, value) => {
     // debugger;
-    if (key === "categoryTwo") {
+    if (key === "categoryTwoModal") {
       if (value) {
-        setErrorCategoryTwo("");
+        setErrorCategoryTwoModal("");
         setSelectedCategoryTwo(value);
       } else {
-        setErrorCategoryOne("Vui lòng không bỏ trống");
+        setErrorCategoryOneModal("Vui lòng không bỏ trống");
       }
     } else if (key === "name") {
       if (value) {
@@ -210,8 +175,28 @@ export default function DocumentManagement() {
         setErrorLink("Vui lòng không bỏ trống");
       }
     }
+
     setDocument({ ...document, [key]: value });
   };
+  const handleFileChange = (e) => {
+    setDocument({ ...document, file: e.target.files[0] });
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
+
+  // SELECT type
+
+  const handleChangeType = (e) => {
+    setType(e.target.value);
+  };
+  const handleChangeScope = (e) => {
+    setScope(e.target.value);
+    setDocument({ ...document, scope: e.target.value });
+  };
+
   const handleSubmit = async () => {
     try {
       const data = await addDocumentAPI(document);
@@ -220,11 +205,9 @@ export default function DocumentManagement() {
         toast.success("Thêm tài liệu thành công");
         setDocument(emptyValue);
       }
-      // setIsLoading(false);
       fetchDocuments();
     } catch (error) {
       toast.error("Thêm tài liệu thất bại");
-      setIsLoading(false);
     }
   };
   if (isLoading) {
@@ -275,7 +258,7 @@ export default function DocumentManagement() {
                     textTransform: "inherit",
 
                     padding: "0px 8px",
-                    // marginRight: "2px",
+
                     borderTopLeftRadius: "5px",
 
                     borderRight: 1,
@@ -289,10 +272,10 @@ export default function DocumentManagement() {
                     key={index}
                     sx={{
                       color: "black",
-                      // fontWeight: "bold",
+
                       textTransform: "inherit",
                       padding: "0px 8px",
-                      // marginRight: "2px",
+
                       borderRight: 1,
                       borderColor: "divider",
                       backgroundColor: "#F5F5F5",
@@ -335,14 +318,12 @@ export default function DocumentManagement() {
                     <Tab
                       sx={{
                         color: "black",
-                        // fontWeight: "bold",
+
                         backgroundColor: "#F5F5F5",
                         textTransform: "inherit",
                         padding: "0px 8px",
-                        // borderLeft: 1,
                         borderRight: 1,
                         borderColor: "divider",
-                        // marginRight: "2px",
                       }}
                       label="Tất cả"
                       value="1"
@@ -352,10 +333,8 @@ export default function DocumentManagement() {
                         key={index}
                         sx={{
                           color: "black",
-                          // fontWeight: "bold",
                           textTransform: "inherit",
                           padding: "0px 8px",
-                          // marginRight: "2px",
                           borderRight: 1,
                           borderColor: "divider",
                           backgroundColor: "#F5F5F5",
@@ -414,16 +393,15 @@ export default function DocumentManagement() {
                       display: "block",
                       height: "40px",
                     }}
-                    // value={projectLibrary.categoryOne}
                     options={categoryOneTwo?.map((option) => option.name)}
                     onChange={(e, value) =>
-                      handleSelectCategoryOneModal("categoryOne", value)
+                      handleSelectCategoryOneModal("categoryOneModal", value)
                     }
                     renderInput={(params) => (
                       <TextField {...params} label="Danh mục 1" />
                     )}
                   />
-                  <span className="text-danger  ">{errorCategoryOne}</span>
+                  <span className="text-danger  ">{errorCategoryOneModal}</span>
                 </div>
                 {categoryTwoModal?.length > 0 ? (
                   <div style={{ height: "50px", width: "50%" }}>
@@ -436,13 +414,15 @@ export default function DocumentManagement() {
                       disablePortal
                       options={categoryTwoModal?.map((option) => option.name)}
                       onChange={(e, value) =>
-                        handleInputChange("categoryTwo", value)
+                        handleInputChange("categoryTwoModal", value)
                       }
                       renderInput={(params) => (
                         <TextField {...params} label="Danh mục 2" />
                       )}
                     />
-                    <span className="text-danger ">{errorCategoryTwo}</span>
+                    <span className="text-danger ">
+                      {errorCategoryTwoModal}
+                    </span>
                   </div>
                 ) : (
                   ""
@@ -555,8 +535,6 @@ export default function DocumentManagement() {
                   ""
                 )}
               </div>
-
-              {/* </div> */}
             </Modal.Body>
             <Modal.Footer>
               <Button
