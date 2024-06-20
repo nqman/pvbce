@@ -44,15 +44,15 @@ function LineChartQuantity({ startPicker, endPicker, detailModel }) {
           <Chart
             chartType="ComboChart"
             width="100%"
-            height="80vh"
+            height="400px"
             data={data}
             options={options}
           />
           <h3
             style={{
               textAlign: "center",
-              marginTop: "10px",
               fontWeight: "bold",
+              marginTop: "10px",
               marginBottom: "-5px",
             }}
           >{`Biểu đồ sản lượng (${startPicker} đến ${endPicker})`}</h3>

@@ -132,36 +132,21 @@ export default function ActualCostPerWeek({
   }, [actualCostItems, idActualCost]);
 
   return (
-    <div style={{ marginBottom: "50px" }}>
+    <div>
+      {/* EDIT */}
       {idActualCost > 0 ? (
         <Grid
           container
-          spacing={5}
           style={{
             overflow: "hidden",
             display: "flex",
             alignItems: "start",
-            border: "1px solid",
             borderRadius: "5px",
-            padding: "10px 0",
+            backgroundColor: "#f5f5f5ab",
+            padding: "30px",
           }}
         >
-          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
-            <span
-              style={{
-                padding: "5px 10px",
-                border: "1px solid",
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                backgroundColor: "rgb(242, 228, 38)",
-                fontWeight: "bold",
-                color: "black",
-                borderRadius: "5px",
-              }}
-            >
-              {fromDateToDate}
-            </span>
-          </Grid>
-          <Grid item lg={12}>
+          <Grid item sm={12}>
             <div>
               {actualCostItems.map((detail) => (
                 <ActualCostItem
@@ -183,10 +168,13 @@ export default function ActualCostPerWeek({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  paddingBottom: "10px",
                 }}
               >
-                <Button disabled={disableAddItem} onClick={addActualCostItem}>
+                <Button
+                  style={{ fontSize: "14px" }}
+                  disabled={disableAddItem}
+                  onClick={addActualCostItem}
+                >
                   Thêm
                 </Button>
                 <TextField
@@ -194,7 +182,7 @@ export default function ActualCostPerWeek({
                   size="small"
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
-                    marginRight: "160px",
+                    marginRight: "40px",
                     width: "200px",
                     pointerEvents: "none",
                   }}
@@ -207,32 +195,16 @@ export default function ActualCostPerWeek({
       ) : (
         <Grid
           container
-          spacing={5}
           style={{
             overflow: "hidden",
             display: "flex",
             alignItems: "start",
-            border: "1px solid",
             borderRadius: "5px",
-            padding: "10px 0",
+            backgroundColor: "#f5f5f5ab",
+            padding: "30px",
           }}
         >
-          <Grid item lg={12} sx={{ margin: "-20px 0 -10px 0" }}>
-            <span
-              style={{
-                padding: "5px 10px",
-                border: "1px solid",
-                boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                backgroundColor: "rgb(242, 228, 38)",
-                fontWeight: "bold",
-                color: "black",
-                borderRadius: "5px",
-              }}
-            >
-              {fromDateToDate}
-            </span>
-          </Grid>
-          <Grid item lg={12}>
+          <Grid item sm={12}>
             <div>
               {actualCostItems.map((detail) => (
                 <ActualCostItem
@@ -257,7 +229,11 @@ export default function ActualCostPerWeek({
                   paddingBottom: "10px",
                 }}
               >
-                <Button disabled={disableAddItem} onClick={addActualCostItem}>
+                <Button
+                  style={{ fontSize: "14px" }}
+                  disabled={disableAddItem}
+                  onClick={addActualCostItem}
+                >
                   Thêm
                 </Button>
                 <TextField
@@ -265,7 +241,7 @@ export default function ActualCostPerWeek({
                   size="small"
                   value={`${totalAmount.toLocaleString()} VND`}
                   sx={{
-                    marginRight: "160px",
+                    marginRight: "40px",
                     width: "200px",
                     pointerEvents: "none",
                   }}

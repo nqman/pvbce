@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function QuantityRevenueItem({
   detail,
@@ -96,7 +97,7 @@ export default function QuantityRevenueItem({
       >
         <Autocomplete
           size="small"
-          sx={{ width: "40%", marginRight: "20px" }}
+          sx={{ width: "40%", marginRight: "20px", fontSize: "14px" }}
           disablePortal
           id="combo-box-demo"
           options={remainingCategories?.map((option) => option.name)}
@@ -104,7 +105,11 @@ export default function QuantityRevenueItem({
           disabled={detail?.category ? true : false}
           onChange={handleSelectCategory}
           renderInput={(params) => (
-            <TextField {...params} label="Tên hạng mục" />
+            <TextField
+              sx={{ fontSize: "14px" }}
+              {...params}
+              label="Tên hạng mục"
+            />
           )}
         />
         <TextField
@@ -117,7 +122,7 @@ export default function QuantityRevenueItem({
         />
         <TextField
           label={
-            <span>
+            <span style={{ fontSize: "14px" }}>
               Sản lượng<span style={{ color: "red" }}>*</span>
             </span>
           }
@@ -151,11 +156,15 @@ export default function QuantityRevenueItem({
           sx={{ marginRight: "20px", width: "190px" }}
         />
         <button
-          className="btn btn-danger"
+          style={{
+            border: "none",
+            background: "none",
+            color: "red",
+          }}
           onClick={() => deleteDiv(detail.id)}
           type="button"
         >
-          x
+          <ClearIcon sx={{ fontSize: "20px", fontWeight: "bolder" }} />
         </button>
       </div>
     </div>

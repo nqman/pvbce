@@ -21,6 +21,7 @@ import {
   selectEquipmentAPI,
 } from "../../../../apis/equipmentAPI";
 import Cookies from "js-cookie";
+import NavigationButton from "../../../common/NavigationButton";
 
 const EquipDetail = () => {
   const navigate = useNavigate();
@@ -95,19 +96,12 @@ const EquipDetail = () => {
 
   return (
     <div>
-      <Container className="mt-4">
-        <div className="mb-2">
-          <Link
-            sx={{ fontSize: "16px" }}
-            component="button"
-            variant="body2"
-            onClick={() => {
-              navigate("/catalogue");
-            }}
-          >
-            <ArrowBackIosIcon sx={{ fontSize: "15px" }} />
-            Danh sách thiết bị
-          </Link>
+      <Container className="mt-4 mb-4">
+        <div>
+          <NavigationButton
+            url="/catalogue/equipments"
+            name="Danh sách thiết bị"
+          />
         </div>
         <Grid container spacing={5} style={{ overflow: "hidden" }}>
           <Grid item xs={12} lg={6}>
@@ -124,8 +118,8 @@ const EquipDetail = () => {
             </Slider>
           </Grid>
           <Grid item xs={12} lg={6}>
-            <Typography variant="h5" gutterBottom>
-              Thông tin chung:
+            <Typography sx={{ fontWeight: "bold" }} variant="h5" gutterBottom>
+              I. THÔNG TIN CHUNG
             </Typography>
             <List>
               <ul>
@@ -164,8 +158,9 @@ const EquipDetail = () => {
                 }
               </ul>
             </List>
-            <Typography variant="h5" gutterBottom>
-              Mã QR:
+
+            <Typography sx={{ fontWeight: "bold" }} variant="h5" gutterBottom>
+              II. MÃ QR
             </Typography>
             <div>
               <img
@@ -187,8 +182,8 @@ const EquipDetail = () => {
           </Grid>
 
           <Grid item xs={12} lg={6}>
-            <Typography variant="h5" gutterBottom>
-              Thông số kỹ thuật:
+            <Typography sx={{ fontWeight: "bold" }} variant="h5" gutterBottom>
+              III. THÔNG SỐ KỸ THUẬT
             </Typography>
             <List>
               <ul>
@@ -232,8 +227,8 @@ const EquipDetail = () => {
 
           {role && (role === "Admin" || role === "Employee") && (
             <Grid item xs={12} lg={6}>
-              <Typography variant="h5" gutterBottom>
-                Nhật kí bảo dưỡng:
+              <Typography sx={{ fontWeight: "bold" }} variant="h5" gutterBottom>
+                IV. NHẬT KÍ BẢO DƯỠNG
               </Typography>
               <List>
                 <ul>

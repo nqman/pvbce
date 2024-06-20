@@ -24,6 +24,7 @@ import Loading from "../../home/components/Loading/Loading";
 import { Modal } from "react-bootstrap";
 import toast, { Toaster } from "react-hot-toast";
 import { addDocumentAPI } from "../../../apis/documentAPI";
+import NavigationButton from "../../common/NavigationButton";
 
 const ProjectDetail = () => {
   const navigate = useNavigate();
@@ -153,21 +154,7 @@ const ProjectDetail = () => {
       <Toaster position="top-right" />
       <Container className="mt-4 mb-4">
         <div>
-          <Button
-            sx={{
-              textTransform: "initial",
-              paddingLeft: "5px",
-              paddingRight: "5px",
-              fontSize: "13px",
-              fontWeight: "bold",
-            }}
-            onClick={() => {
-              navigate("/report/listprojects");
-            }}
-          >
-            <ArrowBackIosIcon sx={{ fontSize: "12px" }} />
-            Danh sách dự án
-          </Button>
+          <NavigationButton url="/report/listprojects" name="Danh sách dự án" />
         </div>
         <div style={{ justifyContent: "end", display: "flex" }}>
           <Button

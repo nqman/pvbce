@@ -52,16 +52,16 @@ function LineChartActualCostAndRevenue({
           <Chart
             chartType="ComboChart"
             width="100%"
-            height="80vh"
+            height="400px"
             data={data}
             options={options}
           />
           <h3
             style={{
               textAlign: "center",
-              marginBottom: "-5px",
-              marginTop: "10px",
               fontWeight: "bold",
+              marginTop: "10px",
+              marginBottom: "-5px",
             }}
           >
             {`Biểu đồ doanh thu & chi phí (${startPicker} đến ${endPicker})`}
