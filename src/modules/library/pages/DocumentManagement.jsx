@@ -35,9 +35,9 @@ import {
 export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
-  const [categoryTwo, setCategoryTwo] = useState();
-  const [selectedCategoryOne, setSelectedCategoryOne] = useState("Tất cả");
-  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("Tất cả");
+  const [categoryTwoList, setCategoryTwoList] = useState();
+  const [selectedCategoryOneList, setSelectedCategoryOneList] = useState("Tất cả");
+  const [selectedCategoryTwoList, setSelectedCategoryTwoList] = useState("Tất cả");
 
   // const [linkLibrary, setLinkLibrary] = useState([]);
   // const [errorLibary, setErrorLibrary] = useState("");
@@ -50,13 +50,13 @@ export default function DocumentManagement() {
       fetchDocuments();
     };
     asyncFn();
-  }, [selectedCategoryOne, selectedCategoryTwo]);
+  }, [selectedCategoryOneList, selectedCategoryTwoList]);
 
   const fetchDocuments = async () => {
     try {
       const data = await listDocumentsAPI(
-        selectedCategoryOne,
-        selectedCategoryTwo
+        selectedCategoryOneList,
+        selectedCategoryTwoList
       );
       setListDocs(data);
       let categoryOneTwo = await getCategoriesOneAndTwoAPI("LIBRARY_ITEM_ONE");
@@ -71,22 +71,22 @@ export default function DocumentManagement() {
   const [valueOne, setValueOne] = useState("1");
   const [valueTwo, setValueTwo] = useState("1");
 
-  const handleSelectCategoryOne = (event, value) => {
-    let selectedCategoryOne = categoryOneTwo.filter(
+  const handleSelectCategoryOneList = (event, value) => {
+    let selectedCategoryOneList = categoryOneTwo.filter(
       (category) => category.id === value
     );
-    setCategoryTwo(selectedCategoryOne[0]?.categories);
-    setSelectedCategoryTwo("Tất cả");
+    setCategoryTwoList(selectedCategoryOneList[0]?.categories);
+    setSelectedCategoryTwoList("Tất cả");
     setValueTwo("1");
-    setSelectedCategoryOne(value);
-    setSelectedCategoryOne(event.target.innerText);
+    // setSelectedCategoryOneList(value);
+    setSelectedCategoryOneList(event.target.innerText);
 
     setValueOne(value);
   };
 
-  const handleSelectCategoryTwo = (event, value) => {
+  const handleSelectCategoryTwoList = (event, value) => {
     setValueTwo(value);
-    setSelectedCategoryTwo(event.target.innerText);
+    setSelectedCategoryTwoList(event.target.innerText);
   };
   const handleDelete = async (id) => {
     try {
@@ -129,38 +129,38 @@ export default function DocumentManagement() {
   const [document, setDocument] = useState(emptyValue);
   const [type, setType] = useState("");
   const [scope, setScope] = useState("");
-  const [categoryTwoModal, setCategoryTwoModal] = useState([]);
-  const [selectedCategoryOneModal, setSelectedCategoryOneModal] = useState();
-  const [errorCategoryOneModal, setErrorCategoryOneModal] = useState(
+  const [categoryTwo, setCategoryTwo] = useState([]);
+  const [selectedCategoryOne, setSelectedCategoryOne] = useState();
+  const [errorCategoryOne, setErrorCategoryOne] = useState(
     "Vui lòng không bỏ trống"
   );
   const [errorName, setErrorName] = useState("Vui lòng không bỏ trống");
   const [errorLink, setErrorLink] = useState("Vui lòng không bỏ trống");
-  const [errorCategoryTwoModal, setErrorCategoryTwoModal] = useState(
+  const [errorCategoryTwo, setErrorCategoryTwo] = useState(
     "Vui lòng không bỏ trống"
   );
-  const handleSelectCategoryOneModal = (key, value) => {
+  const handleSelectCategoryOne = (key, value) => {
     // debugger;
     if (value) {
-      setErrorCategoryOneModal("");
-      setSelectedCategoryOneModal(value);
+      setErrorCategoryOne("");
+      setSelectedCategoryOne(value);
       let selectedCategory = categoryOneTwo.filter(
         (category) => category.name === value
       );
-      setCategoryTwoModal(selectedCategory[0].categories);
+      setCategoryTwo(selectedCategory[0].categories);
       setDocument({ ...document, [key]: value });
     } else {
-      setErrorCategoryOneModal("Vui lòng không bỏ trống");
+      setErrorCategoryOne("Vui lòng không bỏ trống");
     }
   };
   const handleInputChange = (key, value) => {
     // debugger;
-    if (key === "categoryTwoModal") {
+    if (key === "categoryTwo") {
       if (value) {
-        setErrorCategoryTwoModal("");
+        setErrorCategoryTwo("");
         setSelectedCategoryTwo(value);
       } else {
-        setErrorCategoryOneModal("Vui lòng không bỏ trống");
+        setErrorCategoryOne("Vui lòng không bỏ trống");
       }
     } else if (key === "name") {
       if (value) {
@@ -237,7 +237,7 @@ export default function DocumentManagement() {
               <TabList
                 variant="scrollable"
                 scrollButtons="auto"
-                onChange={handleSelectCategoryOne}
+                onChange={handleSelectCategoryOneList}
                 sx={{
                   [`& .${tabsClasses.scrollButtons}`]: {
                     "&.Mui-disabled": { opacity: 0.3 },
@@ -286,7 +286,7 @@ export default function DocumentManagement() {
                 ))}
               </TabList>
             </Box>
-            {categoryTwo?.length > 0 ? (
+            {categoryTwoList?.length > 0 ? (
               categoryOneTwo.map((category) => (
                 <TabPanel
                   sx={{
@@ -301,7 +301,7 @@ export default function DocumentManagement() {
                     value={valueTwo}
                     variant="scrollable"
                     scrollButtons="auto"
-                    onChange={handleSelectCategoryTwo}
+                    onChange={handleSelectCategoryTwoList}
                     sx={{
                       [`& .${tabsClasses.scrollButtons}`]: {
                         "&.Mui-disabled": { opacity: 0.3 },
@@ -328,7 +328,7 @@ export default function DocumentManagement() {
                       label="Tất cả"
                       value="1"
                     />
-                    {categoryTwo?.map((item, index) => (
+                    {categoryTwoList?.map((item, index) => (
                       <Tab
                         key={index}
                         sx={{
@@ -356,8 +356,8 @@ export default function DocumentManagement() {
           role={role}
           onDelete={handleDelete}
           listDocs={listDocs}
-          selectedCategoryOne={selectedCategoryOne}
-          selectedCategoryTwo={selectedCategoryTwo}
+          selectedCategoryOneList={selectedCategoryOneList}
+          selectedCategoryTwoList={selectedCategoryTwoList}
         />
 
         {/* MODAL */}
@@ -395,15 +395,15 @@ export default function DocumentManagement() {
                     }}
                     options={categoryOneTwo?.map((option) => option.name)}
                     onChange={(e, value) =>
-                      handleSelectCategoryOneModal("categoryOneModal", value)
+                      handleSelectCategoryOne("categoryOne", value)
                     }
                     renderInput={(params) => (
                       <TextField {...params} label="Danh mục 1" />
                     )}
                   />
-                  <span className="text-danger  ">{errorCategoryOneModal}</span>
+                  <span className="text-danger  ">{errorCategoryOne}</span>
                 </div>
-                {categoryTwoModal?.length > 0 ? (
+                {categoryTwo?.length > 0 ? (
                   <div style={{ height: "50px", width: "50%" }}>
                     <Autocomplete
                       size="small"
@@ -412,16 +412,16 @@ export default function DocumentManagement() {
                         height: "40px",
                       }}
                       disablePortal
-                      options={categoryTwoModal?.map((option) => option.name)}
+                      options={categoryTwo?.map((option) => option.name)}
                       onChange={(e, value) =>
-                        handleInputChange("categoryTwoModal", value)
+                        handleInputChange("categoryTwo", value)
                       }
                       renderInput={(params) => (
                         <TextField {...params} label="Danh mục 2" />
                       )}
                     />
                     <span className="text-danger ">
-                      {errorCategoryTwoModal}
+                      {errorCategoryTwo}
                     </span>
                   </div>
                 ) : (
