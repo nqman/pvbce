@@ -130,7 +130,7 @@ export default function DocumentManagement() {
   const [type, setType] = useState("");
   const [scope, setScope] = useState("");
   const [categoryTwo, setCategoryTwo] = useState([]);
-  const [selectedCategoryOne, setSelectedCategoryOne] = useState();
+  // const [selectedCategoryOne, setSelectedCategoryOne] = useState();
   const [errorCategoryOne, setErrorCategoryOne] = useState(
     "Vui lòng không bỏ trống"
   );
@@ -143,7 +143,7 @@ export default function DocumentManagement() {
     // debugger;
     if (value) {
       setErrorCategoryOne("");
-      setSelectedCategoryOne(value);
+      // setSelectedCategoryOne(value);
       let selectedCategory = categoryOneTwo.filter(
         (category) => category.name === value
       );
@@ -158,7 +158,7 @@ export default function DocumentManagement() {
     if (key === "categoryTwo") {
       if (value) {
         setErrorCategoryTwo("");
-        setSelectedCategoryTwo(value);
+        // setSelectedCategoryTwo(value);
       } else {
         setErrorCategoryOne("Vui lòng không bỏ trống");
       }
