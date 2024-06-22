@@ -89,7 +89,7 @@ export default function EditProject() {
       let categories = await getCategoriesAndCategoriesOfProjectAPI(idProject);
       const data = await selectProjectAPI(idProject);
       setProject(data);
-      console.log(data);
+      // console.log(data);
       setStartDate(data.startDate);
       setEndDate(data.endDate);
       setTotalAmount(data.totalAmount);
@@ -313,7 +313,7 @@ export default function EditProject() {
     fetchMyAPI();
   }, [idProject]);
   const handleRemoveProjectLibrary = (detail) => {
-    debugger;
+    // debugger;
     // let tempCountItem = countItem - 1;
     // setCountItem(tempCountItem);
     // if (categories.length !== tempCountItem) {
@@ -332,7 +332,7 @@ export default function EditProject() {
     });
   };
   const handleProjectLibraryChange = (detail) => {
-    debugger;
+    // debugger;
     setProjectLibraryItems((oldProjectItems) => {
       const index = oldProjectItems.findIndex((el) => el.id === detail.id);
       const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect

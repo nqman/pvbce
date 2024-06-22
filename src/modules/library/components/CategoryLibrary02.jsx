@@ -14,6 +14,7 @@ import {
   selectCategoryAPI,
   validateCategoryAPI,
   saveCategoryTwoAPI,
+  getCategoriesOneAndTwoAPI,
 } from "../../../apis/reportAPI";
 import {
   DataGrid,
@@ -62,18 +63,20 @@ export default function Categorylibrary02() {
     resolver: yupResolver(schema),
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedCategory1, setSelectedCategory1] = useState("");
+  const [selectedCategoryOne, setSelectedCategoryOne] = useState("");
   const [idSelectedCategoryOne, setIdSelectedCategoryOne] = useState();
-  const [errorCategory1, setErrorCategory1] = useState(
+  const [errorCategoryOne, setErrorCategoryOne] = useState(
     "Vui lòng không bỏ trống"
   );
-  const [libraryItemOne, setLibraryItemOne] = useState("");
+  const [listCategoryOneTwo, setListCategoryOneTwo] = useState([]);
 
   const fetchListCategory = async () => {
     try {
       const data = await getCategoriesAPI("LIBRARY_ITEM_TWO");
-      let libraryItemOne = await getCategoriesAPI("LIBRARY_ITEM_ONE");
-      setLibraryItemOne(libraryItemOne);
+      let dataCategory = await getCategoriesOneAndTwoAPI("LIBRARY_ITEM_ONE");
+      // let listCategoryOneTwoTwo = dataCategory.map((category) => category.name);
+      console.log(dataCategory);
+      setListCategoryOneTwo(dataCategory);
       setCategories(data);
       setIsLoading(false);
       toast.success("Lấy danh sách danh mục thành công");
@@ -82,25 +85,26 @@ export default function Categorylibrary02() {
       toast.error("Lấy danh sách danh mục thất bại");
     }
   };
-  const handleSelectCategory1 = async (event, value) => {
+  const handleSelectCategoryOne = async (event, value) => {
     // debugger;
-    setSelectedCategory1(value);
-    let idSelected = libraryItemOne.filter((item) => item.name === value);
+    setSelectedCategoryOne(value);
+    let idSelected = listCategoryOneTwo.filter((item) => item.name === value);
     setIdSelectedCategoryOne(idSelected[0]?.id);
     if (value) {
-      setErrorCategory1("");
+      setErrorCategoryOne("");
     } else {
-      setErrorCategory1("Vui lòng không bỏ trống");
+      setErrorCategoryOne("Vui lòng không bỏ trống");
     }
   };
 
   const handleSaveCategory = async (category) => {
-    // debugger;
-    if (errorCategory1 === "") {
+    debugger;
+    if (errorCategoryOne === "") {
       try {
         // EDIT
         if (category.id) {
           await saveCategoryTwoAPI(category, idSelectedCategoryOne);
+          setSelectedCategoryOne("");
           toast.success("Cập nhật danh mục thành công");
         }
         // NEW
@@ -132,8 +136,6 @@ export default function Categorylibrary02() {
     fetchListCategory();
   }, []);
 
-  const navigate = useNavigate();
-
   // Xóa Danh mục
   const handleDeteleCategory = async (id) => {
     try {
@@ -161,11 +163,22 @@ export default function Categorylibrary02() {
     }
   };
 
-  const handleSelectCategory = async (id) => {
+  const handleEditCategory = async (id) => {
+    debugger;
     try {
       const data = await selectCategoryAPI(id);
-      setValue("id", data.id);
-      setValue("name", data.name);
+      for (let item of listCategoryOneTwo) {
+        for (let category of item.categories) {
+          if (category.name === data.name) {
+            setSelectedCategoryOne(item.name);
+            setIdSelectedCategoryOne(item?.id);
+            setErrorCategoryOne("");
+            setValue("id", data.id);
+            setValue("name", data.name);
+            return;
+          }
+        }
+      }
     } catch (error) {
       toast.error("Đã có lỗi xảy ra");
     }
@@ -232,14 +245,14 @@ export default function Categorylibrary02() {
                         height: "40px",
                       }}
                       disablePortal
-                      options={libraryItemOne.map((option) => option.name)}
-                      // defaultValue={detail?.category}
-                      onChange={handleSelectCategory1}
+                      options={listCategoryOneTwo?.map((option) => option.name)}
+                      onChange={handleSelectCategoryOne}
+                      value={selectedCategoryOne}
                       renderInput={(params) => (
                         <TextField {...params} placeholder="Danh mục 1" />
                       )}
                     />
-                    <span className="text-danger ">{errorCategory1}</span>
+                    <span className="text-danger ">{errorCategoryOne}</span>
                   </div>
                   <div className=" w-25 me-3" style={{ height: "50px" }}>
                     <TextField
@@ -310,7 +323,7 @@ export default function Categorylibrary02() {
                                 marginRight: "10px",
                               }}
                               className="btn btn-dark"
-                              onClick={() => handleSelectCategory(params.id)}
+                              onClick={() => handleEditCategory(params.id)}
                               title="Sửa"
                             >
                               <EditIcon
