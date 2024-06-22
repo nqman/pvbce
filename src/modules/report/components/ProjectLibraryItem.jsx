@@ -15,6 +15,9 @@ export default function ProjectLibraryItem({
   onRemove = () => {},
 }) {
   const [categoryOne, setCategoryOne] = useState([]);
+  const [inputValue, setInputValue] = useState(
+    detail?.fileName || detail?.linkLibrary
+  );
   const [categoryTwo, setCategoryTwo] = useState([]);
   const [linkLibrary, setLinkLibrary] = useState([]);
   const [selectedCategoryOne, setSelectedCategoryOne] = useState("");
@@ -34,6 +37,7 @@ export default function ProjectLibraryItem({
     if (detail.categoryTwo) {
       setErrorCategoryTwo("");
     }
+    // setInputValue(detail?.fileName || detail?.linkLibrary);
   }, [detail]);
 
   const handleSelectCategoryOne = (id, key, value) => {
@@ -48,13 +52,14 @@ export default function ProjectLibraryItem({
       onChange({
         ...detail,
         categoryOne: value,
+        linkLibrary: "",
       });
     } else {
       setErrorCategoryOne("Vui lòng không bỏ trống");
     }
   };
   const handleInputChange = (id, key, value) => {
-    // debugger;
+    debugger;
     if (key === "categoryTwo") {
       if (value) {
         setErrorCategoryTwo("");
@@ -67,11 +72,13 @@ export default function ProjectLibraryItem({
         setErrorCategoryTwo("Vui lòng không bỏ trống");
       }
     } else if (key === "linkLibrary") {
+      setInputValue(value);
       setErrorLibrary("");
       setLinkLibrary(value);
       onChange({
         ...detail,
         linkLibrary: value,
+        file: [],
       });
     }
   };
@@ -81,6 +88,7 @@ export default function ProjectLibraryItem({
 
     let chosenfileName = chosenFiles.map((file) => file.name);
     // console.log(fileName.join(";"));
+    setInputValue(chosenfileName.join(";"));
     onChange({
       ...detail,
       files: chosenFiles,
@@ -171,8 +179,10 @@ export default function ProjectLibraryItem({
         <div className=" me-4" style={{ height: "50px", width: "300px" }}>
           <TextField
             placeholder="Nội dung"
-            value={detail?.linkLibrary || detail?.fileName}
-            title={detail?.fileName || detail?.linkLibrary}
+            // value={detail?.fileName || detail?.linkLibrary}
+            // title={detail?.fileName || detail?.linkLibrary}
+            value={inputValue}
+            title={inputValue}
             size="small"
             sx={{
               height: "40px",
@@ -196,7 +206,6 @@ export default function ProjectLibraryItem({
             type="file"
             style={{ width: "110px" }}
             className="custom-file-input "
-            // id={`fileInput${projectLibrary.id}`}
             name="filename"
             multiple
             onChange={(e) => handleFileChange(e, detail.id)}
