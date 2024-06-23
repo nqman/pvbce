@@ -103,6 +103,8 @@ export default function ListProjects({ rows, onEdit, onDelete, role }) {
               field: "action",
               headerName: "TÙY CHỌN",
               width: 150,
+              headerAlign: "center",
+              align: "center",
               renderCell: (params) => (
                 <div style={{ display: "flex" }}>
                   <button

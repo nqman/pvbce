@@ -14,6 +14,7 @@ import { StyledEngineProvider } from "@mui/material";
 // import "./styles.css";
 import ClearIcon from "@mui/icons-material/Clear";
 import PublicIcon from "@mui/icons-material/Public";
+import LockIcon from "@mui/icons-material/Lock";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { fetchPdfDoc } from "../../../apis/documentAPI";
@@ -30,6 +31,7 @@ export default function ListEquipments({
 }) {
   const rows = listDocs;
   const getPdf = async (id, type) => {
+    debugger;
     try {
       const url = await fetchPdfDoc(id, type);
       window.open(url, "_blank");
@@ -97,14 +99,14 @@ export default function ListEquipments({
               field: "visible",
               headerName: "HIỂN THỊ",
               width: 100,
-
+              align: "center",
               renderCell: (params) => {
                 return (
-                  <div>
+                  <div className="align-to-center">
                     {params.row?.scope === "public" ? (
                       <PublicIcon titleAccess="Tài liệu công khai" />
                     ) : (
-                      ""
+                      <LockIcon titleAccess="Tài liệu nội bộ" />
                     )}
                   </div>
                 );
@@ -116,10 +118,12 @@ export default function ListEquipments({
               field: "action",
               headerName: "TÙY CHỌN",
               width: 150,
+              align: "right",
+              headerAlign: "center",
 
               renderCell: (params) => {
                 return (
-                  <div style={{ textAlign: "center" }}>
+                  <div>
                     {(params.row?.type === "pdf" ||
                       params.row?.type === "link") && (
                       <button
