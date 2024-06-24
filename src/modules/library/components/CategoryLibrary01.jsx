@@ -101,7 +101,6 @@ export default function CategoryLibrary01() {
   useEffect(() => {
     fetchListCategory();
   }, []);
-
   const navigate = useNavigate();
 
   // Xóa Danh mục
@@ -247,41 +246,54 @@ export default function CategoryLibrary01() {
                         field: "action",
                         headerName: "TÙY CHỌN",
                         width: 150,
-
+                        align: "center",
+                        headerAlign: "center",
                         renderCell: (params) => (
                           <div style={{ display: "flex" }}>
-                            <button
-                              style={{
-                                width: "25px",
-                                height: "25px",
-                                padding: "0 0 2px 0",
-                                marginRight: "10px",
-                              }}
-                              className="btn btn-dark"
-                              onClick={() => handleSelectCategory(params.id)}
-                              title="Sửa"
-                            >
-                              <EditIcon
-                                sx={{ fontSize: "15px", fontWeight: "bold" }}
-                              />
-                            </button>
-
-                            <button
-                              onClick={() => {
-                                handleDeteleCategory(params.id);
-                              }}
-                              style={{
-                                width: "25px",
-                                height: "25px",
-                                padding: 0,
-                                marginRight: "10px",
-                              }}
-                              className="btn btn-danger"
-                            >
-                              <ClearIcon
-                                sx={{ fontSize: "20px", fontWeight: "bold" }}
-                              />
-                            </button>
+                            {console.log(params)}
+                            {!params.row.use && (
+                              <>
+                                <button
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: "0 0 2px 0",
+                                    marginRight: "10px",
+                                  }}
+                                  className="btn btn-dark"
+                                  onClick={() =>
+                                    handleSelectCategory(params.id)
+                                  }
+                                  title="Sửa"
+                                >
+                                  <EditIcon
+                                    sx={{
+                                      fontSize: "15px",
+                                      fontWeight: "bold",
+                                    }}
+                                  />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    handleDeteleCategory(params.id);
+                                  }}
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: 0,
+                                    marginRight: "10px",
+                                  }}
+                                  className="btn btn-danger"
+                                >
+                                  <ClearIcon
+                                    sx={{
+                                      fontSize: "20px",
+                                      fontWeight: "bold",
+                                    }}
+                                  />
+                                </button>
+                              </>
+                            )}
                           </div>
                         ),
                       },

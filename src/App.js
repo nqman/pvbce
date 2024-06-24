@@ -31,6 +31,9 @@ import CategoryProject02 from "./modules/report/components/CategoryProject02";
 import CategoryLibrary01 from "./modules/library/components/CategoryLibrary01";
 import Categorylibrary02 from "./modules/library/components/CategoryLibrary02";
 import Equipments from "./modules/catalogue/pages/Equipments";
+import Employees from "./modules/catalogue/pages/Employees";
+import CreateEmployee from "./modules/catalogue/components/CreateEmployee/CreateEmployee";
+import EditEmployee from "./modules/catalogue/components/CreateEmployee/EditEmployee";
 
 function App() {
   return (
@@ -63,13 +66,31 @@ function App() {
           />
           {/* EQUIPMENT */}
           <Route path="/catalogue/equipments" element={<Equipments />}></Route>
-          {/* <Route path="/catalogue/employees" element={<Catalogue />}></Route> */}
           <Route
             path="/catalogue/equipments/:code"
             element={<EquipDetails />}
           />
-          <Route path="/catalogue/create" element={<CreateEquipment />} />
-          <Route path="/catalogue/edit/:id" element={<EditEquipment />} />
+          <Route
+            path="/catalogue/equipment/create"
+            element={<CreateEquipment />}
+          />
+          <Route
+            path="/catalogue/equipment/edit/:id"
+            element={<EditEquipment />}
+          />
+
+          {/* EMPLOYEE */}
+          <Route path="/catalogue/employees" element={<Employees />}></Route>
+
+          <Route path="/catalogue/employees/:code" element={<EquipDetails />} />
+          <Route
+            path="/catalogue/employee/create"
+            element={<CreateEmployee />}
+          />
+          <Route
+            path="/catalogue/employee/edit/:id"
+            element={<EditEmployee />}
+          />
 
           {/* LIBRARY */}
           <Route path="/library" element={<DocumentManagement />}></Route>

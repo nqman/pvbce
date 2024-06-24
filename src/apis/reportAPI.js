@@ -233,14 +233,15 @@ export async function saveProjectAPI(project) {
               //UPDATE FILE
               if (detail?.files) {
                 // FILE
-                formData.append("idUpdatePartLibraries", detail.id);
-                formData.append("categoriesOneUpdate", detail.categoryOne);
-                if (detail.categoryTwo === "") {
-                  formData.append("categoriesTwoUpdate", detail.categoryOne);
-                } else {
-                  formData.append("categoriesTwoUpdate", detail.categoryTwo);
-                }
+
                 detail.files.forEach((file) => {
+                  formData.append("idUpdatePartLibraries", detail.id);
+                  formData.append("categoriesOneUpdate", detail.categoryOne);
+                  if (detail.categoryTwo === "") {
+                    formData.append("categoriesTwoUpdate", detail.categoryOne);
+                  } else {
+                    formData.append("categoriesTwoUpdate", detail.categoryTwo);
+                  }
                   formData.append("partNameUpdateLibraries", file.name);
                   formData.append("partUpdateLibraries", file);
                 });
@@ -272,6 +273,7 @@ export async function saveProjectAPI(project) {
                   );
                 }
                 formData.append("pathUpdateLibraries", detail.pathLibrary);
+                formData.append("pathValueUpdateLibraries", detail.fileName);
               }
             }
             //NEW

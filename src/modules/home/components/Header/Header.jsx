@@ -569,6 +569,7 @@ function Header() {
                 <MenuItem
                   onClick={() => handleNavigateCatalogue("employees")}
                   disableRipple
+                  disabled
                 >
                   <GroupsIcon />
                   Nhân sự

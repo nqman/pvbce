@@ -2,80 +2,80 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import ListEquipments from "./ListEquipments";
+import ListEmployees from "./ListEmployees";
 import Swal from "sweetalert2";
 
 // API
 
 import {
-  listEquipmentsAPI,
-  deleteEquipmentAPI,
-  selectEquipmentAPI,
-} from "../../../../apis/equipmentAPI";
+  listEmployeesAPI,
+  deleteEmployeeAPI,
+  selectEmployeeAPI,
+} from "../../../../apis/employeeAPI";
 import { Box, CircularProgress } from "@mui/material";
 import Cookies from "js-cookie";
 import Loading from "../../../home/components/Loading/Loading";
 
-export default function EquipManagement() {
+export default function EmployeeManagement() {
   // const role = Cookies.get("role");
   const role = Cookies.get("role")?.replace(/"/g, "");
   const navigate = useNavigate();
   const handleAdd = () => {
-    navigate("/catalogue/equipment/create");
+    navigate("/catalogue/employee/create");
   };
 
-  const [equips, setEquips] = useState([]);
-  const [selectedEquip, setSelectedEquip] = useState(null);
+  const [employees, setEmployees] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchEquips();
+    fetchEmployees();
   }, []);
 
-  const fetchEquips = async () => {
+  const fetchEmployees = async () => {
     try {
-      const data = await listEquipmentsAPI();
-      // toast.success("Lấy danh sách thiết bị thành công");
-      setEquips(data);
+      const data = await listEmployeesAPI();
+      // toast.success("Lấy danh sách nhân sự thành công");
+      setEmployees(data);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching equipments:", error);
-      toast.error("Lấy danh sách thiết bị thất bại");
+      console.error("Error fetching Employees:", error);
+      toast.error("Lấy danh sách nhân sự thất bại");
     }
   };
 
-  // Xóa thiết bị
-  const handleDeteleEquip = async (id) => {
+  // Xóa nhân sự
+  const handleDeteleEmployee = async (id) => {
     try {
       const result = await Swal.fire({
-        title: "Bạn chắc chắn muốn xóa thiết bị? ",
-        text: "Thiết bị này sẽ bị xóa vĩnh viễn!",
+        title: "Bạn chắc chắn muốn xóa nhân sự? ",
+        text: "Nhân sự này sẽ bị xóa vĩnh viễn!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Xóa thiết bị",
+        confirmButtonText: "Xóa nhân sự",
         cancelButtonText: "Hủy bỏ",
       });
       if (result.isConfirmed) {
-        await deleteEquipmentAPI(id);
+        await deleteEmployeeAPI(id);
         Swal.fire({
           title: "Đã xóa!",
-          text: "Thiết bị đã được xóa thành công.",
+          text: "Nhân sự đã được xóa thành công.",
           icon: "success",
         });
-        fetchEquips();
+        fetchEmployees();
       }
     } catch (error) {
-      toast.error("Xóa thiết bị thất bại");
+      toast.error("Xóa nhân sự thất bại");
     }
   };
 
-  const handleSelectEquip = async (id) => {
+  const handleSelectEmployee = async (id) => {
     try {
-      const data = await selectEquipmentAPI(id);
-      setSelectedEquip(data);
-      navigate(`/catalogue/equipment/edit/${id}`);
+      const data = await selectEmployeeAPI(id);
+      setSelectedEmployee(data);
+      navigate(`/catalogue/edit/${id}`);
     } catch (error) {
       toast.error("Đã có lỗi xảy ra");
     }
@@ -84,7 +84,7 @@ export default function EquipManagement() {
   return (
     <div style={{ position: "relative" }}>
       <Toaster position="top-right" />
-      {/* BTN THÊM THIẾT BỊ */}
+      {/* BTN THÊM nhân sự */}
       <div
         style={{
           display: "flex",
@@ -93,29 +93,24 @@ export default function EquipManagement() {
           marginTop: "20px",
         }}
       >
-        {/* {console.log(role)}
-        {console.log(role == "Admin")} 
-        ??????
-        */}
-
         {role && role === "Admin" && (
           <button
             disabled={!role === "Admin" ? true : false}
             onClick={() => handleAdd()}
             className="btn btn-primary"
           >
-            Thêm thiết bị
+            Thêm nhân sự
           </button>
         )}
       </div>
-      {/* Danh sách thiết bị*/}
+      {/* Danh sách nhân sự*/}
 
       {!isLoading ? (
-        <ListEquipments
+        <ListEmployees
           role={role}
-          rows={equips}
-          onDelete={handleDeteleEquip}
-          onEdit={handleSelectEquip}
+          rows={employees}
+          onDelete={handleDeteleEmployee}
+          onEdit={handleSelectEmployee}
         />
       ) : (
         <Loading />
