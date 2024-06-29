@@ -31,7 +31,6 @@ export default function ListEquipments({
 }) {
   const rows = listDocs;
   const getPdf = async (id, type) => {
-    debugger;
     try {
       const url = await fetchPdfDoc(id, type);
       window.open(url, "_blank");

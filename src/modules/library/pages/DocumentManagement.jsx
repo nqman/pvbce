@@ -36,8 +36,10 @@ export default function DocumentManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryOneTwo, setCategoryOneTwo] = useState([]);
   const [categoryTwoList, setCategoryTwoList] = useState();
-  const [selectedCategoryOneList, setSelectedCategoryOneList] = useState("Tất cả");
-  const [selectedCategoryTwoList, setSelectedCategoryTwoList] = useState("Tất cả");
+  const [selectedCategoryOneList, setSelectedCategoryOneList] =
+    useState("Tất cả");
+  const [selectedCategoryTwoList, setSelectedCategoryTwoList] =
+    useState("Tất cả");
 
   // const [linkLibrary, setLinkLibrary] = useState([]);
   // const [errorLibary, setErrorLibrary] = useState("");
@@ -123,19 +125,19 @@ export default function DocumentManagement() {
     name: "",
     link: "",
     file: null,
-    type: "LIBRARY",
+    type: "",
   };
   const [show, setShow] = useState(false);
   const [document, setDocument] = useState(emptyValue);
   const [type, setType] = useState("");
   const [scope, setScope] = useState("");
   const [categoryTwo, setCategoryTwo] = useState([]);
-  // const [selectedCategoryOne, setSelectedCategoryOne] = useState();
   const [errorCategoryOne, setErrorCategoryOne] = useState(
     "Vui lòng không bỏ trống"
   );
   const [errorName, setErrorName] = useState("Vui lòng không bỏ trống");
   const [errorLink, setErrorLink] = useState("Vui lòng không bỏ trống");
+  const [errorFile, setErrorFile] = useState("Vui lòng chọn tài liệu");
   const [errorCategoryTwo, setErrorCategoryTwo] = useState(
     "Vui lòng không bỏ trống"
   );
@@ -179,7 +181,12 @@ export default function DocumentManagement() {
     setDocument({ ...document, [key]: value });
   };
   const handleFileChange = (e) => {
-    setDocument({ ...document, file: e.target.files[0] });
+    if (e.target.files[0]) {
+      setErrorFile("");
+      setDocument({ ...document, file: e.target.files[0] });
+    } else {
+      setErrorFile("Vui lòng chọn tài liệu");
+    }
   };
 
   const handleClose = () => {
@@ -190,7 +197,13 @@ export default function DocumentManagement() {
   // SELECT type
 
   const handleChangeType = (e) => {
+    if (e.target.value === "file") {
+      setDocument({ ...document, link: "", type: e.target.value });
+    } else if (e.target.value === "link") {
+      setDocument({ ...document, file: null, type: e.target.value });
+    }
     setType(e.target.value);
+    // setDocument({ ...document, type: e.target.value });
   };
   const handleChangeScope = (e) => {
     setScope(e.target.value);
@@ -198,12 +211,22 @@ export default function DocumentManagement() {
   };
 
   const handleSubmit = async () => {
+    // debugger;
+    // console.log(document);
+    if (document.file === null && document.link === "") {
+      toast.error("Vui lòng chọn tài liệu");
+      return;
+    }
     try {
       const data = await addDocumentAPI(document);
       if (data) {
         setShow(false);
         toast.success("Thêm tài liệu thành công");
         setDocument(emptyValue);
+        setErrorName("Vui lòng không bỏ trống");
+        setErrorLink("Vui lòng không bỏ trống");
+        setErrorFile("Vui lòng chọn tài liệu");
+        setErrorCategoryOne("Vui lòng chọn tài liệu");
       }
       fetchDocuments();
     } catch (error) {
@@ -420,9 +443,7 @@ export default function DocumentManagement() {
                         <TextField {...params} label="Danh mục 2" />
                       )}
                     />
-                    <span className="text-danger ">
-                      {errorCategoryTwo}
-                    </span>
+                    <span className="text-danger ">{errorCategoryTwo}</span>
                   </div>
                 ) : (
                   ""
@@ -445,7 +466,7 @@ export default function DocumentManagement() {
                       size="small"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={type}
+                      value={document.type}
                       label="Định dạng"
                       onChange={handleChangeType}
                       sx={{ width: "130px" }}
@@ -465,7 +486,7 @@ export default function DocumentManagement() {
                       size="small"
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={scope}
+                      value={document.scope}
                       label="Hiển thị"
                       onChange={handleChangeScope}
                       sx={{ width: "130px" }}
@@ -500,11 +521,12 @@ export default function DocumentManagement() {
                 {type === "file" ? (
                   <div style={{ width: "50%" }}>
                     <input
-                      className="form-control"
+                      className="form-control mb-1"
                       type="file"
                       id="formFile"
                       onChange={handleFileChange}
                     />
+                    <p className="text-danger  ">{errorFile}</p>
                   </div>
                 ) : (
                   ""

@@ -148,8 +148,8 @@ export default function EditProject() {
     // if (categories.length === tempCountItem) {
     //   setDisableAddItem(true);
     // }
-    setProjectLibraryItems((oldProjectLibrartItems) => {
-      return [...oldProjectLibrartItems, newEmptyProjectLibrary()];
+    setProjectLibraryItems((oldProjectLibraryItems) => {
+      return [...oldProjectLibraryItems, newEmptyProjectLibrary()];
     });
   };
   const handleCategorySelect = (selectedCategory) => {
@@ -302,71 +302,6 @@ export default function EditProject() {
     }
   }, [endDate]);
 
-  //Thư viện dự án ---projectDiary
-  const [categoryOneTwo, setCategoryOneTwo] = useState([]);
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let categoryOneTwo = await getCategoriesOneAndTwoAPI("PROJECT_ITEM_ONE");
-      setCategoryOneTwo(categoryOneTwo);
-      // console.log(categoryOneTwo);
-    }
-    fetchMyAPI();
-  }, [idProject]);
-  const handleRemoveProjectLibrary = (detail) => {
-    // debugger;
-    // let tempCountItem = countItem - 1;
-    // setCountItem(tempCountItem);
-    // if (categories.length !== tempCountItem) {
-    //   setDisableAddItem(false);
-    // }
-
-    setProjectLibraryItems((oldProjectItems) => {
-      const newProjectItems = [
-        ...oldProjectItems.filter((el) => detail.id !== el.id),
-      ];
-      setProject({
-        ...project,
-        rpQuantityAndRevenueLibraries: newProjectItems,
-      });
-      return newProjectItems;
-    });
-  };
-  const handleProjectLibraryChange = (detail) => {
-    // debugger;
-    setProjectLibraryItems((oldProjectItems) => {
-      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
-      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
-      newProjectItems.splice(index, 1, detail);
-      setProject({
-        ...project,
-        rpQuantityAndRevenueLibraries: newProjectItems,
-      });
-      return [...newProjectItems];
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    debugger;
-    e.preventDefault();
-    if (project.name.trim().length === 0) {
-      toast.error("Vui lòng nhập tên dự án");
-      return;
-    }
-    // console.log(project);
-    try {
-      const data = await saveProjectAPI(project);
-      if (data) {
-        setIsLoading(true);
-        toast.success("Cập nhật dự án thành công");
-        // navigate("/report/listprojects");
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Cập nhật dự án thất bại");
-    }
-  };
-
   const formatDate = (date) => {
     // debugger;
     if (typeof date === "string") {
@@ -390,6 +325,69 @@ export default function EditProject() {
     return date;
   };
   // setEndDate(formatDate);
+
+  //Thư viện dự án ---projectDiary
+  const [categoryOneTwo, setCategoryOneTwo] = useState([]);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let categoryOneTwo = await getCategoriesOneAndTwoAPI("PROJECT_ITEM_ONE");
+      setCategoryOneTwo(categoryOneTwo);
+      // console.log(categoryOneTwo);
+    }
+    fetchMyAPI();
+  }, [idProject]);
+  const handleRemoveProjectLibrary = (detail) => {
+    setProjectLibraryItems((oldProjectItems) => {
+      const newProjectItems = [
+        ...oldProjectItems.filter((el) => detail.id !== el.id),
+      ];
+      setProject({
+        ...project,
+        rpQuantityAndRevenueLibraries: newProjectItems,
+      });
+      return newProjectItems;
+    });
+  };
+  const handleProjectLibraryChange = (detail) => {
+    debugger;
+    // if (detail.categoryTwo === "") {
+    setProjectLibraryItems((oldProjectItems) => {
+      const index = oldProjectItems.findIndex((el) => el.id === detail.id);
+      const newProjectItems = [...oldProjectItems]; // clone array, avoid side effect
+      newProjectItems.splice(index, 1, detail);
+      setProject({
+        ...project,
+        rpQuantityAndRevenueLibraries: newProjectItems,
+      });
+      return [...newProjectItems];
+    });
+    // }
+
+    // else {
+    // }
+  };
+
+  const handleSubmit = async (e) => {
+    // debugger;
+    e.preventDefault();
+    if (project.name.trim().length === 0) {
+      toast.error("Vui lòng nhập tên dự án");
+      return;
+    }
+    // console.log(project);
+    setIsLoading(true);
+    try {
+      const data = await saveProjectAPI(project);
+      if (data) {
+        setIsLoading(false);
+        toast.success("Cập nhật dự án thành công");
+        // navigate("/report/listprojects");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Cập nhật dự án thất bại");
+    }
+  };
 
   return (
     <div>
@@ -540,8 +538,9 @@ export default function EditProject() {
               <TabPanel value="2">
                 <Container className="">
                   <div>
-                    {projectLibraryItems.map((detail) => (
+                    {projectLibraryItems?.map((detail) => (
                       <ProjectLibraryItem
+                        projectLibraryItems={projectLibraryItems}
                         key={detail.id}
                         detail={detail}
                         categoryOneTwo={categoryOneTwo}

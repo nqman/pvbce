@@ -9,6 +9,7 @@ import {
 } from "../../../apis/reportAPI";
 
 export default function ProjectLibraryItem({
+  projectLibraryItems,
   detail = {},
   categoryOneTwo,
   onChange = () => {},
@@ -20,8 +21,8 @@ export default function ProjectLibraryItem({
   );
   const [categoryTwo, setCategoryTwo] = useState([]);
   const [linkLibrary, setLinkLibrary] = useState([]);
-  const [selectedCategoryOne, setSelectedCategoryOne] = useState("");
-  const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("");
+  // const [selectedCategoryOne, setSelectedCategoryOne] = useState("");
+  // const [selectedCategoryTwo, setSelectedCategoryTwo] = useState("");
   const [errorCategoryOne, setErrorCategoryOne] = useState(
     "Vui lòng không bỏ trống"
   );
@@ -38,22 +39,30 @@ export default function ProjectLibraryItem({
       setErrorCategoryTwo("");
     }
     // setInputValue(detail?.fileName || detail?.linkLibrary);
-  }, [detail]);
+  }, []);
 
   const handleSelectCategoryOne = (id, key, value) => {
-    // debugger;
+    debugger;
+    onChange({
+      ...detail,
+      categoryOne: value,
+      // linkLibrary: "",
+    });
     if (value) {
-      setErrorCategoryOne("");
-      setSelectedCategoryOne(value);
-      let selectedCategory = categoryOneTwo.filter(
+      const selectedCategoryOne = categoryOneTwo.filter(
         (category) => category.name === value
       );
-      setCategoryTwo(selectedCategory[0].categories);
-      onChange({
-        ...detail,
-        categoryOne: value,
-        linkLibrary: "",
-      });
+      setCategoryTwo(selectedCategoryOne[0].categories);
+
+      for (const item of projectLibraryItems) {
+        if (
+          value === item.categoryOne &&
+          selectedCategoryOne[0].categories.length === 0
+        ) {
+          return setErrorCategoryOne("Danh mục đã tồn tại");
+        }
+      }
+      setErrorCategoryOne("");
     } else {
       setErrorCategoryOne("Vui lòng không bỏ trống");
     }
@@ -61,13 +70,18 @@ export default function ProjectLibraryItem({
   const handleInputChange = (id, key, value) => {
     debugger;
     if (key === "categoryTwo") {
+      onChange({
+        ...detail,
+        categoryTwo: value,
+      });
       if (value) {
+        for (const item of projectLibraryItems) {
+          if (value === item.categoryTwo) {
+            return setErrorCategoryTwo("Danh mục đã tồn tại");
+          }
+        }
         setErrorCategoryTwo("");
-        setSelectedCategoryTwo(value);
-        onChange({
-          ...detail,
-          categoryTwo: value,
-        });
+        // setSelectedCategoryTwo(value);
       } else {
         setErrorCategoryTwo("Vui lòng không bỏ trống");
       }
@@ -124,105 +138,113 @@ export default function ProjectLibraryItem({
     <div data-cc="root">
       <div
         style={{
-          display: "flex",
-          justifyContent: "start",
-          marginBottom: "5px",
+          // display: "flex",
+          // justifyContent: "start",
+          marginBottom: "15px",
+          padding: "10px 20px",
+          border: "1px solid black",
+          borderRadius: "5px",
         }}
       >
-        <div
-          className=" me-4 mb-2"
-          style={{
-            height: "50px",
-            width: "300px",
-          }}
-        >
-          <Autocomplete
-            size="small"
-            sx={{
-              display: "block",
-              height: "40px",
+        <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+          <div
+            // className=" me-4"
+            style={{
+              // height: "50px",
+              marginBottom: "5px",
+              width: "450px",
             }}
-            value={detail.categoryOne}
-            options={categoryOneTwo?.map((option) => option.name)}
-            onChange={(e, value) =>
-              handleSelectCategoryOne(detail.id, "categoryOne", value)
-            }
-            renderInput={(params) => (
-              <TextField {...params} placeholder="Danh mục 1" />
-            )}
-          />
-          <span className="text-danger  ">{errorCategoryOne}</span>
-        </div>
-        {categoryTwo?.length > 0 || detail?.categoryTwo ? (
-          <div className=" me-4" style={{ height: "50px", width: "300px" }}>
+          >
             <Autocomplete
               size="small"
               sx={{
                 display: "block",
-                height: "40px",
               }}
-              disablePortal
-              value={detail?.categoryTwo}
-              options={categoryTwo?.map((option) => option.name)}
+              value={detail.categoryOne}
+              options={categoryOneTwo?.map((option) => option.name)}
               onChange={(e, value) =>
-                handleInputChange(detail.id, "categoryTwo", value)
+                handleSelectCategoryOne(detail.id, "categoryOne", value)
               }
               renderInput={(params) => (
-                <TextField {...params} placeholder="Danh mục 2" />
+                <TextField {...params} placeholder="Danh mục 1" />
               )}
             />
-            <span className="text-danger ">{errorCategoryTwo}</span>
+            <span className="text-danger  ">{errorCategoryOne}</span>
           </div>
-        ) : (
-          ""
-        )}
-        <div className=" me-4" style={{ height: "50px", width: "300px" }}>
-          <TextField
-            placeholder="Nội dung"
-            // value={detail?.fileName || detail?.linkLibrary}
-            // title={detail?.fileName || detail?.linkLibrary}
-            value={inputValue}
-            title={inputValue}
-            size="small"
-            sx={{
-              height: "40px",
-              width: "100%",
-              marginBottom: "5px",
-            }}
-            onChange={(e) =>
-              handleInputChange(detail.id, "linkLibrary", e.target.value)
-            }
-          />
-          <span className="text-danger ">{}</span>
-        </div>
-        <div
-          style={{
-            height: "50px",
-            display: "flex",
-            paddingTop: "7px",
-          }}
-        >
-          <input
-            type="file"
-            style={{ width: "110px" }}
-            className="custom-file-input "
-            name="filename"
-            multiple
-            onChange={(e) => handleFileChange(e, detail.id)}
-          />
 
-          <button
+          {detail.categoryOne === detail.categoryTwo ? (
+            <></>
+          ) : categoryTwo?.length > 0 || detail?.categoryTwo !== "" ? (
+            <div style={{ width: "450px" }}>
+              <Autocomplete
+                size="small"
+                sx={{
+                  display: "block",
+                  height: "40px",
+                }}
+                disablePortal
+                value={detail?.categoryTwo}
+                options={categoryTwo?.map((option) => option.name)}
+                onChange={(e, value) =>
+                  handleInputChange(detail.id, "categoryTwo", value)
+                }
+                renderInput={(params) => (
+                  <TextField {...params} placeholder="Danh mục 2" />
+                )}
+              />
+              <span className="text-danger ">{errorCategoryTwo}</span>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ width: "920px" }}>
+            <TextField
+              placeholder="Nội dung"
+              // value={detail?.fileName || detail?.linkLibrary}
+              // title={detail?.fileName || detail?.linkLibrary}
+              value={inputValue}
+              title={inputValue}
+              size="small"
+              sx={{
+                width: "100%",
+              }}
+              onChange={(e) =>
+                handleInputChange(detail.id, "linkLibrary", e.target.value)
+              }
+            />
+            <span className="text-danger ">{}</span>
+          </div>
+          <div
             style={{
-              width: "30px",
-              height: "30px",
-              padding: 0,
+              display: "flex",
+              paddingTop: "7px",
             }}
-            type="button"
-            className="btn btn-danger"
-            onClick={() => deleteDiv(detail.id)}
           >
-            <ClearIcon sx={{ fontSize: "20px", fontWeight: "bold" }} />
-          </button>
+            <input
+              type="file"
+              style={{ width: "110px" }}
+              className="custom-file-input "
+              name="filename"
+              multiple
+              onChange={(e) => handleFileChange(e, detail.id)}
+            />
+
+            <button
+              style={{
+                width: "30px",
+                height: "30px",
+                padding: 0,
+              }}
+              type="button"
+              className="btn btn-danger"
+              onClick={() => deleteDiv(detail.id)}
+            >
+              <ClearIcon sx={{ fontSize: "20px", fontWeight: "bold" }} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

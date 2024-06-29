@@ -18,42 +18,23 @@ export async function addDocumentAPI(document) {
   // debugger;
   try {
     const formData = new FormData();
-    if (document.type === "LIBRARY") {
-      if (
-        (document.file !== null || document.link.trim().length > 0) &&
-        document.name.trim().length > 0
-      ) {
-        formData.append("type", document.type);
-        formData.append("name", document.name);
-        if (document.file instanceof File) {
-          formData.append("documentFileId", 0);
-          formData.append("documentFile", document.file);
-        } else {
-          formData.append("documentLinkId", 0);
-          formData.append("documentLink", document.link);
-        }
-        if (document.scope === "") {
-          formData.append("scope", "public");
-        } else {
-          formData.append("scope", document.scope);
-        }
-        formData.append("categoryOne", document.categoryOne);
-        if (document.categoryTwo === "") {
-          formData.append("categoryTwo", document.categoryOne);
-        } else {
-          formData.append("categoryTwo", document.categoryTwo);
-        }
-      }
-    } else if (document.type === "PROJECT") {
+    if (
+      (document.file !== null || document.link.trim().length > 0) &&
+      document.name.trim().length > 0
+    ) {
       formData.append("type", document.type);
-      if (document.files.length > 0) {
-        document.files.forEach((file) => {
-          formData.append("documentFileId", 0);
-          formData.append("documentFile", file);
-        });
+      formData.append("name", document.name);
+      if (document.file instanceof File) {
+        formData.append("documentFileId", 0);
+        formData.append("documentFile", document.file);
       } else {
         formData.append("documentLinkId", 0);
         formData.append("documentLink", document.link);
+      }
+      if (document.scope === "") {
+        formData.append("scope", "public");
+      } else {
+        formData.append("scope", document.scope);
       }
       formData.append("categoryOne", document.categoryOne);
       if (document.categoryTwo === "") {
@@ -62,7 +43,8 @@ export async function addDocumentAPI(document) {
         formData.append("categoryTwo", document.categoryTwo);
       }
     }
-    console.log(formData);
+
+    // console.log(formData);
     const resp = await baseAPI.post("documents/save", formData, {
       headers: {
         "Content-Type": "multipart/form-data",

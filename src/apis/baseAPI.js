@@ -18,6 +18,7 @@ const token = Cookies.get("token")?.replace(/"/g, "");
 //     });
 //   }
 // };
+
 //SERVER
 const createBaseAPI = (token) => {
   if (token && token !== null) {
