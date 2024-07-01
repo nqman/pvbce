@@ -538,8 +538,9 @@ export default function EditProject() {
               <TabPanel value="2">
                 <Container className="">
                   <div>
-                    {projectLibraryItems?.map((detail) => (
+                    {projectLibraryItems?.map((detail, index) => (
                       <ProjectLibraryItem
+                        index={index}
                         projectLibraryItems={projectLibraryItems}
                         key={detail.id}
                         detail={detail}

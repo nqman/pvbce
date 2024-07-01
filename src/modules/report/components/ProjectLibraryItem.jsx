@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Divider, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -9,6 +9,7 @@ import {
 } from "../../../apis/reportAPI";
 
 export default function ProjectLibraryItem({
+  index,
   projectLibraryItems,
   detail = {},
   categoryOneTwo,
@@ -30,7 +31,7 @@ export default function ProjectLibraryItem({
     "Vui lòng không bỏ trống"
   );
   const [errorLibary, setErrorLibrary] = useState("");
-
+  console.log(detail);
   useEffect(() => {
     if (detail.categoryOne) {
       setErrorCategoryOne("");
@@ -38,11 +39,15 @@ export default function ProjectLibraryItem({
     if (detail.categoryTwo) {
       setErrorCategoryTwo("");
     }
+    const selectedCategoryOne = categoryOneTwo.filter(
+      (category) => category.name === detail.categoryOne
+    );
+    setCategoryTwo(selectedCategoryOne[0].categories);
     // setInputValue(detail?.fileName || detail?.linkLibrary);
   }, []);
 
   const handleSelectCategoryOne = (id, key, value) => {
-    debugger;
+    // debugger;
     onChange({
       ...detail,
       categoryOne: value,
@@ -68,7 +73,7 @@ export default function ProjectLibraryItem({
     }
   };
   const handleInputChange = (id, key, value) => {
-    debugger;
+    // debugger;
     if (key === "categoryTwo") {
       onChange({
         ...detail,
@@ -135,15 +140,15 @@ export default function ProjectLibraryItem({
   };
 
   return (
-    <div data-cc="root">
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <b>{index + 1}.</b>
       <div
         style={{
-          // display: "flex",
           // justifyContent: "start",
+          maxWidth: "800px",
           marginBottom: "15px",
           padding: "10px 20px",
-          border: "1px solid black",
-          borderRadius: "5px",
+          // borderRadius: "5px",
         }}
       >
         <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
@@ -152,7 +157,7 @@ export default function ProjectLibraryItem({
             style={{
               // height: "50px",
               marginBottom: "5px",
-              width: "450px",
+              width: "290px",
             }}
           >
             <Autocomplete
@@ -171,11 +176,10 @@ export default function ProjectLibraryItem({
             />
             <span className="text-danger  ">{errorCategoryOne}</span>
           </div>
-
           {detail.categoryOne === detail.categoryTwo ? (
             <></>
           ) : categoryTwo?.length > 0 || detail?.categoryTwo !== "" ? (
-            <div style={{ width: "450px" }}>
+            <div style={{ width: "290px" }}>
               <Autocomplete
                 size="small"
                 sx={{
@@ -200,11 +204,9 @@ export default function ProjectLibraryItem({
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ width: "920px" }}>
+          <div style={{ width: "600px" }}>
             <TextField
               placeholder="Nội dung"
-              // value={detail?.fileName || detail?.linkLibrary}
-              // title={detail?.fileName || detail?.linkLibrary}
               value={inputValue}
               title={inputValue}
               size="small"
@@ -221,6 +223,7 @@ export default function ProjectLibraryItem({
             style={{
               display: "flex",
               paddingTop: "7px",
+              marginLeft: "20px",
             }}
           >
             <input
@@ -249,4 +252,7 @@ export default function ProjectLibraryItem({
       </div>
     </div>
   );
+  console.log("🚀 ~ detail:", detail);
+  console.log("🚀 ~ detail:", detail);
+  console.log("🚀 ~ detail:", detail);
 }

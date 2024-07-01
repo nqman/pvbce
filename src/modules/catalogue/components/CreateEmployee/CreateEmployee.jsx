@@ -3,6 +3,9 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
   Box,
   Button,
+  Container,
+  FormControl,
+  InputLabel,
   Link,
   MenuItem,
   Select,
@@ -18,24 +21,25 @@ import ClearIcon from "@mui/icons-material/Clear";
 import toast, { Toaster } from "react-hot-toast";
 
 // API
-import {
-  checkDivideCodeAPI,
-  saveEmployeeAPI,
-} from "../../../../apis/employeeAPI";
+import { checkCodeAPI, saveEmployeeAPI } from "../../../../apis/employeeAPI";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../home/components/Loading/Loading";
 import NavigationButton from "../../../common/NavigationButton";
 
 export default function CreateEmployee() {
   const emptyValue = {
+    id: Date.now(),
     name: "",
-    divideCode: "",
-    constructionProject: "",
-    location: "",
-    note: "",
-    productImages: "",
-    productDetails: "",
-    productDiaries: "",
+    code: "",
+    department: "",
+    position: "",
+    method: "",
+    contact: "",
+    IDCard: null,
+    degree: null,
+    safetyCard: null,
+    contract: null,
+    healthCer: null,
   };
   const navigate = useNavigate();
   const [value, setValue] = useState(emptyValue);
@@ -45,144 +49,92 @@ export default function CreateEmployee() {
     setItem(newValue);
   };
   const [isLoading, setIsLoading] = useState(false);
+  const [errorcode, setErrorCode] = useState("");
 
   // Thông số chung
   const handleChangeInput = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
-  const handleCheckDivideCode = async () => {
-    if (value.divideCode) {
-      const res = await checkDivideCodeAPI(value.divideCode);
-      if (!res) {
-        setErrorDivideCode("Mã nhân sự đã tồn tại");
-        return;
-      }
-      setErrorDivideCode("");
+  const handleCheckCode = async () => {
+    if (value.code) {
+      // const res = await checkCodeAPI(value.code);
+      // if (!res) {
+      //   setErrorCode("Mã nhân sự đã tồn tại");
+      //   return;
+      // }
+      setErrorCode("");
     }
   };
-  //Chọn ảnh
-  const [selectedImages, setSelectedImages] = useState([]);
-  const handleImageChange = (event) => {
-    const files = event.target.files;
-    if (files.length > 5) {
-      alert("Số lượng ảnh không được quá 5");
-    } else {
-      const newImages = [...selectedImages];
-      console.log(newImages);
-      for (let i = 0; i < files.length; i++) {
-        newImages.push({ id: -Date.now(), imageFile: files[i] });
-      }
-      setSelectedImages(newImages);
-      setValue({ ...value, productImages: newImages });
-    }
-  };
-  //Xóa ảnh
-  const handleRemoveImage = (index) => {
-    const newImages = [...selectedImages];
-    newImages.splice(index, 1);
-    setSelectedImages(newImages);
-    setValue({ ...value, productImages: newImages });
-  };
+  // //Chọn ảnh
+  // const [selectedImages, setSelectedImages] = useState([]);
+  // const handleImageChange = (event) => {
+  //   const files = event.target.files;
+  //   if (files.length > 5) {
+  //     alert("Số lượng ảnh không được quá 5");
+  //   } else {
+  //     const newImages = [...selectedImages];
+  //     console.log(newImages);
+  //     for (let i = 0; i < files.length; i++) {
+  //       newImages.push({ id: -Date.now(), imageFile: files[i] });
+  //     }
+  //     setSelectedImages(newImages);
+  //     setValue({ ...value, productImages: newImages });
+  //   }
+  // };
+  // //Xóa ảnh
+  // const handleRemoveImage = (index) => {
+  //   const newImages = [...selectedImages];
+  //   newImages.splice(index, 1);
+  //   setSelectedImages(newImages);
+  //   setValue({ ...value, productImages: newImages });
+  // };
 
   //Thông số kỹ thuật
-  const [productDetails, setProductDetails] = useState([
-    { id: -Date.now(), name: "", value: "", file: null },
-  ]);
-  const [errorDetail, setErrorDetail] = useState("");
+  // const [employeeDetails, setEmployeeDetails] = useState([
+  //   { id: -Date.now(), name: "", value: "", file: null },
+  // ]);
+  // const [errorDetail, setErrorDetail] = useState("");
 
-  const createDiv = () => {
-    const newProductDetail = {
-      id: -Date.now(),
-      name: "",
-      value: "",
-      file: null,
-    };
-    setProductDetails([...productDetails, newProductDetail]);
+  // const handleInputChange = (id, key, value) => {
+  //   const updatedEmployeeDetails = employeeDetails.map((productDetail) =>
+  //     productDetail.id === id
+  //       ? { ...productDetail, [key]: value }
+  //       : productDetail
+  //   );
+  //   setEmployeeDetails(updatedEmployeeDetails);
+  // };
+  // const handleBlurInput = () => {
+  //   // debugger;
+  //   setValue({ ...value, employeeDetails: employeeDetails });
+  // };
+
+  const handleFileChange = (e) => {
+    debugger;
+    setValue({ ...value, [e.target.name]: e.target.files[0] });
   };
-
-  const deleteDiv = (id) => {
-    const updatedProductDetails = productDetails.filter(
-      (productDetail) => productDetail.id !== id
-    );
-    setProductDetails(updatedProductDetails);
-  };
-
-  const handleInputChange = (id, key, value) => {
-    const updatedProductDetails = productDetails.map((productDetail) =>
-      productDetail.id === id
-        ? { ...productDetail, [key]: value }
-        : productDetail
-    );
-    setProductDetails(updatedProductDetails);
-  };
-  const handleBlurInput = () => {
-    // debugger;
-    console.log(productDetails);
-    setValue({ ...value, productDetails: productDetails });
-  };
-
-  const handleFileChange = (id, file) => {
-    const updatedProductDetails = productDetails.map((productDetail) =>
-      productDetail.id === id ? { ...productDetail, file } : productDetail
-    );
-
-    setProductDetails(updatedProductDetails);
-    setValue({ ...value, productDetails: updatedProductDetails });
-  };
-
-  //Nhật kí bảo dưỡng- sửa chữa
-  const [productDiaries, setProductDiaries] = useState([
-    { id: -Date.now(), name: "", file: null },
-  ]);
-  const [errorDiary, setErrorDiary] = useState("");
-
-  const createDivDiary = () => {
-    const newDiary = {
-      id: -Date.now(),
-      name: "",
-      file: null,
-    };
-    setProductDiaries([...productDiaries, newDiary]);
-  };
-
-  const deleteDivDiary = (id) => {
-    const updateDiaries = productDiaries.filter((diary) => diary.id !== id);
-    setProductDiaries(updateDiaries);
-  };
-
-  const handleInputChangeDiary = (id, key, value) => {
-    const updateDiaries = productDiaries.map((diary) =>
-      diary.id === id ? { ...diary, [key]: value } : diary
-    );
-    setProductDiaries(updateDiaries);
-  };
-
-  const handleFileChangeDiary = (id, file) => {
-    const updateDiaries = productDiaries.map((diary) =>
-      diary.id === id ? { ...diary, file } : diary
-    );
-    setProductDiaries(updateDiaries);
-    setValue({ ...value, productDiaries: updateDiaries });
-  };
-  const [errorDivideCode, setErrorDivideCode] = useState("");
+  console.log(value);
 
   // Thêm nhân sự
   const handleSaveEmployee = async (e) => {
     e.preventDefault();
+    console.log(value);
     if (!value.name) {
       toast.error("Vui lòng nhập tên nhân sự");
-    } else if (!value.divideCode) {
+    } else if (!value.code) {
       toast.error("Vui lòng nhập mã nhân sự");
     } else {
       setIsLoading(true);
       try {
-        await saveEmployeeAPI(value);
-        setErrorDivideCode("");
-        toast.success("Thêm nhân sự thành công");
-        navigate("/catalogue");
+        setErrorCode("");
+        const data = await saveEmployeeAPI(value);
+        if (data) {
+          toast.success("Thêm nhân sự thành công");
+          setIsLoading(false);
+          // navigate("/catalogue/employees");
+        }
       } catch (error) {
-        console.log(error);
         setIsLoading(false);
+        console.log(error);
         toast.error("Thêm nhân sự thất bại");
       }
     }
@@ -204,206 +156,202 @@ export default function CreateEmployee() {
             <Toaster position="top-right" />
             <h1 className="text-center pt-3">THÊM NHÂN SỰ</h1>
             <form noValidate onSubmit={handleSaveEmployee}>
-              <TabContext value={item}>
-                <Box display="flex" justifyContent="center" alignItems="center">
-                  <TabList onChange={handleChangeItem}>
-                    <Tab
-                      sx={{ fontWeight: "bold" }}
-                      label="THÔNG TIN CHUNG"
-                      value="1"
-                    />
-                    <Tab
-                      sx={{ fontWeight: "bold" }}
-                      label="HỒ SƠ NĂNG LỰC"
-                      value="2"
-                    />
-                  </TabList>
-                </Box>
-                {/* Thông số chung */}
-                <TabPanel value="1">
-                  <div className="ps-5 pe-5">
-                    {/* TÊN NHÂN SỰ */}
-                    <div className="form-group d-flex mb-2">
-                      <label
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                          width: "170px",
-                          marginRight: "20px",
-                        }}
-                        className="form-control"
-                        htmlFor="name"
-                      >
-                        Tên nhân sự{" "}
-                        <span className="text-danger fw-bold">*</span>
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        // ref={nameRef}
-                        value={value.name}
-                        className=" form-control w-50"
-                        type="text"
-                        placeholder="Nhập tên nhân sự..."
-                        onChange={handleChangeInput}
+              <Container>
+                <TabContext value={item}>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <TabList onChange={handleChangeItem}>
+                      <Tab
+                        sx={{ fontWeight: "bold" }}
+                        label="THÔNG TIN CHUNG"
+                        value="1"
                       />
-                    </div>
-                    {/* MÃ NHÂN SỰ */}
-                    <div
-                      style={{ alignItems: "center" }}
-                      className="form-group d-flex mb-2"
-                    >
-                      <label
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                          width: "170px",
-                          marginRight: "20px",
-                        }}
-                        className="form-control"
-                        htmlFor="divideCode"
-                      >
-                        Mã nhân sự{" "}
-                        <span className="text-danger fw-bold">*</span>
-                      </label>
-                      <input
-                        id="divideCode"
-                        name="divideCode"
-                        value={value.divideCode}
-                        className=" form-control w-50 me-2"
-                        type="text"
-                        placeholder="Nhập mã nhân sự..."
-                        onChange={handleChangeInput}
-                        onBlur={handleCheckDivideCode}
+                      <Tab
+                        sx={{ fontWeight: "bold" }}
+                        label="HỒ SƠ NĂNG LỰC"
+                        value="2"
                       />
-                      <span className="text-danger ">{errorDivideCode}</span>
-                    </div>
-                    {/* PHÒNG BAN */}
-                    <div className="form-group d-flex mb-2">
-                      <label
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                          width: "170px",
-                          marginRight: "20px",
-                        }}
-                        className="form-control"
-                        htmlFor="constructionProject"
+                    </TabList>
+                  </Box>
+                  {/* Thông số chung */}
+                  <TabPanel value="1">
+                    <div className="ps-5 pe-5" style={{ marginLeft: "150px" }}>
+                      {/* TÊN NHÂN SỰ */}
+                      <div className="form-group d-flex mb-3">
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                            marginRight: "20px",
+                          }}
+                          className="form-control"
+                          htmlFor="name"
+                        >
+                          Tên nhân sự{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <input
+                          id="name"
+                          name="name"
+                          // ref={nameRef}
+                          value={value.name}
+                          className=" form-control w-50"
+                          type="text"
+                          placeholder="Nhập tên nhân sự..."
+                          onChange={handleChangeInput}
+                        />
+                      </div>
+                      {/* MÃ NHÂN SỰ */}
+                      <div
+                        style={{ alignItems: "center" }}
+                        className="form-group d-flex mb-3"
                       >
-                        Phòng ban
-                      </label>
-                      <input
-                        id="constructionProject"
-                        name="constructionProject"
-                        value={value.constructionProject}
-                        className=" form-control w-50"
-                        type="text"
-                        placeholder="Nhập phòng ban..."
-                        onChange={handleChangeInput}
-                      />
-                    </div>
-                    {/* CHỨC VỤ*/}
-                    <div className="form-group d-flex mb-2">
-                      <label
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                          width: "170px",
-                          marginRight: "20px",
-                        }}
-                        className="form-control"
-                        htmlFor="location"
-                      >
-                        Chức vụ
-                      </label>
-                      <input
-                        id="location"
-                        name="location"
-                        value={value.location}
-                        className=" form-control w-50"
-                        type="text"
-                        placeholder="Nhập chức vụ..."
-                        onChange={handleChangeInput}
-                      />
-                    </div>
-                    {/* ĐỊA CHỈ*/}
-                    <div className="form-group d-flex mb-2">
-                      <label
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                          width: "170px",
-                          marginRight: "20px",
-                        }}
-                        className="form-control"
-                        htmlFor="note"
-                      >
-                        Địa chỉ
-                      </label>
-                      <TextareaAutosize
-                        id="note"
-                        name="note"
-                        value={value.note}
-                        className=" form-control w-50"
-                        type="text"
-                        placeholder="Nhập địa chỉ..."
-                        onChange={handleChangeInput}
-                      />
-                    </div>
-                    {/* HÌNH THỨC*/}
-                    <div className="form-group d-flex mb-2">
-                      <label
-                        style={{
-                          border: "none",
-                          backgroundColor: "transparent",
-                          width: "170px",
-                          marginRight: "20px",
-                        }}
-                        className="form-control"
-                        htmlFor="location"
-                      >
-                        Chức vụ
-                      </label>
-                      {/* <select
-                        onChange={handleChangeInput}
-                        class="custom-select"
-                        name=""
-                        id=""
-                      >
-                        <option value="Kí hợp đồng" selected>
-                          Kí hợp đồng
-                        </option>
-                        <option value="Thử việc">Thử việc</option>
-                        <option value="Nghỉ không lương">
-                          Nghỉ không lương
-                        </option>
-                      </select> */}
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                            marginRight: "20px",
+                          }}
+                          className="form-control"
+                          htmlFor="code"
+                        >
+                          Mã nhân sự{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <input
+                          id="code"
+                          name="code"
+                          value={value.code}
+                          className=" form-control w-50 me-2"
+                          type="text"
+                          placeholder="Nhập mã nhân sự..."
+                          onChange={handleChangeInput}
+                          onBlur={handleCheckCode}
+                        />
+                        <span className="text-danger ">{errorcode}</span>
+                      </div>
+                      {/* PHÒNG BAN */}
+                      <div className="form-group d-flex mb-3">
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                            marginRight: "20px",
+                          }}
+                          className="form-control"
+                          htmlFor="department"
+                        >
+                          Phòng ban{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <input
+                          id="department"
+                          name="department"
+                          value={value.department}
+                          className=" form-control w-50"
+                          type="text"
+                          placeholder="Nhập phòng ban..."
+                          onChange={handleChangeInput}
+                        />
+                      </div>
+                      {/* CHỨC VỤ*/}
+                      <div className="form-group d-flex mb-3">
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                            marginRight: "20px",
+                          }}
+                          className="form-control"
+                          htmlFor="position"
+                        >
+                          Chức vụ <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <input
+                          id="position"
+                          name="position"
+                          value={value.position}
+                          className=" form-control w-50"
+                          type="text"
+                          placeholder="Nhập chức vụ..."
+                          onChange={handleChangeInput}
+                        />
+                      </div>
 
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={value.method}
-                        defaultValue="Kí hợp đồng"
-                        label="Age"
-                        onChange={handleChangeInput}
-                      >
-                        <MenuItem value={10}> Kí hợp đồng</MenuItem>
-                        <MenuItem value={20}>Thử việc</MenuItem>
-                        <MenuItem value={30}>Nghỉ không lương</MenuItem>
-                      </Select>
-                      {/* <input
-                        id="location"
-                        name="location"
-                        value={value.location}
-                        className=" form-control w-50"
-                        type="text"
-                        placeholder="Nhập chức vụ..."
-                        onChange={handleChangeInput}
-                      /> */}
+                      {/* HÌNH THỨC*/}
+                      <div className="form-group d-flex mb-3">
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                            marginRight: "20px",
+                          }}
+                          className="form-control"
+                        >
+                          Hình thức{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <FormControl>
+                          <InputLabel size="small" sx={{}}>
+                            Chọn hình thức hợp đồng
+                          </InputLabel>
+
+                          <Select
+                            size="small"
+                            value={value.method}
+                            label="Chọn hình thức hợp đồng"
+                            name="method"
+                            onChange={handleChangeInput}
+                            sx={{ width: "250px" }}
+                          >
+                            <MenuItem
+                              sx={{ height: "40px" }}
+                              value="Kí hợp đồng"
+                            >
+                              Kí hợp đồng
+                            </MenuItem>
+                            <MenuItem value="Thử việc">Thử việc</MenuItem>
+                            <MenuItem value="Nghỉ không lương">
+                              Nghỉ không lương
+                            </MenuItem>
+                          </Select>
+                        </FormControl>
+                      </div>
+                      {/* ĐỊA CHỈ*/}
+                      <div className="form-group d-flex">
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                            marginRight: "20px",
+                          }}
+                          className="form-control"
+                          htmlFor="contact"
+                        >
+                          Địa chỉ <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <textarea
+                          id="contact"
+                          name="contact"
+                          value={value.contact}
+                          className=" form-control w-50"
+                          type="text"
+                          placeholder="Nhập địa chỉ..."
+                          onChange={handleChangeInput}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  {/* upload ảnh */}
-                  <div className=" ps-5">
+                    {/* upload ảnh */}
+                    {/* <div className=" ps-5">
                     <label
                       style={{
                         border: "none",
@@ -467,101 +415,175 @@ export default function CreateEmployee() {
                       onChange={handleImageChange}
                       multiple
                     />
-                  </div>
-                </TabPanel>
-                {/* HỒ SƠ NĂNG LỰC */}
-                <TabPanel style={{ marginLeft: "80px" }} value="2">
-                  <div>
-                    {productDetails.map((productDetail) => (
+                  </div> */}
+                  </TabPanel>
+                  {/* HỒ SƠ NĂNG LỰC */}
+                  <TabPanel value="2">
+                    <div className="ps-5 pe-5">
+                      {/* CĂN CƯỚC CÔNG DÂN*/}
                       <div
+                        className="d-flex mb-3"
                         style={{
                           display: "flex",
-                          alignItems: "center",
-                          marginBottom: "15px",
-                          height: "30px",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          gap: "20px",
                         }}
-                        key={productDetail.id}
                       >
-                        <TextField
-                          placeholder="Thông số"
-                          id="outlined-size-small"
-                          value={productDetail.name}
-                          size="small"
-                          sx={{ marginRight: "20px", width: "40%" }}
-                          onChange={(e) =>
-                            handleInputChange(
-                              productDetail.id,
-                              "name",
-                              e.target.value
-                            )
-                          }
-                          onBlur={handleBlurInput}
-                        />
-                        <TextField
-                          placeholder="Nội dung"
-                          id="outlined-size-small"
-                          disabled={productDetail.file?.name ? true : false}
-                          value={
-                            productDetail.file?.name
-                              ? productDetail.file?.name
-                              : productDetail.value
-                          }
-                          size="small"
-                          sx={{ marginRight: "20px", width: "40%" }}
-                          onChange={(e) =>
-                            handleInputChange(
-                              productDetail.id,
-                              "value",
-                              e.target.value
-                            )
-                          }
-                          onBlur={handleBlurInput}
-                        />
-                        <div
+                        <label
                           style={{
-                            width: "20%",
-                            display: "flex",
-                            alignItems: "center",
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
                           }}
+                          className="form-control"
+                          htmlFor="IDCard"
                         >
+                          Căn cước công dân{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <div style={{ width: "50%" }}>
                           <input
+                            className="form-control"
                             type="file"
-                            style={{ width: "120px" }}
-                            className="custom-file-input"
-                            id={`fileInput${productDetail.id}`}
-                            name="filename"
-                            accept=".pdf, .xlsx, .xls"
-                            onChange={(e) =>
-                              handleFileChange(
-                                productDetail.id,
-                                e.target.files[0]
-                              )
-                            }
+                            id="formFile"
+                            name="IDCard"
+                            onChange={handleFileChange}
                           />
-
-                          <button
-                            style={{
-                              width: "28px",
-                              height: "28px",
-                              padding: 0,
-                            }}
-                            className="btn btn-danger"
-                            onClick={() => deleteDiv(productDetail.id)}
-                          >
-                            <ClearIcon
-                              sx={{ fontSize: "20px", fontWeight: "bold" }}
-                            />
-                          </button>
                         </div>
                       </div>
-                    ))}
-                    <p className="text-danger">{errorDetail}</p>
-                    <Button variant="contained" onClick={createDiv}>
-                      Thêm
-                    </Button>
-                  </div>
-                </TabPanel>
-              </TabContext>
+                      {/* BẰNG CẤP - CHỨNG CHỈ*/}
+                      <div
+                        className="d-flex mb-3"
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          gap: "20px",
+                        }}
+                      >
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                          }}
+                          className="form-control"
+                          htmlFor="degree"
+                        >
+                          Bằng cấp - chứng chỉ{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <div style={{ width: "50%" }}>
+                          <input
+                            className="form-control"
+                            type="file"
+                            id="formFile"
+                            name="degree"
+                            onChange={handleFileChange}
+                          />
+                        </div>
+                      </div>
+                      {/* Thẻ an toàn lao động*/}
+                      <div
+                        className="d-flex mb-3"
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          gap: "20px",
+                        }}
+                      >
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                          }}
+                          className="form-control"
+                          htmlFor="safetyCard"
+                        >
+                          Thẻ an toàn lao động{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <div style={{ width: "50%" }}>
+                          <input
+                            className="form-control"
+                            type="file"
+                            id="formFile"
+                            name="safetyCard"
+                            onChange={handleFileChange}
+                          />
+                        </div>
+                      </div>
+                      {/* Hợp đồng lao động*/}
+                      <div
+                        className="d-flex mb-3"
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          gap: "20px",
+                        }}
+                      >
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                          }}
+                          className="form-control"
+                          htmlFor="contract"
+                        >
+                          Hợp đồng lao động{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <div style={{ width: "50%" }}>
+                          <input
+                            className="form-control"
+                            type="file"
+                            id="formFile"
+                            name="contract"
+                            onChange={handleFileChange}
+                          />
+                        </div>
+                      </div>
+                      {/* Giấy khám sức khỏe*/}
+                      <div
+                        className="d-flex mb-3"
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          gap: "20px",
+                        }}
+                      >
+                        <label
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            width: "170px",
+                          }}
+                          className="form-control"
+                          htmlFor="healthCer"
+                        >
+                          Giấy khám sức khỏe{" "}
+                          <span className="text-danger fw-bold">*</span>
+                        </label>
+                        <div style={{ width: "50%" }}>
+                          <input
+                            className="form-control"
+                            type="file"
+                            id="formFile"
+                            name="healthCer"
+                            onChange={handleFileChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </TabPanel>
+                </TabContext>
+              </Container>
               {/* SUBMIT */}
               <div
                 style={{

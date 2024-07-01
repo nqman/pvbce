@@ -109,7 +109,7 @@ export default function CategoryProject01() {
   const navigate = useNavigate();
 
   // Xóa Danh mục
-  const handleDeteleCategory = async (id) => {
+  const handleDeleteCategory = async (id) => {
     try {
       const result = await Swal.fire({
         title: "Bạn chắc chắn muốn xóa danh mục? ",
@@ -254,38 +254,50 @@ export default function CategoryProject01() {
 
                         renderCell: (params) => (
                           <div style={{ display: "flex" }}>
-                            <button
-                              style={{
-                                width: "25px",
-                                height: "25px",
-                                padding: "0 0 2px 0",
-                                marginRight: "10px",
-                              }}
-                              className="btn btn-dark"
-                              onClick={() => handleSelectCategory(params.id)}
-                              title="Sửa"
-                            >
-                              <EditIcon
-                                sx={{ fontSize: "14px", fontWeight: "bold" }}
-                              />
-                            </button>
+                            {!params.row.use && (
+                              <>
+                                <button
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: "0 0 2px 0",
+                                    marginRight: "10px",
+                                  }}
+                                  className="btn btn-dark"
+                                  onClick={() =>
+                                    handleSelectCategory(params.id)
+                                  }
+                                  title="Sửa"
+                                >
+                                  <EditIcon
+                                    sx={{
+                                      fontSize: "14px",
+                                      fontWeight: "bold",
+                                    }}
+                                  />
+                                </button>
 
-                            <button
-                              onClick={() => {
-                                handleDeteleCategory(params.id);
-                              }}
-                              style={{
-                                width: "25px",
-                                height: "25px",
-                                padding: 0,
-                                marginRight: "10px",
-                              }}
-                              className="btn btn-danger"
-                            >
-                              <ClearIcon
-                                sx={{ fontSize: "20px", fontWeight: "bold" }}
-                              />
-                            </button>
+                                <button
+                                  onClick={() => {
+                                    handleDeleteCategory(params.id);
+                                  }}
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: 0,
+                                    marginRight: "10px",
+                                  }}
+                                  className="btn btn-danger"
+                                >
+                                  <ClearIcon
+                                    sx={{
+                                      fontSize: "20px",
+                                      fontWeight: "bold",
+                                    }}
+                                  />
+                                </button>
+                              </>
+                            )}
                           </div>
                         ),
                       },

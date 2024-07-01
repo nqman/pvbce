@@ -22,7 +22,7 @@ import {
 
 export default function ListEmployees({ rows, onEdit, onDelete, role }) {
   const navigate = useNavigate();
-  //Xem chi tiết thiết bị
+  //Xem chi tiết NHÂN SỰ
   const handleRead = (id) => {
     navigate(`/catalogue/employees/${id}`);
   };
@@ -90,20 +90,20 @@ export default function ListEmployees({ rows, onEdit, onDelete, role }) {
               renderCell: (params) => (
                 <img
                   style={{ width: "50px", height: "50px" }}
-                  src={params.row.imageOfQR}
+                  src={params.row.pathOfQR}
                   alt={params.row.name}
                 />
               ),
             },
-            { field: "name", headerName: "TÊN THIẾT BỊ", width: 220 },
-            { field: "divideCode", headerName: "MÃ THIẾT BỊ", width: 150 },
+            { field: "name", headerName: "TÊN NHÂN SỰ", width: 220 },
+            { field: "code", headerName: "MÃ NHÂN SỰ", width: 150 },
             {
-              field: "constructionProject",
-              headerName: "THI CÔNG DỰ ÁN",
+              field: "department",
+              headerName: "PHÒNG BAN",
               width: 180,
             },
-            { field: "location", headerName: "NẰM Ở KHO BÃI", width: 180 },
-            { field: "note", headerName: "LỊCH SỬ THI CÔNG", width: 150 },
+            { field: "position", headerName: "CHỨC VỤ", width: 180 },
+            { field: "method", headerName: "HÌNH THỨC", width: 150 },
             {
               field: "action",
               headerName: "TÙY CHỌN",
@@ -149,7 +149,7 @@ export default function ListEmployees({ rows, onEdit, onDelete, role }) {
                         />
                       </button>
 
-                      {/* <button
+                      <button
                         style={{
                           border: "1px solid",
                           borderRadius: "5px",
@@ -164,7 +164,7 @@ export default function ListEmployees({ rows, onEdit, onDelete, role }) {
                         <ClearIcon
                           sx={{ fontSize: "20px", fontWeight: "bold" }}
                         />
-                      </button> */}
+                      </button>
                     </>
                   )}
                 </div>

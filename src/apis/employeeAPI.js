@@ -13,114 +13,60 @@ export async function listEmployeesAPI() {
 }
 
 //Thêm nhân sự
-export async function saveEmployeeAPI(Employees) {
-  // console.log(Employees);
+export async function saveEmployeeAPI(employee) {
+  // console.log(employee);
+
+  // debugger;
   try {
     const formData = new FormData();
-    Object.keys(Employees).map((key) => {
-      if (key === "productImages") {
-        if (Array.isArray(Employees[key])) {
-          Employees[key].forEach((image) => {
-            //EDIT
-            if (image.id > 0) {
-              formData.append("imageIDUpdate", image.id);
-              formData.append("pathImage", image.pathImage);
-            }
-            //NEW
-            else {
-              formData.append("imageIDNew", 0);
-              formData.append("imageFile", image.imageFile);
-            }
-          });
-        }
-      } else if (key === "productDetails") {
-        if (Array.isArray(Employees[key])) {
-          Employees[key].forEach((detail) => {
-            //EDIT
-            if (detail.id > 0) {
-              if (
-                detail.pathFile !== null ||
-                (typeof detail.file !== "undefined" &&
-                  detail.file instanceof File)
-              ) {
-                if (
-                  typeof detail.file !== "undefined" &&
-                  detail.file instanceof File
-                ) {
-                  formData.append("fileUpdate", detail.file);
-                  formData.append("fileIDUpdatePart", detail.id);
-                  formData.append("fileHeaderUpdatePart", detail.name);
-                } else {
-                  formData.append("pathFile", detail.pathFile);
-                  formData.append("fileIDUpdatePath", detail.id);
-                  formData.append("fileHeaderUpdatePath", detail.name);
-                  formData.append("fileNameUpdatePath", detail.value);
-                }
-              } else {
-                formData.append("detailID", detail.id);
-                formData.append("detailName", detail.name);
-                formData.append("detailValue", detail.value);
-              }
-            }
-            //NEW
-            else {
-              if (detail.file instanceof File) {
-                console.log(detail.file);
-                formData.append("fileIDNew", 0);
-                formData.append("fileHeaderNew", detail.name);
-                formData.append("detailFile", detail.file);
-              } else {
-                formData.append("detailID", 0);
-                formData.append("detailName", detail.name);
-                formData.append("detailValue", detail.value);
-              }
-            }
-          });
-        }
-      } else if (key === "productDiaries") {
-        if (Array.isArray(Employees[key])) {
-          Employees[key].forEach((diary) => {
-            //EDIT
-            if (diary.id > 0) {
-              if (
-                diary.file !== null ||
-                (typeof diary.file !== "undefined" &&
-                  diary.file instanceof File)
-              ) {
-                if (
-                  typeof diary.file !== "undefined" &&
-                  diary.file instanceof File
-                ) {
-                  formData.append("diaryFileUpdate", diary.file);
-                  formData.append("diaryFileIDUpdatePart", diary.id);
-                  formData.append("diaryFileHeaderUpdatePart", diary.name);
-                } else {
-                  formData.append("pathDiaryFile", diary.pathFile);
-                  formData.append("diaryFileIDUpdatePath", diary.id);
-                  formData.append("diaryFileHeaderUpdatePath", diary.name);
-                  formData.append("diaryFileNameUpdatePath", diary.value);
-                }
-              }
-            }
-            //NEW
-            else {
-              if (diary.file instanceof File) {
-                console.log(diary.file);
-                formData.append("diaryFileIDNew", 0);
-                formData.append("diaryFileHeaderNew", diary.name);
-                formData.append("diaryFile", diary.file);
-              }
-            }
-          });
-        }
+    formData.append("name", employee.name);
+    formData.append("code", employee.code);
+    formData.append("department", employee.department);
+    formData.append("position", employee.position);
+    formData.append("method", employee.method);
+    formData.append("contact", employee.contact);
+    // EDIT
+    if (employee.id > 0) {
+      if (employee.IDCard) {
+        formData.append("partID", employee.IDCard);
       } else {
-        if (key) {
-          formData.append(key, Employees[key]);
-        }
+        formData.append("pathID", employee.pathID);
       }
-    });
 
-    const resp = await baseAPI.post("products/save", formData, {
+      if (employee.degree) {
+        formData.append("partDegree", employee.degree);
+      } else {
+        formData.append("pathDegree", employee.pathDegree);
+      }
+
+      if (employee.safetyCard) {
+        formData.append("partSafetyCard", employee.safetyCard);
+      } else {
+        formData.append("pathSafetyCard", employee.pathSafetyCard);
+      }
+
+      if (employee.contract) {
+        formData.append("partContract", employee.contract);
+      } else {
+        formData.append("pathContract", employee.pathContract);
+      }
+
+      if (employee.healthCer) {
+        formData.append("partHealthCer", employee.healthCer);
+      } else {
+        formData.append("pathHealthCer", employee.pathHealthCer);
+      }
+    }
+    // NEW
+    else {
+      formData.append("partID", employee.IDCard);
+      formData.append("partDegree", employee.degree);
+      formData.append("partSafetyCard", employee.safetyCard);
+      formData.append("partContract", employee.contract);
+      formData.append("partHealthCer", employee.healthCer);
+    }
+    // console.log(formData);
+    const resp = await baseAPI.post("employees/save", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -136,7 +82,7 @@ export async function saveEmployeeAPI(Employees) {
 }
 export async function selectEmployeeAPI(id) {
   try {
-    const resp = await baseAPI.get(`products/${id}`);
+    const resp = await baseAPI.get(`employees/${id}`);
     return resp.data;
   } catch (error) {
     console.error(error);
@@ -146,7 +92,7 @@ export async function selectEmployeeAPI(id) {
 
 export async function deleteEmployeeAPI(id) {
   try {
-    const resp = await baseAPI.get(`products/delete/${id}`);
+    const resp = await baseAPI.get(`employees/delete/${id}`);
     return resp.data;
   } catch (error) {
     throw error.response.data;
@@ -154,22 +100,20 @@ export async function deleteEmployeeAPI(id) {
 }
 
 //PDF
-export async function fetchPdfProduct(id, tab) {
+export async function fetchPdfEmployee(id, tab) {
   try {
-    const response = await baseAPI.get(`products/url/${tab}/${id}`);
+    const response = await baseAPI.get(`employees/url/${tab}/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching PDF:", error);
   }
 }
 //check trùng mã nhân sự
-export async function checkDivideCodeAPI(divideCode) {
+export async function checkCodeAPI(code) {
   try {
     // console.log(valueOfEmail);
 
-    const resp = await baseAPI.get(
-      `products/validate/divideCode/${divideCode}`
-    );
+    const resp = await baseAPI.get(`employees/validate/code/${code}`);
     return resp.data;
   } catch (error) {
     console.error(error);

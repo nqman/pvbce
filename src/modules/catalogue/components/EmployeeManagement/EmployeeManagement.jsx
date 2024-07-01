@@ -45,7 +45,7 @@ export default function EmployeeManagement() {
   };
 
   // Xóa nhân sự
-  const handleDeteleEmployee = async (id) => {
+  const handleDeleteEmployee = async (id) => {
     try {
       const result = await Swal.fire({
         title: "Bạn chắc chắn muốn xóa nhân sự? ",
@@ -109,7 +109,7 @@ export default function EmployeeManagement() {
         <ListEmployees
           role={role}
           rows={employees}
-          onDelete={handleDeteleEmployee}
+          onDelete={handleDeleteEmployee}
           onEdit={handleSelectEmployee}
         />
       ) : (

@@ -310,38 +310,48 @@ export default function CategoryProject02() {
 
                         renderCell: (params) => (
                           <div style={{ display: "flex" }}>
-                            <button
-                              style={{
-                                width: "25px",
-                                height: "25px",
-                                padding: "0 0 2px 0",
-                                marginRight: "10px",
-                              }}
-                              className="btn btn-dark"
-                              onClick={() => handleEditCategory(params.id)}
-                              title="Sửa"
-                            >
-                              <EditIcon
-                                sx={{ fontSize: "15px", fontWeight: "bold" }}
-                              />
-                            </button>
+                            {!params.row.use && (
+                              <>
+                                <button
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: "0 0 2px 0",
+                                    marginRight: "10px",
+                                  }}
+                                  className="btn btn-dark"
+                                  onClick={() => handleEditCategory(params.id)}
+                                  title="Sửa"
+                                >
+                                  <EditIcon
+                                    sx={{
+                                      fontSize: "15px",
+                                      fontWeight: "bold",
+                                    }}
+                                  />
+                                </button>
 
-                            <button
-                              onClick={() => {
-                                handleDeteleCategory(params.id);
-                              }}
-                              style={{
-                                width: "25px",
-                                height: "25px",
-                                padding: 0,
-                                marginRight: "10px",
-                              }}
-                              className="btn btn-danger"
-                            >
-                              <ClearIcon
-                                sx={{ fontSize: "20px", fontWeight: "bold" }}
-                              />
-                            </button>
+                                <button
+                                  onClick={() => {
+                                    handleDeteleCategory(params.id);
+                                  }}
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    padding: 0,
+                                    marginRight: "10px",
+                                  }}
+                                  className="btn btn-danger"
+                                >
+                                  <ClearIcon
+                                    sx={{
+                                      fontSize: "20px",
+                                      fontWeight: "bold",
+                                    }}
+                                  />
+                                </button>
+                              </>
+                            )}
                           </div>
                         ),
                       },
